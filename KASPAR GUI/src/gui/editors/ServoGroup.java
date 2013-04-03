@@ -4,80 +4,49 @@
  */
 package gui.editors;
 
-import data.ApplicationLog;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 
 /**
  *
  * @author nathan
  */
-public class Operator extends javax.swing.JPanel implements ModelEditor<data.Operator> {
-
-    DefaultListModel users;
-    DefaultListModel allUsers;
-    List<data.User> allUsersList;
-
-    public Operator(List<data.User> allUsers) {
-        initComponents();
-        this.allUsersList = allUsers;
-    }
+public class ServoGroup extends javax.swing.JPanel implements ModelEditor<data.ServoGroup> {
     
-    @Override
-    public data.Operator getData() {
-        return this.operator;
+    guiComboBox<data.Robot> robotCombo;
+    data.ServoGroup servoGroup;
+
+    public ServoGroup(List<data.Robot> allRobots) {
+        initComponents();        
+        robotCombo = guiHelper.addComboBox(allRobots, this, 1, 1);
     }
-    
+
     @Override
-    public void setData(data.Operator operator) {
-        this.operator = operator;
+    public data.ServoGroup getData() {
+        return this.servoGroup;
+    }
+
+    @Override
+    public void setData(data.ServoGroup servoGroup) {
+        this.servoGroup = servoGroup;
         this.revertChanges();
     }
 
     @Override
     public void revertChanges() {
-        
-        this.users = new DefaultListModel();
-        this.allUsers = new DefaultListModel();
-
-        if (allUsersList != null) {
-            for (data.User u : allUsersList) {
-                if (operator.getUsers().contains(u)) {
-                    this.users.addElement(u);
-                } else {
-                    this.allUsers.addElement(u);
-                }
-            }
-        }
-
-        this.jTextFieldName.setText(this.operator.getName());
-        this.jListAllUsers.setModel(this.allUsers);
-        this.jListUsers.setModel(this.users);
-
-        DefaultComboBoxModel logLevels = new DefaultComboBoxModel();
-        for (ApplicationLog.LogLevel level : ApplicationLog.LogLevel.values()) {
-            logLevels.addElement(level);
-        }
-
-        this.jComboBoxLogLevel.setModel(logLevels);
-        this.jComboBoxLogLevel.setSelectedItem(this.operator.getMinLogLevel());        
+        this.jTextFieldTitle.setText(this.servoGroup.getTitle());
+        this.jFormattedTextFieldColumn.setValue(this.servoGroup.getLocationX());
+        this.jFormattedTextFieldRow.setValue(this.servoGroup.getLocationY());
+        this.robotCombo.setSelectedItem(this.servoGroup.getRobot());
     }
-    
+
     @Override
     public void commitChanges() {
-        List<data.User> userList = new ArrayList<data.User>();
-        for (Object u : this.users.toArray()) {
-            userList.add((data.User) u);
-        }
-
-        this.operator.setName(this.jTextFieldName.getText());
-        this.operator.getUsers().clear();
-        this.operator.getUsers().addAll(userList);
-        this.operator.setMinLogLevel((ApplicationLog.LogLevel) this.jComboBoxLogLevel.getSelectedItem());
+        this.servoGroup.setTitle(this.jTextFieldTitle.getText());
+        this.servoGroup.setLocationX(((Number) this.jFormattedTextFieldColumn.getValue()).intValue());
+        this.servoGroup.setLocationY(((Number) this.jFormattedTextFieldRow.getValue()).intValue());
+        this.servoGroup.setRobot(this.robotCombo.getSelectedItem());
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,56 +55,82 @@ public class Operator extends javax.swing.JPanel implements ModelEditor<data.Ope
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        operator = new data.Operator();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListAllUsers = new javax.swing.JList();
-        jLabelName = new javax.swing.JLabel();
-        jLabelLogLevel = new javax.swing.JLabel();
-        jLabelUsers = new javax.swing.JLabel();
-        jTextFieldName = new javax.swing.JTextField();
-        jComboBoxLogLevel = new javax.swing.JComboBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jListUsers = new javax.swing.JList();
-        jButtonAddUsers = new javax.swing.JButton();
-        jButtonRemoveUsers = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jLabelTitle = new javax.swing.JLabel();
+        jLabelNameRobot = new javax.swing.JLabel();
+        jLabelNameRow = new javax.swing.JLabel();
+        jLabelNameColumn = new javax.swing.JLabel();
+        jTextFieldTitle = new javax.swing.JTextField();
+        jFormattedTextFieldRow = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldColumn = new javax.swing.JFormattedTextField();
+        jPanel1 = new javax.swing.JPanel();
         jButtonOK = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
 
-        jScrollPane1.setViewportView(jListAllUsers);
+        setLayout(new java.awt.GridBagLayout());
 
-        jLabelName.setText("Name");
+        jLabelTitle.setText("Title");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jLabelTitle, gridBagConstraints);
 
-        jLabelLogLevel.setText("Log Level");
+        jLabelNameRobot.setText("Robot");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jLabelNameRobot, gridBagConstraints);
 
-        jLabelUsers.setText("Users");
+        jLabelNameRow.setText("Row");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jLabelNameRow, gridBagConstraints);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, operator, org.jdesktop.beansbinding.ELProperty.create("${minLogLevel}"), jComboBoxLogLevel, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
+        jLabelNameColumn.setText("Column");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jLabelNameColumn, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 83;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jTextFieldTitle, gridBagConstraints);
 
-        jScrollPane2.setViewportView(jListUsers);
+        jFormattedTextFieldRow.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 83;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jFormattedTextFieldRow, gridBagConstraints);
 
-        jButtonAddUsers.setLabel("<-");
-        jButtonAddUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddUsersActionPerformed(evt);
-            }
-        });
+        jFormattedTextFieldColumn.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 83;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jFormattedTextFieldColumn, gridBagConstraints);
 
-        jButtonRemoveUsers.setLabel("->");
-        jButtonRemoveUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveUsersActionPerformed(evt);
-            }
-        });
-
-        jButtonCancel.setText("Cancel");
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelActionPerformed(evt);
-            }
-        });
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jButtonOK.setText("OK");
         jButtonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -143,92 +138,33 @@ public class Operator extends javax.swing.JPanel implements ModelEditor<data.Ope
                 jButtonOKActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(jButtonOK, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabelName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelLogLevel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBoxLogLevel, 0, 237, Short.MAX_VALUE)
-                            .addComponent(jTextFieldName)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonAddUsers)
-                            .addComponent(jButtonRemoveUsers))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonOK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancel)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelName)
-                            .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxLogLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelLogLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(67, 67, 67)
-                                        .addComponent(jButtonAddUsers)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonRemoveUsers))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(jScrollPane1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCancel)
-                    .addComponent(jButtonOK))
-                .addGap(6, 6, 6))
-        );
+        jButtonCancel.setText("Cancel");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(jButtonCancel, gridBagConstraints);
 
-        bindingGroup.bind();
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonAddUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddUsersActionPerformed
-        // TODO add your handling code here:
-        for (Object u : this.jListAllUsers.getSelectedValues()) {
-            this.allUsers.removeElement(u);
-            this.users.addElement(u);
-        }
-    }//GEN-LAST:event_jButtonAddUsersActionPerformed
-
-    private void jButtonRemoveUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveUsersActionPerformed
-        for (Object u : this.jListUsers.getSelectedValues()) {
-            this.users.removeElement(u);
-            this.allUsers.addElement(u);
-        }
-    }//GEN-LAST:event_jButtonRemoveUsersActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
         this.setVisible(false);
@@ -239,20 +175,15 @@ public class Operator extends javax.swing.JPanel implements ModelEditor<data.Ope
         this.setVisible(false);
     }//GEN-LAST:event_jButtonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddUsers;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
-    private javax.swing.JButton jButtonRemoveUsers;
-    private javax.swing.JComboBox jComboBoxLogLevel;
-    private javax.swing.JLabel jLabelLogLevel;
-    private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelUsers;
-    private javax.swing.JList jListAllUsers;
-    private javax.swing.JList jListUsers;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextFieldName;
-    private data.Operator operator;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+    private javax.swing.JFormattedTextField jFormattedTextFieldColumn;
+    private javax.swing.JFormattedTextField jFormattedTextFieldRow;
+    private javax.swing.JLabel jLabelNameColumn;
+    private javax.swing.JLabel jLabelNameRobot;
+    private javax.swing.JLabel jLabelNameRow;
+    private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 }

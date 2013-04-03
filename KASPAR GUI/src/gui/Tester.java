@@ -30,47 +30,100 @@ public class Tester extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        jButtonOperator = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jButtonServo = new javax.swing.JButton();
+        jButtonRobot = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButtonServoType = new javax.swing.JButton();
+        jButtonServoGroup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Operator");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonOperator.setText("Operator");
+        jButtonOperator.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonOperatorActionPerformed(evt);
             }
         });
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 714, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 241, Short.MAX_VALUE)
+        );
+
+        jButtonServo.setText("Servo");
+        jButtonServo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonServoActionPerformed(evt);
+            }
+        });
+
+        jButtonRobot.setText("Robot");
+        jButtonRobot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRobotActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("jButton4");
+
+        jButtonServoType.setText("ServoType");
+        jButtonServoType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonServoTypeActionPerformed(evt);
+            }
+        });
+
+        jButtonServoGroup.setText("ServoGroup");
+        jButtonServoGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonServoGroupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(0, 909, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jButtonOperator)
+                .addGap(0, 0, 0)
+                .addComponent(jButtonRobot)
+                .addGap(0, 0, 0)
+                .addComponent(jButton4)
+                .addGap(0, 0, 0)
+                .addComponent(jButtonServoType)
+                .addGap(0, 0, 0)
+                .addComponent(jButtonServoGroup)
+                .addGap(0, 0, 0)
+                .addComponent(jButtonServo))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonOperator)
+                    .addComponent(jButtonRobot)
+                    .addComponent(jButton4)
+                    .addComponent(jButtonServoType)
+                    .addComponent(jButtonServoGroup)
+                    .addComponent(jButtonServo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonOperatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOperatorActionPerformed
         // TODO add your handling code here:
         
         ArrayList<data.User> users = new ArrayList<data.User>();
@@ -83,10 +136,50 @@ public class Tester extends javax.swing.JFrame {
         
         gui.editors.Operator o = new gui.editors.Operator(users);
         o.setData(op);
+        jPanel1.removeAll();
         jPanel1.setLayout(new BorderLayout());
         jPanel1.add(o, BorderLayout.CENTER);
-        o.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonOperatorActionPerformed
+
+    private void jButtonRobotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobotActionPerformed
+        // TODO add your handling code here:
+        data.Robot op = new data.Robot();
+        gui.editors.Robot o = new gui.editors.Robot(new ArrayList<data.Pose>());
+        o.setData(op);
+        jPanel1.removeAll();
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(o, BorderLayout.CENTER);
+    }//GEN-LAST:event_jButtonRobotActionPerformed
+
+    private void jButtonServoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoActionPerformed
+        // TODO add your handling code here:
+        data.Servo op = new data.Servo();
+        gui.editors.Servo o = new gui.editors.Servo(new ArrayList<data.ServoGroup>());
+        o.setData(op);
+        jPanel1.removeAll();
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(o, BorderLayout.CENTER);
+    }//GEN-LAST:event_jButtonServoActionPerformed
+
+    private void jButtonServoTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoTypeActionPerformed
+        data.ServoType op = new data.ServoType();
+        gui.editors.ServoType o = new gui.editors.ServoType();
+        o.setData(op);
+        jPanel1.removeAll();
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(o, BorderLayout.CENTER);
+        jPanel1.revalidate();
+        jPanel1.repaint();
+    }//GEN-LAST:event_jButtonServoTypeActionPerformed
+
+    private void jButtonServoGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoGroupActionPerformed
+        data.ServoGroup op = new data.ServoGroup();
+        gui.editors.ServoGroup o = new gui.editors.ServoGroup(new ArrayList<data.Robot>());
+        o.setData(op);
+        jPanel1.removeAll();
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(o, BorderLayout.CENTER);
+    }//GEN-LAST:event_jButtonServoGroupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -123,7 +216,12 @@ public class Tester extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonOperator;
+    private javax.swing.JButton jButtonRobot;
+    private javax.swing.JButton jButtonServo;
+    private javax.swing.JButton jButtonServoGroup;
+    private javax.swing.JButton jButtonServoType;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
