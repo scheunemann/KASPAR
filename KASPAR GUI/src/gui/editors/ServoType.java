@@ -9,11 +9,12 @@ package gui.editors;
  *
  * @author nathan
  */
-public class ServoType extends javax.swing.JPanel implements ModelEditor<data.ServoType> {
+public class ServoType extends ModelEditor<data.ServoType> {
 
     private data.ServoType servoType;
 
     public ServoType() {
+        super();
         initComponents();
     }
 
@@ -297,12 +298,11 @@ public class ServoType extends javax.swing.JPanel implements ModelEditor<data.Se
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.setVisible(false);
+        this.close(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
-
-        this.setVisible(false);
+        this.close(true);
     }//GEN-LAST:event_jButtonOKActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

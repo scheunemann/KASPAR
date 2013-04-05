@@ -4,28 +4,25 @@
  */
 package gui.editors;
 
-import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.Collection;
 
 /**
  *
  * @author nathan
  */
-public class Servo extends javax.swing.JPanel implements ModelEditor<data.Servo> {
+public class Servo extends ModelEditor<data.Servo> {
 
     data.Servo servo;
     guiComboBox<data.ServoGroup> groupCombo;
-
-    public Servo(List<data.ServoGroup> allServoGroups) {
+    
+    public Servo() {
+        super();
         initComponents();
-        Callable<data.ServoGroup> c = new Callable<data.ServoGroup>() {
-            @Override
-            public data.ServoGroup call() {
-                return newServoGroup();
-            }
-        };
-        
-        groupCombo = guiHelper.addComboBox(allServoGroups, this, 1, 1, c);
+    }
+
+    public Servo(Collection<data.ServoGroup> allServoGroups) {
+        this();        
+        groupCombo = guiHelper.addComboBox(allServoGroups, this, 1, 1, this.getCallable(data.ServoGroup.class));
     }
     
     private data.ServoGroup newServoGroup() {
@@ -267,12 +264,11 @@ public class Servo extends javax.swing.JPanel implements ModelEditor<data.Servo>
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.setVisible(false);
+        this.close(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
-
-        this.setVisible(false);
+        this.close(true);
     }//GEN-LAST:event_jButtonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;

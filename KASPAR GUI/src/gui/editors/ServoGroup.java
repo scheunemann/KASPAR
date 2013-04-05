@@ -4,19 +4,24 @@
  */
 package gui.editors;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  *
  * @author nathan
  */
-public class ServoGroup extends javax.swing.JPanel implements ModelEditor<data.ServoGroup> {
+public class ServoGroup extends ModelEditor<data.ServoGroup> {
     
     guiComboBox<data.Robot> robotCombo;
     data.ServoGroup servoGroup;
+    
+    public ServoGroup() {
+        super();
+        initComponents();
+    }
 
-    public ServoGroup(List<data.Robot> allRobots) {
-        initComponents();        
+    public ServoGroup(Collection<data.Robot> allRobots) {
+        this();        
         robotCombo = guiHelper.addComboBox(allRobots, this, 1, 1);
     }
 
@@ -167,12 +172,11 @@ public class ServoGroup extends javax.swing.JPanel implements ModelEditor<data.S
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.setVisible(false);
+        this.close(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
-
-        this.setVisible(false);
+        this.close(true);
     }//GEN-LAST:event_jButtonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;

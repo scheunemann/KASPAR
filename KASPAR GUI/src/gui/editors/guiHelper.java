@@ -4,8 +4,6 @@
  */
 package gui.editors;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -17,18 +15,38 @@ import javax.swing.JComponent;
  */
 public class guiHelper {
 
-    public static <T extends Object> ModelEditor<T> getPanel(T model, Class<T> tClass) {
-        if (tClass == data.Robot.class) {
-            return (ModelEditor<T>) new gui.editors.Robot(null);
+    public static <T extends Object> ModelEditor<T> getEditorPanel(Class<T> tClass) {
+        ModelEditor<?> editor = null;
+
+        if (data.Robot.class == tClass) {
+            editor = new gui.editors.Robot(managers.SessionManager.getAll(data.Pose.class));
+        } else if (data.Operator.class == tClass) {
+            editor = new gui.editors.Operator(managers.SessionManager.getAll(data.User.class));
+        } else if (data.Servo.class == tClass) {
+            editor = new gui.editors.Servo(managers.SessionManager.getAll(data.ServoGroup.class));
+        } else if (data.ServoGroup.class == tClass) {
+            editor = new gui.editors.ServoGroup(managers.SessionManager.getAll(data.Robot.class));
+        } else if (data.ServoType.class == tClass) {
+            editor = new gui.editors.ServoType();
+        }
+
+        if (editor != null) {
+            return (ModelEditor<T>) editor;
         }
 
         return null;
     }
-    
+
+    public static <T extends Object> ModelEditor<T> getEditorPanel(T model) {
+        ModelEditor<T> editor = getEditorPanel((Class<T>) model.getClass());
+        editor.setData(model);
+        return editor;
+    }
+
     public static <T extends Object> guiComboBox<T> addComboBox(Iterable<T> items, JComponent component, int x, int y) {
         return addComboBox(items, component, x, y, null);
     }
-    
+
     public static <T extends Object> guiComboBox<T> addComboBox(Iterable<T> items, JComponent component, int x, int y, Callable<T> newItemCallback) {
         guiComboBox<T> box;
         if (newItemCallback != null) {

@@ -4,40 +4,33 @@
  */
 package gui.editors;
 
-import data.Pose;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  *
  * @author nathan
  */
-public class Robot extends javax.swing.JPanel implements ModelEditor<data.Robot> {
-    
+public class Robot extends ModelEditor<data.Robot> {
+
     private data.Robot robot;
     private guiComboBox<data.Pose> poseCombo;
 
-    public Robot(List<data.Pose> allPoses) {
+    public Robot() {
+        super();
         initComponents();
-        Callable<Pose> p = new Callable<Pose>() {
-            @Override
-            public Pose call() {
-                return newPose();
-            }
-        };
-        
-        this.poseCombo = guiHelper.addComboBox(allPoses, this, 1, 2, p);        
-   }
-    
-    public data.Pose newPose() {
-        return null;
     }
     
+    public Robot(Collection<data.Pose> allPoses) {
+        this();
+        this.poseCombo = guiHelper.addComboBox(allPoses, this, 1, 2, this.getCallable(data.Pose.class));
+    }
+
     @Override
     public data.Robot getData() {
         return this.robot;
     }
-    
+
     @Override
     public void setData(data.Robot robot) {
         this.robot = robot;
@@ -45,19 +38,19 @@ public class Robot extends javax.swing.JPanel implements ModelEditor<data.Robot>
     }
 
     @Override
-    public void revertChanges() {        
+    public void revertChanges() {
         this.jTextFieldName.setText(this.robot.getName());
         this.jTextFieldVersion.setText(this.robot.getVersion());
         this.poseCombo.setSelectedItem(this.robot.getResetPose());
     }
-    
+
     @Override
     public void commitChanges() {
         this.robot.setName(this.jTextFieldName.getText());
         this.robot.setVersion(this.jTextFieldVersion.getText());
         this.robot.setResetPose(this.poseCombo.getSelectedItem());
     }
-    
+
     /**
      * This method is called from within the constructor to initialise the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -159,12 +152,11 @@ public class Robot extends javax.swing.JPanel implements ModelEditor<data.Robot>
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.setVisible(false);
+        this.close(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
-
-        this.setVisible(false);
+        this.close(true);
     }//GEN-LAST:event_jButtonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;

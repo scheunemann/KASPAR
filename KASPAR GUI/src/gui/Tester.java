@@ -4,8 +4,12 @@
  */
 package gui;
 
+import gui.editors.EditorDialog;
+import gui.editors.ModelEditor;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.JPanel;
 
 /**
  *
@@ -13,14 +17,16 @@ import java.util.ArrayList;
  */
 public class Tester extends javax.swing.JFrame {
 
+    java.util.Stack<Dimension> sizeStack = new java.util.Stack<Dimension>();
+    java.util.Stack<JPanel> panelStack = new java.util.Stack<JPanel>();
+    
     /**
      * Creates new form Tester
      */
     public Tester() {
         initComponents();
-        
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,12 +37,13 @@ public class Tester extends javax.swing.JFrame {
     private void initComponents() {
 
         jButtonOperator = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        current = new javax.swing.JPanel();
         jButtonServo = new javax.swing.JButton();
         jButtonRobot = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButtonServoType = new javax.swing.JButton();
         jButtonServoGroup = new javax.swing.JButton();
+        flyOut = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,15 +54,17 @@ public class Tester extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 714, Short.MAX_VALUE)
+        current.setBackground(new java.awt.Color(228, 159, 90));
+
+        javax.swing.GroupLayout currentLayout = new javax.swing.GroupLayout(current);
+        current.setLayout(currentLayout);
+        currentLayout.setHorizontalGroup(
+            currentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
+        currentLayout.setVerticalGroup(
+            currentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 115, Short.MAX_VALUE)
         );
 
         jButtonServo.setText("Servo");
@@ -88,36 +97,52 @@ public class Tester extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout flyOutLayout = new javax.swing.GroupLayout(flyOut);
+        flyOut.setLayout(flyOutLayout);
+        flyOutLayout.setHorizontalGroup(
+            flyOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        flyOutLayout.setVerticalGroup(
+            flyOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButtonOperator)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonOperator)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonRobot)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonServoType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonServoGroup)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonServo))
+                    .addComponent(current, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
-                .addComponent(jButtonRobot)
-                .addGap(0, 0, 0)
-                .addComponent(jButton4)
-                .addGap(0, 0, 0)
-                .addComponent(jButtonServoType)
-                .addGap(0, 0, 0)
-                .addComponent(jButtonServoGroup)
-                .addGap(0, 0, 0)
-                .addComponent(jButtonServo))
+                .addComponent(flyOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonOperator)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRobot)
+                    .addComponent(jButtonOperator)
                     .addComponent(jButton4)
                     .addComponent(jButtonServoType)
                     .addComponent(jButtonServoGroup)
                     .addComponent(jButtonServo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(current, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(flyOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -125,7 +150,7 @@ public class Tester extends javax.swing.JFrame {
 
     private void jButtonOperatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOperatorActionPerformed
         // TODO add your handling code here:
-        
+
         ArrayList<data.User> users = new ArrayList<data.User>();
         users.add(new data.User("Test 1"));
         users.add(new data.User("Test 2"));
@@ -136,49 +161,69 @@ public class Tester extends javax.swing.JFrame {
         
         gui.editors.Operator o = new gui.editors.Operator(users);
         o.setData(op);
-        jPanel1.removeAll();
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(o, BorderLayout.CENTER);
+        
+        switchPannel(o);
     }//GEN-LAST:event_jButtonOperatorActionPerformed
-
+    
+    private EditorDialog dialog = null;
+    
+    private void switchPannel(ModelEditor<?> newPanel) {
+        if(dialog == null) {
+            dialog = new EditorDialog();
+            dialog.setVisible(true);
+            dialog.setSize(newPanel.getPreferredSize());
+        }
+        
+        dialog.addPanel(newPanel);
+        
+//        if(!panelStack.empty()) {
+//            current.remove(panelStack.peek());
+//        }
+//        
+//        panelStack.add(newPanel);
+//        sizeStack.add(this.getSize());
+//        
+//        current.setLayout(new BorderLayout());
+//        current.add(newPanel, BorderLayout.CENTER);
+//        current.revalidate();
+//        
+//        newPanel.setNewItemHost(this.flyOut);
+//        animator a = new animator(this, animator.setGetSizeChange(current, newPanel));
+//        new Thread(a).start();
+    }
+    
     private void jButtonRobotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobotActionPerformed
         // TODO add your handling code here:
         data.Robot op = new data.Robot();
         gui.editors.Robot o = new gui.editors.Robot(new ArrayList<data.Pose>());
         o.setData(op);
-        jPanel1.removeAll();
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(o, BorderLayout.CENTER);
+        
+        switchPannel(o);
     }//GEN-LAST:event_jButtonRobotActionPerformed
-
+    
     private void jButtonServoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoActionPerformed
         // TODO add your handling code here:
         data.Servo op = new data.Servo();
         gui.editors.Servo o = new gui.editors.Servo(new ArrayList<data.ServoGroup>());
         o.setData(op);
-        jPanel1.removeAll();
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(o, BorderLayout.CENTER);
+        
+        switchPannel(o);
     }//GEN-LAST:event_jButtonServoActionPerformed
-
+    
     private void jButtonServoTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoTypeActionPerformed
         data.ServoType op = new data.ServoType();
         gui.editors.ServoType o = new gui.editors.ServoType();
         o.setData(op);
-        jPanel1.removeAll();
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(o, BorderLayout.CENTER);
-        jPanel1.revalidate();
-        jPanel1.repaint();
+        
+        switchPannel(o);
     }//GEN-LAST:event_jButtonServoTypeActionPerformed
-
+    
     private void jButtonServoGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServoGroupActionPerformed
         data.ServoGroup op = new data.ServoGroup();
         gui.editors.ServoGroup o = new gui.editors.ServoGroup(new ArrayList<data.Robot>());
         o.setData(op);
-        jPanel1.removeAll();
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(o, BorderLayout.CENTER);
+        
+        switchPannel(o);
     }//GEN-LAST:event_jButtonServoGroupActionPerformed
 
     /**
@@ -195,16 +240,22 @@ public class Tester extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+                    
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tester.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tester.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tester.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tester.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -216,12 +267,13 @@ public class Tester extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel current;
+    private javax.swing.JPanel flyOut;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonOperator;
     private javax.swing.JButton jButtonRobot;
     private javax.swing.JButton jButtonServo;
     private javax.swing.JButton jButtonServoGroup;
     private javax.swing.JButton jButtonServoType;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

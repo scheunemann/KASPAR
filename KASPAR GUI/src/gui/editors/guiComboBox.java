@@ -5,6 +5,9 @@
 package gui.editors;
 
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -12,43 +15,48 @@ import java.util.concurrent.Callable;
  */
 public class guiComboBox<T extends Object> extends javax.swing.JComponent {
 
+    private Callable<T> newItem = null;
+
     /**
      * Creates new form guiComboBox
      */
     public guiComboBox() {
         initComponents();
     }
-    
+
     public guiComboBox(Iterable<T> items) {
         initComponents();
         this.showNewButton(false);
     }
-    
-    public guiComboBox(Iterable<T> items, Callable<T> newObject) {
+
+    public guiComboBox(Iterable<T> items, Callable<T> newItem) {
         this(items);
-        this.showNewButton(true);
+        if (newItem != null) {
+            this.newItem = newItem;
+            this.showNewButton(true);
+        }
     }
-    
+
     private void showNewButton(boolean show) {
         this.jButtonNew.setVisible(show);
     }
-    
+
     public void setItems(Iterable<T> items) {
         jComboBoxItems.setModel(guiHelper.getComboBoxModel(items));
     }
-    
+
     public int getSelectedIndex() {
         return jComboBoxItems.getSelectedIndex();
     }
-    
+
     public void setSelectedIndex(int index) {
         jComboBoxItems.setSelectedIndex(index);
     }
-    
+
     public T getSelectedItem() {
-        return (T)jComboBoxItems.getSelectedItem();
+        return (T) jComboBoxItems.getSelectedItem();
     }
-    
+
     public void setSelectedItem(T item) {
         jComboBoxItems.setSelectedItem(item);
     }
@@ -61,7 +69,6 @@ public class guiComboBox<T extends Object> extends javax.swing.JComponent {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jComboBoxItems = new javax.swing.JComboBox();
         jButtonNew = new javax.swing.JButton();
@@ -71,8 +78,34 @@ public class guiComboBox<T extends Object> extends javax.swing.JComponent {
         add(jComboBoxItems, java.awt.BorderLayout.CENTER);
 
         jButtonNew.setText("New");
+        jButtonNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNewActionPerformed(evt);
+            }
+        });
         add(jButtonNew, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
+        if (this.newItem != null) {
+            this.getParent().setEnabled(false);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        T item = newItem.call();
+                        if (item != null) {
+                            jComboBoxItems.addItem(item);
+                        }
+                        
+                        getParent().setEnabled(true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(guiComboBox.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }).start();
+        }
+    }//GEN-LAST:event_jButtonNewActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonNew;
     private javax.swing.JComboBox jComboBoxItems;

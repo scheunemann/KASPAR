@@ -7,6 +7,7 @@ package gui.editors;
 import data.ApplicationLog;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -14,17 +15,21 @@ import javax.swing.DefaultListModel;
  *
  * @author nathan
  */
-public class Operator extends javax.swing.JPanel implements ModelEditor<data.Operator> {
+public class Operator extends ModelEditor<data.Operator> {
 
     DefaultListModel users;
     DefaultListModel allUsers;
-    List<data.User> allUsersList;
+    Collection<data.User> allUsersList;
     data.Operator operator;
     guiComboBox<ApplicationLog.LogLevel> logLevelCombo;
 
-    public Operator(List<data.User> allUsers) {
+    public Operator() {
+        super();
         initComponents();
-        
+    }
+    
+    public Operator(Collection<data.User> allUsers) {
+        this();
         logLevelCombo = guiHelper.addComboBox(Arrays.asList(ApplicationLog.LogLevel.values()), this, 1, 1);
         this.allUsersList = allUsers;
     }
@@ -245,12 +250,11 @@ public class Operator extends javax.swing.JPanel implements ModelEditor<data.Ope
     }//GEN-LAST:event_jButtonRemoveUsersActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.setVisible(false);
+        this.close(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
-
-        this.setVisible(false);
+        this.close(true);
     }//GEN-LAST:event_jButtonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddUsers;

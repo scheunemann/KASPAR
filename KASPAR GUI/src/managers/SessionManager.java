@@ -18,12 +18,14 @@ import gui.GuiLogger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
@@ -71,6 +73,14 @@ public class SessionManager {
         //TODO: Handle exception
         return null;
     }
+    
+    public static <T extends Object> Collection<T> getAll(Class<T> tClass) {
+        EntityManager em = getEntityManager();
+        CriteriaQuery<T> q = em.getCriteriaBuilder().createQuery(tClass);
+        q.select(q.from(tClass));
+
+        return em.createQuery(q).getResultList();
+    }
 
     public static void setCurrentInteraction(Interaction currentInteraction) {
         interaction = currentInteraction;
@@ -80,11 +90,7 @@ public class SessionManager {
         return interaction;
     }
 
-    public static Collection<? extends Pose> getAllPoses() {
-        return new HashSet<Pose>(0);
-    }
-
-    public static Collection<? extends Pose> getValidPoses(Robot robot) {
+    public static Collection<Pose> getValidPoses(Robot robot) {
         Set<Pose> validPoses = new HashSet<Pose>(0);
         Map<String, Servo> robotServos = new HashMap<String, Servo>();
         for (ServoGroup sg : robot.getServoGroups()) {
@@ -95,7 +101,7 @@ public class SessionManager {
             }
         }
 
-        for (Pose p : getAllPoses()) {
+        for (Pose p : getAll(Pose.class)) {
             Boolean valid = true;
             for (ServoPosition s : p.getServoPositions()) {
                 if (!robotServos.containsKey(s.getServoName())) {
@@ -112,7 +118,7 @@ public class SessionManager {
         return validPoses;
     }
 
-    public static Collection<? extends Sequence> getCurrentSequences() {
+    public static Collection<Sequence> getCurrentSequences() {
         Set<Sequence> sequences = new HashSet<Sequence>();
 
         for (User u : interaction.getUsers()) {
