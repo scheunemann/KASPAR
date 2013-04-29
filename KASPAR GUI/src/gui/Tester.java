@@ -175,21 +175,6 @@ public class Tester extends javax.swing.JFrame {
         }
         
         dialog.addPanel(newPanel);
-        
-//        if(!panelStack.empty()) {
-//            current.remove(panelStack.peek());
-//        }
-//        
-//        panelStack.add(newPanel);
-//        sizeStack.add(this.getSize());
-//        
-//        current.setLayout(new BorderLayout());
-//        current.add(newPanel, BorderLayout.CENTER);
-//        current.revalidate();
-//        
-//        newPanel.setNewItemHost(this.flyOut);
-//        animator a = new animator(this, animator.setGetSizeChange(current, newPanel));
-//        new Thread(a).start();
     }
     
     private void jButtonRobotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobotActionPerformed

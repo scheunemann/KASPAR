@@ -44,6 +44,8 @@ public class MainForm extends JFrame {
                 }
             }
             
+            checkInitType(data.Operator.class);
+            
             GuiLogger kl = new GuiLogger();
             kl.setVisible(true);
             
@@ -151,39 +153,28 @@ public class MainForm extends JFrame {
 
         if (list.isEmpty()) {
             em.getTransaction().begin();
-            T obj = getObject(class_);
+            T obj = getNewObject(class_);
             em.persist(obj);
             em.getTransaction().commit();
         }
     }
 
-    private static <T extends Object> T getObject(Class<T> class_) {
-
-        try {
-            //I think I would rather Java had not bothered with generics then their 
-            //decision to use type erasure 
-            if (class_ == Operator.class) {
-                return (T) showOperatorGui(false, (Operator) class_.newInstance());
-            } else if (class_ == Robot.class) {
-                return (T) showRobotGui(false, (Robot) class_.newInstance());
-            }
-        } catch (InstantiationException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private static <T extends Object> T getNewObject(Class<T> class_) {
+//        try {
+//            if (class_ == Operator.class) {
+//                return (T) showOperatorGui(false, (Operator) class_.newInstance());
+//            } else if (class_ == Robot.class) {
+//                return (T) showRobotGui(false, (Robot) class_.newInstance());
+//            }
+//        } catch (InstantiationException ex) {
+//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         return null;
     }
-
-    private static Operator showOperatorGui(boolean showCancel, Operator operator) {
-        return operator;
-    }
-
-    private static Robot showRobotGui(boolean showCancel, Robot robot) {
-        return robot;
-    }
-
+    
     private void exitApplication(int status) {
         System.err.println("Goodbye.");
         System.exit(status);
