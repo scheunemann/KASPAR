@@ -8,16 +8,14 @@ import gui.animator;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
 import javax.swing.JLayer;
 import javax.swing.JPanel;
-import javax.swing.plaf.LayerUI;
 
 /**
  *
@@ -25,61 +23,54 @@ import javax.swing.plaf.LayerUI;
  */
 public class EditorDialog extends javax.swing.JFrame implements ComponentListener {
 
-    private int currentPanelIndex = -1;
     private List<JPanel> panels;
-    private javax.swing.JPanel jPanelCurrent;
-    private javax.swing.JPanel jPanelNext;
-    private javax.swing.JPanel jPanelPrevious;
+    private JLayer<JPanel> previousPanel;
+    private JLayer<JPanel> currentPanel;
+    private JLayer<JPanel> nextPanel;
 
     /**
      * Creates new form EditorDialog
      */
     public EditorDialog() {
         initComponents();
-        panels = new LinkedList<JPanel>();
+        panels = new ArrayList<JPanel>();
         this.addComponentListener(this);
     }
 
     public void addPanel(JPanel newPanel) {
         this.panels.add(newPanel);
         newPanel.addComponentListener(this);
-        this.centerPanelsOn(this.panels.size() - 1);
+        this.centerPanelsOn(newPanel);
     }
 
-    private void centerPanelsOn(int index) {
+    private void centerPanelsOn(JPanel panel) {
 
-        if (index != currentPanelIndex) {
-            this.jPanelPrevious.removeAll();
-            this.jPanelCurrent.removeAll();
-            this.jPanelNext.removeAll();
-
-            int prevPanelIndex = index - 1;
-            int nextPanelIndex = index + 1;
+        if (panel != this.currentPanel.getView()) {
+            int prevPanelIndex = this.panels.indexOf(panel) - 1;
+            int nextPanelIndex = this.panels.indexOf(panel) + 1;
 
             if (prevPanelIndex >= 0) {
                 JPanel prev = this.panels.get(prevPanelIndex);
-
-                this.jPanelPrevious.add(prev);
-                this.jPanelPrevious.setVisible(true);
+                this.previousPanel.setView(prev);
+                this.previousPanel.setVisible(true);
             } else {
-                this.jPanelPrevious.setVisible(false);
+                this.previousPanel.setView(null);
+                this.previousPanel.setVisible(false);
             }
 
-            JPanel curr = this.panels.get(index);
-
-            this.jPanelCurrent.add(curr);
-            this.currentPanelIndex = index;
+            this.currentPanel.setView(panel);
+            panel.requestFocus();
 
             if (nextPanelIndex < this.panels.size()) {
                 JPanel next = this.panels.get(nextPanelIndex);
-
-                this.jPanelNext.add(next);
-                this.jPanelNext.setVisible(true);
+                this.nextPanel.setView(next);
+                this.nextPanel.setVisible(true);
             } else {
-                this.jPanelNext.setVisible(false);
+                this.nextPanel.setView(null);
+                this.nextPanel.setVisible(false);
             }
 
-            animator a = new animator(this, animator.setGetSizeChange(this, this.jPanelCurrent));
+            animator a = new animator(this, animator.setGetSizeChange(this, this.currentPanel));
             new Thread(a).start();
         }
     }
@@ -89,41 +80,31 @@ public class EditorDialog extends javax.swing.JFrame implements ComponentListene
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelPrevious = new javax.swing.JPanel();
-        jPanelPrevious.setLayout(new java.awt.BorderLayout());
-        jPanelPrevious.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanelPreviousMouseClicked(evt);
+        this.previousPanel = new JLayer<JPanel>();
+        this.previousPanel.setGlassPane(new DisablePane());
+        this.previousPanel.getGlassPane().setVisible(true);
+        this.previousPanel.getGlassPane().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                centerPanelsOn(previousPanel.getView());
             }
         });
 
-        //getContentPane().add(jPanelPrevious);
-        getContentPane().add(new JLayer<JPanel>(jPanelPrevious, new DisablePanelLayerUI()));
+        this.currentPanel = new JLayer<JPanel>();
 
-        jPanelCurrent = new javax.swing.JPanel();
-        jPanelCurrent.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(jPanelCurrent);
-
-        jPanelNext = new javax.swing.JPanel();
-        jPanelNext.setLayout(new java.awt.BorderLayout());
-        jPanelNext.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanelNextMouseClicked(evt);
+        this.nextPanel = new JLayer<JPanel>();
+        this.nextPanel.setGlassPane(new DisablePane());
+        this.nextPanel.getGlassPane().setVisible(true);
+        this.nextPanel.getGlassPane().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                centerPanelsOn(nextPanel.getView());
             }
         });
 
-        //getContentPane().add(jPanelNext);
-        getContentPane().add(new JLayer<JPanel>(jPanelNext, new DisablePanelLayerUI()));
-
-        pack();
-    }
-
-    private void jPanelNextMouseClicked(java.awt.event.MouseEvent evt) {
-        this.centerPanelsOn(this.currentPanelIndex + 1);
-    }
-
-    private void jPanelPreviousMouseClicked(java.awt.event.MouseEvent evt) {
-        this.centerPanelsOn(this.currentPanelIndex - 1);
+        getContentPane().add(this.previousPanel);
+        getContentPane().add(this.currentPanel);
+        getContentPane().add(this.nextPanel);
     }
 
     @Override
@@ -145,61 +126,45 @@ public class EditorDialog extends javax.swing.JFrame implements ComponentListene
     public void componentHidden(ComponentEvent ce) {
         if (JPanel.class.isInstance(ce.getComponent())) {
             JPanel closedPanel = (JPanel) ce.getComponent();
-            if (closedPanel == this.panels.get(this.currentPanelIndex)) {
-                while (this.currentPanelIndex - 1 < this.panels.size()) {
-                    //Close everything to the right
-                    JPanel temp = this.panels.get(this.panels.size() - 1);
+            if (this.panels.contains(closedPanel)) {
+                int index = this.panels.indexOf(closedPanel);
+                while (this.panels.size() > index) {
+                    JPanel temp = this.panels.remove(this.panels.size() - 1);
                     temp.setVisible(false);
-                    this.panels.remove(this.panels.size() - 1);
                 }
 
-                if (this.currentPanelIndex > 0) {
-                    this.centerPanelsOn(this.currentPanelIndex - 1);
+                if (this.panels.size() > 0) {
+                    this.centerPanelsOn(this.panels.get(this.panels.size() - 1));
                 } else {
-                    this.currentPanelIndex = -1;
                     this.setVisible(false);
                 }
             }
         }
     }
 
-    class DisablePanelLayerUI extends LayerUI<JPanel> {
+    class DisablePane extends JPanel {
+
+        public DisablePane() {
+            this.setOpaque(false);
+            this.addMouseListener(new MouseAdapter() {
+            });
+            this.addMouseMotionListener(new MouseMotionAdapter() {
+            });
+            this.addKeyListener(new KeyAdapter() {
+            });
+        }
 
         @Override
-        public void paint(Graphics g, JComponent c) {
-            super.paint(g, c);
+        public void paint(Graphics g) {
+            super.paint(g);
 
             Graphics2D g2 = (Graphics2D) g.create();
 
-            int w = c.getWidth();
-            int h = c.getHeight();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
             g2.setPaint(Color.DARK_GRAY);
-            g2.fillRect(0, 0, w, h);
+            g2.fillRect(0, 0, getWidth(), getHeight());
 
             g2.dispose();
-        }
-
-        public void installUI(JComponent c) {
-            super.installUI(c);
-            JLayer l = (JLayer) c;
-            l.setLayerEventMask(AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK);
-        }
-
-        public void uninstallUI(JComponent c) {
-            super.uninstallUI(c);
-            JLayer l = (JLayer) c;
-            l.setLayerEventMask(0);
-        }
-
-        @Override
-        protected void processKeyEvent(KeyEvent e, JLayer<? extends JPanel> l) {
-            ((InputEvent) e).consume();
-        }
-
-        @Override
-        protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-            ((InputEvent) e).consume();
         }
     }
 }
