@@ -20,7 +20,6 @@ public class Operator extends ModelEditor<data.Operator> {
     DefaultListModel users;
     DefaultListModel allUsers;
     Collection<data.User> allUsersList;
-    data.Operator operator;
     guiComboBox<ApplicationLog.LogLevel> logLevelCombo;
 
     public Operator() {
@@ -35,36 +34,25 @@ public class Operator extends ModelEditor<data.Operator> {
     }
     
     @Override
-    public data.Operator getData() {
-        return this.operator;
-    }
-    
-    @Override
-    public void setData(data.Operator operator) {
-        this.operator = operator;
-        this.revertChanges();
-    }
-
-    @Override
     public void revertChanges() {        
         List<data.User> filteredUsers = new ArrayList<data.User>();
         if (allUsersList != null) {
             for (data.User u : allUsersList) {
-                if (!operator.getUsers().contains(u)) {
+                if (!this.model.getUsers().contains(u)) {
                     filteredUsers.add(u);
                 }
             }
         }
 
-        this.jTextFieldName.setText(this.operator.getName());
+        this.jTextFieldName.setText(this.model.getName());
         
         this.allUsers = guiHelper.getListModel(filteredUsers);
         this.jListAllUsers.setModel(this.allUsers);
         
-        this.users = guiHelper.getListModel(this.operator.getUsers());
+        this.users = guiHelper.getListModel(this.model.getUsers());
         this.jListUsers.setModel(this.users);
 
-        this.logLevelCombo.setSelectedItem(this.operator.getMinLogLevel());        
+        this.logLevelCombo.setSelectedItem(this.model.getMinLogLevel());        
     }
     
     @Override
@@ -74,10 +62,10 @@ public class Operator extends ModelEditor<data.Operator> {
             userList.add((data.User) u);
         }
 
-        this.operator.setName(this.jTextFieldName.getText());
-        this.operator.getUsers().clear();
-        this.operator.getUsers().addAll(userList);
-        this.operator.setMinLogLevel(this.logLevelCombo.getSelectedItem());
+        this.model.setName(this.jTextFieldName.getText());
+        this.model.getUsers().clear();
+        this.model.getUsers().addAll(userList);
+        this.model.setMinLogLevel(this.logLevelCombo.getSelectedItem());
     }
     
     /**

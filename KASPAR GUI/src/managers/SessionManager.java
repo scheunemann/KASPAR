@@ -4,8 +4,8 @@
  */
 package managers;
 
-import data.GUIButton;
 import data.Interaction;
+import data.Operator;
 import data.Pose;
 import data.Robot;
 import data.Sequence;
@@ -13,12 +13,10 @@ import data.Servo;
 import data.ServoConfig;
 import data.ServoGroup;
 import data.ServoPosition;
-import data.User;
 import gui.GuiLogger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -35,17 +33,28 @@ public class SessionManager {
 
     private static Interaction interaction;
     private static EntityManagerFactory emf;
-    
+    private static EntityManager em;
+
     public static EntityManager getEntityManager() {
-        return getEntityManagerFactory().createEntityManager();
+        if (em == null) {
+            em = getEntityManagerFactory().createEntityManager();
+        }
+
+        return em;
     }
-    
+
     private static EntityManagerFactory getEntityManagerFactory() {
-        if(emf == null) {
+        if (emf == null) {
             emf = Persistence.createEntityManagerFactory("robotActions");
         }
-        
+
         return emf;
+    }
+
+    public static Operator getOperator() {
+        //TODO: Multiple operators
+        //TODO: base most 'interaction' calls on operator instead
+        return getAll(Operator.class).iterator().next();
     }
 
     public static Servo getServo(Robot robot, String servoName) {
@@ -73,7 +82,7 @@ public class SessionManager {
         //TODO: Handle exception
         return null;
     }
-    
+
     public static <T extends Object> Collection<T> getAll(Class<T> tClass) {
         EntityManager em = getEntityManager();
         CriteriaQuery<T> q = em.getCriteriaBuilder().createQuery(tClass);
@@ -119,28 +128,50 @@ public class SessionManager {
     }
 
     public static Collection<Sequence> getCurrentSequences() {
-        Set<Sequence> sequences = new HashSet<Sequence>();
-
-        for (User u : interaction.getUsers()) {
-            for (GUIButton b : u.getButtons()) {
-                sequences.add(b.getSequence());
-            }
-        }
-
-        return sequences;
+        return getAll(Sequence.class);
+//        Set<Sequence> sequences = new HashSet<Sequence>();
+//
+//        if (interaction != null) {
+//            for (User u : interaction.getUsers()) {
+//                for (GUIButton b : u.getButtons()) {
+//                    sequences.add(b.getSequence());
+//                }
+//            }
+//        }
+//
+//        return sequences;
     }
 
     public static String getSoundFolder() {
         return "";
     }
+    
+    public static void saveAll() {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.flush();
+        em.getTransaction().commit();
+    }
 
-    public static void save(Object persistantObject) {
+    public static void add(Object persistantObject) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.persist(persistantObject);
+        em.getTransaction().commit();
     }
 
     public static void delete(Object persistantObject) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.remove(persistantObject);
+        em.getTransaction().commit();
     }
 
-    public static void reload(Sequence oldSequence) {
+    public static void reload(Object persistantObject) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.refresh(persistantObject);
+        em.getTransaction().commit();
     }
 
     public static boolean isModified(Object persistantObject) {

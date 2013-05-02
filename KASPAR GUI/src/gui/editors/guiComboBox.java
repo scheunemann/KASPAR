@@ -25,8 +25,9 @@ public class guiComboBox<T extends Object> extends javax.swing.JComponent {
     }
 
     public guiComboBox(Iterable<T> items) {
-        initComponents();
+        this();
         this.showNewButton(false);
+        this.setItems(items);
     }
 
     public guiComboBox(Iterable<T> items, Callable<T> newItem) {
@@ -41,7 +42,7 @@ public class guiComboBox<T extends Object> extends javax.swing.JComponent {
         this.jButtonNew.setVisible(show);
     }
 
-    public void setItems(Iterable<T> items) {
+    public final void setItems(Iterable<T> items) {
         jComboBoxItems.setModel(guiHelper.getComboBoxModel(items));
     }
 

@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -35,7 +34,7 @@ public class Pose extends Action {
         this.userPoses = userPoses;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="overridenPose")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="overridenPose")
     public Set<UserPose> getUserPoses() {
         return this.userPoses;
     }

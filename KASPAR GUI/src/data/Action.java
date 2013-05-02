@@ -60,7 +60,7 @@ public abstract class Action implements java.io.Serializable, Comparable<Action>
 
     @Override
     public String toString() {
-        return this.getName();
+        return this.getClass().getSimpleName() + ": " + this.getName();
     }
 
     public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener changeListener) {

@@ -1,13 +1,12 @@
 package gui;
 
-import data.Operator;
 import data.Robot;
+import gui.editors.guiHelper;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.*;
@@ -33,23 +32,30 @@ public class MainForm extends JFrame {
 
     public void Initialise() {
         if (!this.isInitialised) {
+            checkInitType(data.Operator.class);
+            checkInitType(data.Robot.class);
+
             Robot robot = null;
 
             //TODO: Not every launch is an 'interaction'
-            if(SessionManager.getCurrentInteraction() != null) {
-            //TODO: Handle multiple robots
-                for(Robot r : SessionManager.getCurrentInteraction().getRobots()) {
+            if (SessionManager.getCurrentInteraction() != null) {
+                //TODO: Handle multiple robots
+                for (Robot r : SessionManager.getCurrentInteraction().getRobots()) {
+                    robot = r;
+                    break;
+                }
+            }else{
+                for(Robot r: SessionManager.getAll(Robot.class)) {
                     robot = r;
                     break;
                 }
             }
             
-            checkInitType(data.Operator.class);
-            
+
             GuiLogger kl = new GuiLogger();
             kl.setVisible(true);
-            
-            if(robot != null) {
+
+            if (robot != null) {
                 if (!ServoManager.allServosAvailable(robot)) {
                     GuiLogger.getLogger().log(Level.SEVERE, "Kaspar not connected or other instance still running? Can't establish connection to all servos!");
                 } else {
@@ -74,7 +80,7 @@ public class MainForm extends JFrame {
                     tabs.add(new BehaviourPanel(robot));
                     tabs.add(pp);
                     tabs.add(sp);
-                    tabs.add(new KeyMapPanel());
+                    tabs.add(new UserPanel());
                     tabs.add(new FsrSensorsPanel());
 
                     /* layout for the different lower panels */
@@ -122,15 +128,16 @@ public class MainForm extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tester.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -143,7 +150,7 @@ public class MainForm extends JFrame {
         });
     }
 
-    private static <T extends Object> void checkInitType(Class<T> class_) {
+    private <T extends Object> void checkInitType(Class<T> class_) {
         EntityManager em = SessionManager.getEntityManager();
 
         CriteriaQuery<T> q = em.getCriteriaBuilder().createQuery(class_);
@@ -152,29 +159,10 @@ public class MainForm extends JFrame {
         List<T> list = em.createQuery(q).getResultList();
 
         if (list.isEmpty()) {
-            em.getTransaction().begin();
-            T obj = getNewObject(class_);
-            em.persist(obj);
-            em.getTransaction().commit();
+            guiHelper.getNewObject(class_);
         }
     }
 
-    private static <T extends Object> T getNewObject(Class<T> class_) {
-//        try {
-//            if (class_ == Operator.class) {
-//                return (T) showOperatorGui(false, (Operator) class_.newInstance());
-//            } else if (class_ == Robot.class) {
-//                return (T) showRobotGui(false, (Robot) class_.newInstance());
-//            }
-//        } catch (InstantiationException ex) {
-//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
-        return null;
-    }
-    
     private void exitApplication(int status) {
         System.err.println("Goodbye.");
         System.exit(status);

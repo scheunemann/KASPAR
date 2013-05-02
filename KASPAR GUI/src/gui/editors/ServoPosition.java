@@ -10,34 +10,42 @@ import java.util.Collection;
  *
  * @author nathan
  */
-public class Robot extends ModelEditor<data.Robot> {
+public class ServoPosition extends ModelEditor<data.ServoPosition> {
 
-    private guiComboBox<data.Pose> poseCombo;
-
-    public Robot() {
+    guiComboBox<data.Pose> poseCombo;
+    
+    public ServoPosition() {
         super();
         initComponents();
     }
+
+    public ServoPosition(Collection<data.Pose> allPoses) {
+        this();        
+        poseCombo = guiHelper.addComboBox(allPoses, this, 1, 1, null);
+    }
     
-    public Robot(Collection<data.Pose> allPoses) {
-        this();
-        this.poseCombo = guiHelper.addComboBox(allPoses, this, 1, 2, this.getCallable(data.Pose.class));
+    private data.ServoGroup newServoGroup() {
+        return null;
     }
 
     @Override
-    public void revertChanges() {
-        this.jTextFieldName.setText(this.model.getName());
-        this.jTextFieldVersion.setText(this.model.getVersion());
-        this.poseCombo.setSelectedItem(this.model.getResetPose());
+    public void revertChanges() {     
+        this.jTextFieldName.setText(this.model.getServoName());
+        this.jCheckBoxWaitForComplete.setSelected(this.model.getWaitForComplete());
+        this.jSliderPosition.setValue(this.model.getPosition());
+        this.jSliderSpeed.setValue(this.model.getSpeed());
+        this.poseCombo.setSelectedItem(this.model.getPose());
     }
-
+    
     @Override
     public void commitChanges() {
-        this.model.setName(this.jTextFieldName.getText());
-        this.model.setVersion(this.jTextFieldVersion.getText());
-        this.model.setResetPose(this.poseCombo.getSelectedItem());
+        this.model.setServoName(this.jTextFieldName.getText());
+        this.model.setWaitForComplete(this.jCheckBoxWaitForComplete.isSelected());
+        this.model.setPosition(this.jSliderPosition.getValue());
+        this.model.setSpeed(this.jSliderSpeed.getValue());
+        this.model.setPose(this.poseCombo.getSelectedItem());
     }
-
+    
     /**
      * This method is called from within the constructor to initialise the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,13 +57,16 @@ public class Robot extends ModelEditor<data.Robot> {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabelName = new javax.swing.JLabel();
+        jLabelNamePosition = new javax.swing.JLabel();
+        jLabelNameSpeed = new javax.swing.JLabel();
         jTextFieldName = new javax.swing.JTextField();
-        jLabelNameVersion = new javax.swing.JLabel();
-        jLabelNameResetPose = new javax.swing.JLabel();
-        jTextFieldVersion = new javax.swing.JTextField();
+        jSliderSpeed = new javax.swing.JSlider();
+        jLabelNamePose = new javax.swing.JLabel();
+        jSliderPosition = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
         jButtonCancel = new javax.swing.JButton();
         jButtonOK = new javax.swing.JButton();
+        jCheckBoxWaitForComplete = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -66,39 +77,53 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jLabelName, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 64;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jTextFieldName, gridBagConstraints);
 
-        jLabelNameVersion.setLabelFor(jTextFieldVersion);
-        jLabelNameVersion.setText("Version");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jLabelNameVersion, gridBagConstraints);
-
-        jLabelNameResetPose.setText("Reset Pose");
+        jLabelNamePosition.setText("Position");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jLabelNameResetPose, gridBagConstraints);
+        add(jLabelNamePosition, gridBagConstraints);
+
+        jLabelNameSpeed.setText("Speed");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 64;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jTextFieldVersion, gridBagConstraints);
+        add(jLabelNameSpeed, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 43;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jTextFieldName, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSliderSpeed, gridBagConstraints);
+
+        jLabelNamePose.setText("Pose");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jLabelNamePose, gridBagConstraints);
+
+        jSliderPosition.setMajorTickSpacing(45);
+        jSliderPosition.setMaximum(360);
+        jSliderPosition.setMinorTickSpacing(15);
+        jSliderPosition.setValue(180);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSliderPosition, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -111,8 +136,7 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LAST_LINE_END;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(jButtonCancel, gridBagConstraints);
 
         jButtonOK.setText("OK");
@@ -124,18 +148,27 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LAST_LINE_END;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(jButtonOK, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jPanel1, gridBagConstraints);
+
+        jCheckBoxWaitForComplete.setText("Wait for Complete");
+        jCheckBoxWaitForComplete.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jCheckBoxWaitForComplete, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
@@ -148,11 +181,14 @@ public class Robot extends ModelEditor<data.Robot> {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
+    private javax.swing.JCheckBox jCheckBoxWaitForComplete;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelNameResetPose;
-    private javax.swing.JLabel jLabelNameVersion;
+    private javax.swing.JLabel jLabelNamePose;
+    private javax.swing.JLabel jLabelNamePosition;
+    private javax.swing.JLabel jLabelNameSpeed;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSlider jSliderPosition;
+    private javax.swing.JSlider jSliderSpeed;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldVersion;
     // End of variables declaration//GEN-END:variables
 }

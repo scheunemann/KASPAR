@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  *
  * @author nathan
  */
-public class EditorDialog extends javax.swing.JFrame implements ComponentListener {
+public class EditorDialog extends javax.swing.JDialog implements ComponentListener {
 
     private List<JPanel> panels;
     private JLayer<JPanel> previousPanel;
@@ -32,17 +32,18 @@ public class EditorDialog extends javax.swing.JFrame implements ComponentListene
      * Creates new form EditorDialog
      */
     public EditorDialog() {
+        super();
         initComponents();
         panels = new ArrayList<JPanel>();
         this.addComponentListener(this);
     }
 
-    public void addPanel(JPanel newPanel) {
+    public void add(JPanel newPanel) {
         this.panels.add(newPanel);
         newPanel.addComponentListener(this);
         this.centerPanelsOn(newPanel);
     }
-
+    
     private void centerPanelsOn(JPanel panel) {
 
         if (panel != this.currentPanel.getView()) {
@@ -77,7 +78,7 @@ public class EditorDialog extends javax.swing.JFrame implements ComponentListene
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         this.previousPanel = new JLayer<JPanel>();
@@ -109,17 +110,14 @@ public class EditorDialog extends javax.swing.JFrame implements ComponentListene
 
     @Override
     public void componentResized(ComponentEvent ce) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void componentMoved(ComponentEvent ce) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void componentShown(ComponentEvent ce) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

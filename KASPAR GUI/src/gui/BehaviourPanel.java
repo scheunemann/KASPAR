@@ -196,7 +196,7 @@ public class BehaviourPanel extends javax.swing.JPanel {
      */
     private void loadKeyMaps() {
         users.clear();
-        for (User kMap : SessionManager.getCurrentInteraction().getUsers()) {
+        for (User kMap : SessionManager.getOperator().getUsers()) {
             users.add(kMap);
         }
     }

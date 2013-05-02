@@ -85,7 +85,7 @@ public class Operator implements java.io.Serializable {
         this.propertyChanged.firePropertyChange("interactons", this.interactions, this.interactions = interactions);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "OperatorUsers", catalog = "KASPAR", joinColumns = {
         @JoinColumn(name = "OperatorId", nullable = false, updatable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "UserId", nullable = false, updatable = false)})

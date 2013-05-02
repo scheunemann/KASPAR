@@ -11,6 +11,7 @@
 package gui;
 
 import data.GUIButton;
+import data.Sequence;
 import data.User;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,7 +38,7 @@ import managers.SessionManager;
  *
  * @author Sven
  */
-public class KeyMapPanel extends javax.swing.JPanel {
+public class UserPanel extends javax.swing.JPanel {
 
     private Set<User> users = new HashSet<User>();
     private DefaultListModel keymapModel;
@@ -47,7 +48,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
     /**
      * Creates new form KasparConfigPanel
      */
-    public KeyMapPanel() {
+    public UserPanel() {
 
         // Load KeyMaps
         this.keymapModel = new DefaultListModel();
@@ -77,7 +78,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
         this.tblKeyMap.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (currentUser.getButtons().size() > 0 && !currentUser.getName().isEmpty()) {
+                if (currentUser.getButtons().size() > 0 && !("".equals(currentUser.getName()) || currentUser.getName() == null)) {
                     btnSave.setEnabled(true);
                 }
             }
@@ -144,7 +145,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
 
         pnlButtons.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jLabel2.setText("Key Map:");
+        jLabel2.setText("User");
 
         lblKeyMap.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblKeyMap.setText("jLabel2");
@@ -182,10 +183,10 @@ public class KeyMapPanel extends javax.swing.JPanel {
                     .add(pnlButtonsLayout.createSequentialGroup()
                         .add(jLabel2)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(lblKeyMap, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                        .add(lblKeyMap, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, pnlButtonsLayout.createSequentialGroup()
                         .add(btnSave)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 10, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 31, Short.MAX_VALUE)
                         .add(btnSaveAs)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(btnDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -206,7 +207,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlKeyMaps.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Available KeyMaps", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        pnlKeyMaps.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Available Users", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
 
         lstKeyMaps.setModel(keymapModel);
         lstKeyMaps.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -292,12 +293,12 @@ public class KeyMapPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel1)
-                    .add(jScrollPane1))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                     .add(jLabel3))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
@@ -314,7 +315,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(jLabel3)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(pnlButtons, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -347,7 +348,8 @@ public class KeyMapPanel extends javax.swing.JPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         if (!lstSequences.isSelectionEmpty()) {
-            //currentUser.addKeys(new String[0], KasparSequence.getSequence((String) lstSequences.getSelectedValue()));
+            GUIButton b = new GUIButton((Sequence) lstSequences.getSelectedValue(), currentUser, "New Button");
+            currentUser.getButtons().add(b);
             keyMapTM.setKeyMap(currentUser);
             updateKeyMapButtons();
         }
@@ -366,7 +368,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
      * called first
      */
     private void save() {
-        SessionManager.save(currentUser);
+        SessionManager.saveAll();
 
         // Update all sequences and the list
         updateKeyMaps();
@@ -388,35 +390,41 @@ public class KeyMapPanel extends javax.swing.JPanel {
         String name;
         name = (String) JOptionPane.showInputDialog(
                 this,
-                "Name of keymap: ",
-                "Save KeyMap",
+                "Name of User: ",
+                "Save User",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
                 "");
 
         // Check whether we have a valid name
-        // TODO Could check for special characters!
         if (name == null || name.equals("")) {
-            GuiLogger.getLogger().log(Level.WARNING, "Invalid name for keymap: {0}!", name);
+            GuiLogger.getLogger().log(Level.WARNING, "User name can not be blank!");
             return;
         }
 
-        // Update sequences and call save
+        if (currentUser.getUserId() != null) {
+            // Update sequences and call save
+            User oldUser = currentUser;
+            currentUser = oldUser.clone();
+            SessionManager.reload(oldUser);
+            lblKeyMap.setText(name);
+        }
+
         currentUser.setName(name);
-        lblKeyMap.setText(name);
+        SessionManager.add(currentUser);
         save();
     }
 
     private void removeRows(int firstRow, int count) {
-
-
         if (firstRow > -1) {
             for (int i = firstRow; i < (firstRow + count); i++) {
                 currentUser.getButtons().remove(i);
             }
+
             keyMapTM.fireTableDataChanged();
         }
+
         updateKeyMapButtons();
     }
 
@@ -429,7 +437,8 @@ public class KeyMapPanel extends javax.swing.JPanel {
 
         // Clear and refill HashMap
         users.clear();
-        for (User kMap : SessionManager.getCurrentInteraction().getUsers()) {
+        SessionManager.reload(SessionManager.getOperator());
+        for (User kMap : SessionManager.getOperator().getUsers()) {
             users.add(kMap);
         }
     }
@@ -481,6 +490,8 @@ public class KeyMapPanel extends javax.swing.JPanel {
             btnDelete.setEnabled(true);
         } else {
             currentUser = new User();
+            currentUser.getOperators().add(SessionManager.getOperator());
+            SessionManager.getOperator().getUsers().add(currentUser);
             lblKeyMap.setText("Unnamed User");
             keyMapTM.setKeyMap(currentUser);
             btnSave.setEnabled(false);
@@ -498,7 +509,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
         btnRemove.setEnabled(false);
         btnRemoveAll.setEnabled(true);
 
-        if (!currentUser.getName().isEmpty()) {
+        if (!("".equals(currentUser.getName()) || currentUser.getName() == null)) {
             btnSave.setEnabled(true);
             btnDelete.setEnabled(true);
         }
@@ -539,7 +550,7 @@ public class KeyMapPanel extends javax.swing.JPanel {
         // keyMap to be shown
         User keyMap;
         List<GUIButton> sortedSeqs;
-        String[] columnNames = {"Sequence", "Key(s) (comma-seperated)"};
+        String[] columnNames = {"Action", "Button Text", "Key(s) (comma-seperated)"};
 
         /**
          * Constructor. Shows the steps of the given key map
@@ -585,8 +596,10 @@ public class KeyMapPanel extends javax.swing.JPanel {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             if (columnIndex == 0) {
-                return User.class;
+                return Sequence.class;
             } else if (columnIndex == 1) {
+                return String.class;
+            } else if (columnIndex == 2) {
                 return String.class;
             } else {
                 return Object.class;
@@ -595,24 +608,24 @@ public class KeyMapPanel extends javax.swing.JPanel {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            if (columnIndex == 1) {
-                return true;
-            }
-            return false;
+            return (columnIndex == 1 || columnIndex == 2);
         }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             switch (columnIndex) {
                 case 0:
-                    return sortedSeqs.get(rowIndex);
+                    return sortedSeqs.get(rowIndex).getSequence();
                 case 1:
+                    return sortedSeqs.get(rowIndex).getTitle();
+                case 2:
                     Set<String> keys = sortedSeqs.get(rowIndex).getHotKeys();
                     StringBuilder sb = new StringBuilder();
                     for (String key : keys) {
                         sb.append(key).append(',');
                     }
-                    return sb.toString().substring(0, sb.length() - 1);
+
+                    return sb.length() > 0 ? sb.toString().substring(0, sb.length() - 1) : "";
                 default:
                     return "";
             }
@@ -621,6 +634,8 @@ public class KeyMapPanel extends javax.swing.JPanel {
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == 1) {
+                sortedSeqs.get(rowIndex).setTitle((String) aValue);
+            } else if (columnIndex == 2) {
                 // We got a comma seperated list of keys, so remove errors first
                 String[] gotKeys = ((String) aValue).split(",");
                 ArrayList<String> keys = new ArrayList<String>();

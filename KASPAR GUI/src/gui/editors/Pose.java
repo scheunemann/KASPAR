@@ -4,38 +4,25 @@
  */
 package gui.editors;
 
-import java.util.Collection;
-
 /**
  *
  * @author nathan
  */
-public class Robot extends ModelEditor<data.Robot> {
+public class Pose extends ModelEditor<data.Pose> {
 
-    private guiComboBox<data.Pose> poseCombo;
-
-    public Robot() {
+    public Pose() {
         super();
         initComponents();
-    }
-    
-    public Robot(Collection<data.Pose> allPoses) {
-        this();
-        this.poseCombo = guiHelper.addComboBox(allPoses, this, 1, 2, this.getCallable(data.Pose.class));
     }
 
     @Override
     public void revertChanges() {
         this.jTextFieldName.setText(this.model.getName());
-        this.jTextFieldVersion.setText(this.model.getVersion());
-        this.poseCombo.setSelectedItem(this.model.getResetPose());
     }
 
     @Override
     public void commitChanges() {
         this.model.setName(this.jTextFieldName.getText());
-        this.model.setVersion(this.jTextFieldVersion.getText());
-        this.model.setResetPose(this.poseCombo.getSelectedItem());
     }
 
     /**
@@ -50,9 +37,6 @@ public class Robot extends ModelEditor<data.Robot> {
 
         jLabelName = new javax.swing.JLabel();
         jTextFieldName = new javax.swing.JTextField();
-        jLabelNameVersion = new javax.swing.JLabel();
-        jLabelNameResetPose = new javax.swing.JLabel();
-        jTextFieldVersion = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jButtonCancel = new javax.swing.JButton();
         jButtonOK = new javax.swing.JButton();
@@ -74,31 +58,6 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jTextFieldName, gridBagConstraints);
-
-        jLabelNameVersion.setLabelFor(jTextFieldVersion);
-        jLabelNameVersion.setText("Version");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jLabelNameVersion, gridBagConstraints);
-
-        jLabelNameResetPose.setText("Reset Pose");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jLabelNameResetPose, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 64;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jTextFieldVersion, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -130,7 +89,7 @@ public class Robot extends ModelEditor<data.Robot> {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
@@ -149,10 +108,7 @@ public class Robot extends ModelEditor<data.Robot> {
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
     private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelNameResetPose;
-    private javax.swing.JLabel jLabelNameVersion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldVersion;
     // End of variables declaration//GEN-END:variables
 }

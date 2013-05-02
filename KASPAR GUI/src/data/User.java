@@ -24,7 +24,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Users")
-public class User implements java.io.Serializable, Comparable<User> {
+public class User implements java.io.Serializable, Comparable<User>, Cloneable {
 
     private Integer userId;
     private String name;
@@ -52,7 +52,7 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.userPoses = userPoses;
         this.userSounds = userSounds;
     }
-    
+
     @Override
     public String toString() {
         return this.getName();
@@ -78,7 +78,7 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.propertyChanged.firePropertyChange("name", this.name, this.name = name);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="users")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
     public Set<Interaction> getInteractions() {
         return this.interactions;
     }
@@ -87,7 +87,7 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.propertyChanged.firePropertyChange("interactions", this.interactions, this.interactions = interactions);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="users")
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "users")
     public Set<Operator> getOperators() {
         return this.operators;
     }
@@ -96,8 +96,8 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.propertyChanged.firePropertyChange("operators", this.operators, this.operators = operators);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="user")
-    @OrderColumn(name="ButtonOrder")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderColumn(name = "ButtonOrder")
     public List<GUIButton> getButtons() {
         return this.buttons;
     }
@@ -106,7 +106,7 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.propertyChanged.firePropertyChange("buttons", this.buttons, this.buttons = buttons);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<UserPose> getUserPoses() {
         return this.userPoses;
     }
@@ -115,7 +115,7 @@ public class User implements java.io.Serializable, Comparable<User> {
         this.propertyChanged.firePropertyChange("userPoses", this.userPoses, this.userPoses = userPoses);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     public Set<UserSound> getUserSounds() {
         return this.userSounds;
     }
@@ -135,5 +135,30 @@ public class User implements java.io.Serializable, Comparable<User> {
 
     public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener changeListener) {
         this.propertyChanged.removePropertyChangeListener(propertyName, changeListener);
+    }
+
+    @Override
+    public User clone() {
+
+        /*
+         private String name;
+         private List<GUIButton> buttons = new ArrayList<GUIButton>(0);
+         private Set<Operator> operators = new HashSet<Operator>(0);
+         */
+        User ret = new User();
+
+        ret.setName(this.getName());
+        for (GUIButton b : this.getButtons()) {
+            GUIButton newB = b.clone();
+            newB.setUser(ret);
+            ret.getButtons().add(newB);
+        }
+
+        for (Operator o : this.getOperators()) {
+            o.getUsers().add(ret);
+            ret.getOperators().add(o);
+        }
+
+        return ret;
     }
 }

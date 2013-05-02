@@ -329,7 +329,7 @@ public class PosePanel extends javax.swing.JPanel {
             saveAs();
         } else {
             setFromSliders(currentPose);
-            SessionManager.save(currentPose);
+            SessionManager.saveAll();
         }
 
         // Reload all poses
@@ -378,7 +378,7 @@ public class PosePanel extends javax.swing.JPanel {
         }
 
         setFromSliders(pose);        
-        SessionManager.save(pose);
+        SessionManager.add(pose);
         setPose(pose);
 
         // Reload all poses and update view

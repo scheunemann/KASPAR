@@ -102,7 +102,7 @@ public class Interaction implements java.io.Serializable {
         this.propertyChanged.firePropertyChange("endTime", this.endTime, this.endTime = endTime);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "InteractionUsers", catalog = "KASPAR", joinColumns = {
         @JoinColumn(name = "InteractionId", nullable = false, updatable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "UserId", nullable = false, updatable = false)})
@@ -114,7 +114,7 @@ public class Interaction implements java.io.Serializable {
         this.propertyChanged.firePropertyChange("users", this.users, this.users = users);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "InteractionRobots", catalog = "KASPAR", joinColumns = {
         @JoinColumn(name = "InteractionId", nullable = false, updatable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "RobotId", nullable = false, updatable = false)})

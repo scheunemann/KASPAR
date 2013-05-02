@@ -109,7 +109,7 @@ public class GUIButton implements java.io.Serializable, Cloneable {
         this.propertyChanged.firePropertyChange("locationY", this.locationY, this.locationY = locationY);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="button")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy="button")
     public Set<InteractionLog> getLogs() {
         return this.logs;
     }

@@ -88,7 +88,7 @@ public class animator implements Runnable {
                     try {
                         Thread.sleep(sleep);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(animator.class.getName()).log(Level.SEVERE, null, ex);
                         break;
                     }
                 } else if (sleep < 0) {

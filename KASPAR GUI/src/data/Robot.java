@@ -94,7 +94,7 @@ public class Robot implements java.io.Serializable {
         this.propertyChanged.firePropertyChange("servoConfigs", this.servoConfigs, this.servoConfigs = servoConfigs);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="robots")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy="robots")
     public Set<Interaction> getInteractions() {
         return this.interactions;
     }
@@ -112,7 +112,7 @@ public class Robot implements java.io.Serializable {
         this.propertyChanged.firePropertyChange("servoGroups", this.servoGroups, this.servoGroups = servoGroups);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ResetPoseId", nullable = true)
     public Pose getResetPose() {
         return this.resetPose;

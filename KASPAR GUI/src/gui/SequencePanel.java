@@ -476,9 +476,7 @@ public class SequencePanel extends javax.swing.JPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         if (!lstPoses.isSelectionEmpty()) {
-            SequenceAction sa = new SequenceAction();
-            sa.setAction((Pose) lstPoses.getSelectedValue());
-            sa.setWaitAfter(0);
+            SequenceAction sa = new SequenceAction(currentSequence, (Pose) lstPoses.getSelectedValue(), 0);
 
             if (tblSequence.getSelectedRowCount() > 0) {
                 currentSequence.getSequenceActions().add(tblSequence.getSelectedRow(), sa);
@@ -487,7 +485,6 @@ public class SequencePanel extends javax.swing.JPanel {
             }
 
             sequenceTM.fireTableDataChanged();
-
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -525,7 +522,7 @@ public class SequencePanel extends javax.swing.JPanel {
         fcSound.setFileFilter(new javax.swing.filechooser.FileFilter() {
             @Override
             public boolean accept(File f) {
-                return f.getName().endsWith(".wav") || f.getName().endsWith(".au") || f.getName().endsWith(".aiff");
+                return f.isDirectory() || f.getName().endsWith(".wav") || f.getName().endsWith(".au") || f.getName().endsWith(".aiff");
             }
 
             @Override
@@ -536,11 +533,12 @@ public class SequencePanel extends javax.swing.JPanel {
 
         int ret = fcSound.showOpenDialog(this);
         if (ret == JFileChooser.APPROVE_OPTION) {
-            Sound s = new Sound(fcSound.getName(), fcSound.getSelectedFile().getAbsolutePath());
+            Sound s = new Sound(fcSound.getSelectedFile().getName(), fcSound.getSelectedFile().getAbsolutePath());
             s.setSoundFile(fcSound.getSelectedFile().getAbsolutePath());
             SequenceAction sa = new SequenceAction(currentSequence, s, 0);
-            currentSequence.getSequenceActions().add(0, sa);
+            currentSequence.getSequenceActions().add(sa);
             txtSoundfile.setText(s.getName());
+            sequenceTM.fireTableDataChanged();
         }
     }//GEN-LAST:event_btnSoundSelectActionPerformed
 
@@ -579,7 +577,7 @@ public class SequencePanel extends javax.swing.JPanel {
      * called first
      */
     private void save() {
-        SessionManager.save(currentSequence);
+        SessionManager.saveAll();
 
         btnSave.setEnabled(false);
         // Update all sequences and the list
@@ -613,12 +611,16 @@ public class SequencePanel extends javax.swing.JPanel {
             return;
         }
 
-        // Update sequences and call save
-        Sequence oldSequence = currentSequence;
-        currentSequence = (Sequence) oldSequence.clone();
-        SessionManager.reload(oldSequence);
+        if (currentSequence.getActionId() != null) {
+            // Update sequences and call save
+            Sequence oldSequence = currentSequence;
+            currentSequence = oldSequence.clone();
+            SessionManager.reload(oldSequence);
+            lblSequence.setText(name);
+        }
+
         currentSequence.setName(name);
-        lblSequence.setText(name);
+        SessionManager.add(currentSequence);
         save();
     }
 
@@ -704,26 +706,20 @@ public class SequencePanel extends javax.swing.JPanel {
     private void updateButtons() {
 
         int selected = tblSequence.getSelectedRow();
-        if (SessionManager.isModified(currentSequence)) {
-            btnSave.setEnabled(true);
-        } else {
-            btnSave.setEnabled(false);
-        }
-
-        // Disable all
-        btnUp.setEnabled(false);
-        btnDown.setEnabled(false);
-        btnRemove.setEnabled(false);
-        btnPreview.setEnabled(false);
 
         if (currentSequence.getSequenceActions().isEmpty()) {
-            btnSaveAs.setEnabled(false);
             btnSave.setEnabled(false);
+            btnSaveAs.setEnabled(false);
+            btnPreview.setEnabled(false);
         } else {
+            btnSave.setEnabled(!("".equals(currentSequence.getName()) || currentSequence.getName() == null));
             btnSaveAs.setEnabled(true);
             btnPreview.setEnabled(true);
         }
 
+        btnUp.setEnabled(false);
+        btnDown.setEnabled(false);
+        btnRemove.setEnabled(false);
         // If nothing is selected
         if (selected == -1) {
             tblSequence.clearSelection();

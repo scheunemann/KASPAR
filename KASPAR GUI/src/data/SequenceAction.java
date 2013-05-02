@@ -6,6 +6,7 @@ package data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +54,7 @@ public class SequenceAction implements java.io.Serializable, Cloneable {
         this.propertyChanged.firePropertyChange("sequenceActionId", this.sequenceActionId, this.sequenceActionId = actionId);
     }
     
-    @ManyToOne(fetch = FetchType.LAZY, optional=false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name = "ActionId", nullable = false)
     public Action getAction() {
         return this.action;

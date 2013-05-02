@@ -13,7 +13,6 @@ import java.util.Collection;
 public class ServoGroup extends ModelEditor<data.ServoGroup> {
     
     guiComboBox<data.Robot> robotCombo;
-    data.ServoGroup servoGroup;
     
     public ServoGroup() {
         super();
@@ -26,30 +25,19 @@ public class ServoGroup extends ModelEditor<data.ServoGroup> {
     }
 
     @Override
-    public data.ServoGroup getData() {
-        return this.servoGroup;
-    }
-
-    @Override
-    public void setData(data.ServoGroup servoGroup) {
-        this.servoGroup = servoGroup;
-        this.revertChanges();
-    }
-
-    @Override
     public void revertChanges() {
-        this.jTextFieldTitle.setText(this.servoGroup.getTitle());
-        this.jFormattedTextFieldColumn.setValue(this.servoGroup.getLocationX());
-        this.jFormattedTextFieldRow.setValue(this.servoGroup.getLocationY());
-        this.robotCombo.setSelectedItem(this.servoGroup.getRobot());
+        this.jTextFieldTitle.setText(this.model.getTitle());
+        this.jFormattedTextFieldColumn.setValue(this.model.getLocationX());
+        this.jFormattedTextFieldRow.setValue(this.model.getLocationY());
+        this.robotCombo.setSelectedItem(this.model.getRobot());
     }
 
     @Override
     public void commitChanges() {
-        this.servoGroup.setTitle(this.jTextFieldTitle.getText());
-        this.servoGroup.setLocationX(((Number) this.jFormattedTextFieldColumn.getValue()).intValue());
-        this.servoGroup.setLocationY(((Number) this.jFormattedTextFieldRow.getValue()).intValue());
-        this.servoGroup.setRobot(this.robotCombo.getSelectedItem());
+        this.model.setTitle(this.jTextFieldTitle.getText());
+        this.model.setLocationX(((Number) this.jFormattedTextFieldColumn.getValue()).intValue());
+        this.model.setLocationY(((Number) this.jFormattedTextFieldRow.getValue()).intValue());
+        this.model.setRobot(this.robotCombo.getSelectedItem());
     }
 
     /**

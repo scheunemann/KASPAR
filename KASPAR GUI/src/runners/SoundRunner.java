@@ -2,9 +2,12 @@ package runners;
 
 import data.Robot;
 import data.Sound;
+import gui.GuiLogger;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.media.CannotRealizeException;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.EndOfMediaEvent;
@@ -12,22 +15,21 @@ import javax.media.Manager;
 import javax.media.MediaLocator;
 import javax.media.NoPlayerException;
 import javax.media.Player;
-import gui.GuiLogger;
 
 public class SoundRunner extends Thread {
 
     private static boolean isActive = false;
     private MediaLocator soundFile;
     private Robot robot;
-    
+
     public SoundRunner(Robot robot) {
         this.robot = robot;
     }
-    
+
     public void execute(Sound sound) {
         File f = new File(sound.getSoundFile());
         this.soundFile = new MediaLocator("file:///" + f.getAbsolutePath());
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.start();
     }
 
 //    public void setSoundFile(File soundFile) {
@@ -47,7 +49,6 @@ public class SoundRunner extends Thread {
 //        }
 //        setIsSaved(false);
 //    }
-    
     @Override
     public void run() {
 
@@ -59,7 +60,7 @@ public class SoundRunner extends Thread {
 
         if (soundFile != null) {
             try {
-                final Player player = Manager.createPlayer(soundFile);
+                final Player player = Manager.createRealizedPlayer(soundFile);
 
                 player.addControllerListener(new ControllerListener() {
                     @Override
@@ -68,13 +69,15 @@ public class SoundRunner extends Thread {
                             player.stop();
                             player.close();
                             isActive = false;
-
                         }
                     }
                 });
+                
                 player.realize();
                 player.start();
 
+            } catch (CannotRealizeException ex) {
+                GuiLogger.getLogger().log(Level.SEVERE, "Failed to create player for sound file " + soundFile.toString(), ex);
             } catch (IOException ex) {
                 GuiLogger.getLogger().log(Level.SEVERE, "Can't find sound file " + soundFile.toString(), ex);
             } catch (NoPlayerException ex) {

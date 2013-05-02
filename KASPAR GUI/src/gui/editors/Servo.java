@@ -12,7 +12,6 @@ import java.util.Collection;
  */
 public class Servo extends ModelEditor<data.Servo> {
 
-    data.Servo servo;
     guiComboBox<data.ServoGroup> groupCombo;
     
     public Servo() {
@@ -28,40 +27,29 @@ public class Servo extends ModelEditor<data.Servo> {
     private data.ServoGroup newServoGroup() {
         return null;
     }
-    
-    @Override
-    public data.Servo getData() {
-        return this.servo;
-    }
-    
-    @Override
-    public void setData(data.Servo servo) {
-        this.servo = servo;
-        this.revertChanges();
-    }
 
     @Override
     public void revertChanges() {     
-        this.jTextFieldName.setText(this.servo.getName());
-        this.jFormattedTextFieldMaxPosition.setValue(this.servo.getMaxPosition());
-        this.jFormattedTextFieldMinPosition.setValue(this.servo.getMinPosition());
-        this.jFormattedTextFieldDefaultPosition.setValue(this.servo.getDefaultPosition());
-        this.jFormattedTextFieldMaxSpeed.setValue(this.servo.getMaxSpeed());
-        this.jFormattedTextFieldMinSpeed.setValue(this.servo.getMinSpeed());
-        this.jFormattedTextFieldDefaultSpeed.setValue(this.servo.getDefaultSpeed());
-        this.groupCombo.setSelectedItem(this.servo.getServoGroup());
+        this.jTextFieldName.setText(this.model.getName());
+        this.jFormattedTextFieldMaxPosition.setValue(this.model.getMaxPosition());
+        this.jFormattedTextFieldMinPosition.setValue(this.model.getMinPosition());
+        this.jFormattedTextFieldDefaultPosition.setValue(this.model.getDefaultPosition());
+        this.jFormattedTextFieldMaxSpeed.setValue(this.model.getMaxSpeed());
+        this.jFormattedTextFieldMinSpeed.setValue(this.model.getMinSpeed());
+        this.jFormattedTextFieldDefaultSpeed.setValue(this.model.getDefaultSpeed());
+        this.groupCombo.setSelectedItem(this.model.getServoGroup());
     }
     
     @Override
     public void commitChanges() {
-        this.servo.setName(this.jTextFieldName.getText());
-        this.servo.setMaxPosition(((Number) this.jFormattedTextFieldMaxPosition.getValue()).intValue());
-        this.servo.setMinPosition(((Number) this.jFormattedTextFieldMinPosition.getValue()).intValue());
-        this.servo.setDefaultPosition(((Number) this.jFormattedTextFieldDefaultPosition.getValue()).intValue());
-        this.servo.setMaxSpeed(((Number) this.jFormattedTextFieldMaxSpeed.getValue()).intValue());
-        this.servo.setMinSpeed(((Number) this.jFormattedTextFieldMinSpeed.getValue()).intValue());
-        this.servo.setDefaultSpeed(((Number) this.jFormattedTextFieldDefaultSpeed.getValue()).intValue());
-        this.servo.setServoGroup(this.groupCombo.getSelectedItem());
+        this.model.setName(this.jTextFieldName.getText());
+        this.model.setMaxPosition(((Number) this.jFormattedTextFieldMaxPosition.getValue()).intValue());
+        this.model.setMinPosition(((Number) this.jFormattedTextFieldMinPosition.getValue()).intValue());
+        this.model.setDefaultPosition(((Number) this.jFormattedTextFieldDefaultPosition.getValue()).intValue());
+        this.model.setMaxSpeed(((Number) this.jFormattedTextFieldMaxSpeed.getValue()).intValue());
+        this.model.setMinSpeed(((Number) this.jFormattedTextFieldMinSpeed.getValue()).intValue());
+        this.model.setDefaultSpeed(((Number) this.jFormattedTextFieldDefaultSpeed.getValue()).intValue());
+        this.model.setServoGroup(this.groupCombo.getSelectedItem());
     }
     
     /**

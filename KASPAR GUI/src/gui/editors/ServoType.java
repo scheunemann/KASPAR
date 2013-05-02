@@ -11,48 +11,35 @@ package gui.editors;
  */
 public class ServoType extends ModelEditor<data.ServoType> {
 
-    private data.ServoType servoType;
-
     public ServoType() {
         super();
         initComponents();
     }
 
     @Override
-    public data.ServoType getData() {
-        return this.servoType;
-    }
-
-    @Override
-    public void setData(data.ServoType servoType) {
-        this.servoType = servoType;
-        this.revertChanges();
-    }
-
-    @Override
     public void revertChanges() {
-        this.jTextFieldName.setText(this.servoType.getName());
-        this.jFormattedTextFieldMaxPosition.setValue(this.servoType.getMaxPosition());
-        this.jFormattedTextFieldMinPosition.setValue(this.servoType.getMinPosition());
-        this.jFormattedTextFieldMaxSpeed.setValue(this.servoType.getMaxSpeed());
-        this.jFormattedTextFieldMinSpeed.setValue(this.servoType.getMinSpeed());
-        this.jCheckBoxManuallyPositionable.setSelected(this.servoType.isPositionable());
-        this.jFormattedTextFieldCyclesUntilReact.setValue(this.servoType.getCyclesUntilReact());
-        this.jFormattedTextFieldCycleError.setValue(this.servoType.getCycleError());
-        this.jFormattedTextFieldPositionError.setValue(this.servoType.getPositionError());
+        this.jTextFieldName.setText(this.model.getName());
+        this.jFormattedTextFieldMaxPosition.setValue(this.model.getMaxPosition());
+        this.jFormattedTextFieldMinPosition.setValue(this.model.getMinPosition());
+        this.jFormattedTextFieldMaxSpeed.setValue(this.model.getMaxSpeed());
+        this.jFormattedTextFieldMinSpeed.setValue(this.model.getMinSpeed());
+        this.jCheckBoxManuallyPositionable.setSelected(this.model.isPositionable());
+        this.jFormattedTextFieldCyclesUntilReact.setValue(this.model.getCyclesUntilReact());
+        this.jFormattedTextFieldCycleError.setValue(this.model.getCycleError());
+        this.jFormattedTextFieldPositionError.setValue(this.model.getPositionError());
     }
 
     @Override
     public void commitChanges() {
-        this.servoType.setName(this.jTextFieldName.getText());
-        this.servoType.setMaxPosition(((Number) this.jFormattedTextFieldMaxPosition.getValue()).intValue());
-        this.servoType.setMinPosition(((Number) this.jFormattedTextFieldMinPosition.getValue()).intValue());
-        this.servoType.setMaxSpeed(((Number) this.jFormattedTextFieldMaxSpeed.getValue()).intValue());
-        this.servoType.setMinSpeed(((Number) this.jFormattedTextFieldMinSpeed.getValue()).intValue());
-        this.jCheckBoxManuallyPositionable.setSelected(this.servoType.isPositionable());
-        this.servoType.setCyclesUntilReact(((Number) this.jFormattedTextFieldCyclesUntilReact.getValue()).intValue());
-        this.servoType.setCycleError(((Number) this.jFormattedTextFieldCycleError.getValue()).intValue());
-        this.servoType.setPositionError(((Number) this.jFormattedTextFieldPositionError.getValue()).intValue());
+        this.model.setName(this.jTextFieldName.getText());
+        this.model.setMaxPosition(((Number) this.jFormattedTextFieldMaxPosition.getValue()).intValue());
+        this.model.setMinPosition(((Number) this.jFormattedTextFieldMinPosition.getValue()).intValue());
+        this.model.setMaxSpeed(((Number) this.jFormattedTextFieldMaxSpeed.getValue()).intValue());
+        this.model.setMinSpeed(((Number) this.jFormattedTextFieldMinSpeed.getValue()).intValue());
+        this.jCheckBoxManuallyPositionable.setSelected(this.model.isPositionable());
+        this.model.setCyclesUntilReact(((Number) this.jFormattedTextFieldCyclesUntilReact.getValue()).intValue());
+        this.model.setCycleError(((Number) this.jFormattedTextFieldCycleError.getValue()).intValue());
+        this.model.setPositionError(((Number) this.jFormattedTextFieldPositionError.getValue()).intValue());
     }
 
     /**
