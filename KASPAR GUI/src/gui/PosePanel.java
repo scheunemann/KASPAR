@@ -53,6 +53,11 @@ public class PosePanel extends javax.swing.JPanel {
         poseListModel = new DefaultListModel();
         this.currentRobot = robot;
 
+        initComponents();
+
+        // Set the reset pose    
+        setPose(currentRobot.getResetPose());
+
         updatePoses();
 
         // Get the list of servos to create panels for
@@ -92,8 +97,6 @@ public class PosePanel extends javax.swing.JPanel {
             }
         });
 
-        initComponents();
-
         // add groups tp main panel
         for (int j = 0; j < servoGroups.size(); j++) {
 
@@ -119,9 +122,6 @@ public class PosePanel extends javax.swing.JPanel {
                 pnlMain.add(Box.createHorizontalStrut(5));
             }
         }
-
-        // Set the reset pose    
-        setPose(currentRobot.getResetPose());
     }
 
     /**
@@ -383,10 +383,6 @@ public class PosePanel extends javax.swing.JPanel {
 
         // Reload all poses and update view
         updatePoses();
-
-        // Tell main class that something has changed
-        //TODO: Property change events
-        //KasparGui.getInstance().posesChanged();
     }
 
     private void setFromSliders(Pose oldPose) {
@@ -414,6 +410,7 @@ public class PosePanel extends javax.swing.JPanel {
                 btnSave.setEnabled(false);
                 btnDelete.setEnabled(false);
             }
+            
             selectAll(false);
             // Set the panels according to selected pose
             for (final ServoPosition sPos : currentPose.getServoPositions()) {

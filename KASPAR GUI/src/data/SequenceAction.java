@@ -74,7 +74,7 @@ public class SequenceAction implements java.io.Serializable, Cloneable {
     }
     
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional=false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name = "SequenceId", nullable = false)
     public Sequence getSequence() {
         return this.sequence;

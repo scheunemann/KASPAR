@@ -52,15 +52,12 @@ public class UserPanel extends javax.swing.JPanel {
 
         // Load KeyMaps
         this.keymapModel = new DefaultListModel();
-        updateKeyMaps();
-        if (this.keymapModel.isEmpty()) {
-            this.currentUser = new User();
-        } else {
-            this.currentUser = (User) this.keymapModel.firstElement();
-        }
-        this.keyMapTM = new KeyTableModel(this.currentUser);
+        this.keyMapTM = new KeyTableModel(null);
 
         initComponents();
+
+        updateKeyMaps();
+        setUser(this.keymapModel.isEmpty() ? null : (User) this.keymapModel.firstElement());
 
         this.tblKeyMap.addMouseListener(new MouseAdapter() {
             @Override
@@ -108,8 +105,6 @@ public class UserPanel extends javax.swing.JPanel {
                 }
             }
         });
-
-        setUser(null);
     }
 
     /**
@@ -368,14 +363,16 @@ public class UserPanel extends javax.swing.JPanel {
      * called first
      */
     private void save() {
+
+        if (!currentUser.getOperators().contains(SessionManager.getOperator())) {
+            currentUser.getOperators().add(SessionManager.getOperator());
+            SessionManager.getOperator().getUsers().add(currentUser);
+        }
+
         SessionManager.saveAll();
 
         // Update all sequences and the list
         updateKeyMaps();
-
-        // Inform others that the sequence list has changed
-        //TODO: Property update events
-        //KasparGui.getInstance().keyMapChanged();
 
         btnSave.setEnabled(false);
     }
@@ -490,8 +487,6 @@ public class UserPanel extends javax.swing.JPanel {
             btnDelete.setEnabled(true);
         } else {
             currentUser = new User();
-            currentUser.getOperators().add(SessionManager.getOperator());
-            SessionManager.getOperator().getUsers().add(currentUser);
             lblKeyMap.setText("Unnamed User");
             keyMapTM.setKeyMap(currentUser);
             btnSave.setEnabled(false);

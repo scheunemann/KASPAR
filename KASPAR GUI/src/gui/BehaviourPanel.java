@@ -49,27 +49,22 @@ public class BehaviourPanel extends javax.swing.JPanel {
 
         // Load KeyMaps
         users = new HashSet<User>();
-        keymapModel = new DefaultListModel();
-        updateKeyMaps();
-        if (users.size() > 0) {
-            currentUser = users.iterator().next();
-        } else {
-            currentUser = new User();
-        }
-
+        keymapModel = new DefaultListModel();        
         initComponents();
+        
+        updateKeyMaps();
+        
+        //this.setUser(users.isEmpty() ? null : (User)this.keymapModel.firstElement());
 
         // Catch list chanegs in sequence list to adjust buttons and to add sequence to table
         lstKeyMaps.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (lstKeyMaps.getSelectedIndex() != -1) {
-                    setKeyMap((User) lstKeyMaps.getSelectedValue());
+                    setUser((User) lstKeyMaps.getSelectedValue());
                 }
             }
         });
-
-        populatePanel();
     }
 
     /**
@@ -250,7 +245,7 @@ public class BehaviourPanel extends javax.swing.JPanel {
      * @param keyMapName Name of the key map to be set. If name does not appear
      * in list of current key maps a unnamed key map is created and used instead
      */
-    private void setKeyMap(User keyMap) {
+    private void setUser(User keyMap) {
 
         if (keyMap != null) {
             currentUser = keyMap;
@@ -261,11 +256,6 @@ public class BehaviourPanel extends javax.swing.JPanel {
         populatePanel();
     }
 
-    public void updatePanel() {
-        updateKeyMaps();
-        currentUser = (User) keymapModel.firstElement();
-        populatePanel();
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;

@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-    <persistence-unit name="robotActions" transaction-type="RESOURCE_LOCAL">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>data.Action</class>
-        <class>data.ApplicationLog</class>
-        <class>data.ButtonGroup</class>
-        <class>data.GUIButton</class>
-        <class>data.Interaction</class>
-        <class>data.InteractionLog</class>
-        <class>data.Operator</class>
-        <class>data.Pose</class>
-        <class>data.Robot</class>
-        <class>data.Sequence</class>
-        <class>data.SequenceAction</class>
-        <class>data.Servo</class>
-        <class>data.ServoConfig</class>
-        <class>data.ServoGroup</class>
-        <class>data.ServoPosition</class>
-        <class>data.ServoType</class>
-        <class>data.Sound</class>
-        <class>data.User</class>
-        <class>data.UserPose</class>
-        <class>data.UserSound</class>
-        <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/KASPAR"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-        </properties>
-    </persistence-unit>
+  <persistence-unit name="robotActions" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>data.Action</class>
+    <class>data.ApplicationLog</class>
+    <class>data.ButtonGroup</class>
+    <class>data.GUIButton</class>
+    <class>data.Interaction</class>
+    <class>data.InteractionLog</class>
+    <class>data.Operator</class>
+    <class>data.Pose</class>
+    <class>data.Robot</class>
+    <class>data.Sequence</class>
+    <class>data.SequenceAction</class>
+    <class>data.Servo</class>
+    <class>data.ServoConfig</class>
+    <class>data.ServoGroup</class>
+    <class>data.ServoPosition</class>
+    <class>data.ServoType</class>
+    <class>data.Sound</class>
+    <class>data.User</class>
+    <class>data.UserPose</class>
+    <class>data.UserSound</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/KASPAR"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
 </persistence>

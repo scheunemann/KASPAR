@@ -60,20 +60,20 @@ public class SequencePanel extends javax.swing.JPanel {
      */
     public SequencePanel(Robot robot) {
 
-        // Initialise
-        currentSequence = null;
         this.robot = robot;
-        sequenceTM = new SequenceTableModel(currentSequence);
+        sequenceTM = new SequenceTableModel(null);
         lastSelectedRow = -1;
-
-        // Load sequences
         sequences = new HashSet<Sequence>();
         sequenceListModel = new DefaultListModel();
-        updateSequences();
 
         // Now build the GUI
         initComponents();
+        
+        updateSequences();
 
+        // Create empty sequence
+        setSequence(null);
+        
         // Catch mouse clicks in table to turn buttons on/off
         tblSequence.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,6 +83,7 @@ public class SequencePanel extends javax.swing.JPanel {
                 }
             }
         });
+        
         tblSequence.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -99,6 +100,7 @@ public class SequencePanel extends javax.swing.JPanel {
                 }
             }
         });
+        
         // Catch list changed events in pose list to turn add button on/off
         lstPoses.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -110,6 +112,7 @@ public class SequencePanel extends javax.swing.JPanel {
                 }
             }
         });
+        
         // Catch list chanegs in sequence list to adjust buttons and to add sequence to table
         lstSequences.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -124,10 +127,6 @@ public class SequencePanel extends javax.swing.JPanel {
                 }
             }
         });
-
-        // Create empty sequence
-        setSequence(null);
-
     }
 
     /**
@@ -465,7 +464,6 @@ public class SequencePanel extends javax.swing.JPanel {
         //KasparGui.getInstance().sequencesChanged();
         setSequence(null);
         updateSequences();
-
 }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
@@ -694,6 +692,7 @@ public class SequencePanel extends javax.swing.JPanel {
             btnDelete.setEnabled(false);
             txtSoundfile.setText("");
         }
+        
         btnSave.setEnabled(false);
     }
 
@@ -715,7 +714,7 @@ public class SequencePanel extends javax.swing.JPanel {
             btnSave.setEnabled(!("".equals(currentSequence.getName()) || currentSequence.getName() == null));
             btnSaveAs.setEnabled(true);
             btnPreview.setEnabled(true);
-        }
+        }btnSaveAs.setEnabled(true);
 
         btnUp.setEnabled(false);
         btnDown.setEnabled(false);
@@ -790,7 +789,6 @@ public class SequencePanel extends javax.swing.JPanel {
         public SequenceTableModel(Sequence sequence) {
             super();
             seq = sequence;
-
         }
 
         /**

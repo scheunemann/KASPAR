@@ -151,14 +151,7 @@ public class MainForm extends JFrame {
     }
 
     private <T extends Object> void checkInitType(Class<T> class_) {
-        EntityManager em = SessionManager.getEntityManager();
-
-        CriteriaQuery<T> q = em.getCriteriaBuilder().createQuery(class_);
-        q.select(q.from(class_));
-
-        List<T> list = em.createQuery(q).getResultList();
-
-        if (list.isEmpty()) {
+        if (SessionManager.getAll(class_).isEmpty()) {
             guiHelper.getNewObject(class_);
         }
     }
