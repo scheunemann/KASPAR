@@ -18,12 +18,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -81,6 +84,22 @@ public class SessionManager {
         GuiLogger.getLogger().log(Level.SEVERE, "ServoConfig '{0}' does not exist for Robot '{1}'.", new Object[]{robot.getName(), servoTypeName});
         //TODO: Handle exception
         return null;
+    }
+
+    public static <T extends Object> T getSingle(Class<T> tClass, final Entry<String, Object>... properties) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> q = cb.createQuery(tClass);
+        Root<T> t = q.from(tClass);
+        for (Entry<String, Object> property : properties) {
+            q.where(SessionManager.getEntityManager().getCriteriaBuilder().equal(t.get(property.getKey()), property.getValue()));
+        }
+
+        try {
+            return SessionManager.getEntityManager().createQuery(q).getSingleResult();
+        } catch (javax.persistence.NoResultException ex) {
+            return null;
+        }
     }
 
     public static <T extends Object> Collection<T> getAll(Class<T> tClass) {
@@ -145,7 +164,7 @@ public class SessionManager {
     public static String getSoundFolder() {
         return "";
     }
-    
+
     public static void saveAll() {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();

@@ -69,9 +69,9 @@ public class ServoPanel extends javax.swing.JPanel implements PropertyChangeList
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         setPreferredSize(new java.awt.Dimension(180, 98));
 
-        sldPosition.setMajorTickSpacing(this.servo.getMaxPosition()/4);
-        sldPosition.setMaximum(this.servo.getMaxPosition());
-        sldPosition.setMinorTickSpacing(this.servo.getMaxPosition()/20);
+        sldPosition.setMajorTickSpacing((int)this.servo.getMaxPosition()/4);
+        sldPosition.setMaximum((int)this.servo.getMaxPosition());
+        sldPosition.setMinorTickSpacing((int)this.servo.getMaxPosition()/20);
         sldPosition.setPaintTicks(true);
         sldPosition.setToolTipText("Set Goal Position");
         sldPosition.addChangeListener(new javax.swing.event.ChangeListener() {

@@ -4,7 +4,11 @@
  */
 package gui.editors;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -13,28 +17,33 @@ import java.util.Collection;
 public class Robot extends ModelEditor<data.Robot> {
 
     private guiComboBox<data.Pose> poseCombo;
+    private HashMap<String, data.Robot> allVersions;
 
-    public Robot() {
+    private Robot() {
         super();
         initComponents();
     }
-    
-    public Robot(Collection<data.Pose> allPoses) {
+
+    public Robot(Collection<data.Pose> allPoses, HashMap<String, data.Robot> allVersions) {
         this();
+        this.allVersions = allVersions;
         this.poseCombo = guiHelper.addComboBox(allPoses, this, 1, 2, this.getCallable(data.Pose.class));
+        this.fillVersions(this.jComboBoxVersions, allVersions);
     }
 
     @Override
     public void revertChanges() {
         this.jTextFieldName.setText(this.model.getName());
-        this.jTextFieldVersion.setText(this.model.getVersion());
+        this.jComboBoxVersions.setSelectedItem(this.model.getVersion());
         this.poseCombo.setSelectedItem(this.model.getResetPose());
     }
 
     @Override
     public void commitChanges() {
         this.model.setName(this.jTextFieldName.getText());
-        this.model.setVersion(this.jTextFieldVersion.getText());
+        this.model.setVersion(this.jComboBoxVersions.getSelectedItem().toString());
+        this.model.setServoConfigs(this.allVersions.get(this.model.getVersion()).getServoConfigs());
+        this.model.setServoGroups(this.allVersions.get(this.model.getVersion()).getServoGroups());
         this.model.setResetPose(this.poseCombo.getSelectedItem());
     }
 
@@ -52,10 +61,10 @@ public class Robot extends ModelEditor<data.Robot> {
         jTextFieldName = new javax.swing.JTextField();
         jLabelNameVersion = new javax.swing.JLabel();
         jLabelNameResetPose = new javax.swing.JLabel();
-        jTextFieldVersion = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jButtonCancel = new javax.swing.JButton();
         jButtonOK = new javax.swing.JButton();
+        jComboBoxVersions = new javax.swing.JComboBox();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -75,7 +84,6 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jTextFieldName, gridBagConstraints);
 
-        jLabelNameVersion.setLabelFor(jTextFieldVersion);
         jLabelNameVersion.setText("Version");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -91,14 +99,7 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jLabelNameResetPose, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 64;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        add(jTextFieldVersion, gridBagConstraints);
+        jLabelNameResetPose.getAccessibleContext().setAccessibleDescription("");
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -136,6 +137,13 @@ public class Robot extends ModelEditor<data.Robot> {
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
         add(jPanel1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        add(jComboBoxVersions, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
@@ -148,11 +156,19 @@ public class Robot extends ModelEditor<data.Robot> {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
+    private javax.swing.JComboBox jComboBoxVersions;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelNameResetPose;
     private javax.swing.JLabel jLabelNameVersion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldVersion;
     // End of variables declaration//GEN-END:variables
+
+    private void fillVersions(JComboBox jComboBoxVersions, HashMap<String, data.Robot> allVersions) {
+        ArrayList<String> keys = new ArrayList<String>(allVersions.keySet());
+        Collections.sort(keys);
+        for (String version : keys) {
+            jComboBoxVersions.addItem(version);
+        }
+    }
 }

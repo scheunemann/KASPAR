@@ -29,11 +29,11 @@ public class Servo implements java.io.Serializable {
     private ServoGroup servoGroup;
     private String name;
     private int externalId;
-    private int maxPosition;
-    private int minPosition;
+    private double maxPosition;
+    private double minPosition;
     private int maxSpeed;
     private int minSpeed;
-    private int defaultPosition;
+    private double defaultPosition;
     private int defaultSpeed;
     protected PropertyChangeSupport propertyChanged;
 
@@ -104,20 +104,20 @@ public class Servo implements java.io.Serializable {
     }
 
     @Column(name = "MaxPosition")
-    public int getMaxPosition() {
+    public double getMaxPosition() {
         return this.maxPosition;
     }
 
-    public void setMaxPosition(int maxPosition) {
+    public void setMaxPosition(double maxPosition) {
         this.propertyChanged.firePropertyChange("maxPosition", this.maxPosition, this.maxPosition = maxPosition);
     }
 
     @Column(name = "MinPosition")
-    public int getMinPosition() {
+    public double getMinPosition() {
         return this.minPosition;
     }
 
-    public void setMinPosition(int minPosition) {
+    public void setMinPosition(double minPosition) {
         this.propertyChanged.firePropertyChange("minPosition", this.minPosition, this.minPosition = minPosition);
     }
 
@@ -140,11 +140,11 @@ public class Servo implements java.io.Serializable {
     }
 
     @Column(name = "DefaultPosition", nullable = false)
-    public int getDefaultPosition() {
+    public double getDefaultPosition() {
         return this.defaultPosition;
     }
 
-    public void setDefaultPosition(int defaultPosition) {
+    public void setDefaultPosition(double defaultPosition) {
         this.propertyChanged.firePropertyChange("defaultPosition", this.defaultPosition, this.defaultPosition = defaultPosition);
     }
 

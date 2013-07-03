@@ -70,7 +70,7 @@ public class AX12 extends Servo {
     }
 
     public AX12(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int minPos,
@@ -113,7 +113,7 @@ public class AX12 extends Servo {
     }
 
     public AX12(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int minPos,
@@ -141,7 +141,7 @@ public class AX12 extends Servo {
     }
 
     public AX12(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int defaultPos,

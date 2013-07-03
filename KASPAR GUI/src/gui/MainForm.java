@@ -7,8 +7,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.*;
 import managers.PanelManager;
 import managers.ServoManager;

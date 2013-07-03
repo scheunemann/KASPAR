@@ -92,6 +92,14 @@ public class ServoManager {
             }
         }
     }
+    
+    public static int convertDegreesToSteps(double degrees) {
+        return (int)Math.round((1024f/360f) * (degrees % 360));
+    }
+    
+    public static double convertStepsToDegrees(int steps) {
+        return ((double)Math.round(((360f/1024f) * (steps % 1024)) * 100)) / 100f;
+    }
 
     public static servos.Servo getServo(Robot robot, Servo servo) {
         servos.Servo s;
@@ -101,9 +109,9 @@ public class ServoManager {
                     config.getPort(),
                     config.getPortSpeed(),
                     servo.getExternalId(),
-                    servo.getMinPosition(),
-                    servo.getMaxPosition(),
-                    servo.getDefaultPosition(),
+                    convertDegreesToSteps(servo.getMinPosition()),
+                    convertDegreesToSteps(servo.getMaxPosition()),
+                    convertDegreesToSteps(servo.getDefaultPosition()),
                     config.getAbstractToRealPositionFactor(),
                     servo.getMinSpeed(),
                     servo.getMaxSpeed(),
@@ -115,18 +123,18 @@ public class ServoManager {
                     config.getPort(),
                     config.getPortSpeed(),
                     servo.getExternalId(),
-                    servo.getMinPosition(),
-                    servo.getMaxPosition(),
-                    servo.getDefaultPosition(),
+                    convertDegreesToSteps(servo.getMinPosition()),
+                    convertDegreesToSteps(servo.getMaxPosition()),
+                    convertDegreesToSteps(servo.getDefaultPosition()),
                     config.getAbstractToRealPositionFactor());
         } else if ("AX12".equals(servo.getServoType().getName())) {
             s = new AX12(
                     config.getPort(),
                     config.getPortSpeed(),
                     servo.getExternalId(),
-                    servo.getMinPosition(),
-                    servo.getMaxPosition(),
-                    servo.getDefaultPosition(),
+                    convertDegreesToSteps(servo.getMinPosition()),
+                    convertDegreesToSteps(servo.getMaxPosition()),
+                    convertDegreesToSteps(servo.getDefaultPosition()),
                     config.getAbstractToRealPositionFactor(),
                     servo.getMinSpeed(),
                     servo.getMaxSpeed(),

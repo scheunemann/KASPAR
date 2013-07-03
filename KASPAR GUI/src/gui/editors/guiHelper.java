@@ -7,7 +7,6 @@ package gui.editors;
 import gui.GuiLogger;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ContainerAdapter;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,7 +74,7 @@ public class guiHelper {
         ModelEditor<?> editor = null;
 
         if (data.Robot.class == tClass) {
-            editor = new gui.editors.Robot(managers.SessionManager.getAll(data.Pose.class));
+            editor = new gui.editors.Robot(managers.SessionManager.getAll(data.Pose.class), managers.RobotManager.getDefaultRobots());
         } else if (data.Operator.class == tClass) {
             editor = new gui.editors.Operator(managers.SessionManager.getAll(data.User.class));
         } else if (data.Servo.class == tClass) {

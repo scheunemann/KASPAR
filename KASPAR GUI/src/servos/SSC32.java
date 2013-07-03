@@ -24,7 +24,7 @@ public class SSC32 extends Servo {
     private int posError = 0;
 
     public SSC32(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int minPos,

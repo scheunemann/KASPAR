@@ -24,13 +24,13 @@ public class AX12Connection implements PropertyChangeListener {
     private static final int timeout = 1000;
     private HashMap<Integer, AX12RxPacket> packetsWaiting;
 
-    public AX12Connection(int port, int portSpeed) {
+    public AX12Connection(String port, int portSpeed) {
         serialConn = SerialConnection.getConnection(port, portSpeed);
         serialConn.addPropertyChangeListener("dataAvailable", this);
         packetsWaiting = new HashMap<Integer, AX12RxPacket>();
     }
 
-    public static AX12Connection getConnection(int port, int speed) {        
+    public static AX12Connection getConnection(String port, int speed) {        
         if (connection == null) {
             connection = new AX12Connection(
                     port,

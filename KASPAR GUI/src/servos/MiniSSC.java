@@ -19,7 +19,7 @@ public class MiniSSC extends Servo {
     private static int[] delaySend = null;
 
     public MiniSSC(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int minPos,

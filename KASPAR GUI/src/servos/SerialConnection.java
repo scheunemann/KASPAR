@@ -76,8 +76,7 @@ public class SerialConnection implements SerialPortEventListener {
      * @return An open serial connection or 'null' if there already is an open
      * connection on that port with different speed
      */
-    public static SerialConnection getConnection(int port, int portSpeed) {
-        String portName = "COM" + port;
+    public static SerialConnection getConnection(String portName, int portSpeed) {
 
         // Check if we already have initialised the hashMap
         if (openConnections == null) {

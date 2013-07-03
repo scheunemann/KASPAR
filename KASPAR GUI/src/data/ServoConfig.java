@@ -20,7 +20,7 @@ public class ServoConfig implements java.io.Serializable {
 
     private ServoType servoType;
     private Robot robot;
-    private int port;
+    private String port;
     private int portSpeed;
     private double abstractToRealSpeedFactor;
     private double abstractToRealPositionFactor;
@@ -30,7 +30,7 @@ public class ServoConfig implements java.io.Serializable {
         this.propertyChanged = new PropertyChangeSupport(this);
     }
 
-    public ServoConfig(ServoType servoType, Robot robot, int port, int portSpeed, double abstractToRealSpeedFactor, double abstractToRealPositionFactor) {
+    public ServoConfig(ServoType servoType, Robot robot, String port, int portSpeed, double abstractToRealSpeedFactor, double abstractToRealPositionFactor) {
         this();
         this.servoType = servoType;
         this.robot = robot;
@@ -68,11 +68,11 @@ public class ServoConfig implements java.io.Serializable {
     }
 
     @Column(name = "Port", nullable = false, length = 30)
-    public int getPort() {
+    public String getPort() {
         return this.port;
     }
 
-    public void setPort(int port) {
+    public void setPort(String port) {
         this.propertyChanged.firePropertyChange("port", this.port, this.port = port);
     }
 

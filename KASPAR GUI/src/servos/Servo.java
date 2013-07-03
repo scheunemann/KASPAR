@@ -20,7 +20,7 @@ public abstract class Servo {
     protected int minSpeed;
     protected int maxSpeed;
     protected int defaultSpeed;
-    protected int port;
+    protected String port;
     protected int portSpeed;
     protected double posScaleValue;
     protected double speedScaleValue;
@@ -28,7 +28,7 @@ public abstract class Servo {
     protected int externalId;
 
     public Servo(
-            int port,
+            String port,
             int portSpeed,
             int externalId,
             int minPos,
@@ -48,7 +48,7 @@ public abstract class Servo {
         this.defaultSpeed = defaultSpeed;
     }
 
-    public Servo(int port, int portSpeed, int externalId, double posScaleValue, double speedScaleValue) {
+    public Servo(String port, int portSpeed, int externalId, double posScaleValue, double speedScaleValue) {
         this.port = port;
         this.speedScaleValue = speedScaleValue;
         this.posScaleValue = posScaleValue;
