@@ -21,8 +21,7 @@ function uiHelper() {
 }
 
 uiHelper.prototype = {
-	load : function(navbar, content) {
-		var self = this;
+	load : function(navbar, contentTag) {
 		var menuData = new dataHelper().getMenu()
 
 		var menu = $('<div id="menu"></div>');
@@ -34,12 +33,14 @@ uiHelper.prototype = {
 			var content = $('<div></div>');
 			for (linkindex in menugroup['links']) {
 				var link = menugroup['links'][linkindex];
-				var newLnk = $('<div></div>')
+				var newLnk = $('<div></div>');
 				newLnk.text(link['title']);
-				newLnk.click(function() {
-					self.loadContent(link['path']);
-				});
-				
+				newLnk.click(function(uihelper, url, contentTag) {
+					return function() {
+						uihelper.loadContent(url, contentTag);
+					}
+				}(this, link['path'], contentTag));
+
 				$(content).append(newLnk);
 			}
 
@@ -52,8 +53,8 @@ uiHelper.prototype = {
 			heightStyle : 'fill'
 		});
 	},
-	
-	loadContent : function(url) {
-		alert(url);
+
+	loadContent : function(url, contentTag) {
+		$(contentTag).load(url);
 	},
 }

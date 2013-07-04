@@ -16,13 +16,16 @@ def loadModules(root):
     ret = []
     for module in modules:
         for n, t in inspect.getmembers(module, inspect.isclass):
-            if hasattr(t, "exposed") and hasattr(t, "title") and hasattr(t, "links") and t.exposed:
-                links = []
-                for link in t.links:
-                    links.append((link[0], "%s/%s" %(n.lower(), link[1])))
-                    
-                ret.append((t.title, links))
-                root.__dict__[n.lower()] = t()
+            if hasattr(t, "exposed") and hasattr(t, "title") and hasattr(t, "links"):
+                if t.exposed:
+                    links = []
+                    for link in t.links:
+                        links.append((link[0], "%s/%s" %(n.lower(), link[1])))
+                        
+                    ret.append((t.title, links))
+                    root.__dict__[n.lower()] = t()
+                else:
+                    print "Skipping module %s as it is disabled" % n
             else:
                 print "Skipping module %s due to missing attributes" % n
                 

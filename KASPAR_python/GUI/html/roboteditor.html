@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="us">
+<head>
+<meta charset="utf-8">
+<title>KASPAR GUI v3 - Alpha</title>
+<link href="css/hertfordshire/jquery-ui-1.10.3.custom.css"
+	rel="stylesheet">
+<link href="css/kaspar.css" rel="stylesheet">
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<script src="js/kaspar.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var ui = new uiHelper();
+		ui.load('#navBar', '#content');
+	});
+</script>
+</head>
+<body>
+	<div class="editor">
+		<form name="new" action="">
+			<label for="name">Name</label> <input id="name" type="text" /> <label
+				for="robots">Version</label> <select id="robots">
+				<option value="1">Version 1a</option>
+				<option value="1">Version 1b</option>
+				<option value="1">Version 1c</option>
+			</select> 
+			<input type="submit" name="submit" class="button" id="submit_btn" value="Send" />
+		</form>
+	</div>
+</body>
+</html>

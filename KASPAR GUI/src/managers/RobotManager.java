@@ -36,9 +36,9 @@ public class RobotManager {
 
     public static HashMap<String, data.Robot> getDefaultRobots() {
         HashMap<String, data.Robot> robots = new HashMap<String, Robot>();
-        robots.put("Kaspar 1a", parseKasparFile("/home/nathan/Downloads/kaspar/Kaspar1a.xml"));
-        robots.put("Kaspar 1b", parseKasparFile("/home/nathan/Downloads/kaspar/Kaspar1c.xml"));
-        robots.put("Kaspar 1c", parseKasparFile("/home/nathan/Downloads/kaspar/Kaspar1b.xml"));
+        robots.put("Kaspar 1a", parseKasparFile("/kasparConfigs/Kaspar1a.xml"));
+        robots.put("Kaspar 1b", parseKasparFile("/kasparConfigs/Kaspar1c.xml"));
+        robots.put("Kaspar 1c", parseKasparFile("/kasparConfigs/Kaspar1b.xml"));
         return robots;
     }
 

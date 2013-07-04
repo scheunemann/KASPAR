@@ -1,5 +1,5 @@
 
-class OperatorAdmin(object):
+class Interactions(object):
     exposed = True
     title = "Interactions"
     links = [("Add", "?operation=add"),
