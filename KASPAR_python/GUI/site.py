@@ -1,6 +1,9 @@
 #Add project reference
 import cherrypy
-import root
+#import root
+
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 conf = {
     'global': {
@@ -12,7 +15,19 @@ conf = {
     },
     '/': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+    },
+    '/angularjs': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'angularjs/angular-phonecat/app')
     }
 }
 
-cherrypy.quickstart(root.root, '/', conf)
+#cherrypy.quickstart(root.root, '/', conf)
+
+class Root:
+    @cherrypy.expose
+    def index(self):
+        return ""
+
+if __name__ == '__main__':
+    cherrypy.quickstart(Root(), '/', config=conf)

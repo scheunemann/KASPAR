@@ -1,9 +1,7 @@
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy import Column, Integer, Sequence
 
-BaseClass = declarative_base()
-
-class TableMixin(object):
+class Base(object):
 
     @declared_attr
     def __tablename__(cls):
@@ -11,6 +9,8 @@ class TableMixin(object):
     
     __table_args__ = {'mysql_engine': 'InnoDB'}
     id = Column(Integer, Sequence('%s_id_seq' % __tablename__), primary_key=True)
+
+Base = declarative_base(cls=Base)
 
 class SettingMixin(object):
 
@@ -21,5 +21,5 @@ class DisplayMixin(object):
     def __repr__(self):
         return "<%s('%s')>" % (self.__class__.__name__, self.name)
 
-class StandardMixin(TableMixin, DisplayMixin, SettingMixin):
+class StandardMixin(DisplayMixin, SettingMixin):
     pass

@@ -11,4 +11,3 @@ root.images = handlers.StaticFiles(os.path.join(os.path.dirname(os.path.realpath
 root.css = handlers.StaticFiles(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'css'))
 root.favicon_ico = handlers.StaticFile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'favicon.ico'))
 root.data = MenuData(moduleParser.loadModules(root))
-
