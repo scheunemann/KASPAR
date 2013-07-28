@@ -1,7 +1,8 @@
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy import Column, Integer, Sequence
+import config
 
-class Base(object):
+class Base(config.modelBase):
 
     @declared_attr
     def __tablename__(cls):
