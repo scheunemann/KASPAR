@@ -1,5 +1,7 @@
 import cherrypy
-import app
+import app,os
+
+_dir = os.path.dirname(os.path.realpath(__file__))
 
 conf = {
         'server.socket_host': '0.0.0.0',
@@ -15,6 +17,12 @@ if __name__ == '__main__':
 
     #mount the root paths
     cherrypy.tree.mount(app.root, '/', app.config)
+    cherrypy.tree.mount(None, '/ang', config = {
+          '/':{
+               'tools.staticdir.on': True,
+               'tools.staticdir.dir': os.path.join(_dir, 'angular-phonecat/app'),
+               'tools.staticdir.index': 'index.html'
+               }})
     
     #start the server
     cherrypy.engine.start()
