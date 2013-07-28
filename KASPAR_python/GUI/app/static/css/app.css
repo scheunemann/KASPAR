@@ -1,0 +1,55 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #fff;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+header {
+	position: absolute;
+	width: 100%;
+	height: 92px;
+	background: #e6e6e6 url("../img/logo.png") no-repeat top left;
+	overflow: hidden;
+	text-align: center;
+	font-family: 'Helvetica neue bold','Helvetica', 'Arial', sans-serif;
+}
+
+header h1, header h2, header h3 {
+	margin: 0;
+}
+
+#main {
+	position: absolute;
+	top: 92px;
+	bottom: 40px;
+	width: 100%;
+}
+
+#navBar {
+	position: absolute;
+	width: 250px;
+	height: 100%;
+	overflow: auto;
+}
+
+#content {
+	margin-left: 250px;
+	height: 100%;
+	overflow: auto;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+	font-size: small;
+	text-align: center;
+}
