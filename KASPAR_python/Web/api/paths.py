@@ -20,11 +20,9 @@ for name, type_ in _modules.iteritems():
         links.append((link[0], "%s/%s" %(name.lower(), link[1])))
         
     _moduleLinks[type_.title] = links
-    setattr(root, name.lower(), type_())
+    setattr(root, name.lower(), type_)
 
-root.menuOptions = menu.MenuData(_modules)
-
-print dir(root)
+root.menuOptions = menu.MenuData(_moduleLinks)
 
 config = {
           '/': {

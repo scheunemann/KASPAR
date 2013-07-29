@@ -8,8 +8,8 @@ class MenuData(object):
         self._links = links
         
     def GET(self, *args, **kwargs):
-        menu = {'title': 'Admin', 'groups': []}
-        for (title, links) in self._links:
+        menu = {'groups': []}
+        for title, links in self._links.iteritems():
             section = { 'title': title, 'links': [] }
                         
             for (l_title, l_path) in links:

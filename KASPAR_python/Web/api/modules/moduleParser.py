@@ -28,7 +28,7 @@ def loadModules(path=None):
             for name, type_ in inspect.getmembers(module, inspect.isclass):
                 if hasattr(type_, "exposed") and hasattr(type_, "title") and hasattr(type_, "links"):
                     if type_.exposed:
-                        ret[name] = type_
+                        ret[name] = type_()
                     else:
                         print "Skipping module %s as it is disabled" % name
                 else:

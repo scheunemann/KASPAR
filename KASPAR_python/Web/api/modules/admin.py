@@ -1,27 +1,18 @@
-from crud import ModelCRUD
-from Data.Model import Operator, User, Robot
+from Data.Model import *
+from base import ServiceBase
 
-class ClassProperty(object):
-    def __init__(self, func):
-        self.func = func
-    def __get__(self, inst, cls):
-        return self.func(cls)
-
-class Admin(object):
-    _objects = [Operator, User, Robot]
+class Admin(ServiceBase):
     exposed = True
-    title = "Admin"
-    
-    @staticmethod
-    def loadLinks(cls):
-        ret = []
-        for obj in cls._objects:
-            ret.append(obj.__class__, obj.__class__.lower())
-        
-        return ret
-    
-    links = loadLinks()
-    
-    def __init__(self):
-        for obj in self._objects:
-            setattr(self, obj.__class__.lower(), ModelCRUD(obj))
+    _objects = [Operator, User, Robot]
+
+class Behaviours(ServiceBase):
+    exposed = True
+    _objects = [Action]
+
+class Trigger(ServiceBase):
+    exposed = True
+    _objects = [SensorTrigger, TimeTrigger, ButtonTrigger]
+
+class Interactions(ServiceBase):
+    exposed = True
+    _objects = [Interaction]
