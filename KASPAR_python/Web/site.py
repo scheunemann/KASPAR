@@ -1,5 +1,8 @@
+import os
 import cherrypy
-import app,os
+import gui
+import api
+import SAPlugin
 
 _dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -15,8 +18,13 @@ if __name__ == '__main__':
     #global settings
     cherrypy.config.update(conf)
 
+    #attach the database
+    SAPlugin.SAEnginePlugin(cherrypy.engine).subscribe()
+    cherrypy.tools.db = SAPlugin.SATool()
+
     #mount the root paths
-    cherrypy.tree.mount(app.root, '/', app.config)
+    cherrypy.tree.mount(gui.root, '/', gui.config)
+    cherrypy.tree.mount(api.root, '/api', api.config)
     cherrypy.tree.mount(None, '/ang', config = {
           '/':{
                'tools.staticdir.on': True,

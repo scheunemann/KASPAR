@@ -1,8 +1,7 @@
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
-from sqlalchemy import Column, Integer, Sequence
-import config
+from sqlalchemy import Column, Integer, Sequence, DateTime, func
 
-class Base(config.modelBase):
+class Base(object):
 
     @declared_attr
     def __tablename__(cls):
@@ -10,6 +9,8 @@ class Base(config.modelBase):
     
     __table_args__ = {'mysql_engine': 'InnoDB'}
     id = Column(Integer, Sequence('%s_id_seq' % __tablename__), primary_key=True)
+    created = Column(DateTime, nullable=False, default=func.now()) 
+    modified = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
 
 Base = declarative_base(cls=Base)
 

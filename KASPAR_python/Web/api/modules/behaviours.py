@@ -1,6 +1,6 @@
 
 class Behaviours(object):
-    exposed = True
+    exposed = False
     title = "Behaviours"
     links = [("Add", "?operation=add"),
              ("Edit", "?operation=edit"),

@@ -9,8 +9,8 @@ class StorageFactory(object):
     def getDefaultDataStore():
         if StorageFactory._dataStore == None:
             StorageFactory._dataStore = StorageFactory._buildDataStore(database_config['engine']['type'])
-            
-        return StorageFactory._dataStore 
+        
+        return StorageFactory._dataStore
     
     @staticmethod
     def _buildDataStore(dbtype):

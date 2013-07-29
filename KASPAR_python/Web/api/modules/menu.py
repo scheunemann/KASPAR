@@ -6,7 +6,6 @@ class MenuData(object):
     
     def __init__(self, links):
         self._links = links
-        #self._otherLinks = []
         
     def GET(self, *args, **kwargs):
         menu = {'title': 'Admin', 'groups': []}

@@ -1,4 +1,6 @@
+
 modelBase = object
+
 database_config = {
                    'engine': {
                               'type':'MySql',
@@ -6,5 +8,6 @@ database_config = {
                               'user':'kaspar',
                               'pass':'kaspar',
                               'db':'kaspar',
-                              }
+                              },
+                   'debug': True
                    }

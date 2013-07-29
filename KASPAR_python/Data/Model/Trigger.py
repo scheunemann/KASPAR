@@ -16,6 +16,7 @@ class Trigger(StandardMixin, Base):
     action = relationship("Action", backref="triggers")
     
     def __init__(self, name):
+        super(Trigger, self).__init__()
         self.name = name
     
 class SensorTrigger(Trigger):

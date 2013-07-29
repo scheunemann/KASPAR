@@ -1,6 +1,6 @@
 
 class Interactions(object):
-    exposed = True
+    exposed = False
     title = "Interactions"
     links = [("Add", "?operation=add"),
              ("Edit", "?operation=edit"),
