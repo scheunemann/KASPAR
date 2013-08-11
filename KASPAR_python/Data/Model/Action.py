@@ -13,25 +13,20 @@ class Action(StandardMixin, Base):
             'polymorphic_on': type
         }
         
-    def __init__(self, name):
+    def __init__(self, name=None):
+        super(Action, self).__init__()
         self.name = name
-    
+
 class Sound(Action):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {
             'polymorphic_identity':'sound',
     }
-        
-    def __init__(self, name):
-        super(Sound, self).__init(name)
     
 class Movement(Action):
     __abstract__ = True
         
-    def __init__(self, name):
-        super(Movement, self).__init(name)
-
 poseJoints_table = Table('poseJoints', Base.metadata,
     Column('Pose_id', Integer, ForeignKey('Pose.id')),
     Column('Joint_id', Integer, ForeignKey('Joint.id'))
@@ -45,9 +40,6 @@ class Pose(Movement):
     }
                 
     joints = relationship("Joint", secondary=poseJoints_table, backref="poses")
-    
-    def __init__(self, name):
-        super(Pose, self).__init(name)
                 
 class Expression(Movement):
                 
@@ -55,9 +47,6 @@ class Expression(Movement):
     __mapper_args__ = {
             'polymorphic_identity':'expression',
     }
-    
-    def __init__(self, name):
-        super(Expression, self).__init(name)
 
 class Sequence(Action):
             
@@ -67,10 +56,6 @@ class Sequence(Action):
     }
     
     actions = relationship("OrderedAction", order_by="OrderedAction.order", collection_class=ordering_list("order"), backref="sequence")
-        
-    def __init__(self, name):
-        super(Sequence, self).__init(name)
-    
 
 class OrderedAction(StandardMixin, Base):
     
@@ -91,6 +76,3 @@ class Group(Action):
     }
     
     actions = relationship("Action", secondary=groupActions_table)
-        
-    def __init__(self, name):
-        super(Group, self).__init(name)

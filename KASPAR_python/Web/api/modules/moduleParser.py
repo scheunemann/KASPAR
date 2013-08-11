@@ -1,4 +1,5 @@
 import re
+import os
 import sys
 import inspect
 
@@ -10,14 +11,19 @@ def loadModules(path=None):
 
     if path == None:
         path = __file__
-     
+
+    path = os.path.realpath(path)
     if not _modulesCache.has_key(path):
-         
-        import os
         modules = []
             
         find = re.compile(".*\.py$", re.IGNORECASE)
-        for module in map(lambda f: os.path.splitext(f)[0], filter(find.search, os.listdir(os.path.dirname(os.path.realpath(path))))):
+        if os.path.isdir(path):
+            toLoad = map(lambda f: os.path.splitext(f)[0], filter(find.search, os.listdir(path)))
+        else:
+            toLoad = [os.path.splitext(os.path.basename(path))[0]]
+        sys.path.append(os.path.dirname(path))        
+        
+        for module in toLoad:
             try:
                 modules.append(__import__(module, globals(), locals()))
             except Exception as e:

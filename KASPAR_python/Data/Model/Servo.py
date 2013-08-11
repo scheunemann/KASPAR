@@ -15,19 +15,18 @@ class Servo(StandardMixin, Base):
     group_id = Column(Integer, ForeignKey("ServoGroup.id")) 
     group = relationship("ServoGroup", backref="servos")
 
-    def __init__(self):
-        pass
-
 class ServoGroup(StandardMixin, Base):
     name = Column(String(50))
 
-    def __init__(self, name):
+    def __init__(self, name=None):
+        super(ServoGroup, self).__init__()
         self.name = name
         
 class ServoType(StandardMixin, Base):
     name = Column(String(50))
 
-    def __init__(self, name, version):
+    def __init__(self, name=None, version=None):
+        super(ServoType, self).__init__()
         self.name = name
         self.version = version
         
@@ -37,7 +36,3 @@ class ServoConfig(StandardMixin, Base):
     
     type_id = Column(Integer, ForeignKey("ServoType.id")) 
     type = relationship("ServoType")
-
-    def __init__(self):
-        pass
-    

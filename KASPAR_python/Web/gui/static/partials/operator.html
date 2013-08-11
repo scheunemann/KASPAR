@@ -1,0 +1,32 @@
+<div ng-controller="operatorController">
+	<div id="operatorsList" class="btn-group">
+		<div class="input-group">
+			<span class="input-group-addon">Operator</span> <select class="selectpicker form-control" ng-model="selectedOperator"
+				ng-options="operator.fullname for operator in operators | orderBy:fullname">
+			</select> 
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="newOperator()">New</button>
+				<button class="btn btn-default" type="button" ng-click="deleteOperator(selectedOperator)">Delete</button>
+			</span>
+		</div>
+	</div>
+	<div id="operatorsDetails">
+		<div class="input-group">
+			<span class="input-group-addon">Name</span>
+			<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedOperator.fullname" ng-change="updateOperator(selectedOperator)">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Common Users</span>
+			<div class="list-group form-control">
+				<span class="list-group-item" ng-repeat="user in users | orderBy:fullname">
+					<span class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" ng-checked="isOperatorUser(user.id)" ng-click="updateOperatorUser($event, user.id)">
+						</span> 
+						<input type="text" class="form-control" value="{{user.fullname}}" disabled="disabled">
+					</span>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

@@ -11,8 +11,9 @@ class Log(StandardMixin, Base):
             'polymorphic_on': type
         }
     
-    def __init__(self, name):
+    def __init__(self, type_=None):
         super(Log, self).__init__()
+        self.type = type_
 
 class DebugLog(Log):
     
@@ -23,9 +24,6 @@ class DebugLog(Log):
             'polymorphic_identity':'debug',
     }
     
-    def __init__(self, name):
-        super(DebugLog, self).__init__()
-
 class InteractionLog(Log):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Log'), primary_key=True)
@@ -36,9 +34,6 @@ class InteractionLog(Log):
             'polymorphic_identity':'interaction',
     }
     
-    def __init__(self, name):
-        super(InteractionLog, self).__init__()
-
 interactionUsers_table = Table('interactionUsers', Base.metadata,
     Column('Interaction_id', Integer, ForeignKey('Interaction.id')),
     Column('User_id', Integer, ForeignKey('User.id'))
@@ -49,6 +44,3 @@ class Interaction(StandardMixin, Base):
     users = relationship("User", secondary=interactionUsers_table)
     operator_id = Column(Integer, ForeignKey('Operator.id'))
     operator = relationship("Operator")
-    
-    def __init__(self, name):
-        super(Interaction, self).__init__()

@@ -1,7 +1,17 @@
 import logging
 import cherrypy
+import json
 
-class ModelCRUD(object):
+class ModelCRUD(object):    
+    exposed = False
+    
+    @property
+    def links(self):
+        return []
+    
+    @property
+    def title(self):
+        return self._modelClass.__name__
     
     def __init__(self, modelClass, methods=['GET', ]):
         self._modelClass = modelClass
@@ -12,25 +22,39 @@ class ModelCRUD(object):
             else:
                 logging.warn("Unknown request method: %s" % method)
         
-    @cherrypy.expose
-    def POST(self, data):
+    def POST(self, oid=None):
         if not self._exposed['POST']:
             raise cherrypy.NotFound()
         
-        obj = self._updateObject(data)
-        cherrypy.request.db.add(obj)
+        jsonData = json.loads(cherrypy.request.body.read())
+        data = self._modelClass.deserialize(self._modelClass, jsonData, cherrypy.request.db)
+        if oid == None:
+            #New object
+            cherrypy.request.db.add(data)
+        else:
+            cherrypy.request.db.merge(data)
+            
+        cherrypy.request.db.commit()
+        return json.dumps(data.serialize())
 
-    @cherrypy.expose
-    def GET(self, oid=None):
+    def GET(self, oid=None, constraint=None):
         if not self._exposed['GET']:
             raise cherrypy.NotFound()
 
         if oid == None:
-            return cherrypy.request.db.query(self._modelClass).all()
+            if constraint == None:
+                ret = [o.serialize() for o in cherrypy.request.db.query(self._modelClass).all()]
+            else:
+                ret = [o.serialize() for o in cherrypy.request.db.query(self._modelClass).filter_by(**constraint).all()]
         else:
-            return cherrypy.request.db.query(self._modelClass).get(oid)
+            ret = cherrypy.request.db.query(self._modelClass).get(oid)
+            if ret == None:
+                raise cherrypy.NotFound()
+            else:
+                ret = ret.serialize()
+        
+        return json.dumps(ret)
 
-    @cherrypy.expose
     def PUT(self, data):
         if not self._exposed['PUT']:
             raise cherrypy.NotFound()
@@ -39,7 +63,6 @@ class ModelCRUD(object):
         obj = self._updateObject(data, obj)
         cherrypy.request.db.add(obj)
     
-    @cherrypy.expose
     def DELETE(self, oid):
         if not self._exposed['DELETE']:
             raise cherrypy.NotFound()

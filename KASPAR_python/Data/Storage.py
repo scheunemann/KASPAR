@@ -46,3 +46,14 @@ if __name__ == '__main__':
     Base.metadata.drop_all(e)
     Base.metadata.create_all(e)
     
+    from sqlalchemy.orm.session import sessionmaker
+    from Data.Model import Operator, User
+    o = Operator('oNathan', 'oNathan Burke')
+    o.password = '1234'
+    u = User('uNathan', 'uNathan Burke')
+    o.users.append(u)
+    
+    session = sessionmaker(bind=e)()
+    session.add(o)
+    session.commit()
+    

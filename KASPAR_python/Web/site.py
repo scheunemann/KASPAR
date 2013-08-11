@@ -21,6 +21,7 @@ if __name__ == '__main__':
     #attach the database
     SAPlugin.SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SAPlugin.SATool()
+    cherrypy.config.update({'tools.db.on': True})
 
     #mount the root paths
     cherrypy.tree.mount(gui.root, '/', gui.config)
@@ -31,7 +32,7 @@ if __name__ == '__main__':
                'tools.staticdir.dir': os.path.join(_dir, 'angular-phonecat/app'),
                'tools.staticdir.index': 'index.html'
                }})
-    
+        
     #start the server
     cherrypy.engine.start()
     cherrypy.engine.block()

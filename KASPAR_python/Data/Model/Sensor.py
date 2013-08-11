@@ -13,19 +13,18 @@ class Sensor(StandardMixin, Base):
     group_id = Column(Integer, ForeignKey("SensorGroup.id"))
     group = relationship("SensorGroup", backref="sensors")
 
-    def __init__(self):
-        pass
-
 class SensorGroup(StandardMixin, Base):
     name = Column(String(50))
 
-    def __init__(self, name):
+    def __init__(self, name=None):
+        super(SensorGroup, self).__init__()
         self.name = name
         
 class SensorType(StandardMixin, Base):
     name = Column(String(50))
 
-    def __init__(self, name, version):
+    def __init__(self, name=None, version=None):
+        super(SensorType, self).__init__()
         self.name = name
         self.version = version
         
@@ -36,7 +35,3 @@ class SensorConfig(StandardMixin, Base):
     
     type_id = Column(Integer, ForeignKey("SensorType.id")) 
     type = relationship("SensorType")
-
-    def __init__(self):
-        pass
-    

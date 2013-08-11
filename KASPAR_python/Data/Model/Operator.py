@@ -13,6 +13,7 @@ class Operator(StandardMixin, Base):
     password = Column(String(500))
     users = relationship("User", secondary=operatorUsers_table)
 
-    def __init__(self, name, fullname):
+    def __init__(self, name=None, fullname=None):
+        super(Operator, self).__init__()
         self.name = name
         self.fullname = fullname
