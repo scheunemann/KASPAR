@@ -55,6 +55,31 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			}
 		}])
 	.controller(
+		'userController', [ '$scope', '$filter', 'User', 'CustomAction', 'CustomTrigger', function($scope, $filter, User, CustomAction, CustomTrigger) {
+			var u = User.query(function() {
+				$scope.users = u;
+				$scope.selectedUser = u[0];
+			});
+
+			$scope.newUser = function() {
+				var newU = new User({fullname: 'New User', name:'New'});
+				$scope.selectedUser = newU;
+				$scope.users.push(newU);
+			};
+			
+			$scope.deleteUser = function() {
+				$scope.selectedUser.$delete(function() {
+						$scope.users.splice($scope.users.indexOf($scope.selectedUser), 1);
+						$scope.selectedUser = $scope.users[0];
+					}
+				);
+			};
+						
+			$scope.updateUser = function(user) {
+				user.$save();
+			}
+		}])		
+	.controller(
 		'commonController', [ '$scope', function($scope) {	
 			$scope.version = '3 alpha';
 		} ]);

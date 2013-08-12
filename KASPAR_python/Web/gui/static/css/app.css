@@ -42,6 +42,7 @@ header h1, header h2, header h3 {
 	margin-left: 250px;
 	height: 100%;
 	overflow: auto;
+	padding: 3px;
 }
 
 footer {

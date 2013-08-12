@@ -4,7 +4,8 @@
 angular.module('kasparGUI', ['ui.bootstrap', 'kasparGUI.filters', 'kasparGUI.services', 'kasparGUI.directives', 'kasparGUI.controllers'])
 	.config(['$routeProvider', function($routeProvider) {
 	    $routeProvider
-	    	.when('/admin/operator', {templateUrl: 'static/partials/operator.html', controller: 'commonController'})
+    		.when('/admin/operator', {templateUrl: 'static/partials/operator.html', controller: 'commonController'})
+    		.when('/admin/user', {templateUrl: 'static/partials/user.html', controller: 'commonController'})
 	    	//.otherwise({redirectTo: '/view2'})
 	    	;
 	}]);
