@@ -13,7 +13,11 @@ class Operator(ModelCRUD):
 
 class Robot(ModelCRUD):
     exposed = True
-    types = SimpleBase(['KASPAR 1a', 'KASPAR 1b', 'KASPAR 1c'])
+    types = SimpleBase([
+                        {'name':'KASPAR 1a'}, 
+                        {'name':'KASPAR 1b'}, 
+                        {'name':'KASPAR 1c'},
+                        ])
     servo = Servo()
     servogroup = ServoGroup()
     servoconfig = ServoConfig()
@@ -45,7 +49,12 @@ class User(ModelCRUD):
     
 class Action(ModelCRUD):
     exposed = True
-    types = SimpleBase(['Sound', 'Pose', 'Expression', 'Sequence'])
+    types = SimpleBase([
+                        {'name':'Sound'}, 
+                        {'name':'Pose', 'desc':'One or more joint positions, to be set simultaneously'},
+                        {'name':'Group', 'desc':'parallel actions'}, 
+                        {'name':'Sequence', 'desc':'action series'},
+                        ])
     
     def __init__(self):
         super(Action, self).__init__(Data.Model.Action, ['GET', 'POST', 'DELETE'])
@@ -58,7 +67,11 @@ class Joint(ModelCRUD):
 
 class Trigger(ModelCRUD):
     exposed = True
-    types = SimpleBase(['Sensor', 'Button', 'Time'])
+    types = SimpleBase([
+                        {'name':'Sensor'}, 
+                        {'name':'Button', 'desc':'On Screen button with optional keyboard hotkeys'}, 
+                        {'name':'Time', 'desc': 'Based on system clock'}, #clock should be adjusted per each users global speed setting
+                        ])
 
     def __init__(self):
         super(Trigger, self).__init__(Data.Model.Trigger, ['GET', 'POST', 'DELETE'])

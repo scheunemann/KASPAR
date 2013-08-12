@@ -1,39 +1,40 @@
 <!doctype html>
 <html lang="en" ng-app="kasparGUI">
-<head ng-controller="commonController">
-<meta charset="utf-8">
-<title>KASPAR GUI v{{version}}</title>
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-<!-- <link rel="stylesheet" href="static/lib/bootstrap/bootstrap-select.min.css" /> -->
-<link rel="stylesheet" href="static/css/app.css" />
-
-<script src="static/lib/angular/angular.min.js"></script>
-<script src="static/lib/angular/angular-resource.min.js"></script>
-<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.5.0-SNAPSHOT.min.js"></script>
-<!-- <script src="static/lib/bootstrap/bootstrap-select.min.js"></script> -->
-<script src="static/js/model.js"></script>
-<script src="static/js/app.js"></script>
-<script src="static/js/services.js"></script>
-<script src="static/js/controllers.js"></script>
-<script src="static/js/filters.js"></script>
-<script src="static/js/directives.js"></script>
+<head>
+	<meta charset="utf-8">
+	<title ng-controller="commonController">KASPAR GUI v{{version}}</title>
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="static/lib/bootstrap/bootstrap-select.min.css" /> -->
+	<link rel="stylesheet" href="static/css/app.css" />
+	
+	<script src="static/lib/angular/angular.min.js"></script>
+	<script src="static/lib/angular/angular-resource.min.js"></script>
+	<script src="static/lib/angular/angular-ui-router.min.js"></script>
+	<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.5.0-SNAPSHOT.min.js"></script>
+	<!-- <script src="static/lib/bootstrap/bootstrap-select.min.js"></script> -->
+	<script src="static/js/model.js"></script>
+	<script src="static/js/app.js"></script>
+	<script src="static/js/services.js"></script>
+	<script src="static/js/controllers.js"></script>
+	<script src="static/js/filters.js"></script>
+	<script src="static/js/directives.js"></script>
 </head>
 <body>
-	<header>
+	<header ng-controller="commonController">
 		<br />
 		<h1>KASPAR Web Interface</h1>
-		<h3>Version 3.0 Alpha 2</h3>
+		<h3>Version {{version}}</h3>
 	</header>
 	<div id="main">
 		<div id="navBar" ng-controller="navBarController">
 			<accordion>
-				<accordion-group ng-repeat="group in groups | orderBy:title" heading="{{group.title}}">
-					<div ng-repeat="link in group.links | orderBy:title"><a href="#/{{link.path}}">{{link.title}}</a></div>
+				<accordion-group ng-repeat="group in groups" heading="{{group.title}}">
+					<div ng-repeat="link in group.links"><a href="#/{{link.path}}">{{link.title}}</a></div>
 				</accordion-group>
 			</accordion>
 		</div>
 		<div id="content" class="well">
-			<div ng-view></div>
+			<div ui-view></div>
 		</div>
 	</div>
 	<footer>

@@ -21,31 +21,28 @@
 				</span>
 			</div>
 			<div class="input-group">
-				<span class="input-group-addon">Custom Behaviours</span> <select class="selectpicker form-control" ng-model="selectedUser"
-					ng-options="user.fullname for user in users | orderBy:fullname">
-				</select> 
+				<span class="input-group-addon">Custom Behaviours</span> 
+				<select class="selectpicker form-control" ng-model="selectedAction" ng-options="action.name for action in selectedUser.actions | orderBy:name"></select> 
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" ng-click="newUser()">New</button>
-					<button class="btn btn-default" type="button" ng-click="deleteUser(selectedUser)">Delete</button>
+					<button class="btn btn-default" type="button" ng-click="newAction()">New</button>
+					<button class="btn btn-default" type="button" ng-click="deleteAction(selectedAction)">Delete</button>
 				</span>
 			</div>
 			<div class="input-group">
-				<span class="input-group-addon">Custom Triggers</span> <select class="selectpicker form-control" ng-model="selectedUser"
-					ng-options="user.fullname for user in users | orderBy:fullname">
-				</select> 
+				<span class="input-group-addon">Custom Triggers</span>
+				<select class="selectpicker form-control" ng-model="selectedTrigger" ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:name"></select> 
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" ng-click="newUser()">New</button>
-					<button class="btn btn-default" type="button" ng-click="deleteUser(selectedUser)">Delete</button>
+					<button class="btn btn-default" type="button" ng-click="newTrigger()">New</button>
+					<button class="btn btn-default" type="button" ng-click="deleteTrigger(selectedTrigger)">Delete</button>
 				</span>
 			</div>
 			<div class="input-group">
 				<span class="input-group-addon">Movement Speed</span>
-				<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedUser.fullname" ng-change="updateUser(selectedUser)">
+				<input type="text" class="form-control" placeholder="100" ng-model="selectedUser.speedmodifier" ng-change="updateUser(selectedUser)">
+				<span class="input-group-addon">pct</span>
 			</div>
 			
 		</div>
 	</div>
-	<div>
-		Editor
-	</div>
+	<div ui-view></div>
 </div>

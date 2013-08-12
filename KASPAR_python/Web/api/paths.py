@@ -31,8 +31,8 @@ _menuLinks = {
                               ('Robots', 'admin/robot'),
                               ],
                     'Behaviours': [
-                                   ('Create/Edit', 'behaviours/edit'),
-                                   ('Test', 'behaviours/test'),
+                                   ('Create/Edit', 'action'),
+                                   ('Test', 'action/test'),
                                    ],
                     'Triggers': [
                                    ('Create/Edit', 'trigger/edit'),

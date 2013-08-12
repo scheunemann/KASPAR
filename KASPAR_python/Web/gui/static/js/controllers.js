@@ -4,6 +4,10 @@
 
 angular.module('kasparGUI.controllers', [ 'dataModels' ])
 	.controller(
+		'commonController', [ '$scope', function($scope) {	
+			$scope.version = '3.0 Alpha 2';
+		} ])
+	.controller(
 		'navBarController', [ '$scope', 'Menu', function($scope, Menu) {
 			var m = Menu.get(function() {
 				$scope.title = m.title;
@@ -55,15 +59,30 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			}
 		}])
 	.controller(
-		'userController', [ '$scope', '$filter', 'User', 'CustomAction', 'CustomTrigger', function($scope, $filter, User, CustomAction, CustomTrigger) {
+		'actionController', [ '$scope', '$state', 'Action', 'ActionTypes', function($scope, $state, Action, ActionTypes) {
+			var types = ActionTypes.query(function() {
+				$scope.types = types;
+				$scope.selectedType = types[0];
+			});
+			
+			$scope.typeChange = function(type) {
+				$state.transitionTo('action.' + type.name.toLowerCase());
+			}
+		}])
+	.controller(
+		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger) {
 			var u = User.query(function() {
 				$scope.users = u;
 				$scope.selectedUser = u[0];
+				$scope.selectedUser.actions = $scope.getActions($scope.selectedUser);
+				$scope.selectedUser.triggers = $scope.getTriggers($scope.selectedUser);
 			});
 
 			$scope.newUser = function() {
 				var newU = new User({fullname: 'New User', name:'New'});
 				$scope.selectedUser = newU;
+				$scope.selectedUser.actions = [];
+				$scope.selectedUser.triggers = [];
 				$scope.users.push(newU);
 			};
 			
@@ -74,12 +93,53 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 					}
 				);
 			};
-						
+			
+			$scope.getActions = function(user) {
+				if(user === undefined) {
+					return Action.query();
+				} else {
+					return CustomAction.query({uid:user.id});
+				}
+			};
+			
+			$scope.getTriggers = function(user) {
+				if(user === undefined) {
+					return Trigger.query();
+				} else {
+					return CustomTrigger.query({uid:user.id});
+				}
+			};
+			
+			$scope.newAction = function() {
+				var newA = new CustomAction({name:'New Action', user_id:$scope.selectedUser.id});
+				$scope.selectedAction = newA;
+				$scope.selectedUser.actions.push(newA);
+				$state.transitionTo('user.customaction');
+			};
+			
+			$scope.newTrigger = function() {
+				var newA = new CustomTrigger({name:'New Trigger', user_id:$scope.selectedUser.id});
+				$scope.selectedTrigger = newA;
+				$scope.selectedUser.triggers.push(newA);
+				$state.transitionTo('user.customtrigger');
+			};
+			
+			$scope.deleteAction = function(action) {
+				action.$delete(function() {
+					$scope.selectedUser.actions.splice($scope.selectedUser.actions.indexOf(action), 1);
+					$scope.selectedUser.customactions.splice($scope.selectedUser.customActions.indexOf(actions.id), 1);
+				});
+			};
+			
+			$scope.deleteTrigger = function(trigger) {
+				trigger.$delete(function() {
+					$scope.selectedUser.triggers.splice($scope.selectedUser.triggers.indexOf(trigger), 1);
+					$scope.selectedUser.customtriggers.splice($scope.selectedUser.customTriggers.indexOf(trigger.id), 1);
+				});
+			};
+
 			$scope.updateUser = function(user) {
 				user.$save();
-			}
+			};
 		}])		
-	.controller(
-		'commonController', [ '$scope', function($scope) {	
-			$scope.version = '3 alpha';
-		} ]);
+;

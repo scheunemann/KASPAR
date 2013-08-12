@@ -45,15 +45,27 @@ if __name__ == '__main__':
     from Model import Base
     Base.metadata.drop_all(e)
     Base.metadata.create_all(e)
-    
+     
     from sqlalchemy.orm.session import sessionmaker
-    from Data.Model import Operator, User
+    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
     u = User('uNathan', 'uNathan Burke')
-    o.users.append(u)
+    s = Sound('aSound')
+    cs = Sound('cSound')
+    ca = CustomAction()
+    ca.overridden = s
+    ca.redirect = cs
+    u.customActions.append(ca)
+    t = TimeTrigger('tTime')
+    ct = TimeTrigger('cTime')
+    ctr = CustomTrigger()
+    ctr.overridden = t
+    ctr.redirect = ct
+    u.customTriggers.append(ctr)
     
+    o.users.append(u)    
+     
     session = sessionmaker(bind=e)()
     session.add(o)
     session.commit()
-    

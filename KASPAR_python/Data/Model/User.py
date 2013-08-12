@@ -1,34 +1,34 @@
 from Base import StandardMixin, Base
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-import Trigger
-import Action
 
 class User(StandardMixin, Base):
     name = Column(String(50))
     fullname = Column(String(50))
+    speedmodifier = Column(Integer)
+    customTriggers = relationship("CustomTrigger", backref="user")
+    customActions = relationship("CustomAction", backref="user")
 
-    def __init__(self, name, fullname):
+    def __init__(self, name=None, fullname=None):
         super(User, self).__init__()
         self.name = name
         self.fullname = fullname
+        self.speedmodifier = 100
 
-class CustomTrigger(Trigger.Trigger):
-    
-    id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
-    __mapper_args__ = {
-            'polymorphic_identity':'userCustom',
-    }
+class CustomTrigger(StandardMixin, Base):
     
     user_id = Column(Integer, ForeignKey('User.id'))
-    user = relationship("User", backref="customTriggers")
+    overridden_id = Column(Integer, ForeignKey('Trigger.id'))
+    redirect_id = Column(Integer, ForeignKey('Trigger.id'))
     
-class CustomAction(Action.Action):
+    overridden = relationship("Trigger", backref="overrides", foreign_keys=overridden_id)
+    redirect = relationship("Trigger", foreign_keys=redirect_id)
     
-    id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
-    __mapper_args__ = {
-            'polymorphic_identity':'userCustom',
-    }
+class CustomAction(StandardMixin, Base):
     
     user_id = Column(Integer, ForeignKey('User.id'))
-    user = relationship("User", backref="customActions")
+    overridden_id = Column(Integer, ForeignKey('Action.id'))
+    redirect_id = Column(Integer, ForeignKey('Action.id'))
+    
+    overridden = relationship("Action", backref="overrides", foreign_keys=overridden_id)
+    redirect = relationship("Action", foreign_keys=redirect_id)

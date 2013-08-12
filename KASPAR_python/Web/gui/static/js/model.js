@@ -45,10 +45,10 @@ angular.module('dataModels', [ 'ngResource' ])
 		return $resource('/api/user/:id', {id:'@id'});
 	} ])
 	.factory('CustomAction', [ '$resource', function($resource) {
-		return $resource('/api/user/:id/action/:id', {id:'@id'});
+		return $resource('/api/user/:uid/customaction/:id', {uid:'@user_id', id:'@id'});
 	} ])
 	.factory('CustomTrigger', [ '$resource', function($resource) {
-		return $resource('/api/user/:id/trigger/:id', {id:'@id'});
+		return $resource('/api/user/:uid/customtrigger/:id', {uid:'@user_id', id:'@id'});
 	} ])
 
 	//Actions

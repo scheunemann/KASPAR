@@ -26,12 +26,12 @@ if __name__ == '__main__':
     #mount the root paths
     cherrypy.tree.mount(gui.root, '/', gui.config)
     cherrypy.tree.mount(api.root, '/api', api.config)
-    cherrypy.tree.mount(None, '/ang', config = {
-          '/':{
-               'tools.staticdir.on': True,
-               'tools.staticdir.dir': os.path.join(_dir, 'angular-phonecat/app'),
-               'tools.staticdir.index': 'index.html'
-               }})
+#     cherrypy.tree.mount(None, '/ang', config = {
+#           '/':{
+#                'tools.staticdir.on': True,
+#                'tools.staticdir.dir': os.path.join(_dir, 'angular-phonecat/app'),
+#                'tools.staticdir.index': 'index.html'
+#                }})
         
     #start the server
     cherrypy.engine.start()
