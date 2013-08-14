@@ -1,0 +1,24 @@
+<div ng-controller="robotController">
+	<div class="btn-group">
+		<div class="input-group">
+			<span class="input-group-addon">Robot</span> 
+			<select class="selectpicker form-control" ng-model="selected" ng-options="(item.version + ' (' + item.name + ')' ) for item in items | orderBy:name"></select>
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="newObj()">New</button>
+				<button class="btn btn-default" type="button" ng-click="deleteObj(selected)">Delete</button>
+			</span>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span>
+		<input type="text" class="form-control" placeholder="Name" ng-model="selected.name" ng-change="updateObj(selected)">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Version</span> 
+		<select class="selectpicker form-control" ng-model="selected.version" ng-options="version for version in versions | orderBy:version" ng-change="updateObj(selected)" ng-required="true">
+			<option value="">--Select Version--</option>
+		</select>
+	</div>
+	<button class="btn btn-default" type="button" ng-click="viewoints(selected)">View Joints</button>
+	<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button>
+</div>

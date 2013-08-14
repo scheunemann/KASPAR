@@ -68,7 +68,7 @@ angular.module('dataModels', [ 'ngResource' ])
 	.factory('Trigger', [ '$resource', function($resource) {
 		return $resource('/api/trigger/:id', {id:'@id'});
 	} ])
-	.factory('TriggerTypes', [ '$resource', function($resource) {
-		return $resource('/api/trigger/types/:id', {id:'@id'}, { 'get': {method:'GET'}});
+	.factory('TriggerType', [ '$resource', function($resource) {
+		return $resource('/api/trigger/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 ;

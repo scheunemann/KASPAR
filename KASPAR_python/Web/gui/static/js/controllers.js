@@ -59,8 +59,8 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			}
 		}])
 	.controller(
-		'actionController', [ '$scope', '$state', 'Action', 'ActionTypes', function($scope, $state, Action, ActionTypes) {
-			var types = ActionTypes.query(function() {
+		'actionController', [ '$scope', '$state', 'Action', 'ActionType', function($scope, $state, Action, ActionType) {
+			var types = ActionType.query(function() {
 				$scope.types = types;
 				$scope.selectedType = types[0];
 			});
@@ -68,6 +68,37 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			$scope.typeChange = function(type) {
 				$state.transitionTo('action.' + type.name.toLowerCase());
 			}
+		}])
+	.controller(
+		'robotController', ['$scope', 'RobotType', 'Robot' , function($scope, RobotType, Robot) {
+			var items = Robot.query(function() {
+				$scope.items = items;
+				$scope.selected = items[0];
+			});
+			
+			var versions = RobotType.query(function() {
+				$scope.versions = [];
+				for (var i = 0; i < versions.length; i++) {
+					$scope.versions.push(versions[i]['name']);
+				}
+			});
+			
+			$scope.newObj = function() {
+				var newR = new Robot({name: 'New Robot', version:$scope.versions[0]});
+				$scope.items.push(newR);
+				$scope.selected = newR;
+			};
+			
+			$scope.deleteObj = function(item) {
+				item.$delete(function() {
+					$scope.items.splice($scope.items.indexOf(item), 1);
+					$scope.selected = $scope.items[0];
+				});
+			};
+			
+			$scope.updateObj = function(item) {
+				item.$save();
+			};
 		}])
 	.controller(
 		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger) {

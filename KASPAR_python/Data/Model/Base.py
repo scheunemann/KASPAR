@@ -1,9 +1,7 @@
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy import inspect, Column, Integer, Sequence, DateTime, func
 from sqlalchemy.orm.properties import RelationshipProperty, ColumnProperty
-from sqlalchemy.orm import Session
 from dateutil.tz import tzutc
-import Data.Storage
 import Data.config
 import datetime
 
@@ -47,7 +45,10 @@ class Base(Data.config.modelBase):
     @staticmethod
     def deserialize(cls, dictObj, session):
         mapper = inspect(cls)
-        newObj = cls()
+        if dictObj.has_key('id'):
+            newObj = session.query(cls).get(dictObj['id'])
+        else:
+            newObj = cls()
         for attr in mapper.attrs:
             if not dictObj.has_key(attr.key):
                 continue;
@@ -56,18 +57,27 @@ class Base(Data.config.modelBase):
                 itemType = attr.mapper.class_
                 if attr.uselist == True:
                     attrList = getattr(newObj, attr.key)
-                    objIds = dictObj[attr.key]
-                    for o in objIds:
+                    curIds = map(lambda x: x.id, attrList)
+                    newIds = dictObj[attr.key]
+                    
+                    adds = filter(lambda x: x not in curIds, newIds)
+                    dels = filter(lambda x: x not in newIds, curIds)
+
+                    for o in adds:
                         attrList.append(session.query(itemType).get(o))
+                    for o in dels:
+                        attrList.remove(session.query(itemType).get(o))
                 else:
-                    setattr(newObj, attr.key, session.query(itemType).get(o))
+                    if getattr(newObj, attr.key).id != dictObj[attr.key]:
+                        setattr(newObj, attr.key, session.query(itemType).get(o))
             elif isinstance(attr, ColumnProperty):
                 if attr.columns[0].type.python_type == datetime.datetime:
                     item = datetime.datetime.strptime(dictObj[attr.key], '%Y-%m-%dT%H:%M:%SZ')
                 else:
                     item = dictObj[attr.key]
                 
-                setattr(newObj, attr.key, item)
+                if not getattr(newObj, attr.key) == item:
+                    setattr(newObj, attr.key, item)
 
         return newObj
     

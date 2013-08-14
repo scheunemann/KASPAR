@@ -1,5 +1,5 @@
 from Base import StandardMixin, Base
-from sqlalchemy import Column, String, Float
+from sqlalchemy import Column, String, Float, Integer, ForeignKey
 
 class Robot(StandardMixin, Base):
     name = Column(String(50))
@@ -9,12 +9,3 @@ class Robot(StandardMixin, Base):
         super(Robot, self).__init__()
         self.name = name
         self.version = version
-        
-class Joint(StandardMixin, Base):
-    
-    name = Column(String(50))
-    angle = Column(Float())
-    
-    def __init__(self, name=None):
-        super(Joint, self).__init__()
-        self.name = name

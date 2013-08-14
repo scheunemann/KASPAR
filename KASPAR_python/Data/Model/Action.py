@@ -1,5 +1,5 @@
 from Base import StandardMixin, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Table
+from sqlalchemy import Column, String, Integer, ForeignKey, Table, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.orderinglist import ordering_list
 
@@ -26,11 +26,16 @@ class Sound(Action):
     
 class Movement(Action):
     __abstract__ = True
+
+class JointPosition(StandardMixin, Base):
+    
+    jointName = Column(String(50))
+    angle = Column(Float())
+    pose_id = Column(Integer, ForeignKey('Pose.id'))
         
-poseJoints_table = Table('poseJoints', Base.metadata,
-    Column('Pose_id', Integer, ForeignKey('Pose.id')),
-    Column('Joint_id', Integer, ForeignKey('Joint.id'))
-)
+    def __init__(self, name=None):
+        super(JointPosition, self).__init__()
+        self.name = name
 
 class Pose(Movement):
     
@@ -39,7 +44,7 @@ class Pose(Movement):
             'polymorphic_identity':'pose',
     }
                 
-    joints = relationship("Joint", secondary=poseJoints_table, backref="poses")
+    joints = relationship("JointPosition", backref="pose")
                 
 class Expression(Movement):
                 

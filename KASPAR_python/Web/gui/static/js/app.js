@@ -5,10 +5,15 @@ angular.module('kasparGUI', ['ui.state', 'ui.bootstrap', 'kasparGUI.filters', 'k
 	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");
 		$stateProvider
-			.state(
+		.state(
 				'operator', {
 			    				url:'/admin/operator', 
 			    				templateUrl: 'static/partials/operator.html', 
+	    					})
+			.state(
+				'robot', {
+			    				url:'/admin/robot', 
+			    				templateUrl: 'static/partials/robot/robot.html', 
 	    					})
     		.state(
 				'user', {

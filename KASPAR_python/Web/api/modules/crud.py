@@ -1,6 +1,5 @@
 import logging
 import cherrypy
-import json
 
 class ModelCRUD(object):    
     exposed = False
@@ -22,12 +21,13 @@ class ModelCRUD(object):
             else:
                 logging.warn("Unknown request method: %s" % method)
         
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
     def POST(self, oid=None):
         if not self._exposed['POST']:
             raise cherrypy.NotFound()
         
-        jsonData = json.loads(cherrypy.request.body.read())
-        data = self._modelClass.deserialize(self._modelClass, jsonData, cherrypy.request.db)
+        data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
         if oid == None:
             #New object
             cherrypy.request.db.add(data)
@@ -35,8 +35,9 @@ class ModelCRUD(object):
             cherrypy.request.db.merge(data)
             
         cherrypy.request.db.commit()
-        return json.dumps(data.serialize())
+        return data.serialize()
 
+    @cherrypy.tools.json_out()
     def GET(self, oid=None, constraint=None):
         if not self._exposed['GET']:
             raise cherrypy.NotFound()
@@ -53,15 +54,17 @@ class ModelCRUD(object):
             else:
                 ret = ret.serialize()
         
-        return json.dumps(ret)
+        return ret
 
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
     def PUT(self, data):
         if not self._exposed['PUT']:
             raise cherrypy.NotFound()
 
-        obj = cherrypy.request.db.query(self._modelClass).get(data['id'])
-        obj = self._updateObject(data, obj)
-        cherrypy.request.db.add(obj)
+        data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
+        cherrypy.request.db.add(data)
+        return data
     
     def DELETE(self, oid):
         if not self._exposed['DELETE']:
@@ -69,14 +72,3 @@ class ModelCRUD(object):
 
         obj = cherrypy.request.db.query(self._modelClass).get(oid)
         cherrypy.request.db.delete(obj)
-        pass
-   
-    def _updateObject(self, data, obj=None):
-        if obj == None:
-            obj = self._modelClass()
-
-        for name, value in data.iteritems():
-            if hasattr(obj, name):
-                setattr(obj, name, value)
-        
-        return obj
