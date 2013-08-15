@@ -26,6 +26,9 @@ class SensorTrigger(Trigger):
             'polymorphic_identity':'sensor',
     }
     
+    sensorName = Column(String(50))
+    sensorValue = Column(String(50))
+    
 class TimeTrigger(Trigger):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
@@ -39,3 +42,10 @@ class ButtonTrigger(Trigger):
     __mapper_args__ = {
             'polymorphic_identity':'button',
     }
+    
+class ButtonHotKey(StandardMixin, Base):
+    
+    keyName = Column(String(1))
+    modifiers = Column(String(50))
+    trigger_id = Column(Integer, ForeignKey('ButtonTrigger.id'))
+    trigger = relationship("ButtonTrigger", backref="hotKeys")

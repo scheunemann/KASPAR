@@ -1,6 +1,6 @@
 import os, sys
 from xml.etree import ElementTree as et
-from Data.Model import Robot, Servo, ServoGroup, ServoType, ServoConfig
+from Data.Model import Robot, Servo, ServoGroup, ServoType, ServoConfig, Pose, JointPosition, SensorTrigger, ButtonTrigger, ButtonHotKey
 
 class KasparImporter(object):
     def __init__(self, version):
@@ -105,8 +105,9 @@ class KasparImporter(object):
         c = ServoConfig()
         c.port = self._getText("PORT", config, "")
         c.portSpeed = self._getText("SPEED", config, 115200)
-        c.offset = 0
-        c.scale = 1.0
+        c.rotationOffset = 0
+        c.rotationScale = 360 / 1024.0
+        c.speedScale = 1 / 1024.0
         c.type = self._getServoType(servoName)
         return c
 
@@ -139,7 +140,113 @@ class KasparImporter(object):
     
         return nodes
     
+class ActionImporter(object):
+    
+    def __init__(self):
+        self.defaultAngle = 360.0 / 1024.0
+        self.defaultSpeed = 1 / 1024.0
+    
+    def getPose(self, legacyData, legacyRobot=None):
+        if type(legacyData) == str: 
+            lines = legacyData.split('\n')
+        else:
+            lines = legacyData
+
+        name = lines[0].strip()
+        pose = Pose(name=name)
+        
+        expectedJoints = int(lines[1])
+        for i in range(2, expectedJoints + 2):
+            (jointName, pos, spd, _) = lines[i].strip().split(',')
+            speed = int(spd)
+            position = int(pos)
+            
+            if legacyRobot:
+                try:
+                    servo = filter(lambda x: x.jointName == jointName, legacyRobot.servos)[0]
+                    servoConfig = filter(lambda x: x.type == servo.type, legacyRobot.servoConfigs)[0]
+                    angle = (position - servoConfig.rotationOffset) * (servoConfig.rotationScale)
+                    speed = speed * servoConfig.speedScale
+                except:
+                    print >> sys.stderr, "Servo with name %s not attached to robot %s, using default conversion" % (jointName, legacyRobot.name)
+                    angle = position * self.defaultAngle
+                    speed = speed * self.defaultSpeed
+            else:
+                angle = position * self.defaultAngle
+                speed = speed * self.defaultSpeed
+                
+            jp = JointPosition(jointName=jointName)
+            jp.angle = angle
+            jp.speed = speed
+            pose.jointPositions.append(jp)
+            
+        return pose
+
+class TriggerImporter(object):
+    
+    def __init__(self):
+        pass
+
+    def getTriggers(self, legacyData, poses):
+        if type(legacyData) == str: 
+            lines = legacyData.split('\n')
+        else:
+            lines = legacyData
+        
+        triggers = []
+        for line in lines:
+            vals = line.split(',')
+            if len(vals) == 2:
+                name = vals[0].strip()
+                key = vals[1].strip()
+                try:
+                    pose = filter(lambda x: x.name == name, poses)[0]
+                except:
+                    print >> sys.stderr, "Pose %s not found, skipping" % name
+                    continue
+                
+                if len(key) > 1:
+                    t = SensorTrigger(name=name)
+                    t.sensorName = key
+                    t.sensorValue = 'eval::on'
+                    t.action = pose 
+                    triggers.append(t)
+                else:
+                    t = ButtonTrigger(name=name)
+                    t.action = pose
+                    if len(key) == 1:
+                        hk = ButtonHotKey()
+                        hk.keyName = key
+                        t.hotKeys.append(hk)
+                    triggers.append(t)
+            else:
+                print >> sys.stderr, "Unknown key sequence?? %s" % line
+                continue
+        
+        return triggers                
+
 if __name__ == '__main__':
     k = KasparImporter('kaspar1a')
     r = k.getRobot()
-    print repr(r)
+    a = ActionImporter()
+    t = TriggerImporter()
+    
+    poses = []
+    triggers = []
+    
+    baseDir = os.path.dirname(os.path.realpath(__file__))
+    searchDir = os.path.join(baseDir, 'kasparConfigs/kaspar1a/pos')
+    for fileName in os.listdir(searchDir):
+        f = open(os.path.join(searchDir, fileName))
+        lines = f.readlines()
+        poses.append(a.getPose(lines, r))
+    
+    searchDir = os.path.join(baseDir, 'kasparConfigs/kaspar1a/keyMaps')
+    for fileName in os.listdir(searchDir):
+        f = open(os.path.join(searchDir, fileName))
+        lines = f.readlines()
+        triggers.extend(t.getTriggers(lines, poses))
+
+    print r
+    print poses
+    print triggers

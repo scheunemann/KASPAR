@@ -112,7 +112,10 @@ class SettingMixin(object):
 class DisplayMixin(object):
     
     def __repr__(self):
-        return "<%s('%s')>" % (self.__class__.__name__, self.name)
-    
+        if hasattr(self, 'name'):
+            return "<%s('%s')>" % (self.__class__.__name__, self.name)
+        else:
+            return "<%s('%s')>" % (self.__class__.__name__, self.id)
+
 class StandardMixin(DisplayMixin, SettingMixin):
     pass

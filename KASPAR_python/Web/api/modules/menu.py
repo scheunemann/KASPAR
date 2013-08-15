@@ -9,15 +9,19 @@ class MenuData(object):
         
     def GET(self, *args, **kwargs):
         menu = {'groups': []}
-        for title, links in self._links.iteritems():
-            section = { 'title': title, 'links': [] }
-                        
-            for (l_title, l_path) in links:
+        rootOrder = 1
+        for item in self._links:
+            section = { 'title': item['title'], 'order':rootOrder, 'links': [] }
+            rootOrder += 1
+            order = 0
+            for (l_title, l_path) in item['links']:
                 section['links'].append(
                          {
                           'path': l_path,
-                          'title': l_title
+                          'title': l_title,
+                          'order': order
                           })
+                order += 1
         
             menu['groups'].append(section)
         

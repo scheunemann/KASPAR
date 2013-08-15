@@ -1,10 +1,2 @@
-<div ng-controller="actionController">
-	<span>Action Editor</span>
-	<div class="btn-group">
-		<div class="input-group">
-			<span class="input-group-addon">Type</span>
-			<select class="selectpicker form-control" ng-model="selectedType" ng-options="type.name for type in types | orderBy:name" ng-change='typeChange(selectedType)'></select>
-		</div>
-	</div>
-	<div ui-view></div>
-</div>
+Action Main Window
+<div ui-view></div>

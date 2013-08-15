@@ -24,26 +24,36 @@ for name, type_ in _modules.iteritems():
 
 #root.menuOptions = menu.MenuData(_moduleLinks)
 
-_menuLinks = {
-                    'Admin': [
-                              ('Operators', 'admin/operator'),
-                              ('Users', 'admin/user'),
-                              ('Robots', 'admin/robot'),
-                              ],
-                    'Behaviours': [
-                                   ('Create/Edit', 'action'),
-                                   ('Test', 'action/test'),
-                                   ],
-                    'Triggers': [
-                                   ('Create/Edit', 'trigger/edit'),
-                                   ('Test', 'behaviours/test'),
-                                 ],
-                    'Interactions': [
-                                     ('View History', 'interaction/log'),
-                                     ('Begin New', 'interaction/start'),
-                                     ('Manage History', 'interaction/manage'),
-                                     ],
-                }
+_menuLinks = [
+                {
+                 'title': 'Admin',
+                 'links': [
+                            ('Operators', 'admin/operator'),
+                            ('Users', 'admin/user'),
+                            ('Robots', 'admin/robot'),
+                          ]},
+                {
+                 'title':'Action',
+                 'links': [
+                            ('Create/Edit', 'action/edit'),
+                            ('Test', 'action/test'),
+                            ('Upload', 'action/upload'),
+                          ]},
+                {
+                 'title':'Trigger',
+                 'links': [
+                            ('Create/Edit', 'trigger/edit'),
+                            ('Test', 'trigger/test'),
+                            ('Upload', 'trigger/upload'),
+                          ]},
+                {
+                 'title':'Interactions',
+                 'links': [
+                            ('View History', 'interaction/log'),
+                            ('Begin New', 'interaction/start'),
+                            ('Manage History', 'interaction/manage'),
+                          ]},
+            ]
 root.menuOptions = menu.MenuData(_menuLinks)
 
 config = {

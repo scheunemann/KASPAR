@@ -27,6 +27,12 @@ class Servo(StandardMixin, Base):
     poseable = Column(Boolean)
     extraData = Column(PickleType)
     
+    def __repr__(self):
+        if self.robot != None:
+            return "<%s('%s' on '%s')>" % (self.__class__.__name__, self.jointName, self.robot.name)
+        else:
+            return "<%s('%s')>" % (self.__class__.__name__, self.jointName)
+    
 Index('robot_joints', Servo.jointName, Servo.robot_id, unique=True)
 
 class ServoGroup(StandardMixin, Base):
@@ -47,8 +53,8 @@ class ServoType(StandardMixin, Base):
     maxPosition = Column(Integer)
     defaultPosition = Column(Integer)
     defaultSpeed = Column(Integer)
-    defaultOffset = Column(Integer)
-    defaultScale = Column(Float)
+    offset = Column(Integer)
+    scale = Column(Float)
     poseable = Column(Boolean)
     extraData = Column(PickleType)
 
@@ -63,8 +69,9 @@ class ServoConfig(StandardMixin, Base):
     type_id = Column(Integer, ForeignKey("ServoType.id")) 
     type = relationship("ServoType")
 
-    offset = Column(Float)
-    scale = Column(Float)
+    rotationOffset = Column(Float)
+    rotationScale = Column(Float)
+    speedScale = Column(Float)
     port = Column(String(50))
     portSpeed = Column(Integer)
     extraData = Column(PickleType)

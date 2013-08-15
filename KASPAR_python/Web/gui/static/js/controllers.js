@@ -59,15 +59,42 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			}
 		}])
 	.controller(
-		'actionController', [ '$scope', '$state', 'Action', 'ActionType', function($scope, $state, Action, ActionType) {
+		'actionController', [ '$scope', '$state', '$http', 'Action', 'ActionType', function($scope, $state, $http, Action, ActionType) {
+			$scope.newobjs = [];
+			
 			var types = ActionType.query(function() {
 				$scope.types = types;
 				$scope.selectedType = types[0];
 			});
 			
 			$scope.typeChange = function(type) {
-				$state.transitionTo('action.' + type.name.toLowerCase());
-			}
+				$state.transitionTo('action.edit.' + type.name.toLowerCase());
+			};
+	
+			$scope.setFiles = function(element) {
+		        $scope.$apply(function($scope) {
+		            $scope.files = element.files;
+		        });
+		    };
+			
+			$scope.uploadFiles = function(files) {
+				for(var i = 0; i < files.length; i++) {
+					var fd = new FormData();
+				    fd.append("data", files[i]);
+	
+				    var obj = $http
+				    	.post('/api/action/upload', fd,{
+				            headers: {'Content-Type': undefined },
+				            transformRequest: angular.identity
+				        })
+				    	.success(
+				    		function(data, status, headers, config) { $scope.newobjs.push(data); }
+				    	)
+				    	.error(
+		    				function() { console.log("Error sending file:" + status); }
+			    		);
+				}
+			};
 		}])
 	.controller(
 		'robotController', ['$scope', 'RobotType', 'Robot' , function($scope, RobotType, Robot) {

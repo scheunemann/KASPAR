@@ -28,8 +28,8 @@
 	<div id="main">
 		<div id="navBar" ng-controller="navBarController">
 			<accordion>
-				<accordion-group ng-repeat="group in groups" heading="{{group.title}}">
-					<div ng-repeat="link in group.links"><a href="#/{{link.path}}">{{link.title}}</a></div>
+				<accordion-group ng-repeat="group in groups | orderBy:order" heading="{{group.title}}">
+					<div ng-repeat="link in group.links | orderBy:order"><a href="#/{{link.path}}">{{link.title}}</a></div>
 				</accordion-group>
 			</accordion>
 		</div>

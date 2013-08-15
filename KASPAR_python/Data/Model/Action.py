@@ -24,29 +24,30 @@ class Sound(Action):
             'polymorphic_identity':'sound',
     }
     
-class Movement(Action):
-    __abstract__ = True
-
 class JointPosition(StandardMixin, Base):
     
     jointName = Column(String(50))
     angle = Column(Float())
+    speed = Column(Integer)
     pose_id = Column(Integer, ForeignKey('Pose.id'))
         
-    def __init__(self, name=None):
+    def __init__(self, jointName=None):
         super(JointPosition, self).__init__()
-        self.name = name
+        self.jointName = jointName
+    
+    def __repr__(self):
+        return "<%s('%s':%s)>" % (self.__class__.__name__, self.jointName, self.angle)
 
-class Pose(Movement):
+class Pose(Action):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {
             'polymorphic_identity':'pose',
     }
                 
-    joints = relationship("JointPosition", backref="pose")
+    jointPositions = relationship("JointPosition", backref="pose")
                 
-class Expression(Movement):
+class Expression(Action):
                 
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {

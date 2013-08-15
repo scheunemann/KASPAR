@@ -1,5 +1,5 @@
 from Base import StandardMixin, Base
-from sqlalchemy import Column, String, Float, Integer, ForeignKey
+from sqlalchemy import Column, String
 
 class Robot(StandardMixin, Base):
     name = Column(String(50))

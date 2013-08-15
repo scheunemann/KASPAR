@@ -55,8 +55,8 @@ angular.module('dataModels', [ 'ngResource' ])
 	.factory('Action', [ '$resource', function($resource) {
 		return $resource('/api/action/:id', {id:'@id'});
 	} ])
-	.factory('ActionTypes', [ '$resource', function($resource) {
-		return $resource('/api/action/types/:id', {id:'@id'}, { 'get': {method:'GET'}});
+	.factory('ActionType', [ '$resource', function($resource) {
+		return $resource('/api/action/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	
 	//Joints

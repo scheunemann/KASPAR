@@ -47,7 +47,7 @@ if __name__ == '__main__':
     Base.metadata.create_all(e)
      
     from sqlalchemy.orm.session import sessionmaker
-    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger
+    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
     u = User('uNathan', 'uNathan Burke')
@@ -57,6 +57,13 @@ if __name__ == '__main__':
     ca.overridden = s
     ca.redirect = cs
     u.customActions.append(ca)
+    p = Pose('aPose')
+    cp = Pose('cPose')
+    ca = CustomAction()
+    ca.overridden = p
+    ca.redirect = cp
+    u.customActions.append(ca)
+    
     t = TimeTrigger('tTime')
     ct = TimeTrigger('cTime')
     ctr = CustomTrigger()

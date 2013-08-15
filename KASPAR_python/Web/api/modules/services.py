@@ -3,6 +3,7 @@ import base
 import crud
 from robot import Robot
 from user import User
+from action import ActionImport
 
 __all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger']
 
@@ -17,7 +18,7 @@ class Operator(crud.ModelCRUD):
     
     def __init__(self):
         super(Operator, self).__init__(Data.Model.Operator, ['GET', 'POST', 'DELETE'])
-    
+
 class Action(crud.ModelCRUD):
     exposed = True
     type = base.SimpleBase([
@@ -26,6 +27,7 @@ class Action(crud.ModelCRUD):
                         {'name':'Group', 'desc':'parallel actions'}, 
                         {'name':'Sequence', 'desc':'action series'},
                         ])
+    upload = ActionImport()
     
     def __init__(self):
         super(Action, self).__init__(Data.Model.Action, ['GET', 'POST', 'DELETE'])
