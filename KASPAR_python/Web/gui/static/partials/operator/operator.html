@@ -1,5 +1,5 @@
 <div ng-controller="operatorController">
-	<div id="operatorsList" class="btn-group">
+	<div id="operatorsList">
 		<div class="input-group">
 			<span class="input-group-addon">Operator</span> <select class="selectpicker form-control" ng-model="selectedOperator"
 				ng-options="operator.fullname for operator in operators | orderBy:fullname">

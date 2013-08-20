@@ -19,13 +19,13 @@ angular.module('dataModels', [ 'ngResource' ])
 		return $resource('/api/robot/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	.factory('Servo', [ '$resource', function($resource) {
-		return $resource('/api/robot/:id/servo:id', {id:'@id'});
+		return $resource('/api/robot/:robot/servo:id', {robot:'@robot', id:'@id'});
 	} ])
 	.factory('ServoGroup', [ '$resource', function($resource) {
-		return $resource('/api/robot/:id/servogroup:id', {id:'@id'});
+		return $resource('/api/robot/:robot/servogroup:id', {robot:'@robot', id:'@id'});
 	} ])
 	.factory('ServoConfig', [ '$resource', function($resource) {
-		return $resource('/api/robot/:id/servoconfig/:id', {id:'@id'});
+		return $resource('/api/robot/:robot/servoconfig/:id', {robot:'@robot', id:'@id'});
 	} ])
 	.factory('ServoType', [ '$resource', function($resource) {
 		return $resource('/api/robot/servo/type/:id', {id:'@id'}, { 'get': {method:'GET'}});

@@ -1,13 +1,11 @@
 <div ng-controller="robotController">
-	<div class="btn-group">
-		<div class="input-group">
-			<span class="input-group-addon">Robot</span> 
-			<select class="selectpicker form-control" ng-model="selected" ng-options="(item.version + ' (' + item.name + ')' ) for item in items | orderBy:name"></select>
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="newObj()">New</button>
-				<button class="btn btn-default" type="button" ng-click="deleteObj(selected)">Delete</button>
-			</span>
-		</div>
+	<div class="input-group">
+		<span class="input-group-addon">Robot</span> 
+		<select class="selectpicker form-control" ng-model="selected" ng-options="(item.version + ' (' + item.name + ')' ) for item in items | orderBy:name" ng-change="getData(selected)"></select>
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button" ng-click="newObj()">New</button>
+			<button class="btn btn-default" type="button" ng-click="deleteObj(selected)">Delete</button>
+		</span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon">Name</span>
@@ -19,6 +17,9 @@
 			<option value="">--Select Version--</option>
 		</select>
 	</div>
-	<button class="btn btn-default" type="button" ng-click="viewoints(selected)">View Joints</button>
-	<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button>
+	<div class="btn-group pull-right">
+		<button class="btn btn-default" type="button" ng-click="viewJoints(selected)">View Joints</button>
+		<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button>
+	</div>
+	<div ui-view></div>
 </div>

@@ -63,14 +63,13 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			$scope.newobjs = [];
 			
 			var types = ActionType.query(function() {
-				$scope.types = types;
-				$scope.selectedType = types[0];
+				$scope.types = types;				
 			});
 			
-			$scope.typeChange = function(type) {
-				$state.transitionTo('action.edit.' + type.name.toLowerCase());
-			};
-	
+			$scope.isUnchanged = function(action) {
+				return action.id === undefined;
+			}
+				
 			$scope.setFiles = function(element) {
 		        $scope.$apply(function($scope) {
 		            $scope.files = element.files;
@@ -97,7 +96,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			};
 		}])
 	.controller(
-		'robotController', ['$scope', 'RobotType', 'Robot' , function($scope, RobotType, Robot) {
+		'robotController', ['$scope', '$state', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', function($scope, $state, RobotType, Robot, Servo, ServoConfig, ServoGroup) {
 			var items = Robot.query(function() {
 				$scope.items = items;
 				$scope.selected = items[0];
@@ -109,6 +108,20 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 					$scope.versions.push(versions[i]['name']);
 				}
 			});
+			
+			$scope.getData = function(robot) {
+				if (robot.id != undefined) {
+					var con = ServoConfig.query({robot:robot.id}, function() {
+						$scope.configs = con;
+					});
+					var gro = ServoGroup.query({robot:robot.id}, function() {
+						$scope.groups = gro;
+					});
+					var ser = Servo.query({robot:robot.id}, function() {
+						$scope.servos = ser;
+					});
+				}
+			}
 			
 			$scope.newObj = function() {
 				var newR = new Robot({name: 'New Robot', version:$scope.versions[0]});
@@ -124,7 +137,19 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			};
 			
 			$scope.updateObj = function(item) {
-				item.$save();
+				if (item.name != "" && item.version != "") {
+					item.$save();
+				}
+			};
+			
+			$scope.viewJoints = function(robot) {
+				$scope.getData($scope.selected);
+				$state.transitionTo('robot.view');
+			};
+
+			$scope.calibrateJoints = function(robot) {
+				$scope.getData($scope.selected);
+				$state.transitionTo('robot.calibrate');
 			};
 		}])
 	.controller(
@@ -132,7 +157,9 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			var u = User.query(function() {
 				$scope.users = u;
 				$scope.selectedUser = u[0];
-				$scope.selectedUser.actions = $scope.getActions($scope.selectedUser);
+				$scope.selectedUser.actions = CustomAction.query({uid:$scope.selectedUser.id}, function() {
+					$scope.selectedAction = $scope.selectedUser.actions[0];
+				});
 				$scope.selectedUser.triggers = $scope.getTriggers($scope.selectedUser);
 			});
 
@@ -199,5 +226,38 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			$scope.updateUser = function(user) {
 				user.$save();
 			};
-		}])		
+		}])
+	.directive('actionEditor', function () {
+		var def = {
+					//templateUrl: 'static/partials/action/edit.html',
+					restrict: 'E',
+					scope: {
+						type: "=",
+			            model: "=",
+			        },
+			        controller: function($scope) {
+			        	$scope.editorUrl = ""
+			        	$scope.$watch('type', function(newType) {
+			        		if (newType != "" && newType != undefined) {			        			
+			        			$scope.editorUrl = 'static/partials/action/' + newType.toLowerCase() + '.html';
+			        		}
+			        	})
+			        }
+				  };
+
+		return def;		
+	})
+	.directive('poseEditor', function factory(injectables) {
+		var def = {
+					templateUrl: 'static/partials/action/pose.html',
+					restrict: 'E',
+					scope: {
+			            model: "=",
+			        },
+			        controller: function($scope) {
+			        }
+				  };
+
+		return def;		
+	})
 ;

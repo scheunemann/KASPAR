@@ -59,14 +59,14 @@ if __name__ == '__main__':
     u.customActions.append(ca)
     p = Pose('aPose')
     cp = Pose('cPose')
-    ca = CustomAction()
+    ca = CustomAction('Custom_Pose')
     ca.overridden = p
     ca.redirect = cp
     u.customActions.append(ca)
     
     t = TimeTrigger('tTime')
     ct = TimeTrigger('cTime')
-    ctr = CustomTrigger()
+    ctr = CustomTrigger('Custom_Time')
     ctr.overridden = t
     ctr.redirect = ct
     u.customTriggers.append(ctr)

@@ -5,9 +5,15 @@ import cherrypy
 import json
 import Data.Legacy
 
+class ServoType(ModelCRUD):
+    exposed = True
+    
+    def __init__(self):
+        super(ServoType, self).__init__(Data.Model.ServoType, ['GET', ])
+
 class Servo(ModelCRUD):
     exposed = True
-    types = SimpleBase(['AX12', ])
+    type = ServoType() 
     
     def __init__(self):
         super(Servo, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
@@ -26,7 +32,7 @@ class ServoConfig(ModelCRUD):
         
 class Sensor(ModelCRUD):
     exposed = True
-    types = SimpleBase(['Clock', 'FSR', ])
+    type = SimpleBase(['Clock', 'FSR', ])
     
     def __init__(self):
         super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])
@@ -35,7 +41,13 @@ class SensorGroup(ModelCRUD):
     exposed = True
     
     def __init__(self):
-        super(SensorGroup, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
+        super(SensorGroup, self).__init__(Data.Model.SensorGroup, ['GET', 'POST', 'DELETE'])
+
+class SensorConfig(ModelCRUD):
+    exposed = True
+    
+    def __init__(self):
+        super(SensorConfig, self).__init__(Data.Model.SensorConfig, ['GET', 'POST', 'DELETE'])
 
 class Robot(ModelCRUD):
     exposed = True
@@ -49,11 +61,12 @@ class Robot(ModelCRUD):
     servoconfig = ServoConfig()
     sensor = Sensor()
     sensorgroup = SensorGroup()
+    sensorconfig = SensorConfig()
     
     def _cp_dispatch(self, vpath):
         if vpath and len(vpath) > 1:
             cherrypy.request.params['constraint'] = {'robot_id': vpath.pop(0)}
-        if vpath:
+        if not vpath[0].isdigit():
             return getattr(self, vpath.pop(0), None)
     
     def __init__(self):
@@ -88,7 +101,7 @@ class Robot(ModelCRUD):
                 data.name = cherrypy.request.json['name']
                 data.id = oid
                 cherrypy.request.db.merge(data)
-                return data.serialize()                
+                return data.serialize(urlResolver=self._urlResolver)                
             else:
                 return super(Robot, self).POST(oid)
             

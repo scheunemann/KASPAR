@@ -16,6 +16,7 @@ class User(StandardMixin, Base):
         self.speedmodifier = 100
 
 class CustomTrigger(StandardMixin, Base):
+    name = Column(String(50))
     
     user_id = Column(Integer, ForeignKey('User.id'))
     overridden_id = Column(Integer, ForeignKey('Trigger.id'))
@@ -24,7 +25,12 @@ class CustomTrigger(StandardMixin, Base):
     overridden = relationship("Trigger", backref="overrides", foreign_keys=overridden_id)
     redirect = relationship("Trigger", foreign_keys=redirect_id)
     
+    def __init__(self, name=None):
+        super(CustomTrigger, self).__init__()
+        self.name = name
+    
 class CustomAction(StandardMixin, Base):
+    name = Column(String(50))
     
     user_id = Column(Integer, ForeignKey('User.id'))
     overridden_id = Column(Integer, ForeignKey('Action.id'))
@@ -32,3 +38,7 @@ class CustomAction(StandardMixin, Base):
     
     overridden = relationship("Action", backref="overrides", foreign_keys=overridden_id)
     redirect = relationship("Action", foreign_keys=redirect_id)
+
+    def __init__(self, name=None):
+        super(CustomAction, self).__init__()
+        self.name = name

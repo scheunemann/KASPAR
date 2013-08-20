@@ -1,6 +1,6 @@
 <div ng-controller="userController">
 	<div>
-		<div id="userList" class="btn-group">
+		<div id="userList">
 			<div class="input-group">
 				<span class="input-group-addon">User</span> <select class="selectpicker form-control" ng-model="selectedUser"
 					ng-options="user.fullname for user in users | orderBy:fullname">
@@ -22,7 +22,8 @@
 			</div>
 			<div class="input-group">
 				<span class="input-group-addon">Custom Behaviours</span> 
-				<select class="selectpicker form-control" ng-model="selectedAction" ng-options="action.name for action in selectedUser.actions | orderBy:name"></select> 
+				<select class="selectpicker form-control" ng-model="selectedAction" ng-options="action.name for action in selectedUser.actions | orderBy:name">
+				</select> 
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" ng-click="newAction()">New</button>
 					<button class="btn btn-default" type="button" ng-click="deleteAction(selectedAction)">Delete</button>
@@ -30,7 +31,8 @@
 			</div>
 			<div class="input-group">
 				<span class="input-group-addon">Custom Triggers</span>
-				<select class="selectpicker form-control" ng-model="selectedTrigger" ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:name"></select> 
+				<select class="selectpicker form-control" ng-model="selectedTrigger" ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:name">
+				</select> 
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" ng-click="newTrigger()">New</button>
 					<button class="btn btn-default" type="button" ng-click="deleteTrigger(selectedTrigger)">Delete</button>

@@ -3,6 +3,7 @@ import cherrypy
 
 class ModelCRUD(object):    
     exposed = False
+    _uriCache = {}
     
     @property
     def links(self):
@@ -35,7 +36,7 @@ class ModelCRUD(object):
             cherrypy.request.db.merge(data)
             
         cherrypy.request.db.commit()
-        return data.serialize()
+        return data.serialize(urlResolver=self._urlResolver)
 
     @cherrypy.tools.json_out()
     def GET(self, oid=None, constraint=None):
@@ -44,15 +45,15 @@ class ModelCRUD(object):
 
         if oid == None:
             if constraint == None:
-                ret = [o.serialize() for o in cherrypy.request.db.query(self._modelClass).all()]
+                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).all()]
             else:
-                ret = [o.serialize() for o in cherrypy.request.db.query(self._modelClass).filter_by(**constraint).all()]
+                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).filter_by(**constraint).all()]
         else:
             ret = cherrypy.request.db.query(self._modelClass).get(oid)
             if ret == None:
                 raise cherrypy.NotFound()
             else:
-                ret = ret.serialize()
+                ret = ret.serialize(urlResolver=self._urlResolver)
         
         return ret
 
@@ -64,7 +65,7 @@ class ModelCRUD(object):
 
         data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
         cherrypy.request.db.add(data)
-        return data
+        return data.serialize(urlResolver=self._urlResolver)
     
     def DELETE(self, oid):
         if not self._exposed['DELETE']:
@@ -72,3 +73,23 @@ class ModelCRUD(object):
 
         obj = cherrypy.request.db.query(self._modelClass).get(oid)
         cherrypy.request.db.delete(obj)
+    
+    @staticmethod
+    def _urlResolver(class_):
+        if not ModelCRUD._uriCache.has_key(class_):
+            ModelCRUD._uriCache[class_] = '/api/%s' % ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root)
+        return ModelCRUD._uriCache[class_]
+    
+    @staticmethod
+    def _urlBuilder(class_, root):
+        if hasattr(root, '__dict__'):
+            for key in dir(root):
+                value = getattr(root, key)
+                if isinstance(value, ModelCRUD):
+                    if issubclass(value._modelClass, class_):
+                        return '%s/:id' % key
+                    else:
+                        k = ModelCRUD._urlBuilder(class_, value)
+                        if k != None:
+                            return '%s/%s' % (key, k)
+        return None

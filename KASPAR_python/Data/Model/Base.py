@@ -55,21 +55,35 @@ class Base(Data.config.modelBase):
             
             if isinstance(attr, RelationshipProperty):
                 itemType = attr.mapper.class_
-                if attr.uselist == True:
-                    attrList = getattr(newObj, attr.key)
-                    curIds = map(lambda x: x.id, attrList)
-                    newIds = dictObj[attr.key]
-                    
-                    adds = filter(lambda x: x not in curIds, newIds)
-                    dels = filter(lambda x: x not in newIds, curIds)
-
-                    for o in adds:
-                        attrList.append(session.query(itemType).get(o))
-                    for o in dels:
-                        attrList.remove(session.query(itemType).get(o))
+                #newData can be [{objectDict}, ...], {objectDict}, {'proxyObject':true, 'ids':[oid, ...], ... }
+                newData = dictObj[attr.key]
+                if isinstance(newData, dict) and newData.has_key('proxyObject'):
+                    #newData = {'proxyList':true, 'ids':[oid, ...], 'type', 'ObjType', 'url': 'objUrl/:id' }
+                    if attr.uselist == True:
+                        attrList = getattr(newObj, attr.key)
+                        curIds = map(lambda x: x.id, attrList)
+                        newIds = newData['ids']
+                        
+                        adds = filter(lambda x: x not in curIds, newIds)
+                        dels = filter(lambda x: x not in newIds, curIds)
+    
+                        for o in adds:
+                            attrList.append(session.query(itemType).get(o))
+                        for o in dels:
+                            attrList.remove(session.query(itemType).get(o))
+                    else:
+                        if getattr(newObj, attr.key).id != newData:
+                            setattr(newObj, attr.key, session.query(itemType).get(o))
                 else:
-                    if getattr(newObj, attr.key).id != dictObj[attr.key]:
-                        setattr(newObj, attr.key, session.query(itemType).get(o))
+                    #newData can be [{objectDict}, ...], {objectDict}
+                    if attr.uselist == True:
+                        attrList = getattr(newObj, attr.key)
+                        map(attrList.remove, attrList)
+                        
+                        for o in newData:
+                            attrList.append(Base.deserialize(itemType, o, session))
+                    else:
+                        setattr(newObj, attr.key, Base.deserialize(itemType, newData, session))
             elif isinstance(attr, ColumnProperty):
                 if attr.columns[0].type.python_type == datetime.datetime:
                     item = datetime.datetime.strptime(dictObj[attr.key], '%Y-%m-%dT%H:%M:%SZ')
@@ -81,19 +95,38 @@ class Base(Data.config.modelBase):
 
         return newObj
     
-    def serialize(self):
+    def serialize(self, useProxies=True, urlResolver=None):
         mapper = inspect(self.__class__)
         obj = {}
         for attr in mapper.attrs:
             if isinstance(attr, RelationshipProperty):
-                if attr.uselist == True:
-                    ids = []
-                    for item in getattr(self, attr.key):
-                        ids.append(item.id)
-                    
-                    obj[attr.key] = ids
+                if useProxies:
+                    proxy = {
+                             'proxyObject':True, 
+                             'ids':[], 
+                             'type': attr.mapper.class_.__name__, 
+                             'isList':attr.uselist,
+                             'uri': '' 
+                    }
+                    if urlResolver != None:
+                        proxy['uri'] = urlResolver(attr.mapper.class_)
+
+                    if attr.uselist == True:
+                        for item in getattr(self, attr.key):
+                            proxy['ids'].append(item.id)
+                    else:
+                        proxy['ids'].append(getattr(self, attr.key).id)
+                        
+                    obj[attr.key] = proxy
                 else:
-                    obj[attr.key] = getattr(self, attr.key).id
+                    #This has potential circular reference issues
+                    if attr.uselist == True:
+                        items = []
+                        for item in getattr(self, attr.key):
+                            items.append(item.serialize(useProxies, urlResolver))                        
+                        obj[attr.key] = items
+                    else:
+                        obj[attr.key] = getattr(self, attr.key).serialize()
             elif isinstance(attr, ColumnProperty):
                 item = getattr(self, attr.key)
                 if type(item) == datetime.datetime:

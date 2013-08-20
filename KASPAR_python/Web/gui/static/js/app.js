@@ -15,6 +15,18 @@ angular.module('kasparGUI', ['ui.state', 'ui.bootstrap', 'kasparGUI.filters', 'k
 			    				url:'/admin/robot', 
 			    				templateUrl: 'static/partials/robot/robot.html', 
 	    					})
+			.state(
+				'robot.calibrate', {
+			    				url:'/admin/robot', 
+			    				templateUrl: 'static/partials/robot/calibrate.html', 
+			    				parent: 'robot',
+	    					})
+			.state(
+				'robot.view', {
+			    				url:'/admin/robot', 
+			    				templateUrl: 'static/partials/robot/view.html',
+			    				parent: 'robot',
+	    					})
     		.state(
 				'user', {
 			    				url:'/admin/user', 

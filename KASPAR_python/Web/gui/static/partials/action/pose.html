@@ -1,1 +1,20 @@
-Pose Editor
+<div>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span>
+		<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedUser.fullname" ng-change="updateUser(selectedUser)">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Speed:</span>
+		<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedUser.fullname" ng-change="updateUser(selectedUser)">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Min Length:</span>
+		<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedUser.fullname" ng-change="updateUser(selectedUser)">
+	</div>
+	<div ng-controller='robotControler' model="robot">
+		<button class="btn btn-default" type="button" ng-click="advancedPositioning(robot)">Advanced Positioning</button>
+		<button class="btn btn-default" type="button" ng-click="setPositioning(robot, true)" ng-hide="robot.poseEnable">Enable Positioning</button>
+		<button class="btn btn-default" type="button" ng-click="setPositioning(robot, false)" ng-show="robot.poseEnabled">Disable Positioning</button>
+		<button class="btn btn-default" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button>
+	</div>
+</div>
