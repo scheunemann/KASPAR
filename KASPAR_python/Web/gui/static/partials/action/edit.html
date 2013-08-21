@@ -1,14 +1,11 @@
 <div ng-controller="actionController">
 	<span>Action Editor</span>
-	<div>
-		<div class="input-group" ng-diabled="isUnchanged(action)">
-			<span class="input-group-addon">Type</span>
-			<select class="selectpicker form-control" ng-model="selectedType" ng-options="type.name for type in types | orderBy:name">
-				<option value="">--Select Type--</option>
-			</select>
-		</div>
+	<div class="input-group" ng-diabled="isUnchanged(action)">
+		<span class="input-group-addon">Type</span>
+		<select class="selectpicker form-control" ng-model="selectedType" ng-options="type.name for type in types | orderBy:name">
+			<option value="">--Select Type--</option>
+		</select>
 	</div>
-	<action-editor type='selectedType.name' model="action">
-		<div ng-include="editorUrl"></div>
-	</div>
+	<div>Name: {{action}}</div>
+	<action-editor type='selectedType.name' action="action"></action-editor>
 </div>

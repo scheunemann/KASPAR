@@ -9,5 +9,5 @@ database_config = {
                               'pass':'kaspar',
                               'db':'kaspar',
                               },
-                   'debug': True
+                   'debug': False
                    }

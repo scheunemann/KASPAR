@@ -27,7 +27,7 @@ class Sound(Action):
 class JointPosition(StandardMixin, Base):
     
     jointName = Column(String(50))
-    angle = Column(Float())
+    angle = Column(Float)
     speed = Column(Integer)
     pose_id = Column(Integer, ForeignKey('Pose.id'))
         
@@ -41,6 +41,8 @@ class JointPosition(StandardMixin, Base):
 class Pose(Action):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
+    defaultJointSpeed = Column(Integer)
+    minLength = Column(Float) 
     __mapper_args__ = {
             'polymorphic_identity':'pose',
     }

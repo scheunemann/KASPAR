@@ -1,9 +1,26 @@
 'use strict';
 
-/* Services */
-
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('kasparGUI.services', []).
-  value('version', '0.1');
+angular.module('proxyService', [ 'ngResource'])
+	.service('objectProxy', ['$resource', function($resource)
+      {
+		this.resolve = function(item) {
+			if(item != undefined && item.hasOwnProperty('proxyObject')) {
+				var Obj = $resource(item.uri, {id:'@id'});
+				if (item.isList) {
+					var result = [];
+					for (var id in item.ids) {
+						Obj.get({id:item.ids[id]}, function(o) {
+							result.push(o);
+						});
+					}
+					
+					return result;
+				} else {
+					return Obj.get({id:item.ids[id]});
+				}
+			} else {
+				return item;
+			}
+		};
+    }])
+;

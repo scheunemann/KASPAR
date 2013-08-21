@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('kasparGUI', ['ui.state', 'ui.bootstrap', 'kasparGUI.filters', 'kasparGUI.services', 'kasparGUI.directives', 'kasparGUI.controllers'])
+angular.module('kasparGUI', ['ui.state', 'ui.bootstrap', 'kasparGUI.filters', 'kasparGUI.directives', 'kasparGUI.controllers'])
 	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");
 		$stateProvider

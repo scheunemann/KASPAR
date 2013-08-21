@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('kasparGUI.controllers', [ 'dataModels' ])
+angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 	.controller(
 		'commonController', [ '$scope', function($scope) {	
 			$scope.version = '3.0 Alpha 2';
@@ -63,6 +63,8 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			$scope.newobjs = [];
 			
 			var types = ActionType.query(function() {
+				$scope.action = new Action();
+				$scope.action.name = 'New Action';
 				$scope.types = types;				
 			});
 			
@@ -96,10 +98,15 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			};
 		}])
 	.controller(
-		'robotController', ['$scope', '$state', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', function($scope, $state, RobotType, Robot, Servo, ServoConfig, ServoGroup) {
-			var items = Robot.query(function() {
-				$scope.items = items;
-				$scope.selected = items[0];
+		'robotController', 
+		['$scope', '$state', 'objectProxy', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 
+		function($scope, $state, objectProxy, RobotType, Robot, Servo, ServoConfig, ServoGroup) {
+			$scope.resolve = objectProxy.resolve;
+
+			var robs = Robot.query(function() {
+				$scope.robots = robs;
+				$scope.selected = robs[0];
+				$scope.servos = $scope.resolve($scope.selected.servos);
 			});
 			
 			var versions = RobotType.query(function() {
@@ -109,19 +116,19 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 				}
 			});
 			
-			$scope.getData = function(robot) {
-				if (robot.id != undefined) {
-					var con = ServoConfig.query({robot:robot.id}, function() {
-						$scope.configs = con;
-					});
-					var gro = ServoGroup.query({robot:robot.id}, function() {
-						$scope.groups = gro;
-					});
-					var ser = Servo.query({robot:robot.id}, function() {
-						$scope.servos = ser;
-					});
-				}
-			}
+//			$scope.getData = function(robot) {
+//				if (robot.id != undefined) {
+//					var con = ServoConfig.query({robot:robot.id}, function() {
+//						$scope.configs = con;
+//					});
+//					var gro = ServoGroup.query({robot:robot.id}, function() {
+//						$scope.groups = gro;
+//					});
+//					var ser = Servo.query({robot:robot.id}, function() {
+//						$scope.servos = ser;
+//					});
+//				}
+//			}
 			
 			$scope.newObj = function() {
 				var newR = new Robot({name: 'New Robot', version:$scope.versions[0]});
@@ -143,12 +150,12 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 			};
 			
 			$scope.viewJoints = function(robot) {
-				$scope.getData($scope.selected);
+				//$scope.getData($scope.selected);
 				$state.transitionTo('robot.view');
 			};
 
 			$scope.calibrateJoints = function(robot) {
-				$scope.getData($scope.selected);
+				//$scope.getData($scope.selected);
 				$state.transitionTo('robot.calibrate');
 			};
 		}])
@@ -227,37 +234,4 @@ angular.module('kasparGUI.controllers', [ 'dataModels' ])
 				user.$save();
 			};
 		}])
-	.directive('actionEditor', function () {
-		var def = {
-					//templateUrl: 'static/partials/action/edit.html',
-					restrict: 'E',
-					scope: {
-						type: "=",
-			            model: "=",
-			        },
-			        controller: function($scope) {
-			        	$scope.editorUrl = ""
-			        	$scope.$watch('type', function(newType) {
-			        		if (newType != "" && newType != undefined) {			        			
-			        			$scope.editorUrl = 'static/partials/action/' + newType.toLowerCase() + '.html';
-			        		}
-			        	})
-			        }
-				  };
-
-		return def;		
-	})
-	.directive('poseEditor', function factory(injectables) {
-		var def = {
-					templateUrl: 'static/partials/action/pose.html',
-					restrict: 'E',
-					scope: {
-			            model: "=",
-			        },
-			        controller: function($scope) {
-			        }
-				  };
-
-		return def;		
-	})
 ;

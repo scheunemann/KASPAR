@@ -1,0 +1,17 @@
+<div>
+	<div class="input-group">
+		<span class="input-group-addon">Joint Name</span>
+		<select class="selectpicker form-control" ng-model="model.jointName" ng-options="name for name in jointNames | orderBy:name">
+			<option value="">--Select Joint--</option>
+		</select>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Angle</span>
+		<input type="range" class="form-control" min="0" max="360" ng-model="model.angle" />
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Speed:</span>
+		<input type="text" class="form-control" placeholder="Full Name" ng-model="model.speed">
+	</div>
+	<div class="well">{{model}}</div>
+</div>
