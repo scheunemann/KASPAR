@@ -20,7 +20,7 @@
 	<div ng-controller='robotController'>
 		<div class="input-group">
 			<span class="input-group-addon">Connected Robot</span>
-			<select class="selectpicker form-control" ng-model="selected" ng-options="(item.name + ' (' + item.version + ')' ) for item in items | orderBy:name">
+			<select class="selectpicker form-control" ng-model="selected" ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:name">
 				<option value="">--Select Robot--</option>
 			</select>
 		</div>
@@ -30,6 +30,6 @@
 			<button class="btn btn-default" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button>
 			<button class="btn btn-default" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button>
 		</div>
-		<advanced-pose-editor pose="pose" jointNames="servo.jointName for servo in servos"></advanced-pose-editor>
+		<advanced-pose-editor pose="pose" servos="proxyObjectResolver.resolveProp(selected, 'servos')"></advanced-pose-editor>
 	</div>
 </div>

@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('dataModels', [ 'ngResource' ])
+angular.module('dataModels', [ 'ngResource', 'ng' ])
+	.config(['$httpProvider', function($httpProvider) {
+		$httpProvider.interceptors.push('proxyResourceInterceptor');
+	}])
 	//General options
 	.factory('Menu', [ '$resource', function($resource) {
 		return $resource('/api/menuOptions', {}, { 'get': {method:'GET'}});
@@ -19,10 +22,10 @@ angular.module('dataModels', [ 'ngResource' ])
 		return $resource('/api/robot/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	.factory('Servo', [ '$resource', function($resource) {
-		return $resource('/api/robot/:robot/servo:id', {robot:'@robot', id:'@id'});
+		return $resource('/api/robot/:robot/servo/:id', {robot:'@robot', id:'@id'});
 	} ])
 	.factory('ServoGroup', [ '$resource', function($resource) {
-		return $resource('/api/robot/:robot/servogroup:id', {robot:'@robot', id:'@id'});
+		return $resource('/api/robot/:robot/servogroup/:id', {robot:'@robot', id:'@id'});
 	} ])
 	.factory('ServoConfig', [ '$resource', function($resource) {
 		return $resource('/api/robot/:robot/servoconfig/:id', {robot:'@robot', id:'@id'});
@@ -60,8 +63,8 @@ angular.module('dataModels', [ 'ngResource' ])
 	} ])
 	
 	//Joints
-	.factory('Joint', [ '$resource', function($resource) {
-		return $resource('/api/joint/:id', {rid:'@id'});
+	.factory('JointPosition', [ '$resource', function($resource) {
+		return $resource('/api/jointposition/:id', {rid:'@id'});
 	} ])
 	
 	//Triggers

@@ -65,7 +65,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			var types = ActionType.query(function() {
 				$scope.action = new Action();
 				$scope.action.name = 'New Action';
-				$scope.types = types;				
+				$scope.types = types;
 			});
 			
 			$scope.isUnchanged = function(action) {
@@ -99,46 +99,31 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 		}])
 	.controller(
 		'robotController', 
-		['$scope', '$state', 'objectProxy', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 
-		function($scope, $state, objectProxy, RobotType, Robot, Servo, ServoConfig, ServoGroup) {
-			$scope.resolve = objectProxy.resolve;
+		['$scope', '$state', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 'proxyObjectResolver',
+		function($scope, $state, RobotType, Robot, Servo, ServoConfig, ServoGroup, proxyObjectResolver) {
 
-			var robs = Robot.query(function() {
-				$scope.robots = robs;
-				$scope.selected = robs[0];
-				$scope.servos = $scope.resolve($scope.selected.servos);
+			var items = Robot.query(function() {
+				$scope.robots = items;
+				$scope.selected = items[0];
+				$scope.proxyObjectResolver = proxyObjectResolver;
 			});
-			
+
 			var versions = RobotType.query(function() {
 				$scope.versions = [];
 				for (var i = 0; i < versions.length; i++) {
 					$scope.versions.push(versions[i]['name']);
 				}
 			});
-			
-//			$scope.getData = function(robot) {
-//				if (robot.id != undefined) {
-//					var con = ServoConfig.query({robot:robot.id}, function() {
-//						$scope.configs = con;
-//					});
-//					var gro = ServoGroup.query({robot:robot.id}, function() {
-//						$scope.groups = gro;
-//					});
-//					var ser = Servo.query({robot:robot.id}, function() {
-//						$scope.servos = ser;
-//					});
-//				}
-//			}
-			
+
 			$scope.newObj = function() {
 				var newR = new Robot({name: 'New Robot', version:$scope.versions[0]});
-				$scope.items.push(newR);
+				$scope.robots.push(newR);
 				$scope.selected = newR;
 			};
 			
 			$scope.deleteObj = function(item) {
 				item.$delete(function() {
-					$scope.items.splice($scope.items.indexOf(item), 1);
+					$scope.robots.splice($scope.items.indexOf(item), 1);
 					$scope.selected = $scope.items[0];
 				});
 			};
@@ -150,12 +135,10 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 			
 			$scope.viewJoints = function(robot) {
-				//$scope.getData($scope.selected);
 				$state.transitionTo('robot.view');
 			};
 
 			$scope.calibrateJoints = function(robot) {
-				//$scope.getData($scope.selected);
 				$state.transitionTo('robot.calibrate');
 			};
 		}])

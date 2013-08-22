@@ -41,6 +41,7 @@ class MySQLDataStore(DataStore):
         super(MySQLDataStore, self).__init__(uri, database_config['debug'])
         
 if __name__ == '__main__':
+    database_config['debug'] = True
     e = StorageFactory.getDefaultDataStore().engine
     from Model import Base
     Base.metadata.drop_all(e)
