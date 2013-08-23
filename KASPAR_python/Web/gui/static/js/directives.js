@@ -22,13 +22,13 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 		        			iElement.html('<' + newType + '-editor action="action"></' + newType + '-editor>');
 				        	$compile(iElement.contents())(scope);
 		        		}
-		        	})
+		        	});
 		        },
 			  };
 
 	return def;
   }])
-  .directive('poseEditor', function() {
+  .directive('poseEditor', ['JointPosition', function(JointPosition) {
 	  var def = {
 				templateUrl: 'static/partials/action/pose.html',
 				restrict: 'E',
@@ -36,12 +36,17 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 		            pose: "=action",
 		        },
 		        controller: function($scope) {
+		        	$scope.pose.positions = [
+		        			new JointPosition({jointName:'HEAD_ROT', angle:188}),
+		        			new JointPosition({jointName:'HEAD_VERT', angle:188}),
+		        			new JointPosition({jointName:'HEAD_TLT', angle:188}),
+		        	];
 		        }
   	  };
 
 	  return def;
-  })
-  .directive('advancedPoseEditor', [ 'JointPosition', function(JointPosition) {
+  }])
+  .directive('advancedPoseEditor', ['$q', '$filter', function($q, $filter) {
 	  var def = {
 			  templateUrl: 'static/partials/action/poseadvanced.html',
 			  restrict: 'E',
@@ -50,49 +55,67 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 				  servos: "=",
 			  },
 			  controller: function($scope) {
-				  $scope.pose.positions = [];
-				  for(var i = 0; i < $scope.servos.length; i++) {
-					  $scope.pose.positions.push(new JointPosition({jointName:$scope.servos[i].jointName}));
-				  }
+				  $scope.$watch('servos', function() {
+					  $scope.jointNames = $q.when($scope.servos).then(function(servos) { 
+						  if (servos == undefined) {
+							  return [];
+						  }
+						  var names = [];
+						  for(var i = 0; i < servos.length; i++) {
+							  names.push(servos[i].jointName);
+						  }
+						  
+						  return names;
+					  });
+				  });
+				  
+				  $scope.getServo = function(servos, jointName) {
+					  if(servos != undefined) {
+						  for(var i = 0; i < servos.length; i++) {
+							  if(servos[i].jointName == jointName) {
+								  	return servos[i];
+							  }
+						  }
+						  
+						  return null;
+					  }
+				  };
 			  },
 	  };
 	  
 	  return def;
   }])
-  .directive('jointEditor', [ 'proxyObjectResolver', function() {
-	var def = {
-				templateUrl: 'static/partials/action/joint.html',
-				restrict: 'E',
-				scope: {
-		            jointPosition: "=",
-		            servo: "=",
-		        },
-		        controller: function($scope) {
-		        	var type = proxyObjectResolver($scope.servo, 'type');
-		        	$scope.poseable = type.poseable == true && $scope.servo.poseable != false;
-		        	if($scope.servo.maxSpeed === undefined) {
-		        		$scope.maxSpeed = type.maxSpeed;
-		        	} else {
-		        		$scope.maxSpeed = $scope.servo.maxSpeed;
-		        	}
-		        	if($scope.servo.minSpeed === undefined) {
-		        		$scope.minSpeed = type.minSpeed;
-		        	} else {
-		        		$scope.minSpeed = $scope.servo.minSpeed;
-		        	}
-		        	if($scope.servo.maxPosition === undefined) {
-		        		$scope.maxPosition = type.maxPosition;
-		        	} else {
-		        		$scope.maxPosition = $scope.servo.maxPosition;
-		        	}
-		        	if($scope.servo.minPosition === undefined) {
-		        		$scope.minPosition = type.minPosition;
-		        	} else {
-		        		$scope.minPosition = $scope.servo.minPosition;
-		        	}
-		        }
-			  };
-
-	return def;		
+  .directive('testEditor', function() {
+	  var def = {
+			  template: "<div>Val:{{value}}</div>",
+			  restrict: 'E',
+			  scope: {
+				  value: "=",
+			  }
+	  }
+  })
+  .directive('jointEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/action/joint.html',
+			  restrict: 'E',
+			  scope: {
+				  jointNames: "=",
+				  jointPosition: "=",
+				  servo: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.$watch('servo', function() {
+					  if($scope.servo != undefined) {
+						  if(angular.isArray($scope.servo)) {
+							  $scope.servo = $scope.servo[0];
+						  }
+						  
+						  proxyObjectResolver.resolveProp($scope.servo, 'type');
+					  }
+				  });
+			  },
+	  };
+	  
+	  return def;
   }])
 ;

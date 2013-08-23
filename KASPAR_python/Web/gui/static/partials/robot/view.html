@@ -10,7 +10,7 @@
 	<div class="input-group">
 		<span class="input-group-addon">Servo Configs</span>
 		<div class="list-group form-control">
-			<span class="list-group-item" ng-repeat="item in configs">
+			<span class="list-group-item" ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'configs')">
 				<span class="input-group">
 					<span class="input-group-addon">Port</span>
 					<input type="text" class="form-control" placeholder="Port" ng-model="item.port" disabled="disabled">
@@ -38,7 +38,7 @@
 		<span class="input-group-addon">Servo Groups</span>
 		<div class="list-group form-control">
 			<span class="list-group-item" >
-				<span class="input-group" ng-repeat="item in groups">
+				<span class="input-group" ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'servogroups')">
 					<span class="input-group-addon">Name</span>
 					<input type="text" class="form-control" placeholder="Port" ng-model="item.name" disabled="disabled">
 				</span>
@@ -49,7 +49,7 @@
 		<span class="input-group-addon">Servos</span>
 		<div class="list-group form-control">
 			<span class="list-group-item">
-				<span class="input-group" ng-repeat="item in servos">
+				<span class="input-group" ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'servos')">
 					<span class="input-group-addon">Name</span>
 					<input type="text" class="form-control" placeholder="Port" ng-model="item.jointName" disabled="disabled">
 				</span>

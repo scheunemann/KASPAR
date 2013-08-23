@@ -1,7 +1,7 @@
 <div>
-	Advanced Pose editor
-	<div>{{pose}}</div>
+	<span>Advanced Pose editor</span>
 	<div ng-repeat="position in pose.positions | orderBy:jointName">
-		<joint-editor jointPosition="position" servo="servo in servos | filter:servo.jointName==position.jointName"></joint-editor>
+		<joint-editor joint-names="jointNames" joint-position="position"
+			servo="getServo(servos, position.jointName)"></joint-editor>
 	</div>
 </div>
