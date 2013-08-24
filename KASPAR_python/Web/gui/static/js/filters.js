@@ -7,4 +7,5 @@ angular.module('kasparGUI.filters', [])
 			return function(text) {
 				return String(text).replace(/\%VERSION\%/mg, version);
 			}
-	}]);
+	}])
+;

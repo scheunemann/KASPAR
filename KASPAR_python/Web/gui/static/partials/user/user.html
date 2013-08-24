@@ -11,7 +11,7 @@
 				</span>
 			</div>
 		</div>
-		<div id="usersDetails">
+		<form name="userForm">
 			<div class="input-group">
 				<span class="input-group-addon">Name</span>
 				<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedUser.fullname" ng-change="updateUser(selectedUser)">
@@ -41,12 +41,12 @@
 			<div class="input-group">
 				<span class="input-group-addon">Movement Speed</span>
 				<input type="range" class="form-control" min="1" max="300" placeholder="100" ng-model="selectedUser.speedmodifier">
-				<span class="input-group-btn">
+				<!--<span class="input-group-btn">
 					<input type="text" class="form-control" ng-model="selectedUser.speedmodifier">
-				</span>
-				<span class="input-group-addon">pct</span>
+				</span>-->
+				<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
 			</div>
-		</div>
+		</form>
 	</div>
 	<div ui-view></div>
 </div>

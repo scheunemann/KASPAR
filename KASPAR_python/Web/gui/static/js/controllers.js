@@ -15,48 +15,45 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			});
 		} ])
 	.controller(
-		'operatorController', [ '$scope', '$filter', 'Operator', 'User', function($scope, $filter, Operator, User) {
-			var o = Operator.query(function() {
-				$scope.operators = o;
-				$scope.selectedOperator = o[0];
+		'operatorController', [ '$scope', 'Operator', 'User', 'proxyObjectResolver', function($scope, Operator, User, proxyObjectResolver) {
+			$scope.operators = Operator.query(function() {
+				$scope.selectedOperator = $scope.operators[0];
 			});
 
-			var u = User.query(function() {
-				$scope.users = u;
+			$scope.users = User.query();
+			$scope.$watch('selectedOperator', function() {
+				if($scope.selectedOperator != undefined) {
+					proxyObjectResolver.resolveProp($scope.selectedOperator, 'users');
+				}
 			});
 
-			$scope.isOperatorUser = function(userId) {
-				return $filter('filter')($scope.selectedOperator.users, userId).length == 1;
-			};
-			
 			$scope.newOperator = function() {
-				var newOp = new Operator({fullname: 'New Operator', name:'New'});
+				var newOp = new Operator({fullname: 'New Operator', name:'New', users:[]});
 				$scope.selectedOperator = newOp;
 				$scope.operators.push(newOp);
 			};
 			
-			$scope.deleteOperator = function() {
-				$scope.selectedOperator.$delete(function() {
-						$scope.operators.splice($scope.operators.indexOf($scope.selectedOperator), 1);
+			$scope.deleteOperator = function(operator) {
+//				operator.$delete(function() {
+						$scope.operators.splice($scope.operators.indexOf(operator), 1);
 						$scope.selectedOperator = $scope.operators[0];
-					}
-				);
+	//				}
+//				);
 			};
 			
-			$scope.updateOperatorUser = function($event, userId) {
+			$scope.updateOperatorUser = function($event, operator, user) {
 				var checkbox = $event.target;
 				if (checkbox.checked) {
-					$scope.selectedOperator.users.push(userId);
+					operator.users.push(user);
 				} else {
-					$scope.selectedOperator.users.splice($scope.selectedOperator.users.indexOf(userId), 1);
+					for(var i = 0; i < operator.users.length; i++) {
+						if (operator.users[i].id == user.id) {
+							operator.users.splice(i, 1);
+							break;
+						}
+					}
 				}
-				
-				$scope.updateOperator($scope.selectedOperator);
 			};
-			
-			$scope.updateOperator = function(operator) {
-				operator.$save();
-			}
 		}])
 	.controller(
 		'actionController', [ '$scope', '$state', '$http', 'Action', 'ActionType', function($scope, $state, $http, Action, ActionType) {
@@ -143,78 +140,76 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 		}])
 	.controller(
-		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger) {
-			var u = User.query(function() {
-				$scope.users = u;
-				$scope.selectedUser = u[0];
-				$scope.selectedUser.actions = CustomAction.query({uid:$scope.selectedUser.id}, function() {
-					$scope.selectedAction = $scope.selectedUser.actions[0];
-				});
-				$scope.selectedUser.triggers = $scope.getTriggers($scope.selectedUser);
+		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', 'proxyObjectResolver', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
+			$scope.users = User.query(function() {
+				$scope.selectedUser = $scope.users[0];
 			});
-
+			
+			$scope.$watch('selectedUser', function() {
+				proxyObjectResolver.resolveProp($scope.selectedUser, 'customActions');
+				proxyObjectResolver.resolveProp($scope.selectedUser, 'customActions');
+			});
+			
 			$scope.newUser = function() {
-				var newU = new User({fullname: 'New User', name:'New'});
+				var newU = new User({fullname: 'New User', name:'New', customActions:[], customTriggers:[]});
 				$scope.selectedUser = newU;
-				$scope.selectedUser.actions = [];
-				$scope.selectedUser.triggers = [];
 				$scope.users.push(newU);
 			};
 			
 			$scope.deleteUser = function() {
-				$scope.selectedUser.$delete(function() {
+//				$scope.selectedUser.$delete(function() {
 						$scope.users.splice($scope.users.indexOf($scope.selectedUser), 1);
 						$scope.selectedUser = $scope.users[0];
-					}
-				);
+//					}
+//				);
 			};
-			
-			$scope.getActions = function(user) {
-				if(user === undefined) {
-					return Action.query();
-				} else {
-					return CustomAction.query({uid:user.id});
-				}
-			};
-			
-			$scope.getTriggers = function(user) {
-				if(user === undefined) {
-					return Trigger.query();
-				} else {
-					return CustomTrigger.query({uid:user.id});
-				}
-			};
-			
-			$scope.newAction = function() {
-				var newA = new CustomAction({name:'New Action', user_id:$scope.selectedUser.id});
-				$scope.selectedAction = newA;
-				$scope.selectedUser.actions.push(newA);
-				$state.transitionTo('user.customaction');
-			};
-			
-			$scope.newTrigger = function() {
-				var newA = new CustomTrigger({name:'New Trigger', user_id:$scope.selectedUser.id});
-				$scope.selectedTrigger = newA;
-				$scope.selectedUser.triggers.push(newA);
-				$state.transitionTo('user.customtrigger');
-			};
-			
-			$scope.deleteAction = function(action) {
-				action.$delete(function() {
-					$scope.selectedUser.actions.splice($scope.selectedUser.actions.indexOf(action), 1);
-					$scope.selectedUser.customactions.splice($scope.selectedUser.customActions.indexOf(actions.id), 1);
-				});
-			};
-			
-			$scope.deleteTrigger = function(trigger) {
-				trigger.$delete(function() {
-					$scope.selectedUser.triggers.splice($scope.selectedUser.triggers.indexOf(trigger), 1);
-					$scope.selectedUser.customtriggers.splice($scope.selectedUser.customTriggers.indexOf(trigger.id), 1);
-				});
-			};
-
-			$scope.updateUser = function(user) {
-				user.$save();
-			};
+//			
+//			$scope.getActions = function(user) {
+//				if(user === undefined) {
+//					return Action.query();
+//				} else {
+//					return CustomAction.query({uid:user.id});
+//				}
+//			};
+//			
+//			$scope.getTriggers = function(user) {
+//				if(user === undefined) {
+//					return Trigger.query();
+//				} else {
+//					return CustomTrigger.query({uid:user.id});
+//				}
+//			};
+//			
+//			$scope.newAction = function() {
+//				var newA = new CustomAction({name:'New Action', user_id:$scope.selectedUser.id});
+//				$scope.selectedAction = newA;
+//				$scope.selectedUser.actions.push(newA);
+//				$state.transitionTo('user.customaction');
+//			};
+//			
+//			$scope.newTrigger = function() {
+//				var newA = new CustomTrigger({name:'New Trigger', user_id:$scope.selectedUser.id});
+//				$scope.selectedTrigger = newA;
+//				$scope.selectedUser.triggers.push(newA);
+//				$state.transitionTo('user.customtrigger');
+//			};
+//			
+//			$scope.deleteAction = function(action) {
+//				action.$delete(function() {
+//					$scope.selectedUser.actions.splice($scope.selectedUser.actions.indexOf(action), 1);
+//					$scope.selectedUser.customactions.splice($scope.selectedUser.customActions.indexOf(actions.id), 1);
+//				});
+//			};
+//			
+//			$scope.deleteTrigger = function(trigger) {
+//				trigger.$delete(function() {
+//					$scope.selectedUser.triggers.splice($scope.selectedUser.triggers.indexOf(trigger), 1);
+//					$scope.selectedUser.customtriggers.splice($scope.selectedUser.customTriggers.indexOf(trigger.id), 1);
+//				});
+//			};
+//
+//			$scope.updateUser = function(user) {
+//				user.$save();
+//			};
 		}])
 ;

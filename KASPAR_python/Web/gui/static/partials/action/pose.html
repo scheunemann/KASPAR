@@ -30,6 +30,6 @@
 			<button class="btn btn-default" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button>
 			<button class="btn btn-default" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button>
 		</div>
-		<advanced-pose-editor pose="pose" servos="proxyObjectResolver.resolveProp(selected, 'servos')"></advanced-pose-editor>
+		<advanced-pose-editor pose="pose" robot="selected"></advanced-pose-editor>
 	</div>
 </div>

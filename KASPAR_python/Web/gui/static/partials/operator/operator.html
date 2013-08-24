@@ -3,6 +3,7 @@
 		<div class="input-group">
 			<span class="input-group-addon">Operator</span> <select class="selectpicker form-control" ng-model="selectedOperator"
 				ng-options="operator.fullname for operator in operators | orderBy:fullname">
+				<option value="">--Select Operator--</option>
 			</select> 
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" ng-click="newOperator()">New</button>
@@ -10,10 +11,10 @@
 			</span>
 		</div>
 	</div>
-	<div id="operatorsDetails">
+	<form name="operatorsForm">
 		<div class="input-group">
 			<span class="input-group-addon">Name</span>
-			<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedOperator.fullname" ng-change="updateOperator(selectedOperator)">
+			<input type="text" class="form-control" placeholder="Full Name" ng-model="selectedOperator.fullname">
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon">Common Users</span>
@@ -21,12 +22,12 @@
 				<span class="list-group-item" ng-repeat="user in users | orderBy:fullname">
 					<span class="input-group">
 						<span class="input-group-addon">
-							<input type="checkbox" ng-checked="isOperatorUser(user.id)" ng-click="updateOperatorUser($event, user.id)">
+							<input type="checkbox" ng-checked="(selectedOperator.users | filter:{id:user.id}).length == 1" ng-click="updateOperatorUser($event, selectedOperator, user)">
 						</span> 
-						<input type="text" class="form-control" value="{{user.fullname}}" disabled="disabled">
+						<input type="text" class="form-control" value="{{user.fullname}}" ng-disabled="true">
 					</span>
 				</span>
 			</div>
 		</div>
-	</div>
+	</form>
 </div>

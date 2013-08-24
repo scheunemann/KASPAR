@@ -44,6 +44,7 @@ if __name__ == '__main__':
     database_config['debug'] = True
     e = StorageFactory.getDefaultDataStore().engine
     from Model import Base
+    from Legacy import KasparImporter, ActionImporter
     Base.metadata.drop_all(e)
     Base.metadata.create_all(e)
      
@@ -72,8 +73,11 @@ if __name__ == '__main__':
     ctr.redirect = ct
     u.customTriggers.append(ctr)
     
-    o.users.append(u)    
+    o.users.append(u)
+    
+    r = KasparImporter('kaspar1a').getRobot()
      
     session = sessionmaker(bind=e)()
+    session.add(r)
     session.add(o)
     session.commit()

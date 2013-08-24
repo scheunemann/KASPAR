@@ -46,54 +46,48 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 
 	  return def;
   }])
-  .directive('advancedPoseEditor', ['$q', '$filter', function($q, $filter) {
+  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', function($q, $filter, proxyObjectResolver) {
 	  var def = {
 			  templateUrl: 'static/partials/action/poseadvanced.html',
 			  restrict: 'E',
 			  scope: {
 				  pose: "=",
-				  servos: "=",
+				  robot: "=",
 			  },
 			  controller: function($scope) {
-				  $scope.$watch('servos', function() {
-					  $scope.jointNames = $q.when($scope.servos).then(function(servos) { 
-						  if (servos == undefined) {
-							  return [];
-						  }
-						  var names = [];
-						  for(var i = 0; i < servos.length; i++) {
-							  names.push(servos[i].jointName);
-						  }
-						  
-						  return names;
-					  });
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  
+				  $scope.$watch('robot', function() {
+					  if($scope.robot != undefined) {
+						  proxyObjectResolver.resolveProp($scope.robot, 'servoGroups');
+						  proxyObjectResolver.resolveProp($scope.robot, 'servos');
+						  $scope.robot.servoGroups.then(function(groups) {
+							  for(var i = 0; i < groups.length; i++) {
+								  proxyObjectResolver.resolveProp(groups[i], 'servos');
+							  }
+						  });
+					  }
 				  });
 				  
-				  $scope.getServo = function(servos, jointName) {
+				  $scope.getJointNames = function(servos) {
+					  var names = [];
+					  var keys = {}
 					  if(servos != undefined) {
 						  for(var i = 0; i < servos.length; i++) {
-							  if(servos[i].jointName == jointName) {
-								  	return servos[i];
+							  if(!keys.hasOwnProperty(servos[i].jointName)) {
+								  names.push(servos[i].jointName);
+								  names[servos[i].jointName] = 1;
 							  }
 						  }
-						  
-						  return null;
 					  }
-				  };
+					  
+					  return names;
+				  }
 			  },
 	  };
 	  
 	  return def;
   }])
-  .directive('testEditor', function() {
-	  var def = {
-			  template: "<div>Val:{{value}}</div>",
-			  restrict: 'E',
-			  scope: {
-				  value: "=",
-			  }
-	  }
-  })
   .directive('jointEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	  var def = {
 			  templateUrl: 'static/partials/action/joint.html',
