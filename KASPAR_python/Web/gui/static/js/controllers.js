@@ -56,19 +56,10 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 		}])
 	.controller(
-		'actionController', [ '$scope', '$state', '$http', 'Action', 'ActionType', function($scope, $state, $http, Action, ActionType) {
-			$scope.newobjs = [];
+		'actionController', [ '$scope', '$state', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $state, $http, $q, $timeout, Action, ActionType) {
+			$scope.action = new Action({name:'New Action'});			
+			$scope.types = ActionType.query();
 			
-			var types = ActionType.query(function() {
-				$scope.action = new Action();
-				$scope.action.name = 'New Action';
-				$scope.types = types;
-			});
-			
-			$scope.isUnchanged = function(action) {
-				return action.id === undefined;
-			}
-				
 			$scope.setFiles = function(element) {
 		        $scope.$apply(function($scope) {
 		            $scope.files = element.files;
@@ -113,7 +104,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			});
 
 			$scope.newObj = function() {
-				var newR = new Robot({name: 'New Robot', version:$scope.versions[0]});
+				var newR = new Robot();
 				$scope.robots.push(newR);
 				$scope.selected = newR;
 			};

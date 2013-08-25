@@ -5,11 +5,11 @@
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon">Default Speed</span>
-		<input type="range" class="form-control" min="1" max="300" placeholder="Full Name" ng-model="pose.defaultJointSpeed">
-		<span class="input-group-btn">
+		<input type="range" class="form-control" min="1" max="300" ng-model="pose.defaultJointSpeed">
+		<!--<span class="input-group-btn">
 			<input type="text" class="form-control" ng-model="pose.defaultJointSpeed">
-		</span>
-		<span class="input-group-addon">pct</span>
+		</span>-->
+		<span class="input-group-addon">{{pose.defaultJointSpeed}}%</span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon">Length</span>

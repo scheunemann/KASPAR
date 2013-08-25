@@ -1,9 +1,11 @@
 <div>
 	<span>Advanced Pose editor</span>
+	{{proxyObjectResolver.resolveProp(robot, 'servoGroups')}}
 	<div ng-repeat="group in robot.servoGroups | orderBy:name">
 		<span>{{group.name}}</span>
+		{{proxyObjectResolver.resolveProp(group, 'servos')}}
 		<div ng-repeat="servo in group.servos | orderBy:jointName">
-			<joint-editor joint-names="getJointNames(group.servos)" joint-position="(pose.positions | filter:{jointName:servo.jointName})[0]" servo="servo"></joint-editor>
+			<joint-editor joint-names="joints" joint-position="getPosition(pose.positions, servo)" servo="servo"></joint-editor>	
 		</div>
 	</div>
 </div>

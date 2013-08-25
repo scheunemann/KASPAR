@@ -38,7 +38,17 @@ class KasparImporter(object):
             s.defaultPosition = self._convert(self._getText("DEFAULT/POS", servo))
             s.minSpeed = self._convert(self._getText("LIMITS[@type='speed']/MIN", servo))
             s.maxSpeed = self._convert(self._getText("LIMITS[@type='speed']/MAX", servo))
+            if s.minSpeed > s.maxSpeed:
+                temp = s.minSpeed
+                s.minSpeed = s.maxSpeed
+                s.maxSpeed = temp
+            
             s.defaultSpeed = self._convert(self._getText("DEFAULT/SPEED", servo))
+            if s.defaultSpeed < s.minSpeed:
+                s.defaultSpeed = s.minSpeed
+            if s.defaultSpeed > s.maxSpeed:
+                s.defaultSpeed = s.maxSpeed
+            
             s.groups = self._getGroupsForServo(s, servoGroups)
             servos.append(s)
         
@@ -81,8 +91,11 @@ class KasparImporter(object):
             s.maxSpeed = 100
             s.minPosition = 0
             s.maxPosition = 360
-            s.defaultOffset = 0
-            s.defaultScale = 1024.0 / 360.0
+            s.defaultSpeed = 50
+            s.defaultPosition = 180
+            s.poseable = typeName.lower() == 'AX12'
+            s.offset = 0
+            s.scale = 1024.0 / 360.0
             self._types[typeName.lower()] = s
         
         return self._types[typeName.lower()]

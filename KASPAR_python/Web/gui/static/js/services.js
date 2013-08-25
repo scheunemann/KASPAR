@@ -17,11 +17,7 @@ angular.module('proxyService', [ 'ngResource' ])
     	};
     	
     	this.hasObj = function(key) {
-    		var hit = objCache.hasOwnProperty(key);
-    		if(hit) {
-    			console.log('cache hit: ' + key);
-    		}
-    		return hit;
+    		return objCache.hasOwnProperty(key);
     	};
 	}])
 	.service('proxyObjectResolver', ['$q', '$timeout', 'objectCache', function($q, $timeout, objectCache) {
@@ -40,39 +36,30 @@ angular.module('proxyService', [ 'ngResource' ])
     	}
 		
     	this.resolveProp = function(object, propName) {
-    		return this.getFunc(object, propName)();
-    	}
-    	
-    	this.getFunc = function(object, propName) {
-			return function() {
-				if(object != undefined) { 
-					if(object[propName] === undefined && object[propName + '_metaData'] != undefined) {
-						var metaData = object[propName + '_metaData'];
-						if(metaData.isList) {
-							var objs = [];
-							for(var index = 0; index < metaData.ids.length; index++) {
-								var id = metaData.ids[index];
-								objs.push(getObj(metaData, id));
-							}
-											
-							object[propName] = $q.all(objs).then(function(vars) {
-								return vars;
-							});
-						} else {
-							var id = metaData.ids[0];
-							object[propName] = getObj(metaData, id);
+			if(object != undefined) { 
+				if(object[propName + '_metaData'] != undefined && object[propName + '_metaData'].resolved==false) {
+					var metaData = object[propName + '_metaData'];
+					metaData.resolved = null;
+					if(metaData.isList) {
+						var objs = [];
+						for(var index = 0; index < metaData.ids.length; index++) {
+							var id = metaData.ids[index];
+							objs.push(getObj(metaData, id));
 						}
+						
+						$q.all(objs).then(function(vars) {
+							metaData.defer.resolve(vars);
+							metaData.resolved = true;
+						});
+					} else {
+						var id = metaData.ids[0];
+						getObj(metaData, id).then(function(vars) {
+							metaData.defer.resolve(vars);
+							metaData.resolved = true;
+						});
 					}
-
-					return object[propName];
 				}
-			};
-    	}
-    	
-    	this.setFunc = function(object, propName) {
-    		return function() {
-    			object[propName] = val;
-    		}
+			}
     	}
 	}])
     .factory('proxyResourceInterceptor', ['$injector', '$q', 'proxyObjectResolver', 'objectCache', function($injector, $q, proxyObjectResolver, objectCache) {
@@ -80,11 +67,10 @@ angular.module('proxyService', [ 'ngResource' ])
 			for(var prop in respObj) {
 				if (respObj[prop] != undefined && respObj[prop].hasOwnProperty('proxyObject') && $injector.has(respObj[prop].type)) {
 					respObj[prop + '_metaData'] = respObj[prop];
+					respObj[prop + '_metaData']['defer'] = $q.defer();
+					respObj[prop + '_metaData']['resolved'] = false;
 					respObj[prop + '_metaData']['resource'] = $injector.get(respObj[prop].type);
-					
-					delete respObj[prop];
-					//respObj.__defineGetter__(prop, getFunc(respObj, prop));							
-					respObj.__defineSetter__(prop, proxyObjectResolver.setFunc(respObj, prop));
+					respObj[prop] = respObj[prop + '_metaData'].defer.promise;
 				}
 			}
     	};
@@ -98,7 +84,7 @@ angular.module('proxyService', [ 'ngResource' ])
 	    						if(response.data[i].hasOwnProperty('id')) {
 		    						var key = response.config.url + '/' + response.data[i].id;
 		    						if(objectCache.hasObj(key)) {
-		    							response.data[i] = $q.when(objectCache.getObj(key));
+		    							response.data[i] = objectCache.getObj(key);
 		    						} else {
 		    							modObject(response.data[i]);
 		    							objectCache.setObj(key, response.data[i]);
@@ -109,7 +95,7 @@ angular.module('proxyService', [ 'ngResource' ])
     						if(response.data.hasOwnProperty('id')) {
 	    						var key = response.config.url;
 	    						if(objectCache.hasObj(key)) {
-	    							response.data = $q.when(objectCache.getObj(key));
+	    							response.data = objectCache.getObj(key);
 	    						} else {
 	    							modObject(response.data);
 	    							objectCache.setObj(key, response.data);

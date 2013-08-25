@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('kasparGUI.directives', [ 'proxyService']).
+angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGUI.filters']).
   directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
       elm.text(version);
@@ -37,16 +37,29 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 		        },
 		        controller: function($scope) {
 		        	$scope.pose.positions = [
-		        			new JointPosition({jointName:'HEAD_ROT', angle:188}),
+		        			new JointPosition({jointName:'HEAD_ROT', angle:188, speed:100}),
 		        			new JointPosition({jointName:'HEAD_VERT', angle:188}),
 		        			new JointPosition({jointName:'HEAD_TLT', angle:188}),
+		        			new JointPosition({jointName:'EYES_LR', angle:188}),
+		        			new JointPosition({jointName:'EYES_UD', angle:188}),
+		        			new JointPosition({jointName:'MOUTH_OPEN', angle:188, speed:200}),
+		        			new JointPosition({jointName:'MOUTH_SMILE', angle:188}),
+		        			new JointPosition({jointName:'EYELIDS', angle:188}),
+		        			new JointPosition({jointName:'ARM_L_1', angle:188}),
+		        			new JointPosition({jointName:'ARM_L_2', angle:188}),
+		        			new JointPosition({jointName:'ARM_L_3', angle:188}),
+		        			new JointPosition({jointName:'ARM_L_4', angle:188}),
+		        			new JointPosition({jointName:'ARM_R_1', angle:188}),
+		        			new JointPosition({jointName:'ARM_R_2', angle:188}),
+		        			new JointPosition({jointName:'ARM_R_3', angle:188}),
+		        			new JointPosition({jointName:'ARM_R_4', angle:188}),
 		        	];
 		        }
   	  };
 
 	  return def;
   }])
-  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', function($q, $filter, proxyObjectResolver) {
+  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', 'JointPosition', function($q, $filter, proxyObjectResolver, JointPosition) {
 	  var def = {
 			  templateUrl: 'static/partials/action/poseadvanced.html',
 			  restrict: 'E',
@@ -56,19 +69,9 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 			  },
 			  controller: function($scope) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;
-				  
-				  $scope.$watch('robot', function() {
-					  if($scope.robot != undefined) {
-						  proxyObjectResolver.resolveProp($scope.robot, 'servoGroups');
-						  proxyObjectResolver.resolveProp($scope.robot, 'servos');
-						  $scope.robot.servoGroups.then(function(groups) {
-							  for(var i = 0; i < groups.length; i++) {
-								  proxyObjectResolver.resolveProp(groups[i], 'servos');
-							  }
-						  });
-					  }
-				  });
-				  
+				  $scope.joints = ['HEAD_ROT','HEAD_VERT', 'HEAD_TLT', 'EYES_LR', 'EYES_UD', 'MOUTH_OPEN', 'MOUTH_SMILE',
+				                   'EYELIDS', 'ARM_L_1', 'ARM_L_2', 'ARM_L_3', 'ARM_L_4', 'ARM_R_1', 'ARM_R_2', 'ARM_R_3', 'ARM_R_4'];
+			  
 				  $scope.getJointNames = function(servos) {
 					  var names = [];
 					  var keys = {}
@@ -82,7 +85,26 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 					  }
 					  
 					  return names;
-				  }
+				  };
+				  
+				  $scope.getPosition = function(positions, servo) {
+					  if(positions != undefined) {
+						  var position = null;
+						  for(var i = 0; i < positions.length; i++) {
+							  if(positions[i].jointName == servo.jointName) {
+								  position = positions[i];
+								  break;
+							  }
+						  }
+						  
+						  if(position == null) {
+							  position = new JointPosition({jointName:servo.jointName, angle:100});
+							  positions.push(position);
+						  }
+						  
+						  return position;
+					  }
+				  };
 			  },
 	  };
 	  
@@ -98,15 +120,7 @@ angular.module('kasparGUI.directives', [ 'proxyService']).
 				  servo: "=",
 			  },
 			  controller: function($scope) {
-				  $scope.$watch('servo', function() {
-					  if($scope.servo != undefined) {
-						  if(angular.isArray($scope.servo)) {
-							  $scope.servo = $scope.servo[0];
-						  }
-						  
-						  proxyObjectResolver.resolveProp($scope.servo, 'type');
-					  }
-				  });
+				  $scope.proxyObjectResolver = proxyObjectResolver;
 			  },
 	  };
 	  
