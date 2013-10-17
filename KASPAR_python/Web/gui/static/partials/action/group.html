@@ -1,1 +1,44 @@
-Group Editor
+<div>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span> <input
+			type="text"
+			class="form-control"
+			placeholder="Group Name"
+			ng-model="group.name">
+	</div>
+	<div>All selected behaviours will attempt to execute simultaneously</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">All Behaviours</div>
+		<div class="input-group">
+			<select
+				class="selectpicker form-control"
+				multiple
+				ng-multiple="true"
+				ng-model="toAdd"
+				ng-options="action.name for action in actions | except:group.actions | orderBy:name">
+			</select>
+		</div>
+	</div>
+	<button
+		class="btn btn-default"
+		ng-disabled="!toAdd || toAdd.length == 0"
+		type="button"
+		ng-click="addActions(toAdd);toAdd=[]">Add</button>
+	<button
+		class="btn btn-default"
+		ng-disabled="!toRemove || toRemove.length == 0"
+		type="button"
+		ng-click="removeActions(toRemove);toRemove=[]">Remove</button>
+	<div class="panel panel-default">
+		<div class="panel-heading">Group Behaviours</div>
+		<div class="input-group">
+			<select
+				class="selectpicker form-control"
+				multiple
+				ng-multiple="true"
+				ng-model="toRemove"
+				ng-options="action.name for action in group.actions | orderBy:name">
+			</select>
+		</div>
+	</div>
+</div>

@@ -1,11 +1,17 @@
 <div>
-	<span>Advanced Pose editor</span>
+<!-- 	<span>Advanced Pose editor</span> -->
 	{{proxyObjectResolver.resolveProp(robot, 'servoGroups')}}
-	<div ng-repeat="group in robot.servoGroups | orderBy:name">
-		<span>{{group.name}}</span>
+	<div class="panel" ng-repeat="group in robot.servoGroups | orderBy:name">
+		<h4>{{group.name}}</h4>
 		{{proxyObjectResolver.resolveProp(group, 'servos')}}
 		<div ng-repeat="servo in group.servos | orderBy:jointName">
-			<joint-editor joint-names="joints" joint-position="getPosition(pose.positions, servo)" servo="servo"></joint-editor>	
+<!-- 			<div ng-if="($index % 3)==0" class="row"> -->
+<!-- 				<joint-editor class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+0])" servo="group.servos[$index+0]"></joint-editor>	 -->
+<!-- 				<joint-editor ng-if="$index+1 < group.servos.length" class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+1])" servo="group.servos[$index+1]"></joint-editor> -->
+<!-- 				<joint-editor ng-if="$index+2 < group.servos.length" class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+2])" servo="group.servos[$index+2]"></joint-editor>	 -->
+<!-- 			</div> -->
+			<joint-editor joint-names="joints" joint-position="getPosition(pose.positions, servo)" servo="servo"></joint-editor>
+			<br ng-if="!$last"/>
 		</div>
 	</div>
 </div>

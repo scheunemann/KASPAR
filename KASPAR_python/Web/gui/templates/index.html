@@ -3,15 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<title ng-controller="commonController">KASPAR GUI v{{version}}</title>
-	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-	<!-- <link rel="stylesheet" href="static/lib/bootstrap/bootstrap-select.min.css" /> -->
 	<link rel="stylesheet" href="static/css/app.css" />
+	<link rel="stylesheet" href="static/lib/bootstrap/bootstrap.min.css" />
 	
-	<script src="static/lib/angular/angular.js"></script>
-	<script src="static/lib/angular/angular-resource.min.js"></script>
+	<script src="static/lib/angular/1.2.0rc2/angular.min.js"></script>
 	<script src="static/lib/angular/angular-ui-router.min.js"></script>
-	<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.5.0-SNAPSHOT.min.js"></script>
-	<!-- <script src="static/lib/bootstrap/bootstrap-select.min.js"></script> -->
+	<script src="static/lib/angular/1.2.0rc2/angular-resource.min.js"></script>
+	<script src="static/lib/angular/1.2.0rc2/angular-route.min.js"></script>
+	<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.6.0.min.js"></script>
 	<script src="static/js/model.js"></script>
 	<script src="static/js/app.js"></script>
 	<script src="static/js/services.js"></script>
@@ -26,12 +25,11 @@
 		<h3>Version {{version}}</h3>
 	</header>
 	<div id="main">
-		<div id="navBar" ng-controller="navBarController">
-			<accordion>
-				<accordion-group ng-repeat="group in groups | orderBy:order" heading="{{group.title}}">
-					<div ng-repeat="link in group.links | orderBy:order"><a href="#/{{link.path}}">{{link.title}}</a></div>
-				</accordion-group>
-			</accordion>
+		<div id="navBar" ng-controller="navBarController" class="panel-group">
+			<div class="panel" ng-repeat="group in groups | orderBy:order" heading="{{group.title}}">
+				<h4>{{group.title}}</h4>
+				<div ng-repeat="link in group.links | orderBy:order"><a href="#/{{link.path}}">{{link.title}}</a></div>
+			</div>
 		</div>
 		<div id="content" class="well">
 			<div ui-view></div>

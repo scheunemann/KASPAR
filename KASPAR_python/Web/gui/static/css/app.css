@@ -33,13 +33,13 @@ header h1, header h2, header h3 {
 
 #navBar {
 	position: absolute;
-	width: 250px;
+	width: 125px;
 	height: 100%;
 	overflow: auto;
 }
 
 #content {
-	margin-left: 250px;
+	margin-left: 125px;
 	height: 100%;
 	overflow: auto;
 	padding: 3px;

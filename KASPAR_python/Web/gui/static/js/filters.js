@@ -6,9 +6,16 @@ angular.module('kasparGUI.filters', []).filter('interpolate', [ 'version', funct
 	return function(text) {
 		return String(text).replace(/\%VERSION\%/mg, version);
 	}
-} ]).filter('listFilter', function() {
+} ]).filter('intersect', function() {
 	return function(inputList, inputProp, objList, objProp) {
 		var ret = [];
+		if (objList === undefined) {
+			return ret;
+		}
+		if (Object.prototype.toString.call(objList) != '[object Array]') {
+			objList = [ objList ];
+		}
+
 		for ( var i = 0; i < inputList.length; i++) {
 			for ( var j = 0; j < objList.length; j++) {
 				var eq = false;
@@ -26,6 +33,25 @@ angular.module('kasparGUI.filters', []).filter('interpolate', [ 'version', funct
 					ret.push(inputList[i]);
 					break;
 				}
+			}
+		}
+
+		return ret;
+	};
+}).filter('except', function() {
+	return function(inputList, objList) {
+		var ret = [];
+		if (objList === undefined) {
+			return inputList;
+		}
+		
+		if (Object.prototype.toString.call(objList) != '[object Array]') {
+			objList = [ objList ];
+		}
+
+		for ( var i = 0; i < inputList.length; i++) {
+			if (objList.indexOf(inputList[i]) == -1) {
+				ret.push(inputList[i]);
 			}
 		}
 

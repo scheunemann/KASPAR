@@ -15,12 +15,20 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				scope: {
 					type: "=",
 		            action: "=",
+		            actions: "=",
 		        },
 		        link: function(scope, iElement, iAttrs, controller) {
 		        	scope.$watch('type', function(newType) {
 		        		if (newType != "" && newType != undefined) {
-		        			iElement.html('<' + newType + '-editor action="action"></' + newType + '-editor>');
+		        			if(newType.toLowerCase() == "group" || newType.toLowerCase() == "sequence") {
+			        			iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
+		        			} else {
+			        			iElement.html('<' + newType + '-editor action="action"></' + newType + '-editor>');
+		        			}
 				        	$compile(iElement.contents())(scope);
+		        		} else {
+		        			iElement.html('');
+		        			$compile(iElement.contents())(scope);
 		        		}
 		        	});
 		        },
@@ -118,6 +126,66 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  jointNames: "=",
 				  jointPosition: "=",
 				  servo: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('soundEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/action/sound.html',
+			  restrict: 'E',
+			  scope: {
+				  sound: "=action",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/action/group.html',
+			  restrict: 'E',
+			  scope: {
+				  group: "=action",
+				  actions: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  
+				  $scope.addActions = function(actions) {
+					  if($scope.group.actions === undefined) {
+						  $scope.group.actions = []
+					  }
+
+					  for (var i = 0; i < actions.length; i++) {
+						  $scope.group.actions.push(actions[i]);
+					  }
+				  };
+				  
+				  $scope.removeActions = function(actions) {
+					  for (var i = 0; i < actions.length; i++) {
+						  $scope.group.actions.splice($scope.group.actions.indexOf(actions[i]), 1);
+					  }
+				  };
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('sequenceEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/action/sequence.html',
+			  restrict: 'E',
+			  scope: {
+				  sequence: "=action",
+				  actions: "=",
 			  },
 			  controller: function($scope) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;

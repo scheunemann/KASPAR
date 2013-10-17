@@ -35,16 +35,16 @@ _menuLinks = [
                 {
                  'title':'Action',
                  'links': [
-                            ('Create/Edit', 'action/edit'),
+                            ('Create/Edit', 'action'),
                             ('Test', 'action/test'),
-                            ('Upload', 'action/upload'),
+                            ('Import', 'action/import'),
                           ]},
                 {
                  'title':'Trigger',
                  'links': [
                             ('Create/Edit', 'trigger/edit'),
                             ('Test', 'trigger/test'),
-                            ('Upload', 'trigger/upload'),
+                            ('Import', 'trigger/import'),
                           ]},
                 {
                  'title':'Interactions',

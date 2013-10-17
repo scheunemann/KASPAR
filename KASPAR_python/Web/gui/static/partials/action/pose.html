@@ -24,12 +24,12 @@
 				<option value="">--Select Robot--</option>
 			</select>
 		</div>
-		<div class="btn-group">
-			<button class="btn btn-default" type="button" ng-click="advancedPositioning(selected)">Advanced Positioning</button>
-			<button class="btn btn-default" type="button" ng-click="setPositioning(selected, true)" ng-hide="selected.poseEnable">Enable Positioning</button>
-			<button class="btn btn-default" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button>
-			<button class="btn btn-default" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button>
-		</div>
+<!-- 		<div class="btn-group"> -->
+<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="advancedPositioning(selected)">Advanced Positioning</button> -->
+<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, true)" ng-hide="selected.poseEnable">Enable Positioning</button> -->
+<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button> -->
+<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button> -->
+<!-- 		</div> -->
 		<advanced-pose-editor pose="pose" robot="selected"></advanced-pose-editor>
 	</div>
 </div>

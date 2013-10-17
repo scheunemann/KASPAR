@@ -77,7 +77,12 @@ class ModelCRUD(object):
     @staticmethod
     def _urlResolver(class_):
         if not ModelCRUD._uriCache.has_key(class_):
-            ModelCRUD._uriCache[class_] = '/api/%s' % ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root)
+            url = ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root)
+            if url != None:
+                url = '/api/%s' % url
+            else:
+                url = ''
+            ModelCRUD._uriCache[class_] = url  
         return ModelCRUD._uriCache[class_]
     
     @staticmethod

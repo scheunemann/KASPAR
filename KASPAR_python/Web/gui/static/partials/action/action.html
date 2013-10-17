@@ -1,2 +1,21 @@
-Action Main Window
-<div ui-view></div>
+<div ng-controller="actionController" id="actionsList">
+	<div class="input-group">
+		<span class="input-group-addon">Action</span> 
+		<select class="selectpicker form-control" ng-model="action"	ng-options="action.name for action in actions | orderBy:name">
+			<option value="">--Select Action--</option>
+		</select> 
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button" ng-click="newAction()">New</button>
+			<button class="btn btn-default" type="button" ng-click="deleteAction(action)">Delete</button>
+		</span>
+	</div>
+	<div ng-show="action != ''">
+		<div class="input-group">
+			<span class="input-group-addon">Type</span>
+			<select ng-disabled="action.id" class="selectpicker form-control" ng-model="action.type" ng-options="type for type in types | orderBy:type">
+				<option value="">--Select Type--</option>
+			</select>
+		</div>
+		<action-editor type='action.type' action="action" actions="actions"></action-editor>
+	</div>
+</div>

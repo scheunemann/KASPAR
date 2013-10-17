@@ -55,6 +55,9 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	} ])
 
 	//Actions
+	.factory('OrderedAction', [ '$resource', function($resource) {
+		return $resource('/api/orderedaction/:id', {id:'@id'});
+	} ])
 	.factory('Action', [ '$resource', function($resource) {
 		return $resource('/api/action/:id', {id:'@id'});
 	} ])

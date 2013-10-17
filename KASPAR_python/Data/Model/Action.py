@@ -1,6 +1,7 @@
 from Base import StandardMixin, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Table, Float
+from sqlalchemy import Column, String, Integer, ForeignKey, Table, Float, BLOB
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
 
 class Action(StandardMixin, Base):
@@ -20,8 +21,9 @@ class Action(StandardMixin, Base):
 class Sound(Action):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
+    file = Column(BLOB)
     __mapper_args__ = {
-            'polymorphic_identity':'sound',
+            'polymorphic_identity':'Sound',
     }
     
 class JointPosition(StandardMixin, Base):
@@ -44,7 +46,7 @@ class Pose(Action):
     defaultJointSpeed = Column(Integer)
     minLength = Column(Float) 
     __mapper_args__ = {
-            'polymorphic_identity':'pose',
+            'polymorphic_identity':'Pose',
     }
                 
     jointPositions = relationship("JointPosition", backref="pose")
@@ -53,23 +55,28 @@ class Expression(Action):
                 
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'expression',
+            'polymorphic_identity':'Expression',
     }
 
 class Sequence(Action):
             
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'sequence',
+            'polymorphic_identity':'Sequence',
     }
     
-    actions = relationship("OrderedAction", order_by="OrderedAction.order", collection_class=ordering_list("order"), backref="sequence")
+    ordered_actions = relationship("OrderedAction", order_by="OrderedAction.order", collection_class=ordering_list("order"), backref="sequence")
+    actions = association_proxy('ordered_actions', 'action')
 
 class OrderedAction(StandardMixin, Base):
     
     order = Column(Integer)
     action_id = Column(Integer, ForeignKey('Action.id'))
     action = relationship("Action")
+    sequence_id = Column(Integer, ForeignKey('Sequence.id'))
+    
+    def __init__(self, action):
+        self.action = action
 
 groupActions_table = Table('groupActions', Base.metadata,
     Column('Group_id', Integer, ForeignKey('Group.id')),
@@ -80,7 +87,7 @@ class Group(Action):
             
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'group',
+            'polymorphic_identity':'Group',
     }
     
     actions = relationship("Action", secondary=groupActions_table)

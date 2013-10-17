@@ -49,7 +49,7 @@ if __name__ == '__main__':
     Base.metadata.create_all(e)
      
     from sqlalchemy.orm.session import sessionmaker
-    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose
+    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose, Sequence, OrderedAction
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
     u = User('uNathan', 'uNathan Burke')
@@ -74,10 +74,15 @@ if __name__ == '__main__':
     u.customTriggers.append(ctr)
     
     o.users.append(u)
-    
+
     r = KasparImporter('kaspar1a').getRobot()
+    
+    sq = Sequence('aSequence')
+    sq.actions.append(s)
+    sq.actions.append(p)
      
     session = sessionmaker(bind=e)()
+    session.add(sq)
     session.add(r)
     session.add(o)
     session.commit()
