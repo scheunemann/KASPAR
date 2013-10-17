@@ -77,5 +77,5 @@ class ServoConfig(StandardMixin, Base):
     extraData = Column(PickleType)
     
     def __init__(self):
-        self.offset = 0
-        self.scale = 1.0
+        super(ServoConfig, self).__init__()
+        
