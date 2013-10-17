@@ -18,10 +18,10 @@ import servos.dynamixel.AX12TxPacket;
  * @author Sven
  */
 public class AX12 extends Servo {
+        private static final long serialVersionUID = 37468324L;
 
     // Construct to hold all address we can use for one servo
     private final static HashMap<String, AX12Address> addresses = new HashMap<String, AX12Address>() {
-        private static final long serialVersionUID = 37468324L;
 
         // Initialisation block
         {

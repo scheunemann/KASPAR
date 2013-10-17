@@ -1,5 +1,5 @@
 from Base import StandardMixin, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Table, Float, BLOB
+from sqlalchemy import Column, String, Integer, ForeignKey, Table, Float, Binary
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -21,10 +21,10 @@ class Action(StandardMixin, Base):
 class Sound(Action):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Action'), primary_key=True)
-    file = Column(BLOB)
     __mapper_args__ = {
             'polymorphic_identity':'Sound',
     }
+    data = Column(Binary)
     
 class JointPosition(StandardMixin, Base):
     
