@@ -70,6 +70,7 @@ class HerkuleX(object):
     
     def __init__(self, portstring, portspeed):
         self.mPort = serial.Serial(port=portstring, baudrate=portspeed)
+        self.port.open()
         self.multipleMoveData = []
         self.mIDs = []
         self._logger = logging.getLogger(__name__)

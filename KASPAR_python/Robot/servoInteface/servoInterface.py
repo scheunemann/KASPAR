@@ -47,8 +47,7 @@ class ServoInterface(object):
         self._posOffset = config.rotationOffset
         
         self._logger = logging.getLogger(__name__)
-        
-                
+                        
     def setPositioning(self, enablePositioning):
         raise ValueError('Manual positioning not supported on servo %s', self._servo)
     

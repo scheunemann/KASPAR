@@ -134,6 +134,7 @@ class ServoController:
 		"""
 		self.portstring = portstring
 		self.port = serial.Serial(port=self.portstring, baudrate=portspeed, timeout=5)  # Picked from a hat.
+		self.port.open()
 
 	def Close(self):
 		"""Close the serial port."""
