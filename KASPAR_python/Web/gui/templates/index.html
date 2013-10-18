@@ -1,45 +1,71 @@
 <!doctype html>
-<html lang="en" ng-app="kasparGUI" ng-cloak>
+<html
+	lang="en"
+	ng-app="kasparGUI"
+	ng-cloak
+	class="maxHeight">
 <head>
-	<meta charset="utf-8">
-	<title ng-controller="commonController">KASPAR GUI v{{version}}</title>
-	<link rel="stylesheet" href="static/css/app.css" />
-	<link rel="stylesheet" href="static/lib/bootstrap/bootstrap.min.css" />
-	
-	<script src="static/lib/angular/1.2.0rc2/angular.min.js"></script>
-	<script src="static/lib/angular/angular-ui-router.min.js"></script>
-	<script src="static/lib/angular/1.2.0rc2/angular-resource.min.js"></script>
-	<script src="static/lib/angular/1.2.0rc2/angular-route.min.js"></script>
-	<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.6.0.min.js"></script>
-	<script src="static/js/model.js"></script>
-	<script src="static/js/app.js"></script>
-	<script src="static/js/services.js"></script>
-	<script src="static/js/controllers.js"></script>
-	<script src="static/js/filters.js"></script>
-	<script src="static/js/directives.js"></script>
+<meta charset="utf-8">
+<title ng-controller="commonController">KASPAR GUI v{{version}}</title>
+<link
+	rel="stylesheet"
+	href="static/lib/bootstrap/bootstrap.min.css" />
+<link
+	rel="stylesheet"
+	href="static/css/app.css" />
+
+<script src="static/lib/angular/1.2.0rc2/angular.min.js"></script>
+<script src="static/lib/angular/angular-ui-router.min.js"></script>
+<script src="static/lib/angular/1.2.0rc2/angular-resource.min.js"></script>
+<script src="static/lib/angular/1.2.0rc2/angular-route.min.js"></script>
+<script src="static/lib/bootstrap/ui-bootstrap-tpls-0.6.0.min.js"></script>
+<script src="static/js/model.js"></script>
+<script src="static/js/app.js"></script>
+<script src="static/js/services.js"></script>
+<script src="static/js/controllers.js"></script>
+<script src="static/js/filters.js"></script>
+<script src="static/js/directives.js"></script>
 </head>
-<body>
-	<header ng-controller="commonController">
-		<br />
+<body class="maxHeight">
+	<header
+		class="navbar-fixed-top text-center header"
+		ng-controller="commonController">
 		<h1>KASPAR Web Interface</h1>
-		<h3>Version {{version}}</h3>
+		<h6>Version {{version}}</h6>
 	</header>
-	<div id="main">
-		<div id="navBar" ng-controller="navBarController" class="panel-group">
-			<div class="panel" ng-repeat="group in groups | orderBy:order" heading="{{group.title}}">
-				<h4>{{group.title}}</h4>
-				<div ng-repeat="link in group.links | orderBy:order"><a href="#/{{link.path}}">{{link.title}}</a></div>
+	<div class="container maxHeight">
+		<div class="row maxHeight">
+			<div
+				class="col-md-3 col-lg-2 maxHeight scrollable"
+				ng-controller="navBarController"
+				id="sideNav">
+				<div class="panel-group">
+					<div
+						class="panel panel-default"
+						ng-repeat="group in groups | orderBy:order">
+						<div
+							class="panel-heading">
+							<h4 class="panel-title">{{group.title}}</h4>
+						</div>
+						<div
+							class="nav-collapse in">
+							<div ng-repeat="link in group.links | orderBy:order">
+								<a href="#/{{link.path}}">{{link.title}}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div
+				class="col-md-9 col-lg-10 scrollable maxHeight well"
+				id="main">
+				<div ui-view></div>
 			</div>
 		</div>
-		<div id="content" class="well">
-			<div ui-view></div>
-		</div>
 	</div>
-	<footer>
-		&copy;<a href="http://www.herts.ac.uk/research/stri">Science and
-			Technology Research Institute</a>
-		<address>University of Hertfordshire Hatfield,
-			Hertfordshire, AL10 9AB, UK</address>
+	<footer class="navbar-fixed-bottom text-center">
+		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science and Technology Research Institute</a>
+			<div>University of Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK</div></small>
 	</footer>
 </body>
 </html>

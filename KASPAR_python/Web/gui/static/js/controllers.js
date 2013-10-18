@@ -5,7 +5,7 @@
 angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 	.controller(
 		'commonController', [ '$scope', function($scope) {	
-			$scope.version = '3.0 Alpha 2';
+			$scope.version = '3.0 Alpha 7';
 		} ])
 	.controller(
 		'navBarController', [ '$scope', 'Menu', function($scope, Menu) {

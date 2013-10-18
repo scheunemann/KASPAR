@@ -14,14 +14,14 @@
 		</div>
 		<div class="input-group" ng-class="{'has-error': !robotForm.version.$valid && robotForm.version.$dirty, 'has-warning': robotForm.version.$dirty}">
 			<span class="input-group-addon">Version</span> 
-			<select name="version" class="selectpicker form-control" ng-model="selected.version" ng-options="version for version in versions | orderBy:version" required>
+			<select name="version" ng-disabled="true" class="selectpicker form-control" ng-model="selected.version" ng-options="version for version in versions | orderBy:version" required>
 				<option value="">--Select Version--</option>
 			</select>
 		</div>
 	</form>
-	<div class="btn-group pull-right">
-		<button class="btn btn-default" type="button" ng-click="viewJoints(selected)">View Joints</button>
-		<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button>
-	</div>
-	<div ui-view></div>
+<!-- 	<div class="btn-group pull-right"> -->
+<!-- 		<button class="btn btn-default" type="button" ng-click="viewJoints(selected)">View Joints</button> -->
+<!-- 		<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button> -->
+<!-- 	</div> -->
+<!-- 	<div ui-view></div> -->
 </div>

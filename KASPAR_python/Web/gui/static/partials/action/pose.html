@@ -1,35 +1,61 @@
-<div>
-	<div class="input-group">
-		<span class="input-group-addon">Name</span>
-		<input type="text" class="form-control" placeholder="Full Name" ng-model="pose.name">
-	</div>
-	<div class="input-group">
-		<span class="input-group-addon">Default Speed</span>
-		<input type="range" class="form-control" min="1" max="300" ng-model="pose.defaultJointSpeed">
-		<!--<span class="input-group-btn">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="input-group">
+			<span class="input-group-addon">Name</span> <input
+				type="text"
+				class="form-control"
+				placeholder="Full Name"
+				ng-model="pose.name">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Default Speed</span> <input
+				type="range"
+				class="form-control"
+				min="1"
+				max="300"
+				ng-model="pose.defaultJointSpeed">
+			<!--<span class="input-group-btn">
 			<input type="text" class="form-control" ng-model="pose.defaultJointSpeed">
 		</span>-->
-		<span class="input-group-addon">{{pose.defaultJointSpeed}}%</span>
-	</div>
-	<div class="input-group">
-		<span class="input-group-addon">Length</span>
-		<input type="text" class="form-control" placeholder="Minimum Pose Length" ng-model="pose.minLength">
-		<span class="input-group-addon">seconds</span>
-	</div>
-	<hr/>
-	<div ng-controller='robotController'>
-		<div class="input-group">
-			<span class="input-group-addon">Connected Robot</span>
-			<select class="selectpicker form-control" ng-model="selected" ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:name">
-				<option value="">--Select Robot--</option>
-			</select>
+			<span class="input-group-addon">{{pose.defaultJointSpeed}}%</span>
 		</div>
-<!-- 		<div class="btn-group"> -->
-<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="advancedPositioning(selected)">Advanced Positioning</button> -->
-<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, true)" ng-hide="selected.poseEnable">Enable Positioning</button> -->
-<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button> -->
-<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button> -->
-<!-- 		</div> -->
-		<advanced-pose-editor pose="pose" robot="selected"></advanced-pose-editor>
+		<div class="input-group">
+			<span class="input-group-addon">Length</span> <input
+				type="text"
+				class="form-control"
+				placeholder="Minimum Pose Length"
+				ng-model="pose.minLength"> <span class="input-group-addon">seconds</span>
+		</div>
+	</div>
+</div>
+<hr/>
+<div
+	ng-controller='robotController'
+	class="row">
+	<div class="col-lg-12">
+		<div class="row">
+			<div class="col-lg-12 input-group">
+				<span class="input-group-addon">Connected Robot</span> <select
+					class="selectpicker form-control"
+					ng-model="selected"
+					ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:name">
+					<option value="">--Select Robot--</option>
+				</select>
+			</div>
+		</div>
+		<!-- 		<div class="btn-group row"> -->
+		<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="advancedPositioning(selected)">Advanced Positioning</button> -->
+		<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, true)" ng-hide="selected.poseEnable">Enable Positioning</button> -->
+		<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="setPositioning(selected, false)" ng-show="selected.poseEnabled">Disable Positioning</button> -->
+		<!-- 			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="getCurrentPose(jointPositionsRaw)">Record Current Position</button> -->
+		<!-- 		</div> -->
+		<hr />
+		<div class="row">
+			<div class="col-lg-12">
+				<advanced-pose-editor
+					pose="pose"
+					robot="selected"></advanced-pose-editor>
+			</div>
+		</div>
 	</div>
 </div>

@@ -1,17 +1,42 @@
-<div>
-<!-- 	<span>Advanced Pose editor</span> -->
-	{{proxyObjectResolver.resolveProp(robot, 'servoGroups')}}
-	<div class="panel" ng-repeat="group in robot.servoGroups | orderBy:name">
-		<h4>{{group.name}}</h4>
-		{{proxyObjectResolver.resolveProp(group, 'servos')}}
-		<div ng-repeat="servo in group.servos | orderBy:jointName">
-<!-- 			<div ng-if="($index % 3)==0" class="row"> -->
-<!-- 				<joint-editor class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+0])" servo="group.servos[$index+0]"></joint-editor>	 -->
-<!-- 				<joint-editor ng-if="$index+1 < group.servos.length" class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+1])" servo="group.servos[$index+1]"></joint-editor> -->
-<!-- 				<joint-editor ng-if="$index+2 < group.servos.length" class="span4" joint-names="joints" joint-position="getPosition(pose.positions, group.servos[$index+2])" servo="group.servos[$index+2]"></joint-editor>	 -->
-<!-- 			</div> -->
-			<joint-editor joint-names="joints" joint-position="getPosition(pose.positions, servo)" servo="servo"></joint-editor>
-			<br ng-if="!$last"/>
+<div class="row">
+	<div class="col-lg-12">
+		<!-- 	<span>Advanced Pose editor</span> -->
+		{{proxyObjectResolver.resolveProp(robot, 'servoGroups')}}
+		<div
+			class="panel tightLeft tightRight tightBottom"
+			ng-repeat="group in robot.servoGroups | orderBy:name">
+			<h4>{{group.name}}</h4>
+			{{proxyObjectResolver.resolveProp(group, 'servos')}}
+			<div
+				class="row"
+				ng-repeat="servo in group.servos | orderBy:jointName">
+				<div
+					ng-if="($index % 3)==0"
+					class="col-lg-12">
+					<div class="row" ng-class="{tightTop:($index > 2), tightBottom:($index+3 < group.servos.length)}">
+						<div class="col-lg-4 tightRight">
+							<joint-editor
+								joint-names="joints"
+								joint-position="getPosition(pose.positions, group.servos[$index+0])"
+								servo="group.servos[$index+0]"></joint-editor>
+						</div>
+						<div class="col-lg-4 tightLeft tightRight">
+							<joint-editor
+								ng-if="$index+1 < group.servos.length"
+								joint-names="joints"
+								joint-position="getPosition(pose.positions, group.servos[$index+1])"
+								servo="group.servos[$index+1]"></joint-editor>
+						</div>
+						<div class="col-lg-4 tightLeft">
+							<joint-editor
+								ng-if="$index+2 < group.servos.length"
+								joint-names="joints"
+								joint-position="getPosition(pose.positions, group.servos[$index+2])"
+								servo="group.servos[$index+2]"></joint-editor>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
