@@ -2,6 +2,8 @@ import logging
 from threading import RLock
 from connections import Connection
 
+__all__ = ['ServoInterface', ]
+
 class ServoInterface(object):
     
     _servoInterfaces = {}
@@ -11,17 +13,20 @@ class ServoInterface(object):
     def getServoInterface(servo):
         with ServoInterface._globalLock:
             if not ServoInterface._servoInterfaces.has_key(servo):
-                if servo.type.name == "AX12":
-                    servoInt = AX12(servo)
-                if servo.type.name == "MINISSC":
-                    servoInt = MINISSC(servo)
-                if servo.type.name == "SSC32":
-                    servoInt = SSC32(servo)
-                if servo.type.name == "HerculeX":
-                    servoInt = HerculeX(servo)
+                if 'disconnected' in globals() and not disconnected: #Global flag
+                    if servo.type.name == "AX12":
+                        servoInt = AX12(servo)
+                    if servo.type.name == "MINISSC":
+                        servoInt = MINISSC(servo)
+                    if servo.type.name == "SSC32":
+                        servoInt = SSC32(servo)
+                    if servo.type.name == "HerculeX":
+                        servoInt = HerculeX(servo)
+                    else:
+                        logging.getLogger(__name__).critical("No known interface for servo type: %s", servo.type.name)
+                        raise ValueError
                 else:
-                    logging.getLogger(__name__).critical("No known interface for servo type: %s", servo.type.name)
-                    raise ValueError
+                    servoInt = Dummy(servo)
                  
                 ServoInterface._servoInterfaces[servo] = servoInt 
              
@@ -49,6 +54,9 @@ class ServoInterface(object):
         self._logger = logging.getLogger(__name__)
                         
     def setPositioning(self, enablePositioning):
+        raise ValueError('Manual positioning not supported on servo %s', self._servo)
+
+    def getPositioning(self):
         raise ValueError('Manual positioning not supported on servo %s', self._servo)
     
     def setPosition(self, position, speed):
@@ -89,6 +97,7 @@ class AX12(ServoInterface):
         self._conn = Connection.getConnection("AX12", self._port, self._portSpeed)
         self._checkMinMaxValues()
         self._reactive = False
+        self._positioning = False
     
     def getPosition(self):
         with Connection.getLock(self._conn):
@@ -102,9 +111,13 @@ class AX12(ServoInterface):
             self._conn.SetMovingSpeed(self._externalId, scaledSpeed)
             self._conn.SetPosition(self._externalId, scaledPosition)
     
+    def getPositioning(self):
+        return self._positioning
+    
     def setPositioning(self, enablePositioning):
         with Connection.getLock(self._conn):
             self._conn.SetTorqueEnable(self._externalId, int(not enablePositioning))
+            self._positioning = enablePositioning
     
     def _checkMinMaxValues(self):
         # We can check the hardware limits set in the servos
@@ -163,6 +176,7 @@ class HerculeX(ServoInterface):
             self._logger.critical("HerculeX servo %s is missing its external Id!", servo.name)
         
         self._conn = Connection.getConnection("HERKULEX", self._port, self._portSpeed)
+        self._positioning = False
 
     def getPosition(self):
         with Connection.getLock(self._conn):
@@ -178,12 +192,16 @@ class HerculeX(ServoInterface):
         with Connection.getLock(self._conn):
             self._conn.moveOne(self._externalId, scaledPosition, scaledSpeed)
     
+    def getPositioning(self):
+        return self._positioning
+    
     def setPositioning(self, enablePositioning):
         with Connection.getLock(self._conn):
             if enablePositioning:
                 self._conn.torqueOFF(self._externalId)
             else:
                 self._conn.torqueON(self._externalId)
+            self._positioning = enablePositioning
 
 class SSC32(ServoInterface):
     
@@ -226,3 +244,46 @@ class SSC32(ServoInterface):
         with Connection.getLock(self._conn):
             self._conn.write(send)
     
+class Dummy(ServoInterface):
+    
+    def __init__(self, servo):
+        super(Dummy, self).__init__(servo)
+        self._position = 0
+        self._posable = False
+        self._logger = logging.getLogger(__name__)
+        
+    def setPositioning(self, enablePositioning):
+        self._posable = enablePositioning
+        self._logger.debug("Servo: %s Set positioning to: %s", self._servo, enablePositioning)
+        self._writeData()
+
+    def getPositioning(self):
+        self._readData()
+        return self._posable
+    
+    def setPosition(self, position, speed):
+        self._position = position
+        self._logger.debug("Servo: %s Set position to: %s", self._servo, position)
+        self._writeData()
+
+    def getPosition(self):
+        self._readData()
+        self._logger.warning("Servo: %s Got position: %s", self._servo, self._position)
+        return self._position
+    
+    def _readData(self):
+        import pickle
+        try:
+            data = pickle.load(open(str(self._servo.id) + '_dummyData', 'r'))
+            self._position = data['position']
+            self._posable = data['posable']
+        except:
+            pass
+        
+    def _writeData(self):
+        import pickle
+        try:
+            data = {'position':self._position, 'posable':self._posable}
+            pickle.dump(data, open(str(self._servo.id) + '_dummyData', 'w'))
+        except:
+            pass

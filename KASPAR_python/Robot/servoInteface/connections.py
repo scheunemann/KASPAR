@@ -3,6 +3,8 @@ from herkulex import HerkuleX
 from threading import RLock
 import serial
 
+__all__ = ['Connection', ]
+
 class Connection(object):
 
     _globalLock = RLock()

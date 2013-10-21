@@ -28,6 +28,8 @@ import serial
 import time
 import logging
 
+__all__ = ['HerkuleX', ]
+
 class HerkuleX(object):
     
     """
@@ -154,7 +156,7 @@ class HerkuleX(object):
     * @param servoID 0 ~ 254 (0x00 ~ 0xFE), 0xFE : BROADCAST_ID 
     """
     def torqueON(self, servoID):
-        optData = [] * 3
+        optData = [0] * 3
         optData[0] = 0x34  # Address
         optData[1] = 0x01  # Length
         optData[2] = 0x60  # 0x60=Torque ON
@@ -168,7 +170,7 @@ class HerkuleX(object):
     * @param servoID 0 ~ 254 (0x00 ~ 0xFE), 0xFE : BROADCAST_ID 
     """
     def torqueOFF(self, servoID):
-        optData = [] * 3
+        optData = [0] * 3
         optData[0] = 0x34  # Address
         optData[1] = 0x01  # Length
         optData[2] = 0x00  # 0x60=Torque ON
@@ -234,7 +236,7 @@ class HerkuleX(object):
         self.sendData(packetBuf)
 
         try:
-            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000)
+            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000.0)
         except:
             self._logger.error(sys.exc_info()[0])
         
@@ -260,18 +262,16 @@ class HerkuleX(object):
     * @param playTime 0 ~ 2856ms
     * @param led HerkuleX.LED_RED | HerkuleX.LED_GREEN | HerkuleX.LED_BLUE
     """
-    def moveOne(self, servoID, goalPos, playTime, led=None):
+    def moveOne(self, servoID, goalPos, playTime, led=0):
         if goalPos > 1023 or goalPos < 0:
             return  # speed (goal) non correct
         if playTime < 0 or playTime > 2856:
             return
-        if led == None:
-            led = HerkuleX.LED_GREEN
         
         # Position definition
         posLSB = goalPos & 0X00FF  # MSB Pos
         posMSB = (goalPos & 0XFF00) >> 8  # LSB Pos
-        playTime = playTime / 11.2  # ms --> value
+        playTime = int(round(playTime / 11.2))  # ms --> value
         led = led & 0xFD  # Pos Ctrl Mode
         
         optData = [0] * 5
@@ -282,7 +282,7 @@ class HerkuleX(object):
         optData[4] = servoID
         
         packetBuf = self.buildPacket(servoID, HerkuleX.HSJOG, optData)
-        HerkuleX.sendData(packetBuf)
+        self.sendData(packetBuf)
     
     """
     * Get servo position
@@ -303,7 +303,7 @@ class HerkuleX(object):
         self.sendData(packetBuf)
 
         try:
-            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000)
+            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000.0)
         except:
             self._logger.error(sys.exc_info()[0])
         
@@ -525,7 +525,7 @@ class HerkuleX(object):
         self.sendData(packetBuf)
         
         try:
-            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000)
+            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000.0)
         except:
             self._logger.error(sys.exc_info()[0])
         
@@ -551,7 +551,7 @@ class HerkuleX(object):
         self.sendData(packetBuf)
           
         try:
-            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000)
+            time.sleep(HerkuleX.WAIT_TIME_BY_ACK / 1000.0)
         except:
             self._logger.error(sys.exc_info()[0])
          
@@ -673,12 +673,12 @@ class HerkuleX(object):
 
     # checksum1
     def checksum1(self, buf):
-        chksum1 = 0x00    
+        chksum1 = 0x00
       
         for i in range(0, len(buf)):
             if i == 0 or i == 1 or i == 5 or i == 6:
                 continue
-        chksum1 ^= buf[i]
+            chksum1 ^= buf[i]
         
         return chksum1 & 0xFE
     
@@ -687,17 +687,19 @@ class HerkuleX(object):
         return (~chksum1) & 0xFE
     
     def sendData(self, buf):
-        self.mPort.write(buf)
+        self.mPort.write(''.join([chr(x) for x in buf]))
     
     def readData(self):
         retBuf = []
         
         while self.mPort.inWaiting() > 0:
-            inBuffer = self.mPort.read()
-            retBuf.append(inBuffer & 0xFF)
+            inBuffer = self.mPort.read(1)
+            retBuf.append(ord(inBuffer) & 0xFF)
         
         return retBuf
 
 if __name__ == '__main__':
-    h = HerkuleX('COM3', 115200)
-    print h.performIDScan()
+    h = HerkuleX('/dev/ttyUSB1', 115200)
+    for i in range(0, 254):
+        h.torqueOFF(i)
+        #h.moveOne(254, 512, 1000)

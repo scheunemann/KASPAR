@@ -26,8 +26,11 @@
 				min="{{servo.minPosition != undefined ? servo.minPosition : servo.type.minPosition}}"
 				max="{{servo.maxPosition != undefined ? servo.maxPosition : servo.type.maxPosition}}"
 				ng-model="jointPosition.angle"
-				required /> <span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ?
-				servo.defaultAngle : servo.type.defaultAngle)}}</span>
+				ng-change="cometPost()"
+				required /> 
+				<span class="input-group-addon">{{position}}</span>
+<!-- 				<span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ? -->
+<!-- 				servo.defaultAngle : servo.type.defaultAngle)}}</span> -->
 		</div>
 		<div
 			class="input-group"
@@ -42,6 +45,6 @@
 				ng-model="jointPosition.speed" /> <span class="input-group-addon">{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed !=
 				undefined ? servo.defaultSpeed : servo.type.defaultSpeed)}}</span>
 		</div>
-		</ng-form>
+		</ng-form>{{servoInterface}}
 	</div>
 </div>

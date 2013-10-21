@@ -10,7 +10,9 @@ class StorageFactory(object):
     @staticmethod
     def getNewSession():
         if StorageFactory._sessionMaker == None:
-            StorageFactory._sessionMaker = sessionmaker(bind=StorageFactory.getDefaultDataStore().engine)            
+            StorageFactory._sessionMaker = sessionmaker(bind=StorageFactory.getDefaultDataStore().engine)
+        
+        return StorageFactory._sessionMaker()
     
     @staticmethod
     def getDefaultDataStore():
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
      
-    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose, Sequence, OrderedAction
+    from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose, Sequence
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
     u = User('uNathan', 'uNathan Burke')

@@ -4,8 +4,9 @@ import crud
 from robot import Robot
 from user import User
 from legacy import ActionImport, TriggerImport
+import controller
 
-__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger']
+__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface']
 
 class Robot(Robot):
     pass
@@ -59,3 +60,24 @@ class Trigger(crud.ModelCRUD):
         super(Trigger, self).__init__(Data.Model.Trigger, ['GET', 'POST', 'DELETE'])
         setattr(self, 'import', Trigger._import)
 
+class RobotInterface(controller.RobotInterface):
+    exposed = True
+    
+    @property
+    def links(self):
+        return []
+    
+    @property
+    def title(self):
+        return self._modelClass.__name__
+    
+class ServoInterface(controller.ServoInterface):
+    exposed = True
+    
+    @property
+    def links(self):
+        return []
+    
+    @property
+    def title(self):
+        return self._modelClass.__name__

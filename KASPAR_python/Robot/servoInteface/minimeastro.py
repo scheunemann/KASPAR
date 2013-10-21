@@ -1,6 +1,8 @@
 import serial
 import time
 
+__all__ = ['Maestro12', ]
+
 class Maestro12(object):
     
     HOME = 0xA2

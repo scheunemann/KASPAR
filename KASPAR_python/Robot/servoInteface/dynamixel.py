@@ -34,6 +34,8 @@ import sys
 import serial 
 import time
 
+__all__ = ['ServoController', ]
+
 """
 # POS_SCALE = 0.352
 # POS_OFFSET = 0

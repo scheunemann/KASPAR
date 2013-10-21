@@ -1,7 +1,6 @@
 import cherrypy
 from crud import ModelCRUD
 import datetime
-import json
 
 class SimpleBase(object):
     exposed = True
@@ -9,8 +8,9 @@ class SimpleBase(object):
     def __init__(self, data):
         self._data = data
     
+    @cherrypy.tools.json_out()
     def GET(self):
-        return json.dumps(self._data)
+        return self._data
 
 class ServiceBase(object):
     exposed = False
@@ -40,9 +40,10 @@ class ServiceBase(object):
                 setattr(self, obj[0].__name__.lower(), ModelCRUD(obj[0], obj[1]))
             else:
                 setattr(self, obj.__name__.lower(), ModelCRUD(obj))
-            
+
+    @cherrypy.tools.json_out()
     def GET(self):
-        return json.dumps(self._getServiceDescriptor())
+        return self._getServiceDescriptor()
     
     def _getServiceDescriptor(self):
         return {

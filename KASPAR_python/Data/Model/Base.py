@@ -115,7 +115,9 @@ class Base(Data.config.modelBase):
                         for item in getattr(self, attr.key):
                             proxy['ids'].append(item.id)
                     else:
-                        proxy['ids'].append(getattr(self, attr.key).id)
+                        att = getattr(self, attr.key)
+                        if att != None:
+                            proxy['ids'].append(att.id)
                         
                     obj[attr.key] = proxy
                 else:

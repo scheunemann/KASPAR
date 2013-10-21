@@ -67,7 +67,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 
 	  return def;
   }])
-  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', 'JointPosition', function($q, $filter, proxyObjectResolver, JointPosition) {
+  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', function($q, $filter, proxyObjectResolver, JointPosition, RobotInterface) {
 	  var def = {
 			  templateUrl: 'static/partials/action/poseadvanced.html',
 			  restrict: 'E',
@@ -80,6 +80,17 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  $scope.joints = ['HEAD_ROT','HEAD_VERT', 'HEAD_TLT', 'EYES_LR', 'EYES_UD', 'MOUTH_OPEN', 'MOUTH_SMILE',
 				                   'EYELIDS', 'ARM_L_1', 'ARM_L_2', 'ARM_L_3', 'ARM_L_4', 'ARM_R_1', 'ARM_R_2', 'ARM_R_3', 'ARM_R_4'];
 			  
+				  $scope.cometGet = function(data) {
+					  $scope.servoPositions = data;
+					  RobotInterface.get({'id': $scope.robot.id, 'timestamp':data.timestamp}, $scope.cometGet);
+				  }
+
+				  $scope.$watch('robot', function() {
+					  if($scope.robot != undefined) {
+						  $scope.servoPositions = RobotInterface.get({'id': $scope.robot.id}, $scope.cometGet);
+					  }
+				  });
+				  
 				  $scope.getJointNames = function(servos) {
 					  var names = [];
 					  var keys = {}
@@ -118,7 +129,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  
 	  return def;
   }])
-  .directive('jointEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+  .directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
 	  var def = {
 			  templateUrl: 'static/partials/action/joint.html',
 			  restrict: 'E',
@@ -126,9 +137,26 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  jointNames: "=",
 				  jointPosition: "=",
 				  servo: "=",
+				  servoPositions: "=",
 			  },
 			  controller: function($scope) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  $scope.cometPost = function() {
+					  if($scope.jointPosition.angle != undefined) {
+						  var servo = ServoInterface.get({'id': $scope.servo.id}, function() {
+							  servo.position = $scope.jointPosition.angle;
+							  servo.$save({'id': $scope.servo.id});
+						  });
+					  }
+				  }
+				  
+				  $scope.$watch('servoPositions', function() {
+					  for(var i = 0; i < $scope.servoPositions.servos.length; i++) {
+						  if($scope.servoPositions.servos[i].id == $scope.servo.id) {
+							  $scope.position = $scope.servoPositions.servos[i].position;
+						  }
+					  }
+				  });
 			  },
 	  };
 	  

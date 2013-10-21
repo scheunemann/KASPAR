@@ -33,6 +33,12 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('ServoType', [ '$resource', function($resource) {
 		return $resource('/api/robot/servo/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
+	.factory('RobotInterface', [ '$resource', function($resource) {
+		return $resource('/api/robotinterface/:id', {id:'@id'});
+	} ])
+	.factory('ServoInterface', [ '$resource', function($resource) {
+		return $resource('/api/servointerface/:id', {id:'@id'});
+	} ])
 	.factory('Sensor', [ '$resource', function($resource) {
 		return $resource('/api/robot/:id/sensor/:id', {id:'@id'});
 	} ])
