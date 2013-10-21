@@ -55,35 +55,11 @@ angular.module('kasparGUI', ['ui.router', 'ui.bootstrap', 'kasparGUI.filters', '
 			    				templateUrl: 'static/partials/action/edit.html',
 			    				parent: 'action'
 	    					})
-//			.state(
-//				'action.edit.group', {
-//			    				url:'/group', 
-//			    				templateUrl: 'static/partials/action/group.html',
-//			    				parent: 'action.edit'
-//	    					})
-//			.state(
-//				'action.edit.sequence', {
-//			    				url:'/sequence', 
-//			    				templateUrl: 'static/partials/action/sequence.html',
-//			    				parent: 'action.edit'
-//	    					})
-//			.state(
-//				'action.edit.sound', {
-//			    				url:'/sound', 
-//			    				templateUrl: 'static/partials/action/sound.html',
-//			    				parent: 'action.edit'
-//	    					})
-//			.state(
-//				'action.edit.pose', {
-//			    				url:'/pose', 
-//			    				templateUrl: 'static/partials/action/pose.html',
-//			    				parent: 'action.edit'
-//	    					})
 			.state(
-				'action.test', {
-			    				url:'/test', 
+				'actionTest', {
+			    				url:'/action/test', 
 			    				templateUrl: 'static/partials/action/test.html',
-			    				parent: 'action'
+//			    				parent: 'action'
 	    					})
 			.state(
 				'action.import', {

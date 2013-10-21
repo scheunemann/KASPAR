@@ -179,7 +179,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  
 	  return def;
   }])
-  .directive('sequenceEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+  .directive('sequenceEditor', [ 'proxyObjectResolver', 'OrderedAction', function(proxyObjectResolver, OrderedAction) {
 	  var def = {
 			  templateUrl: 'static/partials/action/sequence.html',
 			  restrict: 'E',
@@ -189,6 +189,39 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			  },
 			  controller: function($scope) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  
+				  $scope.addActions = function(actions) {
+					  if($scope.sequence.ordered_actions === undefined) {
+						  $scope.sequence.ordered_actions = []
+					  }
+
+					  for (var i = 0; i < actions.length; i++) {
+						  var oa = new OrderedAction();
+						  oa.order = $scope.sequence.ordered_actions.length;
+						  oa.action = actions[i];
+						  $scope.sequence.ordered_actions.push(oa);
+					  }
+				  };
+				  
+				  $scope.removeActions = function(actions) {
+					  for (var i = 0; i < actions.length; i++) {
+						  for(var j = 0; j < $scope.sequence.ordered_actions.length; j++) {
+							  if($scope.sequence.ordered_actions[j].action == actions[i]) {
+								  $scope.sequence.ordered_actions.splice(j, 1);
+							  }
+						  }
+					  }
+				  };
+				  
+				  $scope.getActions = function(ordered_actions) {
+					  var ret = [];
+					  if(ordered_actions != undefined) {
+						  for(var i = 0; i < ordered_actions.length; i++) {
+							  ret.push(ordered_actions[i].action);
+						  }
+					  }
+					  return ret;
+				  }
 			  },
 	  };
 	  

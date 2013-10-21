@@ -13,7 +13,6 @@ class Maestro12(object):
     
     def __init__(self, portstring, portspeed):
         self._conn = serial.Serial(portstring, portspeed)
-        self._conn.open()
 
     def write(self, buf):
         self._conn.write(buf)

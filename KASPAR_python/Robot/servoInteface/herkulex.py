@@ -70,7 +70,6 @@ class HerkuleX(object):
     
     def __init__(self, portstring, portspeed):
         self.mPort = serial.Serial(port=portstring, baudrate=portspeed)
-        self.port.open()
         self.multipleMoveData = []
         self.mIDs = []
         self._logger = logging.getLogger(__name__)
@@ -109,7 +108,7 @@ class HerkuleX(object):
     * @return ArrayList<Integer> - Servo IDs
     """
     def performIDScan(self):
-        self.mIDs.clear()
+        self.mIDs = []
         
         for i in range(0, 254):
             if self.getPosition(i) != -1:
@@ -261,11 +260,13 @@ class HerkuleX(object):
     * @param playTime 0 ~ 2856ms
     * @param led HerkuleX.LED_RED | HerkuleX.LED_GREEN | HerkuleX.LED_BLUE
     """
-    def moveOne(self, servoID, goalPos, playTime, led=HerkuleX.LED_GREEN):
+    def moveOne(self, servoID, goalPos, playTime, led=None):
         if goalPos > 1023 or goalPos < 0:
             return  # speed (goal) non correct
         if playTime < 0 or playTime > 2856:
             return
+        if led == None:
+            led = HerkuleX.LED_GREEN
         
         # Position definition
         posLSB = goalPos & 0X00FF  # MSB Pos
@@ -634,7 +635,7 @@ class HerkuleX(object):
         self.sendData(packetBuf)
     
     def isRightPacket(self, buf):
-        if buf.length < 7:
+        if len(buf) < 7:
             return False
         
         chksum1 = self.checksum1(buf)  # Checksum1
@@ -691,8 +692,12 @@ class HerkuleX(object):
     def readData(self):
         retBuf = []
         
-        while self.mPort.isWaiting() > 0:
+        while self.mPort.inWaiting() > 0:
             inBuffer = self.mPort.read()
             retBuf.append(inBuffer & 0xFF)
         
         return retBuf
+
+if __name__ == '__main__':
+    h = HerkuleX('COM3', 115200)
+    print h.performIDScan()

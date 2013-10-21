@@ -54,7 +54,22 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 					}
 				}
 			};
-		}])
+	}])
+	.controller(
+			'actionTestController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $state, $http, $q, $timeout, Action, ActionType) {
+			$scope.running = false;
+			$scope.actions = Action.query();
+			$scope.output = '';
+			$scope.startAction = function(action) {
+				$scope.output += 'Start action' + action.name + '\n';
+				$scope.running = true;
+			};
+			
+			$scope.stopAction = function(action) {
+				$scope.output += 'Stop action' + action.name + '\n';
+				$scope.running = false;
+			};
+	}])
 	.controller(
 		'actionController', [ '$scope', '$state', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $state, $http, $q, $timeout, Action, ActionType) {
 			$scope.action = '';

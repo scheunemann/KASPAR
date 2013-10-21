@@ -4,6 +4,11 @@ body {
 	background: #fff;
 }
 
+.fill {
+	height: 100%;
+	width: 100%;
+}
+
 .container {
 	max-width: 100%;
 }

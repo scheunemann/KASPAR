@@ -1,10 +1,17 @@
 from sqlalchemy import create_engine
 from config import database_config
+from sqlalchemy.orm.session import sessionmaker
 
 class StorageFactory(object):
 
     _dataStore = None
+    _sessionMaker = None
 
+    @staticmethod
+    def getNewSession():
+        if StorageFactory._sessionMaker == None:
+            StorageFactory._sessionMaker = sessionmaker(bind=StorageFactory.getDefaultDataStore().engine)            
+    
     @staticmethod
     def getDefaultDataStore():
         if StorageFactory._dataStore == None:
@@ -42,13 +49,11 @@ class MySQLDataStore(DataStore):
         
 if __name__ == '__main__':
     database_config['debug'] = True
-    e = StorageFactory.getDefaultDataStore().engine
     from Model import Base
     from Legacy import KasparImporter, ActionImporter
-    Base.metadata.drop_all(e)
-    Base.metadata.create_all(e)
+    Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
+    Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
      
-    from sqlalchemy.orm.session import sessionmaker
     from Data.Model import Operator, User, Sound, CustomAction, TimeTrigger, CustomTrigger, Pose, Sequence, OrderedAction
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
@@ -81,7 +86,7 @@ if __name__ == '__main__':
     sq.actions.append(s)
     sq.actions.append(p)
      
-    session = sessionmaker(bind=e)()
+    session = StorageFactory.getNewSession()
     session.add(sq)
     session.add(r)
     session.add(o)
