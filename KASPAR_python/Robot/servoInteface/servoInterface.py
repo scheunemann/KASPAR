@@ -13,18 +13,19 @@ class ServoInterface(object):
     def getServoInterface(servo):
         with ServoInterface._globalLock:
             if not ServoInterface._servoInterfaces.has_key(servo):
-                if 'disconnected' in globals() and not disconnected: #Global flag
-                    if servo.type.name == "AX12":
-                        servoInt = AX12(servo)
-                    if servo.type.name == "MINISSC":
-                        servoInt = MINISSC(servo)
-                    if servo.type.name == "SSC32":
-                        servoInt = SSC32(servo)
-                    if servo.type.name == "HerculeX":
-                        servoInt = HerculeX(servo)
+                if 'disconnected' not in globals() or not disconnected: #Global flag
+#                    if servo.type.name == "AX12":
+#                        servoInt = AX12(servo)
+#                    if servo.type.name == "MINISSC":
+#                        servoInt = MINISSC(servo)
+#                    if servo.type.name == "SSC32":
+#                        servoInt = SSC32(servo)
+                    if servo.type.name == "HERKULEX":
+                        servoInt = HerkuleX(servo)
                     else:
+                        servoInt = Dummy(servo)
                         logging.getLogger(__name__).critical("No known interface for servo type: %s", servo.type.name)
-                        raise ValueError
+#                        raise ValueError
                 else:
                     servoInt = Dummy(servo)
                  
@@ -167,13 +168,13 @@ class MINISSC(ServoInterface):
         with Connection.getLock(self._conn):
             self._conn.write(send)
 
-class HerculeX(ServoInterface):
+class HerkuleX(ServoInterface):
     
     def __init__(self, servo):
-        super(HerculeX, self).__init__(servo)
+        super(HerkuleX, self).__init__(servo)
         self._externalId = servo.extraData.get('externalId', None)
         if self._externalId == None:
-            self._logger.critical("HerculeX servo %s is missing its external Id!", servo.name)
+            self._logger.critical("HerkuleX servo %s is missing its external Id!", servo.name)
         
         self._conn = Connection.getConnection("HERKULEX", self._port, self._portSpeed)
         self._positioning = False
@@ -184,13 +185,16 @@ class HerculeX(ServoInterface):
             return self._realToScalePos(posSteps)
     
     def setPosition(self, position, speed):
-        scaledPosition = self._scaleToRealPos(position)
-        scaledSpeed = self._scaleToRealSpeed(speed)
-        totalSteps = abs(scaledPosition - self._conn.getPosition(self._externalId))
-        scaledSpeed = scaledSpeed * totalSteps
+        realPosition = int(round(self._scaleToRealPos(position)))
+        realSpeed = self._scaleToRealSpeed(speed) #steps per second
+        totalSteps = abs(realPosition - self._conn.getPosition(self._externalId))
+        realSpeed = (totalSteps / realSpeed) * 1000
+        realSpeed = int(round(realSpeed))
+        realSpeed = max(realSpeed, 0)
+        realSpeed = min(realSpeed, 2856)
         
         with Connection.getLock(self._conn):
-            self._conn.moveOne(self._externalId, scaledPosition, scaledSpeed)
+            self._conn.moveOne(self._externalId, realPosition, realSpeed)
     
     def getPositioning(self):
         return self._positioning

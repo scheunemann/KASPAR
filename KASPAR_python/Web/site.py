@@ -16,7 +16,7 @@ conf = {
 
 if __name__ == '__main__':
     global disconnected
-    disconnected = True
+    disconnected = False
     
     #global settings
     cherrypy.config.update(conf)

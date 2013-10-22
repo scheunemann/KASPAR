@@ -82,7 +82,7 @@ if __name__ == '__main__':
     
     o.users.append(u)
 
-    r = KasparImporter('kaspar1a').getRobot()
+    r = KasparImporter('kaspar3a').getRobot()
     
     sq = Sequence('aSequence')
     sq.actions.append(s)

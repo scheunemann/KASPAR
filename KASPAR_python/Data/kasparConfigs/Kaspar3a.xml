@@ -9,17 +9,17 @@
 
 	<!-- Connection Settings -->
 	<HERKULEX>
-		<PORT>COM16</PORT>
+		<PORT>COM4</PORT>
 		<SPEED>115200</SPEED>
 		<MANUAL_POSITIONING>true</MANUAL_POSITIONING>
 		<DEFAULT>
-			<POS>508</POS>
+			<POS>512</POS>
 			<SPEED>36</SPEED>
 		</DEFAULT>
 		<SCALING>
 			<POS>0.325</POS>
 			<POS_OFFSET>512</POS_OFFSET>
-			<SPEED>0.68</SPEED>
+			<SPEED>0.39</SPEED>
 		</SCALING>
 		<LIMITS>
 			<SPEED>
@@ -42,7 +42,7 @@
 	<!-- List of all servos used in this KASPAR Contains physical information 
 		for all servos and other information needed by KasparGUI -->
 	<SERVOLIST>
-		<SERVO type="HERKULEX" id="101">
+		<SERVO type="HERKULEX" id="253">
 			<NAME>HEAD_ROT</NAME>
 
 			<!-- Limits for motors as real motor values. Possible types: "pos","speed" -->

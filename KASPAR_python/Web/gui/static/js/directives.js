@@ -87,7 +87,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 
 				  $scope.$watch('robot', function() {
 					  if($scope.robot != undefined) {
-						  $scope.servoPositions = RobotInterface.get({'id': $scope.robot.id}, $scope.cometGet);
+						  //$scope.servoPositions = RobotInterface.get({'id': $scope.robot.id}, $scope.cometGet);
 					  }
 				  });
 				  
@@ -145,18 +145,22 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					  if($scope.jointPosition.angle != undefined) {
 						  var servo = ServoInterface.get({'id': $scope.servo.id}, function() {
 							  servo.position = $scope.jointPosition.angle;
+							  servo.speed = $scope.jointPosition.speed != undefined ? $scope.jointPosition.speed : ($scope.servo.defaultSpeed !=
+									undefined ? $scope.servo.defaultSpeed : $scope.servo.type.defaultSpeed);
 							  servo.$save({'id': $scope.servo.id});
 						  });
 					  }
 				  }
 				  
-				  $scope.$watch('servoPositions', function() {
-					  for(var i = 0; i < $scope.servoPositions.servos.length; i++) {
-						  if($scope.servoPositions.servos[i].id == $scope.servo.id) {
-							  $scope.position = $scope.servoPositions.servos[i].position;
-						  }
-					  }
-				  });
+//				  $scope.$watch('servoPositions', function() {
+//					  if ($scope.servoPositions != undefined && $scope.servoPositions.servos != undefined) {
+//						  for(var i = 0; i < $scope.servoPositions.servos.length; i++) {
+//							  if($scope.servoPositions.servos[i].id == $scope.servo.id) {
+//								  $scope.position = $scope.servoPositions.servos[i].position;
+//							  }
+//						  }
+//					  }
+//				  });
 			  },
 	  };
 	  

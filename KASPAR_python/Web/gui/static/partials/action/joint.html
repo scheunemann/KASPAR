@@ -28,9 +28,8 @@
 				ng-model="jointPosition.angle"
 				ng-change="cometPost()"
 				required /> 
-				<span class="input-group-addon">{{position}}</span>
-<!-- 				<span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ? -->
-<!-- 				servo.defaultAngle : servo.type.defaultAngle)}}</span> -->
+				<span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ?
+				servo.defaultAngle : servo.type.defaultAngle)}}</span>
 		</div>
 		<div
 			class="input-group"

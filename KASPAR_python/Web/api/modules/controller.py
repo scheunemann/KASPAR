@@ -140,10 +140,7 @@ class ServoInterface(object):
                 currentPosition = interface.getPosition()
         
         ret = {}
-        try:
-            ret['position'] = currentPosition
-        except:
-            ret['position'] = None
+        ret['position'] = currentPosition
 
         try:
             ret['poseable'] = interface.getPositioning()
@@ -163,7 +160,7 @@ class ServoInterface(object):
         else:
             try:
                 if data['position'] != None:
-                    interface.setPosition(int(data['position']), 100)
+                    interface.setPosition(int(data['position']), float(data['speed']))
                 if data['poseable'] != None:
                     interface.setPositioning(bool(data['poseable']))
                 return 'OK'

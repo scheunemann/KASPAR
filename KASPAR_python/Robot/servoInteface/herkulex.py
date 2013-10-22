@@ -699,7 +699,11 @@ class HerkuleX(object):
         return retBuf
 
 if __name__ == '__main__':
-    h = HerkuleX('/dev/ttyUSB1', 115200)
-    for i in range(0, 254):
-        h.torqueOFF(i)
-        #h.moveOne(254, 512, 1000)
+    h = HerkuleX('COM4', 115200)
+    ids = h.performIDScan()
+    for sid in ids:
+        h.torqueOFF(sid)
+    while(True):
+        for sid in ids:
+            print h.getPosition(sid)
+        time.sleep(1)

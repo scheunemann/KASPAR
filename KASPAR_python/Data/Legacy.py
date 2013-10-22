@@ -13,6 +13,9 @@ class KasparImporter(object):
         elif version.lower() == 'kaspar1c':
             fileName = 'kasparConfigs/Kaspar1c.xml'
             self._version = 'KASPAR1c'
+        elif version.lower() == 'kaspar3a':
+            fileName = 'kasparConfigs/Kaspar3a.xml'
+            self._version = 'KASPAR3a'
         else:
             raise Exception('Unknown version %s' % version)
         
@@ -38,6 +41,7 @@ class KasparImporter(object):
             s.defaultPosition = self._convert(self._getText("DEFAULT/POS", servo))
             s.minSpeed = self._convert(self._getText("LIMITS[@type='speed']/MIN", servo))
             s.maxSpeed = self._convert(self._getText("LIMITS[@type='speed']/MAX", servo))
+            s.extraData = {'externalId': int(servo.get('id', -1))}
             if s.minSpeed > s.maxSpeed:
                 temp = s.minSpeed
                 s.minSpeed = s.maxSpeed
@@ -102,7 +106,7 @@ class KasparImporter(object):
             
     def _getServoConfigs(self):
         configs = []
-        names = ['AX12', 'SSC32', 'MINISSC']
+        names = ['AX12', 'SSC32', 'MINISSC', 'HERKULEX']
         for name in names:
             config = self._getServoConfig(name)
             if config != None:
