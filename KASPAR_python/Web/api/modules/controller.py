@@ -88,7 +88,7 @@ class RobotInterface(object):
                     if servo['poseable'] != None:
                         interface.setPositioning(bool(servo['poseable']))
                     return 'OK'
-                except Exception as e:
+                except Exception:
                     #TODO: Error handling
                     continue
                     #raise cherrypy.HTTPError(message=e.message)

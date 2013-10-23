@@ -6,33 +6,42 @@ __all__ = ['ServoInterface', ]
 
 class ServoInterface(object):
     
+    _interfaceClasses = None
     _servoInterfaces = {}
     _globalLock = RLock()
+    
+    @staticmethod
+    @property
+    def interfaces(self):
+        if ServoInterface._interfaceClasses == None:
+            _interfaceClasses = {
+                                 "AX12": AX12,
+                                 "MINISSC": MINISSC,
+                                 "SSC32": SSC32,
+                                 "HERKULEX": HerkuleX,
+                                 "ROBOT": Robot,
+                                 "DUMMY": Dummy
+                                 }
+         
+        return ServoInterface._interfaceClasses
     
     @staticmethod
     def getServoInterface(servo):
         with ServoInterface._globalLock:
             if not ServoInterface._servoInterfaces.has_key(servo):
-                if 'disconnected' not in globals() or not disconnected: #Global flag
-#                    if servo.type.name == "AX12":
-#                        servoInt = AX12(servo)
-#                    if servo.type.name == "MINISSC":
-#                        servoInt = MINISSC(servo)
-#                    if servo.type.name == "SSC32":
-#                        servoInt = SSC32(servo)
-                    if servo.type.name == "HERKULEX":
-                        servoInt = HerkuleX(servo)
-                    else:
-                        servoInt = Dummy(servo)
+                if 'disconnected' not in globals() or not disconnected:  # Global flag
+                    try:
+                        servoInt = ServoInterface.interfaces[servo.type.name](servo)
+                    except:
                         logging.getLogger(__name__).critical("No known interface for servo type: %s", servo.type.name)
-#                        raise ValueError
+                        raise ValueError("No known interface for servo type: %s" % servo.type.name)
                 else:
                     servoInt = Dummy(servo)
                  
                 ServoInterface._servoInterfaces[servo] = servoInt 
              
             return ServoInterface._servoInterfaces[servo]
-    
+
     def __init__(self, servo):
         self._servo = servo
         
@@ -97,7 +106,6 @@ class AX12(ServoInterface):
 
         self._conn = Connection.getConnection("AX12", self._port, self._portSpeed)
         self._checkMinMaxValues()
-        self._reactive = False
         self._positioning = False
     
     def getPosition(self):
@@ -150,7 +158,6 @@ class MINISSC(ServoInterface):
 
         self._conn = Connection.getConnection("SERIAL", self._port, self._portSpeed)
         self._checkMinMaxValues()
-        self._reactive = False
         
     def getPosition(self):
         return self._lastPosition
@@ -186,7 +193,7 @@ class HerkuleX(ServoInterface):
     
     def setPosition(self, position, speed):
         realPosition = int(round(self._scaleToRealPos(position)))
-        realSpeed = self._scaleToRealSpeed(speed) #steps per second
+        realSpeed = self._scaleToRealSpeed(speed)  # steps per second
         totalSteps = abs(realPosition - self._conn.getPosition(self._externalId))
         realSpeed = (totalSteps / realSpeed) * 1000
         realSpeed = int(round(realSpeed))
@@ -217,7 +224,6 @@ class SSC32(ServoInterface):
 
         self._conn = Connection.getConnection("SERIAL", self._port, self._portSpeed)
         self._checkMinMaxValues()
-        self._reactive = False
         
     def getPosition(self):
         send = "QP %s\r" % self._externalId
@@ -291,3 +297,23 @@ class Dummy(ServoInterface):
             pickle.dump(data, open(str(self._servo.id) + '_dummyData', 'w'))
         except:
             pass
+
+def Robot(ServoInterface):
+    
+    def __init__(self, servo):
+        super(Robot, self).__init__(servo)
+        self._componentName = servo.extraData.get('componentName', None)
+        if self._componentName == None:
+            self._logger.critical("Servo %s is missing its component name!", servo.name)
+
+        self._checkMinMaxValues()
+        from Robot.rosInterface.robotFactory import Factory
+        self._robot = Factory.getRobotInterface(servo.robot)
+                            
+    def getPosition(self):
+        (_, posSteps) = self._robot.getComponentState(self._componentName, True)
+        return self._realToScalePos(posSteps)
+    
+    def setPosition(self, position, speed):
+        scaledPosition = self._scaleToRealPos(position)
+        self._robot.setComponentState(self._componentName, scaledPosition)

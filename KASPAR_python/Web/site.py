@@ -3,6 +3,7 @@ import cherrypy
 import gui
 import api
 import SAPlugin
+from Data.Storage import StorageFactory
 
 _dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -14,12 +15,21 @@ conf = {
         # 'environment': 'production'
 }
 
+dbConf = {
+        'type':'MySql',
+        'host':'localhost',
+        'user':'kaspar',
+        'pass':'kaspar',
+        'db':'kaspar',
+}
+
 if __name__ == '__main__':
     global disconnected
     disconnected = False
     
     #global settings
     cherrypy.config.update(conf)
+    StorageFactory.config.update(dbConf)
 
     #attach the database
     SAPlugin.SAEnginePlugin(cherrypy.engine).subscribe()

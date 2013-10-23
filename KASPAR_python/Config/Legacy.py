@@ -1,32 +1,25 @@
 import os, sys
 from xml.etree import ElementTree as et
-from Data.Model import Robot, Servo, ServoGroup, ServoType, ServoConfig, Pose, JointPosition, SensorTrigger, ButtonTrigger, ButtonHotKey
+from Data.Model import Robot, RobotType, Servo, ServoGroup, ServoType, ServoConfig, Pose, JointPosition, SensorTrigger, ButtonTrigger, ButtonHotKey
+from Data.Storage import StorageFactory
 
 class KasparImporter(object):
     def __init__(self, version):
-        if version.lower() == 'kaspar1a':
-            fileName = 'kasparConfigs/Kaspar1a.xml'
-            self._version = 'KASPAR1a'
-        elif version.lower() == 'kaspar1b':
-            fileName = 'kasparConfigs/Kaspar1b.xml'
-            self._version = 'KASPAR1b'
-        elif version.lower() == 'kaspar1c':
-            fileName = 'kasparConfigs/Kaspar1c.xml'
-            self._version = 'KASPAR1c'
-        elif version.lower() == 'kaspar3a':
-            fileName = 'kasparConfigs/Kaspar3a.xml'
-            self._version = 'KASPAR3a'
+        robotConfig = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'kasparConfigs/%s/robot.xml' % version.lower()))
+        if os.path.exists(robotConfig) and os.path.isfile(robotConfig):
+            self._config = et.parse(dir).getroot()
         else:
-            raise Exception('Unknown version %s' % version)
+            raise Exception('Cannot locate robot.xml for version %s (path: %s)' % (version, robotConfig))
         
         self._types = {}
-        self._config = et.parse(os.path.join(os.path.dirname(os.path.realpath(__file__)), fileName)).getroot()
+        self._version =self._config.get('VERSION')
     
     def getRobot(self):
         r = Robot(name=self._getText('NAME', None, 'KASPAR'), version=self._version)
         r.servoGroups = self._getServoGroups()
         r.servos = self._getServos(r.servoGroups)
         r.servoConfigs = self._getServoConfigs()
+        r.type = RobotType('KASPAR')
         
         return r
     
@@ -243,7 +236,9 @@ class TriggerImporter(object):
         return triggers                
 
 if __name__ == '__main__':
-    k = KasparImporter('kaspar1a')
+    version = 'kaspar3a'
+    
+    k = KasparImporter(version)
     r = k.getRobot()
     a = ActionImporter()
     t = TriggerImporter()
@@ -252,18 +247,23 @@ if __name__ == '__main__':
     triggers = []
     
     baseDir = os.path.dirname(os.path.realpath(__file__))
-    searchDir = os.path.join(baseDir, 'kasparConfigs/kaspar1a/pos')
+    searchDir = os.path.join(baseDir, 'kasparConfigs/%s/pos' % version)
     for fileName in os.listdir(searchDir):
         f = open(os.path.join(searchDir, fileName))
         lines = f.readlines()
         poses.append(a.getPose(lines, r))
     
-    searchDir = os.path.join(baseDir, 'kasparConfigs/kaspar1a/keyMaps')
+    searchDir = os.path.join(baseDir, 'kasparConfigs/%s/keyMaps' % version)
     for fileName in os.listdir(searchDir):
         f = open(os.path.join(searchDir, fileName))
         lines = f.readlines()
         triggers.extend(t.getTriggers(lines, poses))
 
-    print r
-    print poses
-    print triggers
+    StorageFactory.__flushAndFillTestData()
+    session = StorageFactory.getNewSession()
+    session.add(k)
+    session.add(r)
+    session.add(a)
+    session.add(t)
+    session.commit()
+    
