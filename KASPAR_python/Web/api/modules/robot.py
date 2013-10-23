@@ -3,7 +3,7 @@ from base import SimpleBase
 from crud import ModelCRUD
 import cherrypy
 import json
-import Data.Legacy
+import Config.legacy
 
 class ServoType(ModelCRUD):
     exposed = True
@@ -77,7 +77,7 @@ class Robot(ModelCRUD):
     def POST(self, oid=None):
         """Robot level is currently not handled properly for new robots, hacked for the time being to known versions"""
         if oid == None:
-            data = Data.Legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
+            data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
             data.name = cherrypy.request.json['name']
             cherrypy.request.db.add(data)
             cherrypy.request.db.commit()
@@ -97,7 +97,7 @@ class Robot(ModelCRUD):
                 cherrypy.request.db.commit()
                 cherrypy.request.db.expunge(cur)
 
-                data = Data.Legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
+                data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
                 data.name = cherrypy.request.json['name']
                 data.id = oid
                 cherrypy.request.db.merge(data)

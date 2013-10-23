@@ -1,4 +1,4 @@
-from Data.Legacy import ActionImporter, TriggerImporter
+from Config.legacy import ActionImporter, TriggerImporter
 from Data.Model import Pose, Trigger
 from crud import ModelCRUD
 import cherrypy

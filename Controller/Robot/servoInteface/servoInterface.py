@@ -11,10 +11,9 @@ class ServoInterface(object):
     _globalLock = RLock()
     
     @staticmethod
-    @property
-    def interfaces(self):
+    def interfaces():
         if ServoInterface._interfaceClasses == None:
-            _interfaceClasses = {
+            ServoInterface._interfaceClasses = {
                                  "AX12": AX12,
                                  "MINISSC": MINISSC,
                                  "SSC32": SSC32,
@@ -28,19 +27,19 @@ class ServoInterface(object):
     @staticmethod
     def getServoInterface(servo):
         with ServoInterface._globalLock:
-            if not ServoInterface._servoInterfaces.has_key(servo):
+            if not ServoInterface.interfaces().has_key(servo):
                 if 'disconnected' not in globals() or not disconnected:  # Global flag
                     try:
-                        servoInt = ServoInterface.interfaces[servo.type.name](servo)
+                        servoInt = ServoInterface.interfaces()[servo.type.name](servo)
                     except:
                         logging.getLogger(__name__).critical("No known interface for servo type: %s", servo.type.name)
                         raise ValueError("No known interface for servo type: %s" % servo.type.name)
                 else:
                     servoInt = Dummy(servo)
                  
-                ServoInterface._servoInterfaces[servo] = servoInt 
+                ServoInterface.interfaces()[servo] = servoInt 
              
-            return ServoInterface._servoInterfaces[servo]
+            return ServoInterface.interfaces()[servo]
 
     def __init__(self, servo):
         self._servo = servo
