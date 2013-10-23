@@ -217,15 +217,14 @@ class ActionLib(object):
         
     def __init__(self, controllerName, actionName, goalName):
         import rosMulti
-        self._ros = rosMulti.ROS()
-        self._ros.configureROS(packageName='actionlib')
-        self._ros.configureROS(packageName=controllerName)
+        ros = rosMulti.ROS()
+        ros.configureROS(packageName='actionlib')
+        ros.configureROS(packageName=controllerName)
         
         import actionlib
         self._controlMsgs = __import__(controllerName, globals(), locals())
         self._goalName = goalName
         
-        self._ros.initROS()
         self._controlClient = actionlib.SimpleActionClient('/%s' % controllerName, getattr(self._controlMsgs, actionName))
         print "Waiting for %s..." % controllerName
         self._controlClient.wait_for_server()
@@ -239,7 +238,7 @@ class ActionLib(object):
             goal = getattr(self._controlMsgs, self._goalName)(
                                                    action='init',
                                                    component=name)
-            client = self._sfClient
+            client = self._controlClient
             return client.send_goal_and_wait(goal)
         else:
             return 3
@@ -252,7 +251,7 @@ class ActionLib(object):
                                                component=name,
                                                namedPosition=namedPosition,
                                                jointPositions=joints)
-        client = self._sfClient
+        client = self._controlClient
 
         if(blocking):
             status = client.send_goal_and_wait(goal)

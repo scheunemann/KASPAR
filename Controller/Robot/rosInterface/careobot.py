@@ -1,7 +1,6 @@
 import math, sys
 import robot
 import rosHelper
-from config import robot_config
 from collections import deque
 
 class CareOBot(robot.ROSRobot):
@@ -9,8 +8,7 @@ class CareOBot(robot.ROSRobot):
 
     def __init__(self, name, rosMaster):
         rosHelper.ROS.configureROS(rosMaster=rosMaster)
-        super(CareOBot, self).__init__(name, ActionLib, 'script_server', robot_config[name]['head']['camera']['topic'])
-        # super(CareOBot, self).__init__(name, ScriptServer, 'script_server', '/stereo/right/image_color/compressed')
+        super(CareOBot, self).__init__(name, ActionLib, 'script_server')
                
     def getCameraAngle(self):
         state = self.getComponentState('head', True)
@@ -88,52 +86,14 @@ class UnloadTrayClient(object):
         else:
             return self._ros._states[self._client.send_goal(goal)]
     
-class ScriptServer(object):
-
-    def __init__(self):
-        self._ros = rosHelper.ROS()
-        self._ros.configureROS(packageName='cob_script_server')
-        import simple_script_server
-        self._ros.initROS()
-        self._ss = simple_script_server.simple_script_server()
-    
-    def runFunction(self, funcName, kwargs):
-        try:
-            func = getattr(self._ss, funcName)
-        except AttributeError:
-            raise Exception('Unknown function: %s' % (funcName))
-        
-        return func(**kwargs)
-        
-    
-    def initComponent(self, name):
-        return self._ss.initROS(name, True).get_state()
-    
-    def runComponent(self, name, value, mode='', blocking=True):
-        if name == 'light':
-            return self._ss.set_light(value, blocking).get_state()
-        elif name == 'sound':
-            return self._ss.say(value, blocking).get_state()
-        else:
-            return self._ss.move(name, value, blocking, mode).get_state()
-
-class ActionLib(object):
+class ActionLib(robot.ActionLib):
     _specialCases = {
                     'light': {'function': 'set_light', 'mode': ''},
                     'sound': {'function': 'say', 'mode': 'FEST_EN' }
                     }
     
     def __init__(self):
-        self._ros = rosHelper.ROS()
-        self._ros.configureROS(packageName='actionlib_interface')
-        import actionlib, cob_script_server.msg
-        self._ssMsgs = cob_script_server.msg
-        
-        self._ros.initROS()
-        self._client = actionlib.SimpleActionClient('/script_server', self._ssMsgs.ScriptAction)
-        print "Waiting for script_server"
-        self._client.wait_for_server()
-        print "Connected to script_server"
+        super(ActionLib, self).__init__('script_server', 'ScriptAction', 'ScriptGoal')
         
     def runFunction(self, funcName, kwargs):
         name = None

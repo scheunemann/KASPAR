@@ -9,10 +9,7 @@ class Factory(object):
         robotInt = None
         try:
             robotClass = __import__(robot.type.extraData['className'], globals(), locals())
-            if issubclass(robotClass, ROSRobot):
-                robotInt = robotClass(robot.name, robot.type.extraData['rosMaster'])
-            else:
-                robotInt = robotClass(robot.name, **robot.extraData)
+            robotInt = robotClass(robot.name, **robot.type.extraData['classArgs'])
         except:
             print >> sys.stderr, "Unknown robot type %s" % robot.type.name
             return None
