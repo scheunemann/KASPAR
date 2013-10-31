@@ -7,7 +7,7 @@ class KasparImporter(object):
     def __init__(self, version):
         robotConfig = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'kasparConfigs/%s/robot.xml' % version.lower()))
         if os.path.exists(robotConfig) and os.path.isfile(robotConfig):
-            self._config = et.parse(dir).getroot()
+            self._config = et.parse(robotConfig).getroot()
         else:
             raise Exception('Cannot locate robot.xml for version %s (path: %s)' % (version, robotConfig))
         
@@ -236,6 +236,15 @@ class TriggerImporter(object):
         return triggers                
 
 if __name__ == '__main__':
+    dbConf = {
+        'type':'MySql',
+        'host':'localhost',
+        'user':'kaspar',
+        'pass':'kaspar',
+        'db':'kaspar',
+        }
+    StorageFactory.config['engine'].update(dbConf)
+    
     version = 'kaspar3a'
     
     k = KasparImporter(version)
@@ -248,22 +257,24 @@ if __name__ == '__main__':
     
     baseDir = os.path.dirname(os.path.realpath(__file__))
     searchDir = os.path.join(baseDir, 'kasparConfigs/%s/pos' % version)
-    for fileName in os.listdir(searchDir):
-        f = open(os.path.join(searchDir, fileName))
-        lines = f.readlines()
-        poses.append(a.getPose(lines, r))
+    if os.path.exists(searchDir):
+        for fileName in os.listdir(searchDir):
+            f = open(os.path.join(searchDir, fileName))
+            lines = f.readlines()
+            pose = a.getPose(lines, r)
+            poses.append(pose)
     
     searchDir = os.path.join(baseDir, 'kasparConfigs/%s/keyMaps' % version)
-    for fileName in os.listdir(searchDir):
-        f = open(os.path.join(searchDir, fileName))
-        lines = f.readlines()
-        triggers.extend(t.getTriggers(lines, poses))
+    if os.path.exists(searchDir):
+        for fileName in os.listdir(searchDir):
+            f = open(os.path.join(searchDir, fileName))
+            lines = f.readlines()
+            triggers.extend(t.getTriggers(lines, poses))
 
-    StorageFactory.__flushAndFillTestData()
+    StorageFactory._flushAndFillTestData()
     session = StorageFactory.getNewSession()
-    session.add(k)
     session.add(r)
-    session.add(a)
-    session.add(t)
+    session.add_all(poses)
+    session.add_all(triggers)
     session.commit()
     

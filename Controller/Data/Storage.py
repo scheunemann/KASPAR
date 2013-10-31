@@ -35,7 +35,7 @@ class StorageFactory(object):
                                    StorageFactory.config['engine']['file'])
 
     @staticmethod
-    def __flushAndFillTestData():
+    def _flushAndFillTestData():
         StorageFactory.config['debug'] = True
         from Model import Base
         Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)

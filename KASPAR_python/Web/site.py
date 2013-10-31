@@ -29,7 +29,7 @@ if __name__ == '__main__':
     
     #global settings
     cherrypy.config.update(conf)
-    StorageFactory.config.update(dbConf)
+    StorageFactory.config['engine'].update(dbConf)
 
     #attach the database
     SAPlugin.SAEnginePlugin(cherrypy.engine).subscribe()
