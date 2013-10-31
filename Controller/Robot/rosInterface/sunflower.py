@@ -10,7 +10,7 @@ class Sunflower(ROSRobot):
     
     def setComponentState(self, name, value):
         # check if the component has been initialised, and init if it hasn't
-        if name == 'base':
+        if name == 'base' or 'base_direct':
             self._robInt.initComponent(name)
         
         return super(Sunflower, self).setComponentState(name, value)

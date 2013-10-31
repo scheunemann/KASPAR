@@ -10,7 +10,7 @@ class Action(StandardMixin, Base):
     type = Column(String(50))
     
     __mapper_args__ = {
-            'polymorphic_identity':'action',
+            'polymorphic_identity':'Action',
             'polymorphic_on': type
         }
         
@@ -24,6 +24,7 @@ class Sound(Action):
     __mapper_args__ = {
             'polymorphic_identity':'Sound',
     }
+    
     data = Column(Binary)
     
 class JointPosition(StandardMixin, Base):
