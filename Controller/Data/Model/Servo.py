@@ -10,8 +10,8 @@ servoGroups_table = Table('servoGroups', Base.metadata,
 class Servo(StandardMixin, Base):
     jointName = Column(String(50))
     
-    type_id = Column(Integer, ForeignKey("ServoType.id")) 
-    type = relationship("ServoType")
+    model_id = Column(Integer, ForeignKey("ServoModel.id")) 
+    model = relationship("ServoModel")
     
     robot_id = Column(Integer, ForeignKey("Robot.id")) 
     robot = relationship("Robot", backref="servos")
@@ -45,7 +45,7 @@ class ServoGroup(StandardMixin, Base):
         super(ServoGroup, self).__init__()
         self.name = name
 
-class ServoType(StandardMixin, Base):
+class ServoModel(StandardMixin, Base):
     name = Column(String(50))
     minSpeed = Column(Integer)
     maxSpeed = Column(Integer)
@@ -59,15 +59,15 @@ class ServoType(StandardMixin, Base):
     extraData = Column(PickleType)
 
     def __init__(self, name=None):
-        super(ServoType, self).__init__()
+        super(ServoModel, self).__init__()
         self.name = name
         
 class ServoConfig(StandardMixin, Base):
     robot_id = Column(Integer, ForeignKey("Robot.id")) 
     robot = relationship("Robot", backref="servoConfigs")
     
-    type_id = Column(Integer, ForeignKey("ServoType.id")) 
-    type = relationship("ServoType")
+    model_id = Column(Integer, ForeignKey("ServoModel.id")) 
+    model = relationship("ServoModel")
 
     rotationOffset = Column(Float)
     rotationScale = Column(Float)
