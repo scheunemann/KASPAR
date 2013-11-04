@@ -52,7 +52,6 @@ angular.module('kasparGUI', ['ui.router', 'ui.bootstrap', 'kasparGUI.filters', '
 			.state(
 				'action.edit', {
 			    				url:'/edit', 
-			    				templateUrl: 'static/partials/action/edit.html',
 			    				parent: 'action'
 	    					})
 			.state(
@@ -114,22 +113,16 @@ angular.module('kasparGUI', ['ui.router', 'ui.bootstrap', 'kasparGUI.filters', '
 			    				templateUrl: 'static/partials/interaction/interaction.html', 
 	    					})
 			.state(
-				'interaction.start', {
-			    				url:'/start', 
-			    				templateUrl: 'static/partials/interaction/start.html', 
-			    				parent: 'interaction'
-	    					})
-			.state(
 				'interaction.log', {
 			    				url:'/log', 
 			    				templateUrl: 'static/partials/interaction/log.html', 
-			    				parent: 'interaction'
+			    				//parent: 'interaction'
 	    					})
 			.state(
 				'interaction.manage', {
 			    				url:'/manage', 
 			    				templateUrl: 'static/partials/interaction/manage.html', 
-			    				parent: 'interaction'
+			    				//parent: 'interaction'
 	    					})
 			;
 	}])

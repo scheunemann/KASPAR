@@ -42,7 +42,7 @@ _menuLinks = [
                 {
                  'title':'Trigger',
                  'links': [
-                            ('Create/Edit', 'trigger/edit'),
+                            ('Create/Edit', 'trigger'),
                             ('Test', 'trigger/test'),
                             ('Import', 'trigger/import'),
                           ]},
@@ -50,7 +50,7 @@ _menuLinks = [
                  'title':'Interactions',
                  'links': [
                             ('View History', 'interaction/log'),
-                            ('Begin New', 'interaction/start'),
+                            ('Begin New', 'interaction'),
                             ('Manage History', 'interaction/manage'),
                           ]},
             ]

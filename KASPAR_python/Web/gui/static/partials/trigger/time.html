@@ -1,5 +1,29 @@
-Name
-Actions
-All/Any
-Time Since
-Time Without
+<div>
+	<span>Time Editor</span>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span> <input
+			type="text"
+			class="form-control"
+			placeholder="Time Name"
+			ng-model="time.name">
+	</div>
+	{{proxyObjectResolver.resolveProp(time, 'action')}}
+	<div class="input-group">
+		<span class="input-group-addon">Action</span> <select
+			class="selectpicker form-control"
+			ng-model="time.action"
+			ng-options="action.name for action in actions | orderBy:name">
+			<option value="">--Select Action--</option>
+		</select>
+	</div>
+	<div>
+		<span>TODO:</span>
+		<ul>
+			<li>Sensors<small>(inc 'ActionSensor' which triggers on action change)</small></li>
+			<li>All/Any</li>
+			<li>Time Since Activated</li>
+			<li>Time Without Activation</li>
+		</ul>
+	</div>
+
+</div>

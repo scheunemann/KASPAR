@@ -8,7 +8,7 @@ class Trigger(StandardMixin, Base):
     type = Column(String(50))
     
     __mapper_args__ = {
-            'polymorphic_identity':'trigger',
+            'polymorphic_identity':'Trigger',
             'polymorphic_on': type
         }
     
@@ -23,7 +23,7 @@ class SensorTrigger(Trigger):
         
     id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'sensor',
+            'polymorphic_identity':'Sensor',
     }
     
     sensorName = Column(String(50))
@@ -33,14 +33,14 @@ class TimeTrigger(Trigger):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'time',
+            'polymorphic_identity':'Time',
     }    
                     
 class ButtonTrigger(Trigger):
     
     id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
     __mapper_args__ = {
-            'polymorphic_identity':'button',
+            'polymorphic_identity':'Button',
     }
     
 class ButtonHotKey(StandardMixin, Base):

@@ -39,12 +39,12 @@ class ModelCRUD(object):
         return data.serialize(urlResolver=self._urlResolver)
 
     @cherrypy.tools.json_out()
-    def GET(self, oid=None, constraint=None):
+    def GET(self, oid=None, **constraint):
         if not self._exposed['GET']:
             raise cherrypy.NotFound()
 
         if oid == None:
-            if constraint == None:
+            if len(constraint) == 0:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).all()]
             else:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).filter_by(**constraint).all()]

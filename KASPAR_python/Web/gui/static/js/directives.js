@@ -179,7 +179,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  };
 	  
 	  return def;
-  }])
+  }])  
   .directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	  var def = {
 			  templateUrl: 'static/partials/action/group.html',
@@ -254,6 +254,169 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					  }
 					  return ret;
 				  }
+			  },
+	  };
+	  
+	  return def;
+  }])  
+  .directive('triggerEditor', ['$compile', function($compile) {
+		var def = {
+				restrict: 'E',
+				scope: {
+					type: "=",
+		            trigger: "=",
+		            actions: "=",
+		        },
+		        link: function(scope, iElement, iAttrs, controller) {
+		        	scope.$watch('type', function(newType) {
+		        		if (newType != "" && newType != undefined) {
+		        			iElement.html('<' + newType + '-trigger-editor trigger="trigger" actions="actions"></' + newType + '-editor>');
+				        	$compile(iElement.contents())(scope);
+		        		} else {
+		        			iElement.html('');
+		        			$compile(iElement.contents())(scope);
+		        		}
+		        	});
+		        },
+			  };
+
+	return def;
+  }])
+  .directive('buttonTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/trigger/button.html',
+			  restrict: 'E',
+			  scope: {
+				  button: "=trigger",
+				  actions: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  
+				  $scope.updateKey = function($event) {
+					  var code = $event.which || $event.keyCode; // Not-IE || IE
+					  var key = "";
+					  if ($event.altKey) {
+						  key += " + alt";
+					  }
+					  
+					  if ($event.ctrlKey) {
+						  key += " + ctrl";
+					  }
+					  
+					  if ($event.shiftKey) {
+						  key += " + shift";
+					  }
+					  
+					  var disp = $scope.getDisplay(code);
+					  if (disp != "" || key != "") {
+						  if(disp != "") { 
+							  key += " + " + disp;
+						  }
+						  $scope.key = key.slice(3);
+						  $event.preventDefault();
+					  }
+				  };
+				  
+				  $scope.getDisplay = function(charCode) {
+					  //http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+					  var char;
+					  if (charCode == 8) char = "backspace";
+					  else if (charCode == 9) char = ""; //tab
+					  else if (charCode == 13) char = "enter";
+					  else if (charCode == 16) char = ""; // shift
+					  else if (charCode == 17) char = ""; // ctrl
+					  else if (charCode == 18) char = ""; // alt
+					  else if (charCode == 19) char = "pause/break";
+					  else if (charCode == 20) char = ""; // caps
+					  else if (charCode == 27) char = "escape";
+					  else if (charCode == 32) char = "space";
+					  else if (charCode == 33) char = "pageUp";
+					  else if (charCode == 34) char = "pageDown";
+					  else if (charCode == 35) char = "end";
+					  else if (charCode == 36) char = "home";
+					  else if (charCode == 37) char = "left";
+					  else if (charCode == 38) char = "up";
+					  else if (charCode == 39) char = "right";
+					  else if (charCode == 40) char = "down";
+					  else if (charCode == 45) char = "insert";
+					  else if (charCode == 46) char = "delete";
+					  else if (charCode == 91) char = ""; // left win
+					  else if (charCode == 92) char = ""; // right win
+					  else if (charCode == 93) char = ""; // select
+					  else if (charCode == 96) char = "num0";
+					  else if (charCode == 97) char = "num1";
+					  else if (charCode == 98) char = "num2";
+					  else if (charCode == 99) char = "num3";
+					  else if (charCode == 100) char = "num4";
+					  else if (charCode == 101) char = "num5";
+					  else if (charCode == 102) char = "num6";
+					  else if (charCode == 103) char = "num7";
+					  else if (charCode == 104) char = "num8";
+					  else if (charCode == 105) char = "num9";
+					  else if (charCode == 106) char = "num*";
+					  else if (charCode == 107) char = "num+";
+					  else if (charCode == 109) char = "num-";
+					  else if (charCode == 110) char = "num.";
+					  else if (charCode == 111) char = "num/";
+					  else if (charCode == 112) char = "F1";
+					  else if (charCode == 113) char = "F2";
+					  else if (charCode == 114) char = "F3";
+					  else if (charCode == 115) char = "F4";
+					  else if (charCode == 116) char = "F5";
+					  else if (charCode == 117) char = "F6";
+					  else if (charCode == 118) char = "F7";
+					  else if (charCode == 119) char = "F8";
+					  else if (charCode == 120) char = "F9";
+					  else if (charCode == 121) char = "F10";
+					  else if (charCode == 122) char = "F11";
+					  else if (charCode == 123) char = "F12";
+					  else if (charCode == 144) char = ""; // num lock
+					  else if (charCode == 145) char = ""; // scroll lock
+					  else if (charCode == 186) char = ";";
+					  else if (charCode == 187) char = "=";
+					  else if (charCode == 188) char = ",";
+					  else if (charCode == 189) char = "-";
+					  else if (charCode == 190) char = ".";
+					  else if (charCode == 191) char = "/";
+					  else if (charCode == 192) char = "`";
+					  else if (charCode == 219) char = "[";
+					  else if (charCode == 220) char = "\\";
+					  else if (charCode == 221) char = "]";
+					  else if (charCode == 222) char = "'";
+					  else char = String.fromCharCode(charCode);
+					  return char;
+				  }
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('timeTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/trigger/time.html',
+			  restrict: 'E',
+			  scope: {
+				  time: "=trigger",
+				  actions: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('sensorTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+	  var def = {
+			  templateUrl: 'static/partials/trigger/sensor.html',
+			  restrict: 'E',
+			  scope: {
+				  sensor: "=trigger",
+				  actions: "=",
+			  },
+			  controller: function($scope) {
+				  $scope.proxyObjectResolver = proxyObjectResolver;
 			  },
 	  };
 	  
