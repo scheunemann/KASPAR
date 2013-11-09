@@ -18,8 +18,8 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('Robot', [ '$resource', function($resource) {
 		return $resource('/api/robot/:id', {id:'@id'});
 	} ])
-	.factory('RobotType', [ '$resource', function($resource) {
-		return $resource('/api/robot/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
+	.factory('RobotModel', [ '$resource', function($resource) {
+		return $resource('/api/robot/model/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	.factory('Servo', [ '$resource', function($resource) {
 		return $resource('/api/robot/:robot/servo/:id', {robot:'@robot', id:'@id'});
@@ -30,8 +30,8 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('ServoConfig', [ '$resource', function($resource) {
 		return $resource('/api/robot/:robot/servoconfig/:id', {robot:'@robot', id:'@id'});
 	} ])
-	.factory('ServoType', [ '$resource', function($resource) {
-		return $resource('/api/robot/servo/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
+	.factory('ServoModel', [ '$resource', function($resource) {
+		return $resource('/api/robot/servo/model/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	.factory('RobotInterface', [ '$resource', function($resource) {
 		return $resource('/api/robotinterface/:id', {id:'@id'});
@@ -42,8 +42,8 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('Sensor', [ '$resource', function($resource) {
 		return $resource('/api/robot/:id/sensor/:id', {id:'@id'});
 	} ])
-	.factory('SensorType', [ '$resource', function($resource) {
-		return $resource('/api/robot/sensor/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
+	.factory('SensorModel', [ '$resource', function($resource) {
+		return $resource('/api/robot/sensor/model/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
 	.factory('SensorGroup', [ '$resource', function($resource) {
 		return $resource('/api/robot/:id/sensorgroup/:id', {id:'@id'});

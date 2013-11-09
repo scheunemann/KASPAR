@@ -75,9 +75,9 @@ class ModelCRUD(object):
         cherrypy.request.db.delete(obj)
     
     @staticmethod
-    def _urlResolver(class_):
+    def _urlResolver(class_, instance=None):
         if not ModelCRUD._uriCache.has_key(class_):
-            url = ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root)
+            url = ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root, instance)
             if url != None:
                 url = '/api/%s' % url
             else:
@@ -86,13 +86,16 @@ class ModelCRUD(object):
         return ModelCRUD._uriCache[class_]
     
     @staticmethod
-    def _urlBuilder(class_, root):
+    def _urlBuilder(class_, root, instance=None):
         if hasattr(root, '__dict__'):
             for key in dir(root):
                 value = getattr(root, key)
                 if isinstance(value, ModelCRUD):
                     if issubclass(value._modelClass, class_):
-                        return '%s/:id' % key
+                        if instance != None:
+                            return '%s/%s' % (key, instance.id)
+                        else:
+                            return '%s/:id' % key
                     else:
                         k = ModelCRUD._urlBuilder(class_, value)
                         if k != None:

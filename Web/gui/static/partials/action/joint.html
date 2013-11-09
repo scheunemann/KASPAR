@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-lg-12">
-		{{proxyObjectResolver.resolveProp(servo, 'type')}}
+		{{proxyObjectResolver.resolveProp(servo, 'model')}}
 		<ng-form name="jointForm">
 		<div
 			class="input-group"
@@ -22,14 +22,14 @@
 				name="angle"
 				type="range"
 				class="form-control"
-				value="{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ? servo.defaultAngle : servo.type.defaultAngle)}}"
-				min="{{servo.minPosition != undefined ? servo.minPosition : servo.type.minPosition}}"
-				max="{{servo.maxPosition != undefined ? servo.maxPosition : servo.type.maxPosition}}"
+				value="{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ? servo.defaultAngle : servo.model.defaultAngle)}}"
+				min="{{servo.minPosition != undefined ? servo.minPosition : servo.model.minPosition}}"
+				max="{{servo.maxPosition != undefined ? servo.maxPosition : servo.model.maxPosition}}"
 				ng-model="jointPosition.angle"
 				ng-change="cometPost()"
 				required /> 
 				<span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ?
-				servo.defaultAngle : servo.type.defaultAngle)}}</span>
+				servo.defaultAngle : servo.model.defaultAngle)}}</span>
 		</div>
 		<div
 			class="input-group"
@@ -38,11 +38,11 @@
 				name="speed"
 				type="range"
 				class="form-control"
-				value="{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed != undefined ? servo.defaultSpeed : servo.type.defaultSpeed)}}"
-				min="{{servo.minSpeed != undefined ? servo.minSpeed : servo.type.minSpeed}}"
-				max="{{servo.maxSpeed != undefined ? servo.maxSpeed : servo.type.maxSpeed}}"
+				value="{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed != undefined ? servo.defaultSpeed : servo.model.defaultSpeed)}}"
+				min="{{servo.minSpeed != undefined ? servo.minSpeed : servo.model.minSpeed}}"
+				max="{{servo.maxSpeed != undefined ? servo.maxSpeed : servo.model.maxSpeed}}"
 				ng-model="jointPosition.speed" /> <span class="input-group-addon">{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed !=
-				undefined ? servo.defaultSpeed : servo.type.defaultSpeed)}}</span>
+				undefined ? servo.defaultSpeed : servo.model.defaultSpeed)}}</span>
 		</div>
 		</ng-form>{{servoInterface}}
 	</div>

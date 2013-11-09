@@ -1,0 +1,18 @@
+Drum Ready
+16
+HEAD_ROT,500,100,false
+HEAD_VERT,163,100,false
+HEAD_TLT,367,100,false
+ARM_L_1,574,140,false
+ARM_L_2,713,140,false
+ARM_L_3,683,140,false
+ARM_L_4,347,80,false
+ARM_R_1,525,140,false
+ARM_R_2,257,140,false
+ARM_R_3,366,140,false
+ARM_R_4,634,80,false
+EYES_LR,643,330,false
+EYES_UD,82,330,false
+MOUTH_OPEN,427,330,false
+MOUTH_SMILE,1000,330,false
+EYELIDS,1000,330,false

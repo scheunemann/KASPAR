@@ -1,9 +1,42 @@
 import os, sys
 from xml.etree import ElementTree as et
-from Data.Model import Robot, RobotType, Servo, ServoGroup, ServoType, ServoConfig, Pose, JointPosition, SensorTrigger, ButtonTrigger, ButtonHotKey
-from Data.Storage import StorageFactory
+from Data.Model import Robot, RobotModel, Servo, ServoGroup, ServoModel, ServoConfig, Pose, JointPosition, SensorTrigger, ButtonTrigger, ButtonHotKey
 
 class KasparImporter(object):
+    
+    _types = {}
+    _models = {}
+    _configs = {
+                #SSC32 and MINISSC limits are inconsistent between the config files and the old java interface
+                'SSC32': {
+                            'MAX_POS' : 5000,
+                            'MIN_POS' : 500,
+                            'MAX_SPEED' : 10000,
+                            'MIN_SPEED' : 5,
+                            'POSEABLE' : False,
+                            'SCALE_SPEED' : 100.0 / 5000.0,
+                            'SCALE_POS' : 360.0 / 5000.0,
+                            },
+                'MINISSC': {
+                            'MAX_POS' : 254,
+                            'MIN_POS' : 0,
+                            'MAX_SPEED' : None, #Unsupported
+                            'MIN_SPEED' : None, #Unsupported
+                            'POSEABLE' : False,
+                            'SCALE_SPEED' : None,
+                            'SCALE_POS' : 360.0 / 254.0,
+                            },
+                'DEFAULT': {
+                            'MAX_POS' : 1023,
+                            'MIN_POS' : 0,    
+                            'MAX_SPEED' : 2048,
+                            'MIN_SPEED' : 10,
+                            'POSEABLE' : True,
+                            'SCALE_SPEED' : 100.0 / 1023.0,
+                            'SCALE_POS' : 360.0 / 1023.0,
+                            }
+                }
+    
     def __init__(self, version):
         robotConfig = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'kasparConfigs/%s/robot.xml' % version.lower()))
         if os.path.exists(robotConfig) and os.path.isfile(robotConfig):
@@ -11,36 +44,44 @@ class KasparImporter(object):
         else:
             raise Exception('Cannot locate robot.xml for version %s (path: %s)' % (version, robotConfig))
         
-        self._types = {}
-        self._version =self._config.get('VERSION')
+        self._version = self._config.get('version')
     
     def getRobot(self):
         r = Robot(name=self._getText('NAME', None, 'KASPAR'), version=self._version)
         r.servoGroups = self._getServoGroups()
         r.servos = self._getServos(r.servoGroups)
         r.servoConfigs = self._getServoConfigs()
-        r.type = RobotType('KASPAR')
+        r.model = self._getModel('KASPAR')
         
         return r
+    
+    def _getModel(self, modelName):
+        if modelName == None:
+            return None
+        
+        if not KasparImporter._models.has_key(modelName):
+            KasparImporter._models[modelName] = RobotModel(modelName)
+            
+        return self._models[modelName]
     
     def _getServos(self, servoGroups):
         servos = []
         for servo in self._get("SERVOLIST/SERVO"):
             s = Servo()
             s.jointName = self._getText("NAME", servo)
-            s.type = self._getServoType(servo.get('type', None))
-            s.minPosition = self._convert(self._getText("LIMITS[@type='pos']/MIN", servo))
-            s.maxPosition = self._convert(self._getText("LIMITS[@type='pos']/MAX", servo))
-            s.defaultPosition = self._convert(self._getText("DEFAULT/POS", servo))
-            s.minSpeed = self._convert(self._getText("LIMITS[@type='speed']/MIN", servo))
-            s.maxSpeed = self._convert(self._getText("LIMITS[@type='speed']/MAX", servo))
+            s.model = self._getServoModel(servo.get('type', None))
+            s.minPosition = self._realToScalePos(self._getText("LIMITS[@type='pos']/MIN", servo), s.model.positionOffset, s.model.positionScale)
+            s.maxPosition = self._realToScalePos(self._getText("LIMITS[@type='pos']/MAX", servo), s.model.positionOffset, s.model.positionScale)
+            s.defaultPosition = self._realToScalePos(self._getText("DEFAULT/POS", servo), s.model.positionOffset, s.model.positionScale)
+            s.minSpeed = self._realToScaleSpeed(self._getText("LIMITS[@type='speed']/MIN", servo), s.model.speedScale)
+            s.maxSpeed = self._realToScaleSpeed(self._getText("LIMITS[@type='speed']/MAX", servo), s.model.speedScale)
             s.extraData = {'externalId': int(servo.get('id', -1))}
             if s.minSpeed > s.maxSpeed:
                 temp = s.minSpeed
                 s.minSpeed = s.maxSpeed
                 s.maxSpeed = temp
             
-            s.defaultSpeed = self._convert(self._getText("DEFAULT/SPEED", servo))
+            s.defaultSpeed = self._realToScaleSpeed(self._getText("DEFAULT/SPEED", servo), s.model.speedScale)
             if s.defaultSpeed < s.minSpeed:
                 s.defaultSpeed = s.minSpeed
             if s.defaultSpeed > s.maxSpeed:
@@ -71,31 +112,43 @@ class KasparImporter(object):
             groups.append(s)
             
         return groups
-    
-    def _convert(self, value):
+        
+    def _realToScalePos(self, value, offset, scaleValue):
         if value == None:
             return None
         
-        return round((360.0 / 1024) * (int(value) % 1024), 2)
-    
-    def _getServoType(self, typeName):
-        if typeName == None:
+        value = float(value)
+        scaled = (value - offset) * scaleValue
+        return round(scaled, 2)
+
+    def _realToScaleSpeed(self, value, scaleValue):
+        if value == None:
+            return None
+        
+        value = float(value)
+        scaled = value * scaleValue
+        return round(scaled, 2)
+
+    def _getServoModel(self, modelName):
+        if modelName == None:
             return
+
+        if not KasparImporter._types.has_key(modelName.lower()):
+            config = KasparImporter._configs[modelName.upper()] if KasparImporter._configs.has_key(modelName.upper()) else KasparImporter._configs['DEFAULT']
+            s = ServoModel(name=modelName)
+            s.minSpeed = self._realToScaleSpeed(config['MIN_SPEED'], config['SCALE_SPEED'])
+            s.maxSpeed = self._realToScaleSpeed(config['MAX_SPEED'], config['SCALE_SPEED'])
+            s.positionOffset = round((config['MAX_POS'] + config['MIN_POS']) / 2, 2)
+            s.minPosition = self._realToScalePos(config['MIN_POS'], s.positionOffset, config['SCALE_POS'])
+            s.maxPosition = self._realToScalePos(config['MAX_POS'], s.positionOffset, config['SCALE_POS'])
+            s.defaultSpeed = 100
+            s.defaultPosition = 0
+            s.poseable = config['POSEABLE']
+            s.positionScale = config['SCALE_POS']
+            s.speedScale = config['SCALE_SPEED']
+            KasparImporter._types[modelName.lower()] = s
         
-        if not self._types.has_key(typeName.lower()):
-            s = ServoType(name=typeName)
-            s.minSpeed = 0
-            s.maxSpeed = 100
-            s.minPosition = 0
-            s.maxPosition = 360
-            s.defaultSpeed = 50
-            s.defaultPosition = 180
-            s.poseable = typeName.lower() == 'AX12'
-            s.offset = 0
-            s.scale = 1024.0 / 360.0
-            self._types[typeName.lower()] = s
-        
-        return self._types[typeName.lower()]
+        return KasparImporter._types[modelName.lower()]
             
     def _getServoConfigs(self):
         configs = []
@@ -116,9 +169,7 @@ class KasparImporter(object):
         c.port = self._getText("PORT", config, "")
         c.portSpeed = self._getText("SPEED", config, 115200)
         c.rotationOffset = 0
-        c.rotationScale = 360 / 1024.0
-        c.speedScale = 1 / 1024.0
-        c.type = self._getServoType(servoName)
+        c.model = self._getServoModel(servoName)
         return c
 
     def _getText(self, xpath, node=None, default=None):
@@ -174,10 +225,12 @@ class ActionImporter(object):
             if legacyRobot:
                 try:
                     servo = filter(lambda x: x.jointName == jointName, legacyRobot.servos)[0]
-                    servoConfig = filter(lambda x: x.type == servo.type, legacyRobot.servoConfigs)[0]
-                    angle = (position - servoConfig.rotationOffset) * (servoConfig.rotationScale)
-                    speed = speed * servoConfig.speedScale
-                except:
+                    angle = (position - (servo.positionOffset or servo.model.positionOffset)) * (servo.model.positionScale)
+                    if servo.model.speedScale != None:
+                        speed = speed * servo.model.speedScale
+                    else:
+                        speed = None
+                except Exception as e:
                     print >> sys.stderr, "Servo with name %s not attached to robot %s, using default conversion" % (jointName, legacyRobot.name)
                     angle = position * self.defaultAngle
                     speed = speed * self.defaultSpeed
@@ -235,46 +288,40 @@ class TriggerImporter(object):
         
         return triggers                
 
-if __name__ == '__main__':
-    dbConf = {
-        'type':'MySql',
-        'host':'localhost',
-        'user':'kaspar',
-        'pass':'kaspar',
-        'db':'kaspar',
-        }
-    StorageFactory.config['engine'].update(dbConf)
-    
-    version = 'kaspar3a'
-    
-    k = KasparImporter(version)
-    r = k.getRobot()
-    a = ActionImporter()
-    t = TriggerImporter()
-    
+def loadAllConfigs():
+    baseDir = os.path.dirname(os.path.realpath(__file__))
+    configDir = os.path.join(baseDir, 'kasparConfigs')
+    dirs = [os.path.join(configDir, o) for o in os.listdir(configDir) if os.path.isdir(os.path.join(configDir, o))]
+        
     poses = []
     triggers = []
-    
-    baseDir = os.path.dirname(os.path.realpath(__file__))
-    searchDir = os.path.join(baseDir, 'kasparConfigs/%s/pos' % version)
-    if os.path.exists(searchDir):
-        for fileName in os.listdir(searchDir):
-            f = open(os.path.join(searchDir, fileName))
-            lines = f.readlines()
-            pose = a.getPose(lines, r)
-            poses.append(pose)
-    
-    searchDir = os.path.join(baseDir, 'kasparConfigs/%s/keyMaps' % version)
-    if os.path.exists(searchDir):
-        for fileName in os.listdir(searchDir):
-            f = open(os.path.join(searchDir, fileName))
-            lines = f.readlines()
-            triggers.extend(t.getTriggers(lines, poses))
+    robots = []
 
-    StorageFactory._flushAndFillTestData()
-    session = StorageFactory.getNewSession()
-    session.add(r)
-    session.add_all(poses)
-    session.add_all(triggers)
-    session.commit()
+    a = ActionImporter()
+    t = TriggerImporter()
+
+    for subDir in dirs:        
+        version = os.path.basename(subDir)
+         
+        k = KasparImporter(version)
+        r = k.getRobot()
+        robots.append(r)
+        
+        searchDir = os.path.join(subDir, 'pos')
+        if os.path.exists(searchDir):
+            files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
+            for fileName in files:
+                f = open(fileName)
+                lines = f.readlines()
+                pose = a.getPose(lines, r)
+                poses.append(pose)
+         
+        searchDir = os.path.join(subDir, 'keyMaps')
+        if os.path.exists(searchDir):
+            files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
+            for fileName in files:
+                f = open(fileName)
+                lines = f.readlines()
+                triggers.extend(t.getTriggers(lines, poses))
     
+    return (robots, poses, triggers)

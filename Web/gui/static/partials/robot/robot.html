@@ -1,27 +1,12 @@
 <div ng-controller="robotController" ng-cloak>
 	<div class="input-group">
-		<span class="input-group-addon">Robot</span> 
-		<select class="selectpicker form-control" ng-model="selected" ng-options="(item.version + ' (' + item.name + ')' ) for item in robots | orderBy:name"></select>
+		<span class="input-group-addon">Robot</span>
+		<span ng-repeat="robot in robots">{{proxyObjectResolver.resolveProp(robot, 'model')}}</span>
+		<select class="selectpicker form-control" ng-model="selected" ng-options="(item.name + ' (' + item.model.name + ': ' + item.version + ')' ) for item in robots | orderBy:name"></select>
 		<span class="input-group-btn">
-			<button class="btn btn-default" type="button" ng-click="newObj()">New</button>
-			<button class="btn btn-default" type="button" ng-click="deleteObj(selected)">Delete</button>
+			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="newObj()">New</button>
+			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="deleteObj(selected)">Delete</button>
 		</span>
 	</div>
-	<form novalidate name="robotForm">
-		<div class="input-group" ng-class="{'has-error': !robotForm.name.$valid && robotForm.name.$dirty, 'has-warning': robotForm.name.$dirty}">
-			<span class="input-group-addon">Name</span>
-			<input type="text" name="name" class="form-control" placeholder="Name" ng-model="selected.name" required>
-		</div>
-		<div class="input-group" ng-class="{'has-error': !robotForm.version.$valid && robotForm.version.$dirty, 'has-warning': robotForm.version.$dirty}">
-			<span class="input-group-addon">Version</span> 
-			<select name="version" ng-disabled="true" class="selectpicker form-control" ng-model="selected.version" ng-options="version for version in versions | orderBy:version" required>
-				<option value="">--Select Version--</option>
-			</select>
-		</div>
-	</form>
-<!-- 	<div class="btn-group pull-right"> -->
-<!-- 		<button class="btn btn-default" type="button" ng-click="viewJoints(selected)">View Joints</button> -->
-<!-- 		<button class="btn btn-default" type="button" ng-click="calibrateJoints(selected)">Calibrate Joints</button> -->
-<!-- 	</div> -->
-<!-- 	<div ui-view></div> -->
+	<robot-editor robot="selected"></robot-editor>
 </div>

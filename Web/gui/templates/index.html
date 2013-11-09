@@ -10,6 +10,7 @@
 <link
 	rel="stylesheet"
 	href="static/lib/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 <link
 	rel="stylesheet"
 	href="static/css/app.css" />
@@ -36,19 +37,17 @@
 	<div class="container maxHeight">
 		<div class="row maxHeight">
 			<div
-				class="col-md-3 col-lg-2 maxHeight scrollable"
+				class="col-md-3 col-lg-2 maxHeight scrollable hidden-print"
 				ng-controller="navBarController"
 				id="sideNav">
 				<div class="panel-group">
 					<div
 						class="panel panel-default"
 						ng-repeat="group in groups | orderBy:order">
-						<div
-							class="panel-heading">
+						<div class="panel-heading">
 							<h4 class="panel-title">{{group.title}}</h4>
 						</div>
-						<div
-							class="nav-collapse in">
+						<div class="nav-collapse in">
 							<div ng-repeat="link in group.links | orderBy:order">
 								<a href="#/{{link.path}}">{{link.title}}</a>
 							</div>
@@ -57,13 +56,15 @@
 				</div>
 			</div>
 			<div
-				class="col-md-9 col-lg-10 scrollable maxHeight well"
+				class="col-md-9 col-lg-10 maxHeight"
 				id="main">
-				<div ui-view></div>
+				<div
+					class="well scrollable maxHeight"
+					ui-view></div>
 			</div>
 		</div>
 	</div>
-	<footer class="navbar-fixed-bottom text-center">
+	<footer class="navbar-fixed-bottom text-center hidden-print">
 		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science and Technology Research Institute</a>
 			<div>University of Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK</div></small>
 	</footer>

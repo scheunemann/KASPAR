@@ -1,13 +1,121 @@
 'use strict';
 
 /* Directives */
-
-
 angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGUI.filters']).
   directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
       elm.text(version);
     };
+  }])
+  .directive('saveable', ['$compile', function($compile) {
+	  var def = {
+		restrict : 'A',
+		require : 'ngModel',
+		scope : {
+			item : "=saveable",
+		},
+		link: function(scope, iElement, iAttrs, controller) {
+			scope.modelCtrl = controller;
+			
+			scope.$watch('item', function(value) {
+    			angular.element(iElement[0].parentElement).removeClass('has-success');
+			});
+			
+			scope.$watch('modelCtrl.$dirty', function(value) {
+				if(value) {
+        			angular.element(iElement[0].parentElement).addClass('has-warning');
+				} else {
+        			angular.element(iElement[0].parentElement).removeClass('has-warning');
+				}
+			});
+					
+			scope.$watch('modelCtrl.$valid', function(value) {
+				if (value) {
+        			angular.element(iElement[0].parentElement).removeClass('has-error');
+				} else {
+        			angular.element(iElement[0].parentElement).addClass('has-error');
+				}
+			});
+
+			scope.$watch('modelCtrl.$pristine', function(value) {
+				if (!value) {
+        			angular.element(iElement[0].parentElement).removeClass('has-success');
+				}
+			});
+			
+			scope.updateObj = function() {
+				if (controller.$dirty) {
+					scope.item.$save(function() {
+						controller.$setPristine();
+	        			angular.element(iElement[0].parentElement).addClass('has-success');
+					});
+				}
+			};
+			
+			iElement.on('blur', function() {
+				scope.updateObj();
+			});
+			
+			iElement.on('keyup', function($event) {
+				var code = $event.which || $event.keyCode; // Not-IE || IE
+				if (code == 13) { // enter key
+					scope.updateObj();
+				}
+			});
+        },
+		controller : function($scope) {
+			$scope.newObj = function(type, list) {
+				var newO = new type();
+				if (list != undefined) {
+					list.push(newO);
+				}
+				return newO;
+			};
+
+			$scope.deleteObj = function(item, list) {
+				return item.$delete(function() {
+					var select = null;
+					if (list != undefined) {
+						list.splice(list.indexOf(item), 1);
+						if (list.length > 0) {
+							select = list[0];
+						}
+					}
+
+					return select;
+				});
+			};
+		}
+	}
+
+	return def;
+  }])
+  .directive('robotEditor', ['RobotModel', function(RobotModel) {
+		var def = {
+				templateUrl: 'static/partials/robot/edit.html',
+				restrict: 'E',
+				scope: {
+					robot: "=",
+		        },
+		        controller: function($scope) {
+					var versions = RobotModel.query(function() {
+						$scope.versions = [];
+						for (var i = 0; i < versions.length; i++) {
+							$scope.versions.push(versions[i]['name']);
+						}
+					});
+					
+					$scope.viewJoints = function(robot) {
+						$state.transitionTo('robot.view');
+					};
+
+					$scope.calibrateJoints = function(robot) {
+						$state.transitionTo('robot.calibrate');
+					};
+		        }
+			  };
+
+	return def;
   }])
   .directive('actionEditor', ['$compile', function($compile) {
 		var def = {
@@ -146,7 +254,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 						  var servo = ServoInterface.get({'id': $scope.servo.id}, function() {
 							  servo.position = $scope.jointPosition.angle;
 							  servo.speed = $scope.jointPosition.speed != undefined ? $scope.jointPosition.speed : ($scope.servo.defaultSpeed !=
-									undefined ? $scope.servo.defaultSpeed : $scope.servo.type.defaultSpeed);
+									undefined ? $scope.servo.defaultSpeed : $scope.servo.model.defaultSpeed);
 							  servo.$save({'id': $scope.servo.id});
 						  });
 					  }

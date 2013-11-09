@@ -197,48 +197,22 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 		}])
 	.controller(
 		'robotController', 
-		['$scope', '$state', 'RobotType', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 'proxyObjectResolver',
-		function($scope, $state, RobotType, Robot, Servo, ServoConfig, ServoGroup, proxyObjectResolver) {
+		['$scope', '$state', 'RobotModel', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 'proxyObjectResolver',
+		function($scope, $state, RobotModel, Robot, Servo, ServoConfig, ServoGroup, proxyObjectResolver) { 
+			
+			$scope.deleteObj = function(obj) {
+				$scope.selected = objectManipulation.deleteObj(obj, $scope.robots);
+			}
+			
+			$scope.newObj = function() {
+				$scope.selected = objectManipulation.newObj(Robot, $scope.robots);
+			}
 
 			var items = Robot.query(function() {
 				$scope.robots = items;
 				$scope.selected = items[0];
 				$scope.proxyObjectResolver = proxyObjectResolver;
 			});
-
-			var versions = RobotType.query(function() {
-				$scope.versions = [];
-				for (var i = 0; i < versions.length; i++) {
-					$scope.versions.push(versions[i]['name']);
-				}
-			});
-
-			$scope.newObj = function() {
-				var newR = new Robot();
-				$scope.robots.push(newR);
-				$scope.selected = newR;
-			};
-			
-			$scope.deleteObj = function(item) {
-				item.$delete(function() {
-					$scope.robots.splice($scope.items.indexOf(item), 1);
-					$scope.selected = $scope.items[0];
-				});
-			};
-			
-			$scope.updateObj = function(item) {
-				if (item.name != "" && item.version != "") {
-					item.$save();
-				}
-			};
-			
-			$scope.viewJoints = function(robot) {
-				$state.transitionTo('robot.view');
-			};
-
-			$scope.calibrateJoints = function(robot) {
-				$state.transitionTo('robot.calibrate');
-			};
 		}])
 	.controller(
 		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', 'proxyObjectResolver', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {

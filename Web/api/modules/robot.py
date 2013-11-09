@@ -5,15 +5,15 @@ import cherrypy
 import json
 import Config.legacy
 
-class ServoType(ModelCRUD):
+class ServoModel(ModelCRUD):
     exposed = True
     
     def __init__(self):
-        super(ServoType, self).__init__(Data.Model.ServoType, ['GET', ])
+        super(ServoModel, self).__init__(Data.Model.ServoModel, ['GET', ])
 
 class Servo(ModelCRUD):
     exposed = True
-    type = ServoType() 
+    model = ServoModel() 
     
     def __init__(self):
         super(Servo, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
@@ -30,9 +30,15 @@ class ServoConfig(ModelCRUD):
     def __init__(self):
         super(ServoConfig, self).__init__(Data.Model.ServoConfig, ['GET', 'POST', 'DELETE'])
         
+class SensorModel(ModelCRUD):
+    exposed = True
+    
+    def __init__(self):
+        super(SensorModel, self).__init__(Data.Model.SensorModel, ['GET', ])
+        
 class Sensor(ModelCRUD):
     exposed = True
-    type = SimpleBase(['Clock', 'FSR', ])
+    model = SensorModel()
     
     def __init__(self):
         super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])
@@ -49,13 +55,15 @@ class SensorConfig(ModelCRUD):
     def __init__(self):
         super(SensorConfig, self).__init__(Data.Model.SensorConfig, ['GET', 'POST', 'DELETE'])
 
+class RobotModel(ModelCRUD):
+    exposed = True
+    
+    def __init__(self):
+        super(RobotModel, self).__init__(Data.Model.RobotModel, ['GET', ])
+
 class Robot(ModelCRUD):
     exposed = True
-    type = SimpleBase([
-                        {'name':'KASPAR1a'}, 
-                        {'name':'KASPAR1b'}, 
-                        {'name':'KASPAR1c'},
-                        ])
+    model = RobotModel()
     servo = Servo()
     servogroup = ServoGroup()
     servoconfig = ServoConfig()

@@ -4,25 +4,44 @@ angular.module('proxyService', [ 'ngResource' ])
 	.service('objectCache', ['$q', '$timeout', function($q, $timeout) {
 		var objCache = {}; //Don't know if this is a good idea since it'll prevent GC, but we'll see I guess...
 		
+		// Can't remember why I wanted to cache objects, disabling for now
+		var cache = false;
+		
     	this.getObj = function(key) {
-			if(objCache[key] != undefined) {
-				return objCache[key].obj;
-			} else {
-				return null;
-			}
+    		if (cache) {
+				if(objCache[key] != undefined) {
+					return objCache[key].obj;
+				} else {
+					return null;
+				}
+    		} else {
+    			return null;
+    		}    		
     	};
     	
     	this.setObj = function(key, obj) {
-    		objCache[key] = {obj:obj, info:{}};
+    		if (cache) {
+    			objCache[key] = {obj:obj, info:{}};
+    		}
     	};
     	
     	this.hasObj = function(key) {
-    		return objCache.hasOwnProperty(key);
+    		if (cache) {
+    			return objCache.hasOwnProperty(key);	
+    		} else {
+    			return false;
+    		}
     	};
+    	
+    	this.removeObj = function(key) {
+    		if (cache) {
+    			delete objCache[key];
+    		}
+    	}
 	}])
 	.service('proxyObjectResolver', ['$q', '$timeout', 'objectCache', function($q, $timeout, objectCache) {
     	var getObj = function(metaData, id) {
-			var key = metaData.uri.replace(':id', id.toString());
+			var key = metaData.data.uri.replace(':id', id.toString());
 			if(!objectCache.hasObj(key)) {
 				var obj = metaData.resource.get({ id: id }).$promise;
 				obj.then(function(o) {
@@ -40,9 +59,9 @@ angular.module('proxyService', [ 'ngResource' ])
 				if(object[propName + '_metaData'] != undefined && object[propName + '_metaData'].resolved==false) {
 					var metaData = object[propName + '_metaData'];
 					metaData.resolved = null;
-					if(metaData.isList) {
+					if(metaData.data.isList) {
 						var objs = [];
-						for(var index = 0; index < metaData.ids.length; index++) {
+						for(var index = 0; index < metaData.data.ids.length; index++) {
 							var id = metaData.ids[index];
 							objs.push(getObj(metaData, id));
 						}
@@ -52,8 +71,8 @@ angular.module('proxyService', [ 'ngResource' ])
 							metaData.resolved = true;
 						});
 					} else {
-						var id = metaData.ids[0];
-						getObj(metaData, id).then(function(vars) {
+						var id = metaData.data.ids[0];
+						$q.when(getObj(metaData, id)).then(function(vars) {
 							metaData.defer.resolve(vars);
 							metaData.resolved = true;
 						});
@@ -66,7 +85,8 @@ angular.module('proxyService', [ 'ngResource' ])
     	var modObject = function(respObj) {
 			for(var prop in respObj) {
 				if (respObj[prop] != undefined && respObj[prop].hasOwnProperty('proxyObject') && $injector.has(respObj[prop].type)) {
-					respObj[prop + '_metaData'] = respObj[prop];
+					respObj[prop + '_metaData'] = {};
+					respObj[prop + '_metaData']['data'] = respObj[prop];
 					respObj[prop + '_metaData']['defer'] = $q.defer();
 					respObj[prop + '_metaData']['resolved'] = false;
 					respObj[prop + '_metaData']['resource'] = $injector.get(respObj[prop].type);
@@ -74,6 +94,20 @@ angular.module('proxyService', [ 'ngResource' ])
 				}
 			}
     	};
+    	
+    	var unModObject = function(reqObj) {
+			for(var prop in reqObj) {
+				if (reqObj[prop] != undefined && reqObj[prop + '_metaData'] != undefined) {
+					if (!reqObj[prop + '_metaData']['resolved']) {
+						reqObj[prop] = reqObj[prop + '_metaData']['data'];
+					} else {
+						reqObj[prop] = reqObj[prop].$$v;
+					}
+					
+					delete reqObj[prop + '_metaData'];
+				}
+			}
+    	}
     	
     	return {
     		'response': function(response) {
@@ -106,6 +140,16 @@ angular.module('proxyService', [ 'ngResource' ])
 				}
     			
     			return response;
+    		},
+    		'request': function(request) {
+    			if (request.method == "POST") {
+    				unModObject(request.data);
+        			var key = request.url;
+        			objectCache.removeObj(key);
+    			}
+    			
+    			
+    			return request;
     		}
     	}
     }])

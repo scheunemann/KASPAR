@@ -6,7 +6,7 @@ from user import User
 from legacy import ActionImport, TriggerImport
 import controller
 
-__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface']
+__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface', 'ServoInterface']
 
 class Robot(Robot):
     pass

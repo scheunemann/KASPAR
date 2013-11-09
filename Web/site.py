@@ -4,32 +4,17 @@ import gui
 import api
 import SAPlugin
 from Data.Storage import StorageFactory
+from config import dbConfig, webConfig
 
 _dir = os.path.dirname(os.path.realpath(__file__))
-
-conf = {
-        'server.socket_host': '0.0.0.0',
-        'server.socket_port': 1055,
-        'server.thread_pool': 10,
-        'server.thread_pool_max':-1,
-        # 'environment': 'production'
-}
-
-dbConf = {
-        'type':'MySql',
-        'host':'localhost',
-        'user':'kaspar',
-        'pass':'kaspar',
-        'db':'kaspar',
-}
 
 if __name__ == '__main__':
     global disconnected
     disconnected = False
     
     #global settings
-    cherrypy.config.update(conf)
-    StorageFactory.config['engine'].update(dbConf)
+    cherrypy.config.update(webConfig)
+    StorageFactory.config['engine'].update(dbConfig)
 
     #attach the database
     SAPlugin.SAEnginePlugin(cherrypy.engine).subscribe()
