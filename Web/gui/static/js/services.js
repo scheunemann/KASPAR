@@ -39,7 +39,7 @@ angular.module('proxyService', [ 'ngResource' ])
     		}
     	}
 	}])
-	.service('proxyObjectResolver', ['$q', '$timeout', 'objectCache', function($q, $timeout, objectCache) {
+	.service('proxyObjectResolver', ['$q', '$timeout', '$rootScope', 'objectCache', function($q, $timeout, $rootScope, objectCache) {
     	var getObj = function(metaData, id) {
 			var key = metaData.data.uri.replace(':id', id.toString());
 			if(!objectCache.hasObj(key)) {
@@ -54,27 +54,42 @@ angular.module('proxyService', [ 'ngResource' ])
 			return objectCache.getObj(key);
     	}
 		
-    	this.resolveProp = function(object, propName) {
+    	this.resolveProp = function(object, propName, callback) {
 			if(object != undefined) { 
 				if(object[propName + '_metaData'] != undefined && object[propName + '_metaData'].resolved==false) {
 					var metaData = object[propName + '_metaData'];
 					metaData.resolved = null;
+					var result;
 					if(metaData.data.isList) {
 						var objs = [];
 						for(var index = 0; index < metaData.data.ids.length; index++) {
-							var id = metaData.ids[index];
+							var id = metaData.data.ids[index];
 							objs.push(getObj(metaData, id));
 						}
 						
-						$q.all(objs).then(function(vars) {
-							metaData.defer.resolve(vars);
-							metaData.resolved = true;
-						});
+						result = $q.all(objs);
 					} else {
 						var id = metaData.data.ids[0];
-						$q.when(getObj(metaData, id)).then(function(vars) {
-							metaData.defer.resolve(vars);
-							metaData.resolved = true;
+						result = $q.when(getObj(metaData, id));
+					}
+					
+					result.then(function(vars) {
+						metaData.defer.resolve(vars);
+						metaData.resolved = true;
+						if(!$rootScope.$$phase) {
+							$rootScope.$apply();
+						}
+						if (callback != undefined) {
+							callback(vars);
+						}
+					});
+				} else {
+					if(!$rootScope.$$phase) {
+						$rootScope.$apply();
+					}
+					if (callback != undefined) {
+						$q.when(object[propName]).then(function(val) {
+							callback(val);
 						});
 					}
 				}

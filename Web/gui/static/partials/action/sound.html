@@ -2,7 +2,7 @@
 	<span>Sound Editor</span>
 	<!-- 	<div class="input-group" ng-diabled="isUnchanged(action)"> -->
 	<!-- 		<span class="input-group-addon">Type</span> -->
-	<!-- 		<select class="selectpicker form-control" ng-model="selectedType" ng-options="type.name for type in types | orderBy:name"> -->
+	<!-- 		<select class="selectpicker form-control" ng-model="selectedType" ng-options="type.name for type in types | orderBy:'name'"> -->
 	<!-- 			<option value="">--Select Type--</option> -->
 	<!-- 		</select> -->
 	<!-- 	</div> -->
@@ -11,6 +11,7 @@
 			type="text"
 			class="form-control"
 			placeholder="Sound Name"
+			required
 			ng-model="sound.name">
 	</div>
 	<div class="input-group">

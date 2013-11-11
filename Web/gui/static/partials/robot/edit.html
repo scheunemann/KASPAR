@@ -2,7 +2,8 @@
 	Robot Editor
 	<form
 		novalidate
-		name="robotForm">
+		name="robotForm"
+		model="robot">
 		<div
 			class="input-group">
 			<span class="input-group-addon">Name</span> <input
@@ -10,8 +11,8 @@
 				name="name"
 				class="form-control"
 				placeholder="Name"
-				ng-model="item.name"
-				saveable="robot"
+				saveable
+				ng-model="robot.name"
 				required>
 		</div>
 <!-- 		<div -->
@@ -22,7 +23,7 @@
 <!-- 				ng-disabled="true" -->
 <!-- 				class="selectpicker form-control" -->
 <!-- 				ng-model="robot.version" -->
-<!-- 				ng-options="version for version in versions | orderBy:version" -->
+<!-- 				ng-options="version for version in versions | orderBy:'version'" -->
 <!-- 				required> -->
 <!-- 				<option value="">--Select Version--</option> -->
 <!-- 			</select> -->

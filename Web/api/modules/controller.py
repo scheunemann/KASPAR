@@ -64,7 +64,8 @@ class RobotInterface(object):
                              lambda (key, value): {
                                                  'id':key, 
                                                  'position':value['position'], 
-                                                 'poseable':value['poseable']
+                                                 'poseable':value['poseable'],
+                                                 'jointName':value['jointName'],
                                                  }, servos['servos'].iteritems()),
                'timestamp': Helper._utcDateTime(servos['timestamp']),
                }

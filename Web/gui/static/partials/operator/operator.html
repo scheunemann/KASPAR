@@ -6,7 +6,7 @@
 					<span class="input-group-addon">Operator</span> <select
 						class="selectpicker form-control"
 						ng-model="selectedOperator"
-						ng-options="operator.fullname for operator in operators | orderBy:fullname">
+						ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
 						<option value="">--Select Operator--</option>
 					</select> <span class="input-group-btn">
 						<button
@@ -20,23 +20,28 @@
 					</span>
 				</div>
 			</div>
-			<form name="operatorsForm">
+			<form
+				name="operatorsForm"
+				model="selectedOperator">
 				<div class="input-group">
 					<span class="input-group-addon">Name</span> <input
 						type="text"
 						class="form-control"
 						placeholder="Full Name"
-						ng-model="selectedOperator.fullname">
+						saveable
+						required
+						name="fullname"
+						ng-model="model.fullname">
 				</div>
 				<div class="input-group">
 					<span class="input-group-addon">Common Users</span>
 					<div class="list-group form-control">
 						<span
 							class="list-group-item"
-							ng-repeat="user in users | orderBy:fullname"> <span class="input-group"> <span class="input-group-addon"> <input
+							ng-repeat="user in users | orderBy:'fullname'"> <span class="input-group"> <span class="input-group-addon"> <input
 									type="checkbox"
-									ng-checked="(selectedOperator.users | filter:{id:user.id}).length == 1"
-									ng-click="updateOperatorUser($event, selectedOperator, user)">
+									ng-checked="(model.users | filter:{id:user.id}).length == 1"
+									ng-click="updateOperatorUser($event, model, user)">
 							</span> <input
 								type="text"
 								class="form-control"

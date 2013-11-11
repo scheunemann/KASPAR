@@ -1,49 +1,46 @@
 <div class="row">
 	<div class="col-lg-12">
 		{{proxyObjectResolver.resolveProp(servo, 'model')}}
-		<ng-form name="jointForm">
-		<div
-			class="input-group"
-			ng-class="{'has-error': !jointForm.name.$valid}">
+		<ng-form
+			name="jointForm"
+			ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
+			model="jointPosition">
+		<div class="input-group">
 			<span class="input-group-addon">Joint Name</span> <select
-				name="name"
+				name="jointname"
 				class="selectpicker form-control"
+				ng-options="name for name in (jointNames || [jointPosition.jointName]) | orderBy:'toString()'"
 				ng-model="jointPosition.jointName"
-				ng-options="name for name in jointNames | orderBy:'toString()'"
-				ng-disabled="jointForm.name.$pristine && jointForm.name.$valid"
-				required>
+				ng-disabled="jointForm.jointname.$pristine && jointForm.jointname.$valid"
+				required
+				notEmpty
+				saveable>
 				<option value="">--Select Joint--</option>
 			</select>
 		</div>
-		<div
-			class="input-group"
-			ng-class="{'has-error': !jointForm.angle.$valid}">
+		<div class="input-group">
 			<span class="input-group-addon">Angle</span> <input
-				name="angle"
+				name="jointangle"
 				type="range"
 				class="form-control"
-				value="{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ? servo.defaultAngle : servo.model.defaultAngle)}}"
-				min="{{servo.minPosition != undefined ? servo.minPosition : servo.model.minPosition}}"
-				max="{{servo.maxPosition != undefined ? servo.maxPosition : servo.model.maxPosition}}"
+				value="jointPosition.angle || servo.defaultAngle || servo.model.defaultAngle"
+				min="{{servo.minPosition || servo.model.minPosition || -180}}"
+				max="{{servo.maxPosition || servo.maxPosition || 180}}"
 				ng-model="jointPosition.angle"
-				ng-change="cometPost()"
-				required /> 
-				<span class="input-group-addon">{{jointPosition.angle != undefined ? jointPosition.angle : (servo.defaultAngle != undefined ?
-				servo.defaultAngle : servo.model.defaultAngle)}}</span>
+				required
+				saveable /> <span class="input-group-addon">{{jointPosition.angle || servo.defaultPosition || servo.model.defaultPosition}}&deg;</span>
 		</div>
-		<div
-			class="input-group"
-			ng-class="{'has-error': !jointForm.speed.$valid}">
+		<div class="input-group">
 			<span class="input-group-addon">Speed</span> <input
-				name="speed"
+				name="jointspeed"
 				type="range"
 				class="form-control"
-				value="{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed != undefined ? servo.defaultSpeed : servo.model.defaultSpeed)}}"
-				min="{{servo.minSpeed != undefined ? servo.minSpeed : servo.model.minSpeed}}"
-				max="{{servo.maxSpeed != undefined ? servo.maxSpeed : servo.model.maxSpeed}}"
-				ng-model="jointPosition.speed" /> <span class="input-group-addon">{{jointPosition.speed != undefined ? jointPosition.speed : (servo.defaultSpeed !=
-				undefined ? servo.defaultSpeed : servo.model.defaultSpeed)}}</span>
+				value="{{jointPosition.speed || servo.defaultSpeed || servo.model.defaultSpeed}}"
+				min="{{servo.minSpeed || servo.model.minSpeed || 1}}"
+				max="{{servo.maxSpeed || servo.model.maxSpeed || 300}}"
+				ng-model="jointPosition.speed"
+				saveable /> <span class="input-group-addon">{{jointPosition.speed || servo.defaultSpeed || servo.model.defaultSpeed}}%</span>
 		</div>
-		</ng-form>{{servoInterface}}
+		</ng-form>
 	</div>
 </div>

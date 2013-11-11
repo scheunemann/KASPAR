@@ -12,7 +12,7 @@
 		<span class="input-group-addon">Action</span> <select
 			class="selectpicker form-control"
 			ng-model="time.action"
-			ng-options="action.name for action in actions | orderBy:name">
+			ng-options="action.name for action in actions | orderBy:'name'">
 			<option value="">--Select Action--</option>
 		</select>
 	</div>

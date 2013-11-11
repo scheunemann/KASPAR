@@ -6,7 +6,7 @@ angular.module('kasparGUI.filters', []).filter('interpolate', [ 'version', funct
 	return function(text) {
 		return String(text).replace(/\%VERSION\%/mg, version);
 	}
-} ]).filter('intersect', function() {
+}]).filter('intersect', function() {
 	return function(inputList, inputProp, objList, objProp) {
 		var ret = [];
 		if (objList === undefined) {

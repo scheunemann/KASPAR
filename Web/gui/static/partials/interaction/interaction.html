@@ -3,7 +3,7 @@
 		<span class="input-group-addon">Operator</span> <select
 			class="selectpicker form-control"
 			ng-model="operator"
-			ng-options="operator.fullname for operator in operators | orderBy:fullname">
+			ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
 			<option value="">--Select Operator--</option>
 		</select>
 	</div>
@@ -12,7 +12,7 @@
 		<span class="input-group-addon">User</span> <select
 			class="selectpicker form-control"
 			ng-model="user"
-			ng-options="user.fullname group by getCategory(user, operator.users) for user in users | orderBy:fullname">
+			ng-options="user.fullname group by getCategory(user, operator.users) for user in users | orderBy:'fullname'">
 			<option value="">--Select User--</option>
 		</select>
 	</div>

@@ -1,11 +1,21 @@
-<div ng-controller="robotController" ng-cloak>
+<div
+	ng-controller="robotController"
+	ng-cloak>
 	<div class="input-group">
-		<span class="input-group-addon">Robot</span>
-		<span ng-repeat="robot in robots">{{proxyObjectResolver.resolveProp(robot, 'model')}}</span>
-		<select class="selectpicker form-control" ng-model="selected" ng-options="(item.name + ' (' + item.model.name + ': ' + item.version + ')' ) for item in robots | orderBy:name"></select>
-		<span class="input-group-btn">
-			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="newObj()">New</button>
-			<button class="btn btn-default" ng-disabled="true" type="button" ng-click="deleteObj(selected)">Delete</button>
+		<span class="input-group-addon">Robot</span> <span ng-repeat="robot in robots">{{proxyObjectResolver.resolveProp(robot, 'model')}}</span> <select
+			class="selectpicker form-control"
+			ng-model="selected"
+			ng-options="(item.name + ' (' + item.model.name + ': ' + item.version + ')' ) for item in robots | orderBy:'name'"></select> <span class="input-group-btn">
+			<button
+				class="btn btn-default"
+				ng-disabled="true"
+				type="button"
+				ng-click="newObj()">New</button>
+			<button
+				class="btn btn-default"
+				ng-disabled="true"
+				type="button"
+				ng-click="deleteObj(selected)">Delete</button>
 		</span>
 	</div>
 	<robot-editor robot="selected"></robot-editor>

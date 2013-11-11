@@ -2,12 +2,12 @@
 	<div id="userList" class="btn-group">
 		<div class="input-group">
 			<span class="input-group-addon">Action to Override</span> <select class="selectpicker form-control" ng-model="selectedOverride.overridden"
-				ng-options="action.name for action in getActions() | orderBy:fullname">
+				ng-options="action.name for action in getActions() | orderBy:'fullname'">
 			</select>
 		</div> 
 		<div class="input-group">
 			<span class="input-group-addon">Override Action</span> <select class="selectpicker form-control" ng-model="selectedOverride.override"
-				ng-options="action.name for action in getActions() | orderBy:fullname">
+				ng-options="action.name for action in getActions() | orderBy:'fullname'">
 			</select> 
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" ng-click="newAction()">New</button>

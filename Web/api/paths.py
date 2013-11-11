@@ -28,30 +28,30 @@ _menuLinks = [
                 {
                  'title': 'Admin',
                  'links': [
-                            ('Operators', 'admin/operator'),
-                            ('Users', 'admin/user'),
-                            ('Robots', 'admin/robot'),
+                            ('Operators', '/admin/operator'),
+                            ('Users', '/admin/user'),
+                            ('Robots', '/admin/robot'),
                           ]},
                 {
                  'title':'Action',
                  'links': [
-                            ('Create/Edit', 'action'),
-                            ('Test', 'action/test'),
-                            ('Import', 'action/import'),
+                            ('Create/Edit', '/action'),
+                            ('Test', '/action/test'),
+                            ('Import', '/action/import'),
                           ]},
                 {
                  'title':'Trigger',
                  'links': [
-                            ('Create/Edit', 'trigger'),
-                            ('Test', 'trigger/test'),
-                            ('Import', 'trigger/import'),
+                            ('Create/Edit', '/trigger'),
+                            ('Test', '/trigger/test'),
+                            ('Import', '/trigger/import'),
                           ]},
                 {
                  'title':'Interactions',
                  'links': [
-                            ('View History', 'interaction/log'),
-                            ('Begin New', 'interaction'),
-                            ('Manage History', 'interaction/manage'),
+                            ('View History', '/interaction/log'),
+                            ('Begin New', '/interaction'),
+                            ('Manage History', '/interaction/manage'),
                           ]},
             ]
 root.menuOptions = menu.MenuData(_menuLinks)

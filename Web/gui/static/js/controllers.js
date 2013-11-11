@@ -2,17 +2,19 @@
 
 /* Controllers */
 
-angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
+angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.router', ])
 	.controller(
 		'commonController', [ '$scope', function($scope) {	
 			$scope.version = '3.0 Alpha 7';
 		} ])
 	.controller(
-		'navBarController', [ '$scope', 'Menu', function($scope, Menu) {
-			var m = Menu.get(function() {
+		'navBarController', [ '$scope', '$state', 'Menu', function($scope, $state, Menu) {
+			Menu.get(function(m) {
 				$scope.title = m.title;
 				$scope.groups = m.groups;
 			});
+			
+			$scope.state = $state;
 		} ])
 	.controller(
 		'interactionController', [ '$scope', 'Operator', 'User', 'proxyObjectResolver', function($scope, Operator, User, proxyObjectResolver) {
@@ -75,7 +77,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 	}])
 	.controller(
-			'actionTestController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $state, $http, $q, $timeout, Action, ActionType) {
+			'actionTestController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $http, $q, $timeout, Action, ActionType) {
 			$scope.running = false;
 			$scope.actions = Action.query();
 			$scope.output = '';
@@ -90,7 +92,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 	}])
 	.controller(
-		'actionController', [ '$scope', '$state', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $state, $http, $q, $timeout, Action, ActionType) {
+		'actionController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $http, $q, $timeout, Action, ActionType) {
 			$scope.action = '';
 			$scope.actions = Action.query();
 			ActionType.query(function(data){
@@ -149,7 +151,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 			};
 		}])		
 	.controller(
-		'triggerController', [ '$scope', '$state', '$http', '$q', '$timeout', 'Action', 'Trigger', 'TriggerType', function($scope, $state, $http, $q, $timeout, Action, Trigger, TriggerType) {
+		'triggerController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'Trigger', 'TriggerType', function($scope, $http, $q, $timeout, Action, Trigger, TriggerType) {
 			$scope.trigger = '';
 			$scope.triggers = Trigger.query();
 			$scope.actions = Action.query();
@@ -199,46 +201,29 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 		'robotController', 
 		['$scope', '$state', 'RobotModel', 'Robot' , 'Servo', 'ServoConfig', 'ServoGroup', 'proxyObjectResolver',
 		function($scope, $state, RobotModel, Robot, Servo, ServoConfig, ServoGroup, proxyObjectResolver) { 
-			
-			$scope.deleteObj = function(obj) {
-				$scope.selected = objectManipulation.deleteObj(obj, $scope.robots);
+			$scope.proxyObjectResolver = proxyObjectResolver;
+			$scope.robots = Robot.query();
+			$scope.connected = false;
+						
+			$scope.connect = function(robot) {
+				$scope.connected = true;
 			}
 			
-			$scope.newObj = function() {
-				$scope.selected = objectManipulation.newObj(Robot, $scope.robots);
+			$scope.disconnect = function(robot) {
+				$scope.connected = false;
 			}
-
-			var items = Robot.query(function() {
-				$scope.robots = items;
-				$scope.selected = items[0];
-				$scope.proxyObjectResolver = proxyObjectResolver;
-			});
 		}])
 	.controller(
-		'userController', [ '$scope', '$filter', '$state', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', 'proxyObjectResolver', function($scope, $filter, $state, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
+		'userController', [ '$scope', '$filter', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', 'proxyObjectResolver', function($scope, $filter, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
 			$scope.users = User.query(function() {
 				$scope.selectedUser = $scope.users[0];
 			});
 			
 			$scope.$watch('selectedUser', function() {
 				proxyObjectResolver.resolveProp($scope.selectedUser, 'customActions');
-				proxyObjectResolver.resolveProp($scope.selectedUser, 'customActions');
+				proxyObjectResolver.resolveProp($scope.selectedUser, 'customTriggers');
 			});
-			
-			$scope.newUser = function() {
-				var newU = new User({fullname: 'New User', name:'New', customActions:[], customTriggers:[]});
-				$scope.selectedUser = newU;
-				$scope.users.push(newU);
-			};
-			
-			$scope.deleteUser = function() {
-//				$scope.selectedUser.$delete(function() {
-						$scope.users.splice($scope.users.indexOf($scope.selectedUser), 1);
-						$scope.selectedUser = $scope.users[0];
-//					}
-//				);
-			};
-//			
+
 //			$scope.getActions = function(user) {
 //				if(user === undefined) {
 //					return Action.query();
@@ -281,10 +266,6 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService' ])
 //					$scope.selectedUser.triggers.splice($scope.selectedUser.triggers.indexOf(trigger), 1);
 //					$scope.selectedUser.customtriggers.splice($scope.selectedUser.customTriggers.indexOf(trigger.id), 1);
 //				});
-//			};
-//
-//			$scope.updateUser = function(user) {
-//				user.$save();
 //			};
 		}])
 ;

@@ -9,7 +9,7 @@
 					multiple
 					ng-multiple="true"
 					ng-model="toAdd"
-				ng-options="action.name for action in actions | orderBy:name">
+					ng-options="action.name for action in actions | orderBy:'name'">
 				</select>
 			</div>
 		</div>
@@ -39,13 +39,15 @@
 					multiple
 					ng-multiple="true"
 					ng-model="toRemove"
-				ng-options="action.name for action in getActions(sequence.ordered_actions)">
+					ng-options="action.name for action in getActions(sequence.ordered_actions)">
 				</select>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-12"><small>All selected behaviours will attempt execute in order</small></div>
+	<div class="col-lg-12">
+		<small>All selected behaviours will attempt execute in order</small>
+	</div>
 </div>
 {{sequence}}

@@ -1,41 +1,28 @@
 <div class="row">
 	<div class="col-lg-12">
-		<!-- 	<span>Advanced Pose editor</span> -->
-		{{proxyObjectResolver.resolveProp(robot, 'servoGroups')}}
+		{{proxyObjectResolver.resolveProp(pose, 'jointPositions')}}
 		<div
 			class="panel tightLeft tightRight tightBottom"
-			ng-repeat="group in robot.servoGroups | orderBy:name">
+			ng-repeat="group in groups | orderBy:'name'">
 			<h4>{{group.name}}</h4>
-			{{proxyObjectResolver.resolveProp(group, 'servos')}}
 			<div
 				class="row"
-				ng-repeat="servo in group.servos | orderBy:jointName">
-				<div
-					ng-if="($index % 3)==0"
-					class="col-lg-12">
-					<div class="row" ng-class="{tightTop:($index > 2), tightBottom:($index+3 < group.servos.length)}">
-						<div class="col-lg-4 tightRight">
+				ng-repeat="row in group.rows">
+				<div class="col-lg-12">
+					<div
+						class="row"
+						ng-class="{'tightTop':$last || $middle, 'tightBottom':$first || $middle}">
+						<div
+							ng-repeat="jointPosition in row | orderBy:'jointName'"
+							class="col-lg-4"
+							ng-class="{'tightRight':$first || $middle || ($last && row.length == 2), 'tightLeft': $middle || $last, 'col-lg-offset-4': $first && $last} "
+							class="col-lg-4">
 							<joint-editor
 								joint-names="joints"
-								joint-position="getPosition(pose.positions, group.servos[$index+0])"
-								servo-positions="servoPositions"
-								servo="group.servos[$index+0]"></joint-editor>
-						</div>
-						<div class="col-lg-4 tightLeft tightRight">
-							<joint-editor
-								ng-if="$index+1 < group.servos.length"
-								joint-names="joints"
-								joint-position="getPosition(pose.positions, group.servos[$index+1])"
-								servo-positions="servoPositions"
-								servo="group.servos[$index+1]"></joint-editor>
-						</div>
-						<div class="col-lg-4 tightLeft">
-							<joint-editor
-								ng-if="$index+2 < group.servos.length"
-								joint-names="joints"
-								joint-position="getPosition(pose.positions, group.servos[$index+2])"
-								servo-positions="servoPositions"
-								servo="group.servos[$index+2]"></joint-editor>
+								joint-position="jointPosition"
+								servo-position="getPosition(jointPosition.jointName, servoPositions)"
+								servo="getServo(jointPosition.jointName, robot.servos)"
+								connected="connected"></joint-editor>
 						</div>
 					</div>
 				</div>

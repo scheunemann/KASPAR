@@ -43,13 +43,13 @@
 				<div class="panel-group">
 					<div
 						class="panel panel-default"
-						ng-repeat="group in groups | orderBy:order">
+						ng-repeat="group in groups | orderBy:'order'">
 						<div class="panel-heading">
 							<h4 class="panel-title">{{group.title}}</h4>
 						</div>
 						<div class="nav-collapse in">
-							<div ng-repeat="link in group.links | orderBy:order">
-								<a href="#/{{link.path}}">{{link.title}}</a>
+							<div ng-repeat="link in group.links | orderBy:'order'" ng-class="{highlight: state.current.url==link.path}">
+								<a href="#{{link.path}}">{{link.title}}</a>
 							</div>
 						</div>
 					</div>

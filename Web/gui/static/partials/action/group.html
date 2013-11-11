@@ -4,6 +4,7 @@
 			type="text"
 			class="form-control"
 			placeholder="Group Name"
+			required
 			ng-model="group.name">
 	</div>
 </div>
@@ -17,7 +18,7 @@
 					multiple
 					ng-multiple="true"
 					ng-model="toAdd"
-					ng-options="action.name for action in actions | except:group.actions | orderBy:name">
+					ng-options="action.name for action in actions | except:group.actions | orderBy:'name'">
 				</select>
 			</div>
 		</div>
@@ -47,12 +48,14 @@
 					multiple
 					ng-multiple="true"
 					ng-model="toRemove"
-					ng-options="action.name for action in group.actions | orderBy:name">
+					ng-options="action.name for action in group.actions | orderBy:'name'">
 				</select>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-12"><small>All selected behaviours will attempt to execute simultaneously</small></div>
+	<div class="col-lg-12">
+		<small>All selected behaviours will attempt to execute simultaneously</small>
+	</div>
 </div>

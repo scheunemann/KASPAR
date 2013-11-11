@@ -7,64 +7,28 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
       elm.text(version);
     };
   }])
-  .directive('saveable', ['$compile', function($compile) {
+  .directive('model', [function() {
 	  var def = {
-		restrict : 'A',
-		require : 'ngModel',
-		scope : {
-			item : "=saveable",
-		},
-		link: function(scope, iElement, iAttrs, controller) {
-			scope.modelCtrl = controller;
-			
-			scope.$watch('item', function(value) {
-    			angular.element(iElement[0].parentElement).removeClass('has-success');
-			});
-			
-			scope.$watch('modelCtrl.$dirty', function(value) {
-				if(value) {
-        			angular.element(iElement[0].parentElement).addClass('has-warning');
-				} else {
-        			angular.element(iElement[0].parentElement).removeClass('has-warning');
-				}
-			});
-					
-			scope.$watch('modelCtrl.$valid', function(value) {
-				if (value) {
-        			angular.element(iElement[0].parentElement).removeClass('has-error');
-				} else {
-        			angular.element(iElement[0].parentElement).addClass('has-error');
-				}
-			});
-
-			scope.$watch('modelCtrl.$pristine', function(value) {
-				if (!value) {
-        			angular.element(iElement[0].parentElement).removeClass('has-success');
-				}
-			});
-			
-			scope.updateObj = function() {
-				if (controller.$dirty) {
-					scope.item.$save(function() {
-						controller.$setPristine();
-	        			angular.element(iElement[0].parentElement).addClass('has-success');
+		  restrict : 'A',
+		  require : 'form',
+		  link : function(scope, element, attrs, controller) {
+			  scope.formCtrl = controller;
+			  attrs.$observe('model', function(modelName) {
+				  scope.$watch(modelName, function(modelInstance) {
+					  scope.model = modelInstance;
+				  });
+			  });
+		  },
+		  controller : function($scope) {
+			this.updateObj = function(modelCtrl) {
+				if ($scope.formCtrl.$valid) {
+					$scope.model.$save(function() {
+						modelCtrl.$setPristine();
 					});
 				}
 			};
-			
-			iElement.on('blur', function() {
-				scope.updateObj();
-			});
-			
-			iElement.on('keyup', function($event) {
-				var code = $event.which || $event.keyCode; // Not-IE || IE
-				if (code == 13) { // enter key
-					scope.updateObj();
-				}
-			});
-        },
-		controller : function($scope) {
-			$scope.newObj = function(type, list) {
+
+			this.newObj = function(type) {
 				var newO = new type();
 				if (list != undefined) {
 					list.push(newO);
@@ -72,7 +36,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				return newO;
 			};
 
-			$scope.deleteObj = function(item, list) {
+			this.deleteObj = function() {
 				return item.$delete(function() {
 					var select = null;
 					if (list != undefined) {
@@ -86,9 +50,86 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				});
 			};
 		}
+	  };
+	  return def;
+  }])
+  .directive('saveable', ['$compile', function($compile) {
+	  var def = {
+		restrict : 'A',
+		require : ['ngModel', '^form', '^model'],
+        link: function(scope, element, attrs, controllers) {
+        	var name = controllers[1].$name + "." + controllers[0].$name;
+        	var updateCalled = false;
+        	var parentElement = angular.element(element[0].parentElement);
+        	var modelCtrl = controllers[0];
+        	var saveCtrl = controllers[2];
+			
+			scope.$watch(name + '.$dirty', function(value) {
+				if(value) {
+					parentElement.addClass('has-warning');
+				} else {
+					parentElement.removeClass('has-warning');
+				}
+			});
+					
+			scope.$watch(name + '.$valid', function(value) {
+				if (modelCtrl.$dirty) {
+					if (value) {
+						parentElement.removeClass('has-error');
+					} else {
+						parentElement.addClass('has-error');
+					}
+				}
+			});
+
+			scope.$watch(name + '.$pristine', function(value) {
+				if (!value) {
+					parentElement.removeClass('has-success');
+				} else if (updateCalled) {
+					parentElement.addClass('has-success');
+					updateCalled = false;
+				}
+			});
+			
+			var callUpdate = function() {
+				if (modelCtrl.$dirty && modelCtrl.$valid) {
+					saveCtrl.updateObj(modelCtrl);
+					updateCalled = true;
+				}
+			}
+			
+			element.on('blur', function() {
+				callUpdate();
+			});
+			
+			element.on('keyup', function($event) {
+				var code = $event.which || $event.keyCode; // Not-IE || IE
+				if (code == 13) { // enter key
+					callUpdate();
+				}
+			});
+        }
 	}
 
 	return def;
+  }])
+  .directive('notEmpty', [function() {
+	  var def = {
+			  restrict : 'A',
+			  require : 'ngModel',
+			  link : function(scope, element, attrs, controller) {
+				  controller.$parsers.unshift(function(value) {
+					  if (value == undefined || value == "") {
+						  ctrl.$setValidity('notEmpty', false);
+						  return undefined;
+					  } else {
+						  ctrl.$setValidity('notEmpty', true);
+					  }
+				  });
+			  }
+	  }
+	  
+	  return def;
   }])
   .directive('robotEditor', ['RobotModel', function(RobotModel) {
 		var def = {
@@ -152,41 +193,56 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		            pose: "=action",
 		        },
 		        controller: function($scope) {
-		        	$scope.pose.positions = [
-		        			new JointPosition({jointName:'HEAD_ROT', angle:188, speed:100}),
-		        			new JointPosition({jointName:'HEAD_VERT', angle:188}),
-		        			new JointPosition({jointName:'HEAD_TLT', angle:188}),
-		        			new JointPosition({jointName:'EYES_LR', angle:188}),
-		        			new JointPosition({jointName:'EYES_UD', angle:188}),
-		        			new JointPosition({jointName:'MOUTH_OPEN', angle:188, speed:200}),
-		        			new JointPosition({jointName:'MOUTH_SMILE', angle:188}),
-		        			new JointPosition({jointName:'EYELIDS', angle:188}),
-		        			new JointPosition({jointName:'ARM_L_1', angle:188}),
-		        			new JointPosition({jointName:'ARM_L_2', angle:188}),
-		        			new JointPosition({jointName:'ARM_L_3', angle:188}),
-		        			new JointPosition({jointName:'ARM_L_4', angle:188}),
-		        			new JointPosition({jointName:'ARM_R_1', angle:188}),
-		        			new JointPosition({jointName:'ARM_R_2', angle:188}),
-		        			new JointPosition({jointName:'ARM_R_3', angle:188}),
-		        			new JointPosition({jointName:'ARM_R_4', angle:188}),
-		        	];
 		        }
   	  };
 
 	  return def;
   }])
-  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', function($q, $filter, proxyObjectResolver, JointPosition, RobotInterface) {
+  .directive('robotInterface', ['Robot', 'proxyObjectResolver', function(Robot, proxyObjectResolver) {
+	  var def = {
+				templateUrl: 'static/partials/robot/interface.html',
+				restrict: 'E',
+				scope: {
+		            connected: "=",
+		            robot: "=",
+		        },
+		        controller: function($scope) {
+	    			$scope.proxyObjectResolver = proxyObjectResolver;
+	    			$scope.robots = Robot.query();
+	    			$scope.connected = false;
+	    						
+	    			$scope.connect = function(robot) {
+	    				$scope.connected = true;
+	    			}
+	    			
+	    			$scope.disconnect = function(robot) {
+	    				$scope.connected = false;
+	    			}
+    			}
+  	  };
+
+	  return def;
+  }])
+  .directive('advancedPoseEditor', ['$q', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', 'ServoInterface', function($q, $filter, proxyObjectResolver, JointPosition, RobotInterface, ServoInterface) {
 	  var def = {
 			  templateUrl: 'static/partials/action/poseadvanced.html',
 			  restrict: 'E',
 			  scope: {
 				  pose: "=",
 				  robot: "=",
+				  connected: "=",
 			  },
 			  controller: function($scope) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;
-				  $scope.joints = ['HEAD_ROT','HEAD_VERT', 'HEAD_TLT', 'EYES_LR', 'EYES_UD', 'MOUTH_OPEN', 'MOUTH_SMILE',
-				                   'EYELIDS', 'ARM_L_1', 'ARM_L_2', 'ARM_L_3', 'ARM_L_4', 'ARM_R_1', 'ARM_R_2', 'ARM_R_3', 'ARM_R_4'];
+				  
+				  $scope.$watch('pose', function() {
+					  if($scope.pose != undefined) {
+						  proxyObjectResolver.resolveProp($scope.pose, 'jointPositions');
+						  $scope.pose.jointPositions.then(function(result) {
+							 $scope.groups = $scope.getGroups(result, $scope.robot);
+						  });
+					  }
+				  });
 			  
 				  $scope.cometGet = function(data) {
 					  $scope.servoPositions = data;
@@ -195,8 +251,16 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 
 				  $scope.$watch('robot', function() {
 					  if($scope.robot != undefined) {
-						  //$scope.servoPositions = RobotInterface.get({'id': $scope.robot.id}, $scope.cometGet);
+						  proxyObjectResolver.resolveProp($scope.robot, 'servos');
+						  $scope.robot.servos.then(function(result) {
+							 $scope.joints = [];
+							 for (var index in result) {
+								 $scope.joints.push(result[index].jointName);
+							 }
+						  });
 					  }
+
+					  $scope.groups = $scope.getGroups($scope.pose.jointPositions, $scope.robot);
 				  });
 				  
 				  $scope.getJointNames = function(servos) {
@@ -214,19 +278,114 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					  return names;
 				  };
 				  
-				  $scope.getPosition = function(positions, servo) {
-					  if(positions != undefined) {
-						  var position = null;
-						  for(var i = 0; i < positions.length; i++) {
-							  if(positions[i].jointName == servo.jointName) {
-								  position = positions[i];
+				  $scope.getInteface = function(jointName) {
+					  if($scope.robot != undefined && $scope.connected) {
+						 for (var index in $scope.robot.servos) {
+							 if($scope.robot.servos[index].jointName == jointName) {
+								 return ServoInterface({'id': $scope.servo.id});
+							 }
+						 }
+					  }
+						 
+					 return null;
+				  }
+				  
+				  var processGroup = function(servoGroup, positions, groups){
+					  proxyObjectResolver.resolveProp(servoGroup, 'servos');
+					  return $q.when(servoGroup.servos).then(function(servos) {
+						  var joints = [];
+						  for (var servoIndex in servos) {
+							  var servo = servos[servoIndex];
+							  var found = false;
+							  for (var posIndex in positions) {
+								  if (positions[posIndex].jointName == servo.jointName) {
+									  found = true;
+									  joints.push(positions[posIndex]);
+									  break;
+								  }
+							  }
+							  
+							  if (!found) {
+								  joints.push(new JointPosition({
+									  'angle':servo.defaultAngle, 
+									  'speed': servo.defaultSpeed, 
+									  'jointName':servo.jointName, 
+									  'unused': true, 
+									  'pose': $scope.pose
+									  }));
+							  }
+						  }
+						  
+						  if(joints.length > 0) {
+							  groups.push({'name': servoGroup.name, 'rows': getRows(joints)});
+						  }
+					  });
+				  }
+				  
+				  $scope.getGroups = function(jointPositions, robot) {
+					  if(jointPositions != undefined) {
+						  return $q.when(jointPositions).then(function(positions) {
+							  var groups = [];
+							  if (robot == undefined) {
+								  return [{'name':'Pose Joints', 'rows': getRows(positions)}];
+							  } else {
+								  proxyObjectResolver.resolveProp(robot, 'servoGroups');
+								  return robot.servoGroups.then(function(servoGroups) {
+									  var promises = [];
+									  var groups = [];
+									  for(var groupIndex in servoGroups) {
+										  promises.push(processGroup(servoGroups[groupIndex], positions, groups));
+									  }
+									  
+									  return $q.all(promises).then(function(res) {
+										  return groups;
+									  });
+								  });
+							  }
+						  });
+					  }
+				  };
+											  
+				  var getRows = function(positions) {
+					  var rows = [];
+					  var posIndex = 0;
+					  while (posIndex < positions.length) {
+						  var row = [];
+						  row.push(positions[posIndex]);
+						  if (posIndex + 1 < positions.length) {
+							  row.push(positions[posIndex + 1]);
+						  }
+						  if (posIndex + 2 < positions.length) {
+							  row.push(positions[posIndex + 2]);
+						  }
+						  rows.push(row);
+						  posIndex += 3;
+					  }
+					  return rows;
+				  }
+				  
+				  $scope.getServo = function(jointName, servos) {
+					  if (servos != undefined) {
+						  var servo = null;
+						  for (var i = 0; i < servos.length; i++) {
+							  if(servos[i].jointName == jointName) {
+								  servo = servos[i];
 								  break;
 							  }
 						  }
 						  
-						  if(position == null) {
-							  position = new JointPosition({jointName:servo.jointName, angle:100});
-							  positions.push(position);
+						  return servo;
+					  }
+				  }
+				  
+				  $scope.getPosition = function(jointName, positions) {
+					  if(positions != undefined) {
+						  var position = null;
+						  for(var i = 0; i < positions.length; i++) {
+							  if(positions[i].jointName == jointName) {
+								  position = positions[i];
+								  break;
+							  }
 						  }
 						  
 						  return position;
@@ -237,39 +396,48 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  
 	  return def;
   }])
-  .directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
+  .directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver) {
 	  var def = {
-			  templateUrl: 'static/partials/action/joint.html',
-			  restrict: 'E',
-			  scope: {
-				  jointNames: "=",
-				  jointPosition: "=",
-				  servo: "=",
-				  servoPositions: "=",
-			  },
-			  controller: function($scope) {
-				  $scope.proxyObjectResolver = proxyObjectResolver;
-				  $scope.cometPost = function() {
-					  if($scope.jointPosition.angle != undefined) {
-						  var servo = ServoInterface.get({'id': $scope.servo.id}, function() {
-							  servo.position = $scope.jointPosition.angle;
-							  servo.speed = $scope.jointPosition.speed != undefined ? $scope.jointPosition.speed : ($scope.servo.defaultSpeed !=
-									undefined ? $scope.servo.defaultSpeed : $scope.servo.model.defaultSpeed);
-							  servo.$save({'id': $scope.servo.id});
-						  });
-					  }
+		  templateUrl: 'static/partials/action/joint.html',
+		  restrict: 'E',
+		  scope: {
+			  jointNames: "=",
+			  jointPosition: "=",
+			  servo: "=",
+			  servoPositions: "=",
+			  connected: "=",
+		  },
+		  controller: function($scope) {
+			  $scope.proxyObjectResolver = proxyObjectResolver;
+			  
+			  var servoInt = null;
+			  var getInt = function() {
+				  if (servoInt == null) {
+					  servoInt = new ServoInterface({'id': $scope.servo.id });
 				  }
-				  
-//				  $scope.$watch('servoPositions', function() {
-//					  if ($scope.servoPositions != undefined && $scope.servoPositions.servos != undefined) {
-//						  for(var i = 0; i < $scope.servoPositions.servos.length; i++) {
-//							  if($scope.servoPositions.servos[i].id == $scope.servo.id) {
-//								  $scope.position = $scope.servoPositions.servos[i].position;
-//							  }
-//						  }
-//					  }
-//				  });
-			  },
+			  }
+			  
+			  $scope.$watch('connected', function(value) {
+				  if(value) {
+					  $scope.writeToServo();
+				  }
+			  });
+			  
+			  $scope.writeToServo = function() {
+				  if($scope.jointPosition != undefined) {
+					  var servoInt = getInt();						  
+					  servoInt.position = $scope.jointForm.jointangle;
+					  servoInt.speed = $scope.jointForm.jointspeed;
+					  servoInt.$save();
+				  }
+			  }
+			  
+			  $scope.$watch('jointPosition.angle', function() {
+				  if($scope.connected) {
+					  $scope.writeToServo();
+				  }
+			  });
+		  },
 	  };
 	  
 	  return def;

@@ -73,7 +73,7 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	
 	//Joints
 	.factory('JointPosition', [ '$resource', function($resource) {
-		return $resource('/api/jointposition/:id', {rid:'@id'});
+		return $resource('/api/jointposition/:id', {id:'@id'});
 	} ])
 	
 	//Triggers
