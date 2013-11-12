@@ -1,10 +1,12 @@
+from user import User
+
 import Data.Model
 import base
-import crud
-from robot import Robot
-from user import User
-from legacy import ActionImport, TriggerImport
 import controller
+import crud
+from legacy import ActionImport, TriggerImport
+from robot import Robot
+
 
 __all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface', 'ServoInterface']
 
@@ -16,26 +18,26 @@ class User(User):
 
 class Operator(crud.ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(Operator, self).__init__(Data.Model.Operator, ['GET', 'POST', 'DELETE'])
 
 class OrderedAction(crud.ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(OrderedAction, self).__init__(Data.Model.OrderedAction, ['GET', ])
 
 class Action(crud.ModelCRUD):
     exposed = True
     type = base.SimpleBase([
-                        {'name':'Sound'}, 
+                        {'name':'Sound'},
                         {'name':'Pose', 'desc':'One or more joint positions, to be set simultaneously'},
-                        {'name':'Group', 'desc':'parallel actions'}, 
+                        {'name':'Group', 'desc':'parallel actions'},
                         {'name':'Sequence', 'desc':'action series'},
                         ])
     _import = ActionImport()
-    
+
     def __init__(self):
         super(Action, self).__init__(Data.Model.Action, ['GET', 'POST', 'DELETE'])
         setattr(self, 'import', Action._import)
@@ -49,35 +51,35 @@ class JointPosition(crud.ModelCRUD):
 class Trigger(crud.ModelCRUD):
     exposed = True
     type = base.SimpleBase([
-                        {'name':'Sensor'}, 
-                        {'name':'Button', 'desc':'On Screen button with optional keyboard hotkeys'}, 
-                        {'name':'Time', 'desc': 'Based on system clock'}, #clock should be adjusted per each users global speed setting
+                        {'name':'Sensor'},
+                        {'name':'Button', 'desc':'On Screen button with optional keyboard hotkeys'},
+                        {'name':'Time', 'desc': 'Based on system clock'},  # clock should be adjusted per each users global speed setting
                         ])
 
     _import = TriggerImport()
-    
+
     def __init__(self):
         super(Trigger, self).__init__(Data.Model.Trigger, ['GET', 'POST', 'DELETE'])
         setattr(self, 'import', Trigger._import)
 
 class RobotInterface(controller.RobotInterface):
     exposed = True
-    
+
     @property
     def links(self):
         return []
-    
+
     @property
     def title(self):
         return self._modelClass.__name__
-    
+
 class ServoInterface(controller.ServoInterface):
     exposed = True
-    
+
     @property
     def links(self):
         return []
-    
+
     @property
     def title(self):
         return self._modelClass.__name__

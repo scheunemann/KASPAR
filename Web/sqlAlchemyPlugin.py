@@ -1,19 +1,23 @@
 """code shamelessly stolen from Sylvain Hellegouarch """
 """https://bitbucket.org/Lawouach/cherrypy-recipes/src/c8290261eefb/web/database/sql_alchemy"""
+"""http://www.defuze.org/archives/222-integrating-sqlalchemy-into-a-cherrypy-application.html"""
 
 import cherrypy
 from cherrypy.process import plugins
 from sqlalchemy.orm import scoped_session, sessionmaker
-from Data.Storage import StorageFactory
+
+from Data.storage import StorageFactory
+
 
 __all__ = ['SAEnginePlugin', 'SATool']
+
 
 class SAEnginePlugin(plugins.SimplePlugin):
     def __init__(self, bus):
         """
         The plugin is registered to the CherryPy engine and therefore
         is part of the bus (the engine *is* a bus) registery.
- 
+
         We use this plugin to create the SA engine. At the same time,
         when the plugin starts we create the tables into the database
         using the mapped class of the global metadata.
@@ -22,13 +26,13 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.sa_engine = None
         self.session = scoped_session(sessionmaker(autoflush=True,
                                                    autocommit=False))
- 
+
     def start(self):
         self.bus.log('Starting up DB access')
         self.sa_engine = StorageFactory.getDefaultDataStore().engine
         self.bus.subscribe("bind-session", self.bind)
         self.bus.subscribe("commit-session", self.commit)
- 
+
     def stop(self):
         self.bus.log('Stopping down DB access')
         self.bus.unsubscribe("bind-session", self.bind)
@@ -36,7 +40,7 @@ class SAEnginePlugin(plugins.SimplePlugin):
         if self.sa_engine:
             self.sa_engine.dispose()
             self.sa_engine = None
- 
+
     def bind(self):
         """
         Whenever this plugin receives the 'bind-session' command, it applies
@@ -57,11 +61,12 @@ class SAEnginePlugin(plugins.SimplePlugin):
         try:
             self.session.commit()
         except:
-            self.session.rollback()  
+            self.session.rollback()
             raise
         finally:
             self.session.remove()
-     
+
+
 class SATool(cherrypy.Tool):
     def __init__(self):
         """
@@ -71,7 +76,7 @@ class SATool(cherrypy.Tool):
         we use the scoped_session that will create a session
         on a per thread basis so that you don't worry about
         concurrency on the session object itself.
- 
+
         This tools binds a session to the engine each time
         a requests starts and commits/rollbacks whenever
         the request terminates.
@@ -79,13 +84,13 @@ class SATool(cherrypy.Tool):
         cherrypy.Tool.__init__(self, 'on_start_resource',
                                self.bind_session,
                                priority=20)
- 
+
     def _setup(self):
         cherrypy.Tool._setup(self)
         cherrypy.request.hooks.attach('on_end_resource',
                                       self.commit_transaction,
                                       priority=80)
- 
+
     def bind_session(self):
         """
         Attaches a session to the request's scope by requesting
@@ -93,7 +98,7 @@ class SATool(cherrypy.Tool):
         """
         session = cherrypy.engine.publish('bind-session').pop()
         cherrypy.request.db = session
- 
+
     def commit_transaction(self):
         """
         Commits the current transaction or rolls back

@@ -7,9 +7,9 @@ webConfig = {
 }
 
 dbConfig = {
-        'type':'MySql',
-        'host':'localhost',
-        'user':'kaspar',
-        'pass':'kaspar',
-        'db':'kaspar',
+        'type': 'MySql',
+        'host': 'localhost',
+        'user': 'kaspar',
+        'pass': 'kaspar',
+        'db': 'kaspar',
 }

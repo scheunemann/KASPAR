@@ -1,63 +1,65 @@
+import cherrypy
+import json
+
+import Config.legacy
 import Data.Model
 from base import SimpleBase
 from crud import ModelCRUD
-import cherrypy
-import json
-import Config.legacy
+
 
 class ServoModel(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(ServoModel, self).__init__(Data.Model.ServoModel, ['GET', ])
 
 class Servo(ModelCRUD):
     exposed = True
-    model = ServoModel() 
-    
+    model = ServoModel()
+
     def __init__(self):
         super(Servo, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
-    
+
 class ServoGroup(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(ServoGroup, self).__init__(Data.Model.ServoGroup, ['GET', 'POST', 'DELETE'])
-        
+
 class ServoConfig(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(ServoConfig, self).__init__(Data.Model.ServoConfig, ['GET', 'POST', 'DELETE'])
-        
+
 class SensorModel(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(SensorModel, self).__init__(Data.Model.SensorModel, ['GET', ])
-        
+
 class Sensor(ModelCRUD):
     exposed = True
     model = SensorModel()
-    
+
     def __init__(self):
         super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])
-        
+
 class SensorGroup(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(SensorGroup, self).__init__(Data.Model.SensorGroup, ['GET', 'POST', 'DELETE'])
 
 class SensorConfig(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(SensorConfig, self).__init__(Data.Model.SensorConfig, ['GET', 'POST', 'DELETE'])
 
 class RobotModel(ModelCRUD):
     exposed = True
-    
+
     def __init__(self):
         super(RobotModel, self).__init__(Data.Model.RobotModel, ['GET', ])
 
@@ -70,13 +72,13 @@ class Robot(ModelCRUD):
     sensor = Sensor()
     sensorgroup = SensorGroup()
     sensorconfig = SensorConfig()
-    
+
     def _cp_dispatch(self, vpath):
         if vpath and len(vpath) > 1:
             cherrypy.request.params['constraint'] = {'robot_id': vpath.pop(0)}
         if not vpath[0].isdigit():
             return getattr(self, vpath.pop(0), None)
-    
+
     def __init__(self):
         super(Robot, self).__init__(Data.Model.Robot, ['GET', 'POST', 'DELETE'])
 
@@ -93,7 +95,7 @@ class Robot(ModelCRUD):
         else:
             cur = cherrypy.request.db.query(self._modelClass).get(oid)
             if cur.version != cherrypy.request.json['version']:
-                #basically have to rebuild the whole thing here
+                # basically have to rebuild the whole thing here
                 for servoGroup in cur.servoGroups:
                     cherrypy.request.db.delete(servoGroup)
 
@@ -109,7 +111,6 @@ class Robot(ModelCRUD):
                 data.name = cherrypy.request.json['name']
                 data.id = oid
                 cherrypy.request.db.merge(data)
-                return data.serialize(urlResolver=self._urlResolver)                
+                return data.serialize(urlResolver=self._urlResolver)
             else:
                 return super(Robot, self).POST(oid)
-            

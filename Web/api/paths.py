@@ -1,17 +1,20 @@
-import os, cherrypy
-from Web.api.modules import moduleParser
-from Web.api.modules import menu
+import cherrypy
+import os
+
+from Web.api.modules import menu, moduleParser
+
 
 name = "Kaspar API"
 _dir = os.path.dirname(os.path.realpath(__file__))
 
-class Root(object): 
+
+class Root(object):
     @cherrypy.expose
     def GET(self):
         return "API Index"
 
 _modules = moduleParser.loadModules('modules/services.py')
-#_moduleLinks = {}
+# _moduleLinks = {}
 
 root = Root()
 for name, type_ in _modules.iteritems():
@@ -19,10 +22,10 @@ for name, type_ in _modules.iteritems():
 #    links = []
 #    for link in type_.links:
 #        links.append((link[0], "%s/%s" %(name.lower(), link[1])))
-#        
+#
 #    _moduleLinks[type_.title] = links
 
-#root.menuOptions = menu.MenuData(_moduleLinks)
+# root.menuOptions = menu.MenuData(_moduleLinks)
 
 _menuLinks = [
                 {

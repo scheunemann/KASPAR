@@ -1,12 +1,13 @@
 import cherrypy
 import json
 
+
 class MenuData(object):
     exposed = True
-    
+
     def __init__(self, links):
         self._links = links
-        
+
     def GET(self, *args, **kwargs):
         menu = {'groups': []}
         rootOrder = 1
@@ -22,8 +23,8 @@ class MenuData(object):
                           'order': order
                           })
                 order += 1
-        
+
             menu['groups'].append(section)
-        
+
         cherrypy.response.headers['Content-Type'] = 'application/json'
         return json.dumps(menu)
