@@ -41,12 +41,29 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 				$scope.selectedOperator = $scope.operators[0];
 			});
 
+			$scope.usersSaved = false;
 			$scope.users = User.query();
 			$scope.$watch('selectedOperator', function() {
 				if($scope.selectedOperator != undefined) {
 					proxyObjectResolver.resolveProp($scope.selectedOperator, 'users');
 				}
 			});
+			
+			$scope.$watch('operatorsForm.$pristine', function(value) {
+				if (!value) {
+					$scope.usersSaved = false;
+				}
+			});
+
+			
+			$scope.saveOperator = function() {
+				if ($scope.formCtrl.$valid) {
+					$scope.selectedOperator.$save(function() {
+						$scope.usersSaved = true;
+						$scope.operatorsForm.$setPristine();
+					});
+				}
+			}
 
 			$scope.newOperator = function() {
 				var newOp = new Operator({fullname: 'New Operator', name:'New', users:[]});
@@ -74,21 +91,33 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 						}
 					}
 				}
+				
+				$scope.saveOperator();
 			};
 	}])
 	.controller(
-			'actionTestController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', function($scope, $http, $q, $timeout, Action, ActionType) {
+			'actionTestController', [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionTest', function($scope, $http, $q, $timeout, Action, ActionTest) {
 			$scope.running = false;
 			$scope.actions = Action.query();
 			$scope.output = '';
+			
+			$scope.$watch('action', function(action) {
+				if(action != undefined) {
+					$scope.actionTest = new ActionTest({'id': action.id});
+				}
+			});
+			
 			$scope.startAction = function(action) {
-				$scope.output += 'Start action' + action.name + '\n';
-				$scope.running = true;
+				$scope.output += 'Start action ' + action.name + '\n';
+				$scope.actionTest.$save(getOutput());
 			};
 			
+			var getOutput = function() {
+				$scope.output += 'TODO: live update of running actions\n';
+			}
+			
 			$scope.stopAction = function(action) {
-				$scope.output += 'Stop action' + action.name + '\n';
-				$scope.running = false;
+				$scope.output += 'TODO: Stop action ' + action.name + '\n';				
 			};
 	}])
 	.controller(

@@ -1,12 +1,11 @@
 from user import User
-
 import Data.Model
 import base
 import controller
 import crud
 from legacy import ActionImport, TriggerImport
 from robot import Robot
-
+import cherrypy
 
 __all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface', 'ServoInterface']
 
@@ -28,8 +27,10 @@ class OrderedAction(crud.ModelCRUD):
     def __init__(self):
         super(OrderedAction, self).__init__(Data.Model.OrderedAction, ['GET', ])
 
+
 class Action(crud.ModelCRUD):
     exposed = True
+    test = controller.ActionTest()
     type = base.SimpleBase([
                         {'name':'Sound'},
                         {'name':'Pose', 'desc':'One or more joint positions, to be set simultaneously'},
@@ -41,7 +42,19 @@ class Action(crud.ModelCRUD):
     def __init__(self):
         super(Action, self).__init__(Data.Model.Action, ['GET', 'POST', 'DELETE'])
         setattr(self, 'import', Action._import)
+        
+    #TODO: Action type on new actions
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def POST(self, oid=None, **constraint):
+        return super(Action, self).POST(oid, **constraint)
 
+    def _cp_dispatch(self, vpath):
+        if vpath and len(vpath) > 1:
+            cherrypy.request.params['actionId'] = vpath.pop(0)
+        if not vpath[0].isdigit():
+            return getattr(self, vpath.pop(0), None)
+        
 class JointPosition(crud.ModelCRUD):
     exposed = True
 

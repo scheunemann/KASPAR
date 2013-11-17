@@ -4,8 +4,9 @@ from dateutil.tz import tzutc
 import logging
 import time
 
-from Data.Model import Servo, Robot
-from Robot.servoInteface import ServoInterface as ServoInterface_
+from Data.Model import Servo, Robot, Action
+from Robot.ServoInteface import ServoInterface as ServoInterface_
+from ActionRunner import ActionRunner
 
 
 class Helper(object):
@@ -41,6 +42,67 @@ class Helper(object):
         else:
             return servo
 
+
+class ActionTest(object):
+    exposed = True
+    _runners = {}
+
+    def __init__(self):
+        self.runners = {}
+
+    @cherrypy.tools.json_out()
+    def GET(self, actionId, timestamp=None):
+
+        if actionId in ActionTest._runners:
+            active = ActionTest._runners[actionId].isAlive()
+            output = ActionTest._runners[actionId].output
+        else:
+            active = False
+            output = []
+
+        if timestamp != None:
+            pass
+        else:
+            pass
+
+        output.sort(key=lambda (ts, val): ts)
+
+        ret = {
+               'id': actionId,
+               'output': output,
+               'active': active,
+               'timestamp': Helper._utcDateTime(datetime.datetime.now()),
+               }
+
+        return ret
+
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def POST(self, actionId):
+        #data = cherrypy.request.json
+
+        if actionId in ActionTest._runners and ActionTest._runners[actionId].isAlive():
+            handle = ActionTest._runners[actionId]
+            handle.stop()
+        else:
+            action = cherrypy.request.db.query(Action).get(actionId)
+            robot = cherrypy.request.db.query(Robot).get(1)
+            handle = ActionRunner(robot).executeAsync(action)
+            ActionTest._runners[actionId] = handle
+
+        active = handle.isAlive()
+        output = handle.output
+
+        ret = {
+               'id': actionId,
+               'output': output,
+               'active': active,
+               'timestamp': Helper._utcDateTime(datetime.datetime.now()),
+        }
+
+        return ret
+
+
 class RobotInterface(object):
 
     def __init__(self):
@@ -64,10 +126,10 @@ class RobotInterface(object):
         ret = {
                'servos': map(
                              lambda (key, value): {
-                                                 'id':key,
-                                                 'position':value['position'],
-                                                 'poseable':value['poseable'],
-                                                 'jointName':value['jointName'],
+                                                 'id': key,
+                                                 'position': value['position'],
+                                                 'poseable': value['poseable'],
+                                                 'jointName': value['jointName'],
                                                  }, servos['servos'].iteritems()),
                'timestamp': Helper._utcDateTime(servos['timestamp']),
                }
@@ -95,7 +157,19 @@ class RobotInterface(object):
                     # TODO: Error handling
                     continue
                     # raise cherrypy.HTTPError(message=e.message)
-        return 'OK'
+
+        ret = {
+               'servos': map(
+                             lambda servo: {
+                                                 'id': servo['id'],
+                                                 'position': servo['position'],
+                                                 'poseable': servo['poseable'],
+                                                 'jointName': servo['jointName'],
+                                                 }, data['servos']),
+               'timestamp': Helper._utcDateTime(datetime.datetime.now()),
+               }
+
+        return ret
 
     def _getServos(self, robotId):
         robot = cherrypy.request.db.query(Robot).get(robotId)
@@ -103,11 +177,11 @@ class RobotInterface(object):
             self._logger.critical("Could not locate robot with id %s", robotId)
             return None
         else:
-            if not self._lastPositions.has_key(robotId):
+            if robotId not in self._lastPositions:
                 self._lastPositions[robotId] = {'timestamp': None, 'servos': {}}
 
             for servo in robot.servos:
-                if not self._lastPositions[robotId]['servos'].has_key(servo.id):
+                if servo.id not in self._lastPositions[robotId]['servos']:
                     self._lastPositions[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None}
 
                 interface = Helper._getInterface(servo.id)
@@ -123,6 +197,7 @@ class RobotInterface(object):
 
         return self._lastPositions[robotId]
 
+
 class ServoInterface(object):
 
     def __init__(self):
@@ -130,6 +205,20 @@ class ServoInterface(object):
         self._logger = logging.getLogger(__name__)
 
     @cherrypy.tools.json_out()
+    def _getReturn(self, interface):
+        ret = {
+               'id': interface.servo.id,
+               'position': interface.getPosition(),
+               }
+        try:
+            ret['poseable'] = interface.getPositioning()
+        except:
+            ret['poseable'] = None
+
+        ret['timestamp'] = Helper._utcDateTime(datetime.datetime.now())
+
+        return ret
+
     def GET(self, servoId, position=None):
         interface = Helper._getInterface(servoId)
         if interface == None:
@@ -142,16 +231,7 @@ class ServoInterface(object):
                 time.sleep(0.1)
                 currentPosition = interface.getPosition()
 
-        ret = {}
-        ret['position'] = currentPosition
-
-        try:
-            ret['poseable'] = interface.getPositioning()
-        except:
-            ret['poseable'] = None
-
-        ret['timestamp'] = Helper._utcDateTime(datetime.datetime.now())
-        return ret
+        return self._getReturn(interface)
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -162,10 +242,11 @@ class ServoInterface(object):
             raise cherrypy.NotFound()
         else:
             try:
-                if data['position'] != None:
-                    interface.setPosition(int(data['position']), float(data['speed']))
-                if data['poseable'] != None:
+                if 'position' in data and data['position'] != None:
+                    interface.setPosition(int(data['position']), float(data['speed'] or 100))
+                if 'poseable' in data and data['poseable'] != None:
                     interface.setPositioning(bool(data['poseable']))
-                return 'OK'
             except Exception as e:
                 raise cherrypy.HTTPError(message=e.message)
+
+        return self._getReturn(interface)

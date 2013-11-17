@@ -3,7 +3,6 @@ import json
 
 import Config.legacy
 import Data.Model
-from base import SimpleBase
 from crud import ModelCRUD
 
 

@@ -13,13 +13,13 @@ class KasparImporter(object):
     _configs = {
                 # SSC32 and MINISSC limits are inconsistent between the config files and the old java interface
                 'SSC32': {
-                            'MAX_POS': 5000,
+                            'MAX_POS': 10000,
                             'MIN_POS': 500,
-                            'MAX_SPEED': 10000,
+                            'MAX_SPEED': 5000,
                             'MIN_SPEED': 5,
                             'POSEABLE': False,
-                            'SCALE_SPEED': 100.0 / 5000.0,
-                            'SCALE_POS': 360.0 / 5000.0,
+                            'SCALE_SPEED': 100.0 / 1000.0,
+                            'SCALE_POS': 360.0 / 10000.0,
                             },
                 'MINISSC': {
                             'MAX_POS': 254,
@@ -29,6 +29,24 @@ class KasparImporter(object):
                             'POSEABLE': False,
                             'SCALE_SPEED': None,
                             'SCALE_POS': 360.0 / 254.0,
+                            },
+                'DUMMY': {
+                            'MAX_POS': 360,
+                            'MIN_POS': 0,
+                            'MAX_SPEED': 300,
+                            'MIN_SPEED': 1,
+                            'POSEABLE': False,
+                            'SCALE_SPEED': 1,
+                            'SCALE_POS': 1,
+                          },
+                'AX12': {
+                            'MAX_POS': 1023,
+                            'MIN_POS': 0,
+                            'MAX_SPEED': 2048,
+                            'MIN_SPEED': 10,
+                            'POSEABLE': True,
+                            'SCALE_SPEED': 512.0 / 1023.0,
+                            'SCALE_POS': 360.0 / 1023.0,
                             },
                 'DEFAULT': {
                             'MAX_POS': 1023,
@@ -156,7 +174,7 @@ class KasparImporter(object):
 
     def _getServoConfigs(self):
         configs = []
-        names = ['AX12', 'SSC32', 'MINISSC', 'HERKULEX']
+        names = ['AX12', 'SSC32', 'MINISSC', 'HERKULEX', 'DUMMY']
         for name in names:
             config = self._getServoConfig(name)
             if config != None:
@@ -209,7 +227,7 @@ class KasparImporter(object):
 class ActionImporter(object):
 
     def __init__(self):
-        self.defaultAngle = 360.0 / 1024.0
+        self.defaultPosition = 360.0 / 1024.0
         self.defaultSpeed = 1 / 1024.0
 
     def getPose(self, legacyData, legacyRobot=None):
@@ -230,21 +248,23 @@ class ActionImporter(object):
             if legacyRobot:
                 try:
                     servo = filter(lambda x: x.jointName == jointName, legacyRobot.servos)[0]
-                    angle = (position - (servo.positionOffset or servo.model.positionOffset)) * (servo.model.positionScale)
+                    position = (position - (servo.positionOffset or servo.model.positionOffset)) * (servo.model.positionScale)
+                    position = position % 360
+                    position = round(position)
                     if servo.model.speedScale != None:
                         speed = speed * servo.model.speedScale
                     else:
                         speed = None
-                except Exception as e:
+                except Exception:
                     print >> sys.stderr, "Servo with name %s not attached to robot %s, using default conversion" % (jointName, legacyRobot.name)
-                    angle = position * self.defaultAngle
+                    position = position * self.defaultPosition
                     speed = speed * self.defaultSpeed
             else:
-                angle = position * self.defaultAngle
+                position = position * self.defaultPosition
                 speed = speed * self.defaultSpeed
 
             jp = JointPosition(jointName=jointName)
-            jp.angle = angle
+            jp.position = position
             jp.speed = speed
             pose.jointPositions.append(jp)
 
@@ -300,7 +320,7 @@ def loadAllConfigs():
     configDir = os.path.join(baseDir, 'kasparConfigs')
     dirs = [os.path.join(configDir, o) for o in os.listdir(configDir) if os.path.isdir(os.path.join(configDir, o))]
 
-    poses = []
+    poses = {}
     triggers = []
     robots = []
 
@@ -321,7 +341,10 @@ def loadAllConfigs():
                 f = open(fileName)
                 lines = f.readlines()
                 pose = a.getPose(lines, r)
-                poses.append(pose)
+                if pose.name not in poses:
+                    poses[pose.name] = pose
+                else:
+                    print "Skipping pose %s, another by the same name already exists", pose.name
 
         searchDir = os.path.join(subDir, 'keyMaps')
         if os.path.exists(searchDir):
@@ -329,6 +352,6 @@ def loadAllConfigs():
             for fileName in files:
                 f = open(fileName)
                 lines = f.readlines()
-                triggers.extend(t.getTriggers(lines, poses))
+                triggers.extend(t.getTriggers(lines, poses.values()))
 
-    return (robots, poses, triggers)
+    return (robots, poses.values(), triggers)

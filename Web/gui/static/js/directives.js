@@ -307,7 +307,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 							  
 							  if (!found) {
 								  joints.push(new JointPosition({
-									  'angle':servo.defaultAngle, 
+									  'position':servo.defaultPosition, 
 									  'speed': servo.defaultSpeed, 
 									  'jointName':servo.jointName, 
 									  'unused': true, 
@@ -396,7 +396,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  
 	  return def;
   }])
-  .directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver) {
+  .directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
 	  var def = {
 		  templateUrl: 'static/partials/action/joint.html',
 		  restrict: 'E',
@@ -415,6 +415,8 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  if (servoInt == null) {
 					  servoInt = new ServoInterface({'id': $scope.servo.id });
 				  }
+				  
+				  return servoInt;
 			  }
 			  
 			  $scope.$watch('connected', function(value) {
@@ -425,14 +427,14 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			  
 			  $scope.writeToServo = function() {
 				  if($scope.jointPosition != undefined) {
-					  var servoInt = getInt();						  
-					  servoInt.position = $scope.jointForm.jointangle;
-					  servoInt.speed = $scope.jointForm.jointspeed;
+					  var servoInt = getInt();
+					  servoInt.position = $scope.jointPosition.position || $scope.servo.defaultPosition || $scope.servo.model.defaultPosition;
+					  servoInt.speed = $scope.jointPosition.speed || $scope.servo.defaultSpeed || $scope.servo.model.defaultSpeed;
 					  servoInt.$save();
 				  }
 			  }
 			  
-			  $scope.$watch('jointPosition.angle', function() {
+			  $scope.$watch('jointPosition.position', function() {
 				  if($scope.connected) {
 					  $scope.writeToServo();
 				  }

@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<KASPAR version="1A">
+	<NAME>Dummy Kaspar</NAME>
+	<DUMMY>
+	</DUMMY>
+	<HERKULEX>
+		<PORT>COM4</PORT>
+		<SPEED>115200</SPEED>
+		<MANUAL_POSITIONING>true</MANUAL_POSITIONING>
+		<DEFAULT>
+			<POS>512</POS>
+			<SPEED>36</SPEED>
+		</DEFAULT>
+		<SCALING>
+			<POS>0.325</POS>
+			<POS_OFFSET>512</POS_OFFSET>
+			<SPEED>0.39</SPEED>
+		</SCALING>
+		<LIMITS>
+			<SPEED>
+				<MIN>0</MIN>
+				<MAX>4</MAX>
+			</SPEED>
+			<POS>
+				<MIN>0</MIN>
+				<MAX>1023</MAX>
+			</POS>
+		</LIMITS>
+	</HERKULEX>
+	<SERVOLIST>
+		<SERVO type="HERKULEX" id="253">
+			<NAME>HEAD_ROT</NAME>
+
+			<!-- Limits for motors as real motor values. Possible types: "pos","speed" -->
+			<LIMITS type="pos">
+				<MIN>200</MIN>
+				<MAX>800</MAX>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>508</POS>
+			</DEFAULT>
+
+			<IS_UPDATED>false</IS_UPDATED>
+			<IS_REACTIVE>false</IS_REACTIVE>
+		</SERVO>
+		<SERVO type="DUMMY" id="102">
+			<NAME>HEAD_VERT</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>155</MIN>
+					<MAX>203</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>180</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="103">
+			<NAME>HEAD_TLT</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>159</MIN>
+					<MAX>218</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>188</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="116">
+			<NAME>ARM_L_1</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>225</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>112</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="117">
+			<NAME>ARM_L_2</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>98</MIN>
+					<MAX>250</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>174</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="118">
+			<NAME>ARM_L_3</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>169</MIN>
+					<MAX>285</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>227</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="119">
+			<NAME>ARM_L_4</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>71</MIN>
+					<MAX>220</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>145</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="132">
+			<NAME>ARM_R_1</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>127</MIN>
+					<MAX>264</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>172</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="133">
+			<NAME>ARM_R_2</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>109</MIN>
+					<MAX>323</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>216</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="134">
+			<NAME>ARM_R_3</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>70</MIN>
+					<MAX>179</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>125</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="135">
+			<NAME>ARM_R_4</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>136</MIN>
+					<MAX>281</MAX>
+				</POS>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>167</POS>
+				<SPEED>150</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="3">
+			<NAME>EYES_LR</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>52</MIN>
+					<MAX>135</MAX>
+				</POS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+			</LIMITS>
+
+
+			<DEFAULT>
+				<POS>94</POS>
+				<SPEED>100</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="4">
+			<NAME>EYES_UD</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>78</MIN>
+					<MAX>144</MAX>
+				</POS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+			</LIMITS>
+
+
+			<DEFAULT>
+				<POS>108</POS>
+				<SPEED>100</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="6">
+			<NAME>MOUTH_OPEN</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>43</MIN>
+					<MAX>137</MAX>
+				</POS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+			</LIMITS>
+
+
+			<DEFAULT>
+				<POS>38</POS>
+				<SPEED>100</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="7">
+			<NAME>MOUTH_SMILE</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>50</MIN>
+					<MAX>133</MAX>
+				</POS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+			</LIMITS>
+
+
+			<DEFAULT>
+				<POS>70</POS>
+				<SPEED>100</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVO type="DUMMY" id="5">
+			<NAME>EYELIDS</NAME>
+
+			<LIMITS>
+				<POS>
+					<MIN>88</MIN>
+					<MAX>138</MAX>
+				</POS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+			</LIMITS>
+
+			<DEFAULT>
+				<POS>44</POS>
+				<SPEED>10</SPEED>
+			</DEFAULT>
+		</SERVO>
+
+		<SERVOGROUP>
+			<NAME>Head</NAME>
+			<MEMBER>HEAD_VERT</MEMBER>
+			<MEMBER>HEAD_ROT</MEMBER>
+			<MEMBER>HEAD_TLT</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Face</NAME>
+			<MEMBER>EYES_LR</MEMBER>
+			<MEMBER>EYES_UD</MEMBER>
+			<MEMBER>EYELIDS</MEMBER>
+			<MEMBER>MOUTH_OPEN</MEMBER>
+			<MEMBER>MOUTH_SMILE</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Left Arm</NAME>
+			<MEMBER>ARM_L_1</MEMBER>
+			<MEMBER>ARM_L_2</MEMBER>
+			<MEMBER>ARM_L_3</MEMBER>
+			<MEMBER>ARM_L_4</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Right Arm</NAME>
+			<MEMBER>ARM_R_1</MEMBER>
+			<MEMBER>ARM_R_2</MEMBER>
+			<MEMBER>ARM_R_3</MEMBER>
+			<MEMBER>ARM_R_4</MEMBER>
+		</SERVOGROUP>
+	</SERVOLIST>
+</KASPAR>

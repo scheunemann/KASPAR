@@ -6,7 +6,7 @@ import api
 from config import dbConfig, webConfig
 import gui
 from sqlAlchemyPlugin import SATool, SAEnginePlugin
-
+import logging
 
 _dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -17,6 +17,9 @@ if __name__ == '__main__':
     # global settings
     cherrypy.config.update(webConfig)
     StorageFactory.config['engine'].update(dbConfig)
+
+    # Configure loggind
+    logging.basicConfig(level=logging.DEBUG)
 
     # attach the database
     SAEnginePlugin(cherrypy.engine).subscribe()

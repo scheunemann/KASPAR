@@ -67,6 +67,9 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('Action', [ '$resource', function($resource) {
 		return $resource('/api/action/:id', {id:'@id'});
 	} ])
+	.factory('ActionTest', [ '$resource', function($resource) {
+		return $resource('/api/action/:id/test', {id:'@id'});
+	} ])
 	.factory('ActionType', [ '$resource', function($resource) {
 		return $resource('/api/action/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])

@@ -16,7 +16,7 @@ class ModelCRUD(object):
 
     def __init__(self, modelClass, methods=['GET', ]):
         self._modelClass = modelClass
-        self._exposed = { 'POST': False, 'PUT': False, 'GET': False, 'DELETE': False }
+        self._exposed = {'POST': False, 'PUT': False, 'GET': False, 'DELETE': False}
         for method in methods:
             if hasattr(self, method.upper()):
                 self._exposed[method] = True
@@ -25,7 +25,7 @@ class ModelCRUD(object):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, oid=None):
+    def POST(self, oid=None, **constraint):
         if not self._exposed['POST']:
             raise cherrypy.NotFound()
 

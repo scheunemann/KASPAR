@@ -19,17 +19,18 @@
 					class="form-control"
 					min="1"
 					max="300"
-					name="defaultSpeed"
+					name="speedModifier"
 					saveable
-					ng-model="pose.defaultJointSpeed"> <span class="input-group-addon">{{pose.defaultJointSpeed || 100}}%</span>
+					ng-model="pose.speedModifier"> <span class="input-group-addon">{{pose.speedModifier || 100}}%</span>
 			</div>
 			<div class="input-group">
-				<span class="input-group-addon">Length</span> <input
+				<span class="input-group-addon">Minimum Length</span> <input
 					type="text"
 					class="form-control"
 					placeholder="Minimum Pose Length"
 					name="length"
-					saveable
+					saveable 
+					integer
 					ng-model="pose.minLength"> <span class="input-group-addon">seconds</span>
 			</div>
 		</div>

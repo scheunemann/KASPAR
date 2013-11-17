@@ -3,12 +3,14 @@
 		<div class="col-md-5 col-lg-4">
 			<div id="operatorsList">
 				<div class="input-group">
-					<span class="input-group-addon">Operator</span> <select
+					<span class="input-group-addon">Operator</span>
+					<select
 						class="selectpicker form-control"
 						ng-model="selectedOperator"
 						ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
 						<option value="">--Select Operator--</option>
-					</select> <span class="input-group-btn">
+					</select>
+					<span class="input-group-btn">
 						<button
 							class="btn btn-default"
 							type="button"
@@ -24,30 +26,38 @@
 				name="operatorsForm"
 				model="selectedOperator">
 				<div class="input-group">
-					<span class="input-group-addon">Name</span> <input
+					<span class="input-group-addon">Name</span>
+					<input
 						type="text"
 						class="form-control"
 						placeholder="Full Name"
 						saveable
 						required
 						name="fullname"
-						ng-model="model.fullname">
+						ng-model="selectedOperator.fullname">
 				</div>
 				<div class="input-group">
 					<span class="input-group-addon">Common Users</span>
-					<div class="list-group form-control">
+					<div
+						class="list-group form-control"
+						ng-blur="saveOperator()"
+						ng-class="{ 'has-success': usersSaved, 'has-warning': operatorsForm.$dirty && !userSaved }">
 						<span
 							class="list-group-item"
-							ng-repeat="user in users | orderBy:'fullname'"> <span class="input-group"> <span class="input-group-addon"> <input
-									type="checkbox"
-									ng-checked="(model.users | filter:{id:user.id}).length == 1"
-									ng-click="updateOperatorUser($event, model, user)">
-							</span> <input
-								type="text"
-								class="form-control"
-								value="{{user.fullname}}"
-								ng-disabled="true">
-						</span>
+							ng-repeat="user in users | orderBy:'fullname'">
+							<span class="input-group">
+								<span class="input-group-addon">
+									<input
+										type="checkbox"
+										ng-checked="(model.users | filter:{id:user.id}).length == 1"
+										ng-click="updateOperatorUser($event, model, user)">
+								</span>
+								<input
+									type="text"
+									class="form-control"
+									value="{{user.fullname}}"
+									ng-disabled="true">
+							</span>
 						</span>
 					</div>
 				</div>
