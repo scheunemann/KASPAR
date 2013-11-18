@@ -12,6 +12,7 @@ class ServoModel(ModelCRUD):
     def __init__(self):
         super(ServoModel, self).__init__(Data.Model.ServoModel, ['GET', ])
 
+
 class Servo(ModelCRUD):
     exposed = True
     model = ServoModel()
@@ -19,11 +20,13 @@ class Servo(ModelCRUD):
     def __init__(self):
         super(Servo, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
 
+
 class ServoGroup(ModelCRUD):
     exposed = True
 
     def __init__(self):
         super(ServoGroup, self).__init__(Data.Model.ServoGroup, ['GET', 'POST', 'DELETE'])
+
 
 class ServoConfig(ModelCRUD):
     exposed = True
@@ -31,11 +34,13 @@ class ServoConfig(ModelCRUD):
     def __init__(self):
         super(ServoConfig, self).__init__(Data.Model.ServoConfig, ['GET', 'POST', 'DELETE'])
 
+
 class SensorModel(ModelCRUD):
     exposed = True
 
     def __init__(self):
         super(SensorModel, self).__init__(Data.Model.SensorModel, ['GET', ])
+
 
 class Sensor(ModelCRUD):
     exposed = True
@@ -44,11 +49,13 @@ class Sensor(ModelCRUD):
     def __init__(self):
         super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])
 
+
 class SensorGroup(ModelCRUD):
     exposed = True
 
     def __init__(self):
         super(SensorGroup, self).__init__(Data.Model.SensorGroup, ['GET', 'POST', 'DELETE'])
+
 
 class SensorConfig(ModelCRUD):
     exposed = True
@@ -56,11 +63,13 @@ class SensorConfig(ModelCRUD):
     def __init__(self):
         super(SensorConfig, self).__init__(Data.Model.SensorConfig, ['GET', 'POST', 'DELETE'])
 
+
 class RobotModel(ModelCRUD):
     exposed = True
 
     def __init__(self):
         super(RobotModel, self).__init__(Data.Model.RobotModel, ['GET', ])
+
 
 class Robot(ModelCRUD):
     exposed = True
@@ -74,7 +83,7 @@ class Robot(ModelCRUD):
 
     def _cp_dispatch(self, vpath):
         if vpath and len(vpath) > 1:
-            cherrypy.request.params['constraint'] = {'robot_id': vpath.pop(0)}
+            cherrypy.request.params['robot_id'] = vpath.pop(0)
         if not vpath[0].isdigit():
             return getattr(self, vpath.pop(0), None)
 
@@ -83,7 +92,7 @@ class Robot(ModelCRUD):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, oid=None):
+    def POST(self, oid=None, **constraint):
         """Robot level is currently not handled properly for new robots, hacked for the time being to known versions"""
         if oid == None:
             data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()

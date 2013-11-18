@@ -276,22 +276,25 @@ class TriggerImporter(object):
     def __init__(self):
         pass
 
-    def getTriggers(self, legacyData, poses):
+    def getTriggers(self, legacyData, poses, skipNames=[]):
         if type(legacyData) == str:
             lines = legacyData.split('\n')
         else:
             lines = legacyData
 
-        triggers = []
+        triggers = {}
         for line in lines:
             vals = line.split(',')
             if len(vals) == 2:
                 name = vals[0].strip()
+                if name in skipNames:
+                    continue
+
                 key = vals[1].strip()
                 try:
                     pose = filter(lambda x: x.name == name, poses)[0]
                 except:
-                    print >> sys.stderr, "Pose %s not found, skipping" % name
+                    print "Pose %s not found, skipping" % name
                     continue
 
                 if len(key) > 1:
@@ -299,20 +302,20 @@ class TriggerImporter(object):
                     t.sensorName = key
                     t.sensorValue = 'eval::on'
                     t.action = pose
-                    triggers.append(t)
+                    triggers[name] = t
                 else:
                     t = ButtonTrigger(name=name)
                     t.action = pose
                     if len(key) == 1:
                         hk = ButtonHotKey()
-                        hk.keyName = key
+                        hk.keyCode = ord(key)
                         t.hotKeys.append(hk)
-                    triggers.append(t)
+                    triggers[name] = t
             else:
                 print >> sys.stderr, "Unknown key sequence?? %s" % line
                 continue
 
-        return triggers
+        return triggers.values()
 
 
 def loadAllConfigs():
@@ -321,7 +324,7 @@ def loadAllConfigs():
     dirs = [os.path.join(configDir, o) for o in os.listdir(configDir) if os.path.isdir(os.path.join(configDir, o))]
 
     poses = {}
-    triggers = []
+    triggers = {}
     robots = []
 
     a = ActionImporter()
@@ -344,7 +347,7 @@ def loadAllConfigs():
                 if pose.name not in poses:
                     poses[pose.name] = pose
                 else:
-                    print "Skipping pose %s, another by the same name already exists", pose.name
+                    print "Skipping pose %s, another by the same name already exists" % pose.name
 
         searchDir = os.path.join(subDir, 'keyMaps')
         if os.path.exists(searchDir):
@@ -352,6 +355,11 @@ def loadAllConfigs():
             for fileName in files:
                 f = open(fileName)
                 lines = f.readlines()
-                triggers.extend(t.getTriggers(lines, poses.values()))
+                for trigger in t.getTriggers(lines, poses.values(), triggers.keys()):
+                    if trigger.name in triggers:
+                        print "Trigger named %s already imported, skipping" % trigger.name
+                        continue
+                    else:
+                        triggers[trigger.name] = trigger
 
-    return (robots, poses.values(), triggers)
+    return (robots, poses.values(), triggers.values())

@@ -37,7 +37,7 @@ class ModelCRUD(object):
             cherrypy.request.db.merge(data)
 
         cherrypy.request.db.commit()
-        return data.serialize(urlResolver=self._urlResolver)
+        return self.GET(data.id)
 
     @cherrypy.tools.json_out()
     def GET(self, oid=None, **constraint):
@@ -45,10 +45,10 @@ class ModelCRUD(object):
             raise cherrypy.NotFound()
 
         if oid == None:
-            if len(constraint) == 0:
-                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).all()]
-            else:
+            if constraint:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).filter_by(**constraint).all()]
+            else:
+                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(self._modelClass).all()]
         else:
             ret = cherrypy.request.db.query(self._modelClass).get(oid)
             if ret == None:
@@ -77,8 +77,14 @@ class ModelCRUD(object):
 
     @staticmethod
     def _urlResolver(class_, instance=None):
-        if not ModelCRUD._uriCache.has_key(class_):
+        if class_ not in ModelCRUD._uriCache:
             url = ModelCRUD._urlBuilder(class_, cherrypy.tree.apps['/api'].root, instance)
+            if url == None:
+                for cls in class_.__bases__:
+                    url = ModelCRUD._urlBuilder(cls, cherrypy.tree.apps['/api'].root, instance)
+                    if url:
+                        break
+
             if url != None:
                 url = '/api/%s' % url
             else:

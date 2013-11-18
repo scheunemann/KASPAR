@@ -1,12 +1,11 @@
 <div>
-	Robot Editor
 	<form
 		novalidate
 		name="robotForm"
 		model="robot">
-		<div
-			class="input-group">
-			<span class="input-group-addon">Name</span> <input
+		<div class="input-group">
+			<span class="input-group-addon">Name</span>
+			<input
 				type="text"
 				name="name"
 				class="form-control"
@@ -15,29 +14,32 @@
 				ng-model="robot.name"
 				required>
 		</div>
-<!-- 		<div -->
-<!-- 			class="input-group" -->
-<!-- 			ng-class="{'has-error': !robotForm.version.$valid && robotForm.version.$dirty, 'has-warning': robotForm.version.$dirty}"> -->
-<!-- 			<span class="input-group-addon">Version</span> <select -->
-<!-- 				name="version" -->
-<!-- 				ng-disabled="true" -->
-<!-- 				class="selectpicker form-control" -->
-<!-- 				ng-model="robot.version" -->
-<!-- 				ng-options="version for version in versions | orderBy:'version'" -->
-<!-- 				required> -->
-<!-- 				<option value="">--Select Version--</option> -->
-<!-- 			</select> -->
-<!-- 		</div> -->
+		<div
+			class="input-group"
+			ng-class="{'has-error': !robotForm.version.$valid && robotForm.version.$dirty, 'has-warning': robotForm.version.$dirty}">
+			<span class="input-group-addon">Version</span>
+			<select
+				name="version"
+				ng-disabled="true"
+				class="selectpicker form-control"
+				ng-model="robot.version"
+				ng-options="version for version in versions | orderBy:'version'"
+				required>
+				<option value="">--Select Version--</option>
+			</select>
+		</div>
 	</form>
-<!-- 	<div class="btn-group pull-right"> -->
-<!-- 		<button -->
-<!-- 			class="btn btn-default" -->
-<!-- 			type="button" -->
-<!-- 			ng-click="viewJoints(robot)">View Joints</button> -->
-<!-- 		<button -->
-<!-- 			class="btn btn-default" -->
-<!-- 			type="button" -->
-<!-- 			ng-click="calibrateJoints(robot)">Calibrate Joints</button> -->
-<!-- 	</div> -->
-<!-- 	<div ui-view></div> -->
+	<div class="btn-group pull-right">
+		<button
+			class="btn btn-default"
+			type="button"
+			ng-disabled="true"
+			ng-click="viewJoints(robot)">View Joints</button>
+		<button
+			class="btn btn-default"
+			type="button"
+			ng-disabled="true"
+			ng-click="calibrateJoints(robot)">Calibrate Joints</button>
+	</div>
+	<div ui-view></div>
 </div>

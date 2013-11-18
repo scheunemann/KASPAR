@@ -1,3 +1,46 @@
-<strong>TODO: FullScreen/No Menus</strong>
-<div>User</div>
-<div>Buttons</div>
+<div ng-keydown="updateKey($event)">
+	<strong>TODO: FullScreen/No Menus</strong>
+	<div>{{user.fullname}}</div>
+	<div
+		class="row"
+		ng-repeat="button in buttons | orderBy:button.name">
+		{{proxyObjectResolver.resolveProp(button, 'hotKeys')}}
+		<div
+			ng-if="($index % 3)==0"
+			class="col-lg-12">
+			<div
+				class="row"
+				ng-class="{tightTop:($index > 2), tightBottom:($index+3 < buttons.length)}">
+				<div class="col-lg-4 tightRight input-group">
+					<span class="input-group-btn">
+						<button
+							class="btn btn-default"
+							type="button"
+							ng-click="newUserAction(buttons[$index+0])">{{buttons[$index+0].name}}</button>
+					</span>
+					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+0].hotKeys)}}</span>
+				</div>
+				<div class="col-lg-4 tightLeft tightRight input-group">
+					<span class="input-group-btn">
+						<button
+							ng-if="$index+1 < buttons.length"
+							class="btn btn-default"
+							type="button"
+							ng-click="newUserAction(buttons[$index+1])">{{buttons[$index+1].name}}</button>
+					</span>
+					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+1].hotKeys)}}</span>
+				</div>
+				<div class="col-lg-4 tightLeft input-group">
+					<span class="input-group-btn">
+						<button
+							ng-if="$index+2 < buttons.length"
+							class="btn btn-default"
+							type="button"
+							ng-click="newUserAction(buttons[$index+2])">{{buttons[$index+2].name}}</button>
+					</span>
+					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+2].hotKeys)}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

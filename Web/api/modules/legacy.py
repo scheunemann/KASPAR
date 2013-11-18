@@ -22,6 +22,7 @@ class ActionImport(object):
 
         return pose.serialize(urlResolver=ModelCRUD._urlResolver(Pose))
 
+
 class TriggerImport(object):
     exposed = True
 

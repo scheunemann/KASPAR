@@ -10,11 +10,13 @@ class CustomAction(ModelCRUD):
     def __init__(self):
         super(CustomAction, self).__init__(Data.Model.CustomAction, ['GET', 'POST', 'DELETE'])
 
+
 class CustomTrigger(ModelCRUD):
     exposed = True
 
     def __init__(self):
         super(CustomTrigger, self).__init__(Data.Model.CustomTrigger, ['GET', 'POST', 'DELETE'])
+
 
 class User(ModelCRUD):
     exposed = True
@@ -23,7 +25,7 @@ class User(ModelCRUD):
 
     def _cp_dispatch(self, vpath):
         if vpath:
-            cherrypy.request.params['constraint'] = {'user_id': vpath.pop(0)}
+            cherrypy.request.params['user_id'] = vpath.pop(0)
         if vpath:
             return getattr(self, vpath.pop(0), None)
 

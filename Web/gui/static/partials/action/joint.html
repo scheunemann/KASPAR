@@ -18,6 +18,14 @@
 				saveable>
 				<option value="">--Select Joint--</option>
 			</select>
+			<span
+				class="input-group-btn"
+				ng-if="!jointPosition.unused">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="removeJoint()">Remove from Pose</button>
+			</span>
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon">Position</span>

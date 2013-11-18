@@ -17,28 +17,28 @@ def _flushAndFillTestData():
 
     u = User('uNathan', 'uNathan Burke')
     o.users.append(u)
-# 
+#
 #     s = Sound('aSound')
 #     cs = Sound('cSound')
 #     ca = CustomAction()
 #     ca.overridden = s
 #     ca.redirect = cs
 #     u.customActions.append(ca)
-# 
+#
 #     p = Pose('aPose')
 #     cp = Pose('cPose')
 #     ca = CustomAction('Custom_Pose')
 #     ca.overridden = p
 #     ca.redirect = cp
 #     u.customActions.append(ca)
-# 
+#
 #     t = TimeTrigger('tTime')
 #     ct = TimeTrigger('cTime')
 #     ctr = CustomTrigger('Custom_Time')
 #     ctr.overridden = t
 #     ctr.redirect = ct
 #     u.customTriggers.append(ctr)
-# 
+#
 #     sq = Sequence('aSequence')
 #     sq.actions.append(s)
 #     sq.actions.append(p)

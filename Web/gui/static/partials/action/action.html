@@ -3,13 +3,15 @@
 	ng-controller="actionController"
 	id="actionsList">
 	<div class="input-group">
-		<span class="input-group-addon">Action</span> <select
+		<span class="input-group-addon">Action</span>
+		<select
 			class="selectpicker form-control"
 			ng-model="action"
 			ng-disabled="actions.length == 0"
 			ng-options="action.name for action in actions | orderBy:'name'">
 			<option value="">--Select Action--</option>
-		</select> <span class="input-group-btn">
+		</select>
+		<span class="input-group-btn">
 			<button
 				class="btn btn-default"
 				type="button"
@@ -23,7 +25,8 @@
 	<hr />
 	<div ng-show="action != ''">
 		<div class="input-group">
-			<span class="input-group-addon">Type</span> <select
+			<span class="input-group-addon">Type</span>
+			<select
 				ng-disabled="action.id"
 				class="selectpicker form-control"
 				ng-model="action.type"

@@ -86,4 +86,15 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('TriggerType', [ '$resource', function($resource) {
 		return $resource('/api/trigger/type/:id', {id:'@id'}, { 'get': {method:'GET'}});
 	} ])
+	.factory('ButtonHotKey', [ '$resource', function($resource) {
+		return $resource('/api/trigger/:trigger/hotkey/:id', {trigger:'@trigger_id', id:'@id'});
+	} ])
+	
+	//Interaction
+	.factory('Interaction', [ '$resource', function($resource) {
+		return $resource('/api/interaction/:id', {id:'@id'});
+	} ])
+	.factory('UserAction', [ '$resource', function($resource) {
+		return $resource('/api/interaction/useraction/:button_id', {button_id:'@button_id'});
+	} ])
 ;

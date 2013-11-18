@@ -14,6 +14,7 @@ class SimpleBase(object):
     def GET(self):
         return self._data
 
+
 class ServiceBase(object):
     exposed = False
     _objects = []

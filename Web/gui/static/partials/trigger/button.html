@@ -1,26 +1,28 @@
 <div>
-	<span>Button Editor</span>
-	<div class="input-group">
-		<span class="input-group-addon">Name</span> <input
-			type="text"
-			class="form-control"
-			placeholder="Button Name"
-			ng-model="button.name">
-	</div>
-	<div class="input-group">
-		<span class="input-group-addon">Action</span> <select
-			class="selectpicker form-control"
-			ng-model="button.action"
-			ng-options="action.name for action in actions | orderBy:'name'">
-			<option value="">--Select Action--</option>
-		</select>
-	</div>
-	<div class="input-group">
-		<span class="input-group-addon">Keyboard Button</span> <input
-			type="text"
-			class="form-control"
-			placeholder="hotkey"
-			ng-keydown="updateKey($event)"
-			ng-model="key">
-	</div>
+	<form name="buttonEditor" model="button">
+		<div class="input-group">
+			<span class="input-group-addon">Name</span>
+			<input
+				name="buttonName"
+				saveable
+				type="text"
+				class="form-control"
+				placeholder="Button Name"
+				ng-model="button.name">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Action</span>
+			<select
+				class="selectpicker form-control"
+				saveable
+				ng-model="button.action"
+				ng-options="action.name for action in actions | orderBy:'name'">
+				<option value="">--Select Action--</option>
+			</select>
+		</div>
+		{{proxyObjectResolver.resolveProp(button, 'hotKeys')}}
+		<hotkey-editor
+			hotkey="hotkey"
+			ng-repeat="hotkey in button.hotKeys"></hotkey-editor>
+	</form>
 </div>

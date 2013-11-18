@@ -1,6 +1,7 @@
 <div ng-controller="operatorController">
 	<div class="row">
 		<div class="col-md-5 col-lg-4">
+			{{proxyObjectResolver.resolveProp(selectedOperator, 'users')}}
 			<div id="operatorsList">
 				<div class="input-group">
 					<span class="input-group-addon">Operator</span>
@@ -49,8 +50,8 @@
 								<span class="input-group-addon">
 									<input
 										type="checkbox"
-										ng-checked="(model.users | filter:{id:user.id}).length == 1"
-										ng-click="updateOperatorUser($event, model, user)">
+										ng-checked="(selectedOperator.users | filter:{id:user.id}).length == 1"
+										ng-click="updateOperatorUser($event, selectedOperator.users, user)">
 								</span>
 								<input
 									type="text"

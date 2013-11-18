@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.router', ])
+angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.router', 'displayService'])
 	.controller(
 		'commonController', [ '$scope', function($scope) {	
 			$scope.version = '3.0 Alpha 7';
@@ -17,11 +17,29 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			$scope.state = $state;
 		} ])
 	.controller(
-		'interactionController', [ '$scope', 'Operator', 'User', 'proxyObjectResolver', function($scope, Operator, User, proxyObjectResolver) {
+		'interactionController', [ '$scope', 'Operator', 'User', 'Interaction', 'Trigger', 'proxyObjectResolver', function($scope, Operator, User, Interaction, Trigger, proxyObjectResolver) {
 			$scope.operators = Operator.query();
 			$scope.users = User.query();
 			$scope.proxyObjectResolver = proxyObjectResolver;
-
+			$scope.interaction = null;
+			$scope.operatorMode = true;
+			
+			$scope.showOperator = function() {
+				$scope.operatorMode = true;
+			}
+			
+			$scope.showUser = function() {
+				$scope.operatorMode = false;
+			}
+			
+			$scope.start = function() {
+				$scope.interaction = new Interaction();
+			};
+			
+			$scope.stop = function() {
+				$scope.interaction = null;				
+			};
+			
 			$scope.getCategory = function(user, userList) {
 				if(userList == undefined || user == undefined) {
 					return;
@@ -43,9 +61,9 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 
 			$scope.usersSaved = false;
 			$scope.users = User.query();
-			$scope.$watch('selectedOperator', function() {
-				if($scope.selectedOperator != undefined) {
-					proxyObjectResolver.resolveProp($scope.selectedOperator, 'users');
+			$scope.$watch('selectedOperator', function(operator) {
+				if(operator != undefined) {
+					proxyObjectResolver.resolveProp(operator, 'users');
 				}
 			});
 			
@@ -61,6 +79,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 					$scope.selectedOperator.$save(function() {
 						$scope.usersSaved = true;
 						$scope.operatorsForm.$setPristine();
+						proxyObjectResolver.resolveProp($scope.selectedOperator, 'users');
 					});
 				}
 			}
@@ -79,14 +98,18 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 //				);
 			};
 			
-			$scope.updateOperatorUser = function($event, operator, user) {
+			$scope.updateOperatorUser = function($event, users, user) {
+				if (users == undefined) {
+					return;
+				}
+				
 				var checkbox = $event.target;
 				if (checkbox.checked) {
-					operator.users.push(user);
+					users.push(user);
 				} else {
-					for(var i = 0; i < operator.users.length; i++) {
-						if (operator.users[i].id == user.id) {
-							operator.users.splice(i, 1);
+					for(var i = 0; i < users.length; i++) {
+						if (users[i].id == user.id) {
+							users.splice(i, 1);
 							break;
 						}
 					}
@@ -184,6 +207,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			$scope.trigger = '';
 			$scope.triggers = Trigger.query();
 			$scope.actions = Action.query();
+			$scope.newobjs = [];
 			TriggerType.query(function(data){
 					$scope.types = [];
 					for(var i = 0; i < data.length; i++) {
@@ -205,6 +229,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 		    $scope.deleteTrigger = function(trigger) {
 				$scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
 				$scope.trigger = $scope.triggers[0];
+				trigger.$delete();
 		    }
 		    
 			$scope.importFiles = function(files) {
