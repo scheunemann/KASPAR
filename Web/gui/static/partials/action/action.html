@@ -1,3 +1,16 @@
+<strong>TODO</strong>
+<ul>
+	<li><strong> Saving </strong>
+		<ul>
+			<li>Sound</li>
+			<li>Group</li>
+			<li>Sequence</li>
+		</ul></li>
+	<li><strong>New Items</strong>
+		<ul>
+			<li>Action type</li>
+		</ul></li>
+</ul>
 <div
 	ng-cloak
 	ng-controller="actionController"
@@ -23,7 +36,7 @@
 		</span>
 	</div>
 	<hr />
-	<div ng-show="action != ''">
+	<div ng-if="action">
 		<div class="input-group">
 			<span class="input-group-addon">Type</span>
 			<select

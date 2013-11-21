@@ -15,8 +15,9 @@
 			<select
 				class="selectpicker form-control"
 				saveable
-				ng-model="button.action"
-				ng-options="action.name for action in actions | orderBy:'name'">
+				name="action"
+				ng-model="button.action_id"
+				ng-options="action.id as action.name for action in actions | orderBy:'name'">
 				<option value="">--Select Action--</option>
 			</select>
 		</div>

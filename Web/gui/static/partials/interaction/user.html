@@ -1,5 +1,11 @@
-<div ng-keydown="updateKey($event)">
-	<strong>TODO: FullScreen/No Menus</strong>
+<div>
+	<h3 class="text-center">User View</h3>
+	<strong>TODO</strong>
+	<ul>
+		<li><strong> FullScreen/No Menus </strong></li>
+		<li><strong> Interaction buttons are broken <em>again</em></strong></li>
+		<li><strong> Feedback on keypress </strong></li>
+	</ul>
 	<div>{{user.fullname}}</div>
 	<div
 		class="row"
@@ -14,31 +20,37 @@
 				<div class="col-lg-4 tightRight input-group">
 					<span class="input-group-btn">
 						<button
-							class="btn btn-default"
+							class="btn btn-default btn-xlarge"
 							type="button"
 							ng-click="newUserAction(buttons[$index+0])">{{buttons[$index+0].name}}</button>
 					</span>
-					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+0].hotKeys)}}</span>
+					<span
+						class="form-control"
+						ng-disabled="true">{{getKeyDisplay(buttons[$index+0].hotKeys)}}</span>
 				</div>
 				<div class="col-lg-4 tightLeft tightRight input-group">
 					<span class="input-group-btn">
 						<button
 							ng-if="$index+1 < buttons.length"
-							class="btn btn-default"
+							class="btn btn-default btn-xlarge"
 							type="button"
 							ng-click="newUserAction(buttons[$index+1])">{{buttons[$index+1].name}}</button>
 					</span>
-					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+1].hotKeys)}}</span>
+					<span
+						class="form-control"
+						ng-disabled="true">{{getKeyDisplay(buttons[$index+1].hotKeys)}}</span>
 				</div>
 				<div class="col-lg-4 tightLeft input-group">
 					<span class="input-group-btn">
 						<button
 							ng-if="$index+2 < buttons.length"
-							class="btn btn-default"
+							class="btn btn-default btn-xlarge"
 							type="button"
 							ng-click="newUserAction(buttons[$index+2])">{{buttons[$index+2].name}}</button>
 					</span>
-					<span class="input-group-addon">{{getKeyDisplay(buttons[$index+2].hotKeys)}}</span>
+					<span
+						class="form-control"
+						ng-disabled="true">{{getKeyDisplay(buttons[$index+2].hotKeys)}}</span>
 				</div>
 			</div>
 		</div>

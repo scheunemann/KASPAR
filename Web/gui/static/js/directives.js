@@ -139,12 +139,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					robot: "=",
 		        },
 		        controller: function($scope) {
-					var versions = RobotModel.query(function() {
-						$scope.versions = [];
-						for (var i = 0; i < versions.length; i++) {
-							$scope.versions.push(versions[i]['name']);
-						}
-					});
+					$scope.models = RobotModel.query();
 					
 					$scope.viewJoints = function(robot) {
 						$state.transitionTo('robot.view');
@@ -290,22 +285,23 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					 return null;
 				  }
 				  
-				  var processGroup = function(servoGroup, positions, groups){
+				  var processGroup = function(servoGroup, positions){
 					  proxyObjectResolver.resolveProp(servoGroup, 'servos');
 					  return $q.when(servoGroup.servos).then(function(servos) {
 						  var joints = [];
+						  var ids = [];
 						  for (var servoIndex in servos) {
 							  var servo = servos[servoIndex];
-							  var found = false;
+							  var posId = null;
 							  for (var posIndex in positions) {
 								  if (positions[posIndex].jointName == servo.jointName) {
-									  found = true;
+									  posId = positions[posIndex].id;
 									  joints.push(positions[posIndex]);
 									  break;
 								  }
 							  }
 							  
-							  if (!found) {
+							  if (posId == null) {
 								  joints.push(new JointPosition({
 									  'position':servo.defaultPosition, 
 									  'speed': servo.defaultSpeed, 
@@ -313,11 +309,15 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 									  'unused': true, 
 									  'pose': $scope.pose
 									  }));
+							  } else {
+								  ids.push(posId);
 							  }
 						  }
 						  
 						  if(joints.length > 0) {
-							  groups.push({'name': servoGroup.name, 'rows': getRows(joints)});
+							  return [ids, {'name': servoGroup.name, 'rows': getRows(joints)}];
+						  } else {
+							  return null;
 						  }
 					  });
 				  }
@@ -325,19 +325,38 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  $scope.getGroups = function(jointPositions, robot) {
 					  if(jointPositions != undefined) {
 						  return $q.when(jointPositions).then(function(positions) {
+							  var posCopy = positions.slice(0);
 							  var groups = [];
 							  if (robot == undefined) {
-								  return [{'name':'Pose Joints', 'rows': getRows(positions)}];
+								  return [{'name':'Pose Joints', 'rows': getRows(posCopy)}];
 							  } else {
 								  proxyObjectResolver.resolveProp(robot, 'servoGroups');
 								  return robot.servoGroups.then(function(servoGroups) {
 									  var promises = [];
-									  var groups = [];
 									  for(var groupIndex in servoGroups) {
-										  promises.push(processGroup(servoGroups[groupIndex], positions, groups));
+										  promises.push(processGroup(servoGroups[groupIndex], posCopy));
 									  }
 									  
 									  return $q.all(promises).then(function(res) {
+										  var groups = [];
+										  for (var index = 0; index < res.length; index++) {
+											  if (res[index] != null) {
+												  groups.push(res[index][1]);
+												  for(var idIdx = 0; idIdx < res[index][0].length; idIdx++) {
+													  for (var posIdx = 0; posIdx < posCopy.length; posIdx++) {
+														  if (posCopy[posIdx].id == res[index][0][idIdx]) {
+															  var elm = posCopy.splice(posIdx, 1);
+															  break;
+														  }
+													  }
+												  }
+											  }
+										  }
+										  
+										  if (posCopy.length > 0) {
+											  groups.push({'name': 'No Group', 'rows': getRows(posCopy) });
+										  }
+										  
 										  return groups;
 									  });
 								  });
@@ -347,21 +366,22 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  };
 											  
 				  var getRows = function(positions) {
-					  var rows = [];
-					  var posIndex = 0;
-					  while (posIndex < positions.length) {
-						  var row = [];
-						  row.push(positions[posIndex]);
-						  if (posIndex + 1 < positions.length) {
-							  row.push(positions[posIndex + 1]);
-						  }
-						  if (posIndex + 2 < positions.length) {
-							  row.push(positions[posIndex + 2]);
-						  }
-						  rows.push(row);
-						  posIndex += 3;
-					  }
-					  return rows;
+					  return positions;
+//					  var rows = [];
+//					  var posIndex = 0;
+//					  while (posIndex < positions.length) {
+//						  var row = [];
+//						  row.push(positions[posIndex]);
+//						  if (posIndex + 1 < positions.length) {
+//							  row.push(positions[posIndex + 1]);
+//						  }
+//						  if (posIndex + 2 < positions.length) {
+//							  row.push(positions[posIndex + 2]);
+//						  }
+//						  rows.push(row);
+//						  posIndex += 3;
+//					  }
+//					  return rows;
 				  }
 				  
 				  $scope.getServo = function(jointName, servos) {
@@ -691,33 +711,51 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				  user: "=",
 				  interaction: "=",
 			  },
-			  controller: function($scope) {
+			  link : function(scope, element, attrs, controller) {
+				  var doc = angular.element(element[0].ownerDocument);
+				  doc.on('keydown', function($event) {
+					  scope.checkCallAction(hotkeyFormatter.getDisplayFromEvent($event));
+					  $event.preventDefault();
+				  });
+			  },
+			  controller: function($scope, $document) {
 				  $scope.proxyObjectResolver = proxyObjectResolver;
 				  $scope.buttons = Trigger.query({'type': 'Button'}, function(results) {
 					
 				  });
 				  
+				  $scope.checkCallAction = function(keyDisplay) {
+					  for (var btnIndex in $scope.buttons) {
+						  proxyObjectResolver.resolveProp($scope.buttons[btnIndex], 'hotKeys', function(hotKeys) {
+							  for (var hkIndex in hotKeys) {
+								  var hk = hotKeys[hkIndex];
+								  //TODO: This is a dumb way to handle this...
+								  if(hotkeyFormatter.getDisplay(hk) == keyDisplay) {
+									  $scope.newUserAction(hk.trigger_id);
+									  break;
+								  }
+							  }
+						  });
+					  }
+				  }
+				  
 				  $scope.getKeyDisplay = function(keys) {
 					  if (keys != undefined) {
 						  var disp = ""
-						  for(var i = 0; i < keys.lenght; i++) {
+						  for(var i = 0; i < keys.length; i++) {
 							  disp += " | " + hotkeyFormatter.getDisplay(keys[i]);
 						  }
 						  
 						  if (disp != "") {
-							  disp.slice(3);
+							  disp = disp.substring(3);
 						  }
 						  
 						  return disp;
 					  }
 				  };
 				  
-				  $scope.updateKey = function($event) {
-					  var a = $event;
-				  }
-				  
-				  $scope.newUserAction = function(button) {
-					  var a = new UserAction({'button_id': button.id, 'user_id': $scope.user.id, 'interaction_id': $scope.interaction.id});
+				  $scope.newUserAction = function(buttonId) {
+					  var a = new UserAction({'button_id': buttonId, 'user_id': $scope.user.id, 'interaction_id': $scope.interaction.id});
 					  a.$save();
 				  };
 			  },

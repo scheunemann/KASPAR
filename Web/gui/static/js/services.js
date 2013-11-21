@@ -2,6 +2,32 @@
 
 angular.module('displayService', [])
 	.service('hotkeyFormatter', [function() {
+		this.getDisplayFromEvent = function(keyEvent) {
+			  var code = keyEvent.which || keyEvent.keyCode; // Not-IE || IE
+			  var modifiers = ""
+			  if (keyEvent.altKey) {
+				  modifiers += ", alt"
+			  }
+			  
+			  if (keyEvent.ctrlKey) {
+				  modifiers += ", ctrl"
+			  }
+			  
+			  if (keyEvent.shiftKey) {
+				  modifiers += ", shift"
+			  }
+			  
+			  var disp = this.getCharDisplay(code);
+			  if (disp != "" || modifiers != "") {
+				  var hotKey = [];
+				  hotKey.modifiers = modifiers.slice(2)
+				  hotKey.keyCode = code;
+				  return this.getDisplay(hotKey);
+			  } else {
+				  return "";
+			  }
+		}
+		
 		this.getDisplay = function(hotKey) {
 			var key = "";
 			if (hotKey.modifiers != null) {

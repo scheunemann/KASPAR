@@ -5,16 +5,31 @@
 	ng-cloak
 	class="maxHeight">
 <head>
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta
+	name="mobile-web-app-capable"
+	content="yes">
+<link
+	rel="shortcut icon"
+	sizes="196x196"
+	href="static/img/largeIcon.png">
+<link
+	rel="shortcut icon"
+	sizes="128x128"
+	href="static/img/smallIcon.png">
 <meta charset="utf-8">
-<title ng-controller="commonController">KASPAR GUI v{{version}}</title>
+<title>KASPAR GUI</title>
 <link
 	rel="stylesheet"
 	href="static/lib/bootstrap/bootstrap.min.css" />
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+<link
+	rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 <link
 	rel="stylesheet"
 	href="static/css/app.css" />
-
 <script src="static/lib/angular/1.2.0rc2/angular.min.js"></script>
 <script src="static/lib/angular/angular-ui-router.min.js"></script>
 <script src="static/lib/angular/1.2.0rc2/angular-resource.min.js"></script>
@@ -28,8 +43,14 @@
 <script src="static/js/directives.js"></script>
 </head>
 <body class="maxHeight">
-	<header
-		class="navbar-fixed-top text-center header"
+	<header 
+		class="text-center header visible-xs"
+		ng-controller="commonController">
+		<h4>KASPAR Web Interface</h4>
+		<h6>Version {{version}}</h6>
+	</header>
+	<header 
+		class="navbar-fixed-top text-center header hidden-xs"
 		ng-controller="commonController">
 		<h1>KASPAR Web Interface</h1>
 		<h6>Version {{version}}</h6>
@@ -37,7 +58,7 @@
 	<div class="container maxHeight">
 		<div class="row maxHeight">
 			<div
-				class="col-md-3 col-lg-2 maxHeight scrollable hidden-print"
+				class="col-sm-3 col-md-2 col-lg-2 maxHeight scrollable hidden-print navbar"
 				ng-controller="navBarController"
 				id="sideNav">
 				<div class="panel-group">
@@ -48,7 +69,9 @@
 							<h4 class="panel-title">{{group.title}}</h4>
 						</div>
 						<div class="nav-collapse in">
-							<div ng-repeat="link in group.links | orderBy:'order'" ng-class="{highlight: state.current.url==link.path}">
+							<div
+								ng-repeat="link in group.links | orderBy:'order'"
+								ng-class="{highlight: state.current.url==link.path}">
 								<a href="#{{link.path}}">{{link.title}}</a>
 							</div>
 						</div>
@@ -56,7 +79,7 @@
 				</div>
 			</div>
 			<div
-				class="col-md-9 col-lg-10 maxHeight"
+				class="col-sm-9 col-md-10 col-lg-10 maxHeight mainContent"
 				id="main">
 				<div
 					class="well scrollable maxHeight"
@@ -64,9 +87,17 @@
 			</div>
 		</div>
 	</div>
-	<footer class="navbar-fixed-bottom text-center hidden-print">
-		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science and Technology Research Institute</a>
-			<div>University of Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK</div></small>
+	<footer class="text-center visible-xs">
+		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
+				and Technology Research Institute</a>
+			<div>University of Hertfordshire Hatfield, Hertfordshire, AL10
+				9AB, UK</div></small>
+	</footer>
+	<footer class="navbar-fixed-bottom text-center hidden-print hidden-xs">
+		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
+				and Technology Research Institute</a>
+			<div>University of Hertfordshire Hatfield, Hertfordshire, AL10
+				9AB, UK</div></small>
 	</footer>
 </body>
 </html>

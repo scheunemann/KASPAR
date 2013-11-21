@@ -115,10 +115,13 @@ class Robot(ModelCRUD):
                 cherrypy.request.db.commit()
                 cherrypy.request.db.expunge(cur)
 
-                data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
-                data.name = cherrypy.request.json['name']
-                data.id = oid
-                cherrypy.request.db.merge(data)
-                return data.serialize(urlResolver=self._urlResolver)
+                try:
+                    data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
+                    data.name = cherrypy.request.json['name']
+                    data.id = oid
+                    cherrypy.request.db.merge(data)
+                    return data.serialize(urlResolver=self._urlResolver)
+                except Exception:
+                    raise cherrypy.HTTPError("Unknown version string")
             else:
                 return super(Robot, self).POST(oid)

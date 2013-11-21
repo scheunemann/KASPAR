@@ -1,15 +1,19 @@
-<div
-	class="row">
+<div class="row">
 	<div class="col-lg-12">
 		<div class="row">
 			<div class="col-lg-12 input-group">
-				<span class="input-group-addon">Connected Robot</span> <select
+				<span class="input-group-addon">
+					<span class="hidden-xs">Connected Robot</span>
+					<span class="visible-xs">Robot</span>
+				</span>
+				<select
 					ng-disabled="connected"
 					class="selectpicker form-control"
 					ng-model="robot"
 					ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:'name'">
 					<option value="">None</option>
-				</select> <span class="input-group-btn">
+				</select>
+				<span class="input-group-btn">
 					<button
 						class="btn btn-default"
 						type="button"

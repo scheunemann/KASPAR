@@ -6,7 +6,7 @@
 			ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
 			model="jointPosition">
 		<div class="input-group">
-			<span class="input-group-addon">Joint Name</span>
+			<span class="input-group-addon"><span class="hidden-xs">Joint Name</span><span class="visible-xs">Name</span></span>
 			<select
 				name="jointname"
 				class="selectpicker form-control"
@@ -24,7 +24,7 @@
 				<button
 					class="btn btn-default"
 					type="button"
-					ng-click="removeJoint()">Remove from Pose</button>
+					ng-click="removeJoint()">Remove</button>
 			</span>
 		</div>
 		<div class="input-group">

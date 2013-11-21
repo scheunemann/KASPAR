@@ -1,7 +1,7 @@
 import cherrypy
 import os
 
-from Web.api.modules import menu, moduleParser
+from modules import menu, moduleParser
 
 
 name = "Kaspar API"

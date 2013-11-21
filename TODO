@@ -1,7 +1,12 @@
 Button Create/Edit:
 	New/Delete hotkeys
-	Action selection
 
 Interactions:
 	Pretty much everything
 	UserInteraction: hotkey binding
+
+Overall:
+    Warning/Error handling
+    UI Cleanup
+    Responsive UI (Adapt to size changes)
+    Session table with current robot/interaction
