@@ -60,7 +60,7 @@ class KasparImporter(object):
                 }
 
     def __init__(self, version):
-        robotConfig = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'kasparConfigs/%s/robot.xml' % version.lower()))
+        robotConfig = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'kasparConfigs/%s/robot.xml' % version))
         if os.path.exists(robotConfig) and os.path.isfile(robotConfig):
             self._config = et.parse(robotConfig).getroot()
         else:
