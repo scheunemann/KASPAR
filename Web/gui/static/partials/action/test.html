@@ -4,7 +4,7 @@
 			<span class="input-group-addon">Action</span> <select
 				class="selectpicker form-control"
 				ng-model="action"
-				ng-options="action.name for action in actions | orderBy:'name'"
+				ng-options="action.name group by action.type for action in actions | orderBy:'name'"
 				ng-disabled="actions.length == 0">
 				<option value="">--Select Action--</option>
 			</select> <span class="input-group-btn">

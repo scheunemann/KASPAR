@@ -45,14 +45,14 @@ class ModelCRUD(object):
         if not self._exposed['GET']:
             raise cherrypy.NotFound()
 
-        queryClass = with_polymorphic(self._modelClass, '*')
         if oid == None:
+            queryClass = with_polymorphic(self._modelClass, '*')
             if constraint:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).filter_by(**constraint).all()]
             else:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).all()]
         else:
-            ret = cherrypy.request.db.query(queryClass).get(oid)
+            ret = cherrypy.request.db.query(self._modelClass).get(oid)
             if ret == None:
                 raise cherrypy.NotFound()
             else:

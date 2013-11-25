@@ -19,9 +19,10 @@ if __name__ == '__main__':
     profile = False
     cherrypy.config.update(webConfig)
     StorageFactory.config['engine'].update(dbConfig)
+    StorageFactory.config['debug'] = True
 
     # Configure logging
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.CRITICAL)
 
     # attach the database
     SAEnginePlugin(cherrypy.engine).subscribe()

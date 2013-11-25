@@ -1,27 +1,38 @@
 
 <div>
-	<span>Sensor Trigger Editor</span>
-	<div class="input-group">
-		<span class="input-group-addon">Name</span> <input
-			type="text"
-			class="form-control"
-			placeholder="Name"
-			ng-model="sensor.name">
-	</div>
-	{{proxyObjectResolver.resolveProp(sensor, 'action')}}
-	<div class="input-group">
-		<span class="input-group-addon">Action</span> <select
-			class="selectpicker form-control"
-			ng-model="sensor.action"
-			ng-options="action.name for action in actions | orderBy:'name'">
-			<option value="">--Select Action--</option>
-		</select>
-	</div>
-	<div>
-		<span>TODO:</span>
-		<ul>
-			<li>Sensor<small>(inc 'ActionSensor' which triggers on action change)</small></li>
-			<li>Value Editor<small>(dependent on sensor type: GT LT EQ RANGE DISCRETE*)</small></li>
-		</ul>
-	</div>
+	<form
+		name="sensorEditor"
+		model="sensor">
+		<span>Sensor Trigger Editor</span>
+		<div class="input-group">
+			<span class="input-group-addon">Name</span>
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Name"
+				name="name"
+				ng-model="sensor.name">
+		</div>
+		{{proxyObjectResolver.resolveProp(sensor, 'action')}}
+		<div class="input-group">
+			<span class="input-group-addon">Action</span>
+			<select
+				class="selectpicker form-control"
+				saveable
+				name="action"
+				ng-model="sensor.action_id"
+				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
+				<option value="">--Select Action--</option>
+			</select>
+		</div>
+		<div>
+			<span>TODO:</span>
+			<ul>
+				<li>Sensor<small>(inc 'ActionSensor' which triggers on
+						action change)</small></li>
+				<li>Value Editor<small>(dependent on sensor type: GT LT
+						EQ RANGE DISCRETE*)</small></li>
+			</ul>
+		</div>
+	</form>
 </div>

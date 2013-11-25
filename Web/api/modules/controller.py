@@ -5,7 +5,7 @@ import logging
 import time
 
 from Data.Model import Servo, Robot, Action
-from Robot.ServoInteface import ServoInterface as ServoInterface_
+from Robot.ServoInterface import ServoInterface as ServoInterface_
 from ActionRunner import ActionRunner
 
 
@@ -79,14 +79,15 @@ class ActionTest(object):
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self, actionId):
-        #data = cherrypy.request.json
+        # data = cherrypy.request.json
 
         if actionId in ActionTest._runners and ActionTest._runners[actionId].isAlive():
             handle = ActionTest._runners[actionId]
             handle.stop()
         else:
             action = cherrypy.request.db.query(Action).get(actionId)
-            robot = cherrypy.request.db.query(Robot).get(1)
+            #TODO: Robot selection
+            robot = cherrypy.request.db.query(Robot).filter(Robot.name == 'Kaspar_1C - #2').first()
             handle = ActionRunner(robot).executeAsync(action)
             ActionTest._runners[actionId] = handle
 
@@ -95,7 +96,7 @@ class ActionTest(object):
 
         ret = {
                'id': actionId,
-               'output': output,
+               'output': [(Helper._utcDateTime(o[0]), o[1]) for o in output],
                'active': active,
                'timestamp': Helper._utcDateTime(datetime.datetime.now()),
         }
@@ -237,16 +238,27 @@ class ServoInterface(object):
     @cherrypy.tools.json_out()
     def POST(self, servoId):
         data = cherrypy.request.json
-        interface = Helper._getInterface(servoId)
+        try:
+            interface = Helper._getInterface(servoId)
+        except Exception as e:
+            import traceback
+            self._logger.critical(traceback.format_exc())
+            raise cherrypy.HTTPError(message="Error connecting to servos: %s" % e.message)
+
         if interface == None:
             raise cherrypy.NotFound()
         else:
             try:
                 if 'position' in data and data['position'] != None:
-                    interface.setPosition(int(data['position']), float(data['speed'] or 100))
+                    if 'speed' in data and data['speed'] != None:
+                        interface.setPosition(data['position'], data['speed'])
+                    else:
+                        interface.setPosition(data['position'], 100)
                 if 'poseable' in data and data['poseable'] != None:
-                    interface.setPositioning(bool(data['poseable']))
+                    interface.setPositioning(data['poseable'])
             except Exception as e:
+                import traceback
+                self._logger.critical(traceback.format_exc())
                 raise cherrypy.HTTPError(message=e.message)
 
         return self._getReturn(interface)

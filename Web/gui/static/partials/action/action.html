@@ -21,7 +21,7 @@
 			class="selectpicker form-control"
 			ng-model="action"
 			ng-disabled="actions.length == 0"
-			ng-options="action.name for action in actions | orderBy:'name'">
+			ng-options="action.name group by action.type for action in actions | orderBy:'name'">
 			<option value="">--Select Action--</option>
 		</select>
 		<span class="input-group-btn">

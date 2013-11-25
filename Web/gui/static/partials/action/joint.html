@@ -6,7 +6,10 @@
 			ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
 			model="jointPosition">
 		<div class="input-group">
-			<span class="input-group-addon"><span class="hidden-xs">Joint Name</span><span class="visible-xs">Name</span></span>
+			<span class="input-group-addon">
+				<span class="hidden-xs">Joint Name</span>
+				<span class="visible-xs">Name</span>
+			</span>
 			<select
 				name="jointname"
 				class="selectpicker form-control"
@@ -33,14 +36,14 @@
 				name="jointposition"
 				type="range"
 				class="form-control"
-				value="jointPosition.position || servo.defaultPosition || servo.model.defaultPosition"
-				min="{{servo.minPosition || servo.model.minPosition || -180}}"
-				max="{{servo.maxPosition || servo.maxPosition || 180}}"
+				value="coalesce(jointPosition.position, servo.defaultPosition, servo.model.defaultPosition)"
+				min="{{coalesce(servo.minPosition, servo.model.minPosition, -180)}}"
+				max="{{coalesce(servo.maxPosition, servo.maxPosition, 180)}}"
 				ng-model="jointPosition.position"
 				required
 				saveable />
-			<span class="input-group-addon">{{jointPosition.position ||
-				servo.defaultPosition || servo.model.defaultPosition}}&deg;</span>
+			<span class="input-group-addon">{{coalesce(jointPosition.position,
+				servo.defaultPosition, servo.model.defaultPosition)}}&deg;</span>
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon">Speed</span>
@@ -48,13 +51,13 @@
 				name="jointspeed"
 				type="range"
 				class="form-control"
-				value="{{jointPosition.speed || servo.defaultSpeed || servo.model.defaultSpeed}}"
-				min="{{servo.minSpeed || servo.model.minSpeed || 1}}"
-				max="{{servo.maxSpeed || servo.model.maxSpeed || 300}}"
+				value="{{coalesce(jointPosition.speed, servo.defaultSpeed, servo.model.defaultSpeed)}}"
+				min="{{coalesce(servo.minSpeed, servo.model.minSpeed, 1)}}"
+				max="{{coalesce(servo.maxSpeed, servo.model.maxSpeed, 300)}}"
 				ng-model="jointPosition.speed"
 				saveable />
-			<span class="input-group-addon">{{jointPosition.speed ||
-				servo.defaultSpeed || servo.model.defaultSpeed}}%</span>
+			<span class="input-group-addon">{{coalesce(jointPosition.speed,
+				servo.defaultSpeed, servo.model.defaultSpeed)}}%</span>
 		</div>
 		</ng-form>
 	</div>

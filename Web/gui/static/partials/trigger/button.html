@@ -1,5 +1,7 @@
 <div>
-	<form name="buttonEditor" model="button">
+	<form
+		name="buttonEditor"
+		model="button">
 		<div class="input-group">
 			<span class="input-group-addon">Name</span>
 			<input
@@ -17,13 +19,20 @@
 				saveable
 				name="action"
 				ng-model="button.action_id"
-				ng-options="action.id as action.name for action in actions | orderBy:'name'">
+				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
 				<option value="">--Select Action--</option>
 			</select>
 		</div>
 		{{proxyObjectResolver.resolveProp(button, 'hotKeys')}}
 		<hotkey-editor
 			hotkey="hotkey"
+			button="button"
 			ng-repeat="hotkey in button.hotKeys"></hotkey-editor>
+		<button
+			class="btn btn-default"
+			type="button"
+			ng-click="addButton()"
+			ng-disabled="button.hotKeys == undefined">New Keyboard
+			Button</button>
 	</form>
 </div>

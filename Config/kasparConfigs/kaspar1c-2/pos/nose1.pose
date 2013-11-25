@@ -1,0 +1,11 @@
+nose1
+9
+ARM_L_3,630,100,false
+ARM_L_2,890,100,false
+ARM_L_4,590,100,false
+MOUTH_OPEN,140,50,false
+EYES_LR,500,0,false
+ARM_L_1,88,100,false
+EYES_UD,750,0,false
+MOUTH_SMILE,820,50,false
+EYELIDS,730,0,false

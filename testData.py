@@ -18,12 +18,16 @@ def _flushAndFillTestData():
     u = User('uNathan', 'uNathan Burke')
     o.users.append(u)
 
-    (robots, poses, triggers) = loadAllConfigs()
+    (robots, actions, triggers) = loadAllConfigs()
 
     session = StorageFactory.getNewSession()
+    for sound in [a for a in actions if a.type == 'Sound']:
+        with session.begin():
+            session.add(sound)
+
     with session.begin():
         session.add_all(robots)
-        session.add_all(poses)
+        session.add_all(actions)
         session.add_all(triggers)
         session.add(o)
 
