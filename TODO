@@ -1,12 +1,16 @@
-Button Create/Edit:
-	New/Delete hotkeys
-
 Interactions:
 	Pretty much everything
-	UserInteraction: hotkey binding
 
 Overall:
     Warning/Error handling
     UI Cleanup
-    Responsive UI (Adapt to size changes)
     Session table with current robot/interaction
+    
+New:
+	'Debug' Screen
+		setPosition(all, default)
+		for each servo:
+			getPosition() == Communication Good
+			setPosition(min/max, 25%) == Visual check, physical range check
+				On err, setPosition(default, 100%)
+					if err, break
