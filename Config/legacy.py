@@ -375,6 +375,7 @@ class TriggerImporter(object):
                         t.hotKeys.append(hk)
                     triggers[name] = t
                 else:
+                    # TODO
                     t = SensorTrigger(name=name)
                     t.sensorName = name
                     t.sensorValue = 'eval::on'
