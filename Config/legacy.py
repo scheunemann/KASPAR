@@ -376,7 +376,7 @@ class TriggerImporter(object):
                     triggers[name] = t
                 else:
                     t = SensorTrigger(name=name)
-                    t.sensorName = key
+                    t.sensorName = name
                     t.sensorValue = 'eval::on'
                     t.action = action
                     triggers[name] = t
