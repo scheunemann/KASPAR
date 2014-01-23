@@ -34,6 +34,7 @@ _menuLinks = [
                             ('Operators', '/admin/operator'),
                             ('Users', '/admin/user'),
                             ('Robots', '/admin/robot'),
+                            ('Settings', '/admin/settings'),
                           ]},
                 {
                  'title':'Action',

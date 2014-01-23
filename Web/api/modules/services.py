@@ -1,5 +1,6 @@
 from user import User
 import Data.Model
+import Config.model
 import base
 import controller
 import crud
@@ -24,11 +25,18 @@ class User(User):
     pass
 
 
+class Setting(crud.ModelCRUD):
+    exposed = True
+
+    def __init__(self):
+        super(Setting, self).__init__(Config.model.Setting, ['GET', 'POST', 'DELETE'])
+
+
 class Operator(crud.ModelCRUD):
     exposed = True
 
     def __init__(self):
-        super(Operator, self).__init__(Data.Model.Operator, ['GET', 'POST', 'DELETE'])
+        super(Operator, self).__init__(Config.model.Operator, ['GET', 'POST', 'DELETE'])
 
 
 class OrderedAction(crud.ModelCRUD):

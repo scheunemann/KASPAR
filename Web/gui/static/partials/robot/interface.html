@@ -3,11 +3,11 @@
 		<div class="row">
 			<div class="col-lg-12 input-group">
 				<span class="input-group-addon">
-					<span class="hidden-xs">Connected Robot</span>
+					<span class="hidden-xs">Attached Robot</span>
 					<span class="visible-xs">Robot</span>
 				</span>
 				<select
-					ng-disabled="connected"
+					ng-disabled="connected || configured"
 					class="selectpicker form-control"
 					ng-model="robot"
 					ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:'name'">

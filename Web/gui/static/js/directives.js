@@ -193,7 +193,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 
 	  return def;
   }])
-  .directive('robotInterface', ['Robot', 'proxyObjectResolver', function(Robot, proxyObjectResolver) {
+  .directive('robotInterface', ['$q', 'Robot', 'Setting', 'proxyObjectResolver', function($q, Robot, Setting, proxyObjectResolver) {
 	  var def = {
 				templateUrl: 'static/partials/robot/interface.html',
 				restrict: 'E',
@@ -201,11 +201,25 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		            connected: "=",
 		            robot: "=",
 		        },
-		        controller: function($scope) {
+		        controller: function($scope) {		        	
 	    			$scope.proxyObjectResolver = proxyObjectResolver;
+
+	    			var settings = Setting.query({'key':'robot'});
 	    			$scope.robots = Robot.query();
 	    			$scope.connected = false;
-	    						
+
+	    			$q.all($scope.robots.$promise, settings.$promise).then(function() {
+	    				if(settings.length > 0) {
+    						for(var i = 0; i < $scope.robots.length; i++) {
+    							if($scope.robots[i].name == settings[0].value) {
+    								$scope.robot = $scope.robots[i];
+    								$scope.configured = true;
+    								break;
+    							}
+    						}
+	    				}
+	    			});
+	    			
 	    			$scope.connect = function(robot) {
 	    				$scope.connected = true;
 	    			}

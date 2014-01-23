@@ -1,5 +1,6 @@
 from crud import ModelCRUD
 import Data.Model
+import Config.model
 import cherrypy
 from controller import Helper
 import datetime
@@ -55,7 +56,7 @@ class UserAction(object):
             handle = UserAction._runners[action.id]
             handle.stop()
         else:
-            robot = cherrypy.request.db.query(Data.Model.Robot).get(1)
+            robot = cherrypy.request.db.query(Data.Model.Robot).join(Config.model.Setting, Data.Model.Robot.name == Config.model.Setting.value).filter(Config.model.Setting.key == 'robot').first()
             handle = ActionRunner(robot).executeAsync(action)
             UserAction._runners[action.id] = handle
 
@@ -79,4 +80,4 @@ class Interaction(ModelCRUD):
     useraction = UserAction()
 
     def __init__(self):
-        super(Interaction, self).__init__(Data.Model.Interaction, ['GET', 'POST'])
+        super(Interaction, self).__init__(Config.model.Interaction, ['GET', 'POST'])

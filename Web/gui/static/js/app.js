@@ -38,6 +38,12 @@ angular
 												templateUrl : 'static/partials/user/user.html',
 											})
 									.state(
+											'settings',
+											{
+												url : '/admin/settings',
+												templateUrl : 'static/partials/settings/settings.html',
+											})
+									.state(
 											'action',
 											{
 												url : '/action',

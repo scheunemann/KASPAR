@@ -12,7 +12,7 @@ class MenuData(object):
         menu = {'groups': []}
         rootOrder = 1
         for item in self._links:
-            section = { 'title': item['title'], 'order':rootOrder, 'links': [] }
+            section = {'title': item['title'], 'order': rootOrder, 'links': []}
             rootOrder += 1
             order = 0
             for (l_title, l_path) in item['links']:

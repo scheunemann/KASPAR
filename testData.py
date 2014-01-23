@@ -3,19 +3,20 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../robotActionController')))
 
-from Data.Model import Base
+from Config.config import dbConfig
+from Config.model import Base
 from Data.storage import StorageFactory
 
 
 def _flushAndFillTestData():
-    from config import dbConfig
     StorageFactory.config['engine'].update(dbConfig)
 #     StorageFactory.config['debug'] = True
     StorageFactory.drop_keys(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
 
-    from Data.Model import Operator, User
+    from Data.Model import User
+    from Config.model import Operator
     from Config.legacy import loadAllConfigs
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'

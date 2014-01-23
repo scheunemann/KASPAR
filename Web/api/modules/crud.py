@@ -31,11 +31,14 @@ class ModelCRUD(object):
             raise cherrypy.NotFound()
 
         data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
-        if oid == None:
-            # New object
-            cherrypy.request.db.add(data)
-        else:
-            cherrypy.request.db.merge(data)
+        try:
+            if oid == None:
+                # New object
+                cherrypy.request.db.add(data)
+            else:
+                cherrypy.request.db.merge(data)
+        except Exception as ex:
+            print ex
 
         cherrypy.request.db.commit()
         return self.GET(data.id)
@@ -48,6 +51,9 @@ class ModelCRUD(object):
         if oid == None:
             queryClass = with_polymorphic(self._modelClass, '*')
             if constraint:
+                for (key, value) in constraint.iteritems():
+                    if value == 'null' or value == 'None':
+                        constraint[key] = None
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).filter_by(**constraint).all()]
             else:
                 ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).all()]

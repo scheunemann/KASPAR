@@ -7,7 +7,7 @@ import cherrypy
 
 from Data.storage import StorageFactory
 import api
-from config import dbConfig, webConfig
+from Config.config import dbConfig, webConfig, configureLogging
 import gui
 from sqlAlchemyPlugin import SATool, SAEnginePlugin
 import logging
@@ -19,10 +19,10 @@ if __name__ == '__main__':
     profile = False
     cherrypy.config.update(webConfig)
     StorageFactory.config['engine'].update(dbConfig)
-    StorageFactory.config['debug'] = True
+    StorageFactory.config['debug'] = False
 
     # Configure logging
-    logging.basicConfig(level=logging.CRITICAL)
+    configureLogging(level=logging.CRITICAL)
 
     # attach the database
     SAEnginePlugin(cherrypy.engine).subscribe()

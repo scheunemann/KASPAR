@@ -8,6 +8,9 @@ angular.module('dataModels', [ 'ngResource', 'ng' ])
 	.factory('Menu', [ '$resource', function($resource) {
 		return $resource('/api/menuOptions', {}, { 'get': {method:'GET'}});
 	} ])
+	.factory('Setting', [ '$resource', function($resource) {
+		return $resource('/api/setting/:id', {id: '@id'});
+	} ])
 
 	//Operator commands
 	.factory('Operator', [ '$resource', function($resource) {

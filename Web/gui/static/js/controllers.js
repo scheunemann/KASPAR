@@ -17,11 +17,35 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			$scope.state = $state;
 		} ])
 	.controller(
-		'interactionController', [ '$scope', 'Operator', 'User', 'Interaction', 'Trigger', 'proxyObjectResolver', function($scope, Operator, User, Interaction, Trigger, proxyObjectResolver) {
+		'interactionController', [ '$q', '$scope', 'Operator', 'User', 'Interaction', 'Trigger', 'proxyObjectResolver', function($q, $scope, Operator, User, Interaction, Trigger, proxyObjectResolver) {
 			$scope.operators = Operator.query();
 			$scope.users = User.query();
 			$scope.proxyObjectResolver = proxyObjectResolver;
-			$scope.interaction = null;
+			$scope.interaction = null; 
+			Interaction.query({endTime:'null'}, function(result) {
+				if(result!=undefined && result.length > 0) {
+					$scope.interaction = result[0];
+					proxyObjectResolver.resolveProp($scope.interaction, 'operator', function(iOperator){ 
+						proxyObjectResolver.resolveProp($scope.interaction, 'users', function(iUsers) {
+							$q.all($scope.operators.$promise, $scope.users.$promise).then(function() {
+								for (var i = 0; i < $scope.operators.length; i++) {
+									if($scope.operators[i].id == iOperator.id) {
+										$scope.operator = $scope.operators[i];
+										break;
+									}
+								}
+								
+								for (var i = 0; i < $scope.users.length; i++) {
+									if($scope.users[i].id == iUsers[0].id) {
+										$scope.user = $scope.users[i];
+										break;
+									}
+								}
+							});
+						});
+					});
+				}
+			});
 			$scope.operatorMode = true;
 			
 			$scope.showOperator = function() {
@@ -33,11 +57,18 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			}
 			
 			$scope.start = function() {
-				$scope.interaction = new Interaction();
+				$scope.interaction = new Interaction({
+					startTime : new Date(),
+					users : [ $scope.user ],
+					operator : $scope.operator
+				});
+				$scope.interaction.$save();
 			};
 			
 			$scope.stop = function() {
-				$scope.interaction = null;				
+				$scope.interaction.endTime = new Date();
+				$scope.interaction.$save();
+				$scope.interaction = null;
 			};
 			
 			$scope.getCategory = function(user, userList) {
@@ -267,6 +298,41 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 				$scope.connected = false;
 			}
 		}])
+	.controller(
+				'settingsController', 
+				['$q', '$scope', 'Setting', 'Robot', 'proxyObjectResolver',
+				function($q, $scope, Setting, Robot, proxyObjectResolver) { 
+					$scope.proxyObjectResolver = proxyObjectResolver;
+	    			var settings = Setting.query({'key':'robot'});
+	    			$scope.robots = Robot.query();
+	    			$scope.connected = false;
+
+	    			$q.all($scope.robots.$promise, settings.$promise).then(function() {
+	    				if(settings.length > 0) {
+	    	    			$scope.robotSetting = settings[0];
+    						for(var i = 0; i < $scope.robots.length; i++) {
+    							if($scope.robots[i].name == $scope.robotSetting.value) {
+    								$scope.robot = $scope.robots[i];
+    								break;
+    							}
+    						}
+	    				}
+	    			});
+	    			
+	    			$scope.$watch('robot', function(selected) {
+	    				if(selected != undefined) {
+	    					settings.$promise.then(function() {
+	    						if($scope.robotSetting == undefined) {
+	    							$scope.robotSetting = new Setting({'key': 'robot', 'value': $scope.robot.name});
+	    							$scope.robotSetting.$save();
+	    						} else if($scope.robotSetting.value != $scope.robot.name) {
+	    							$scope.robotSetting.value = $scope.robot.name;
+	    							$scope.robotSetting.$save();
+	    						}
+	    					});
+	    				}
+	    			});
+				}])
 	.controller(
 		'userController', [ '$scope', '$filter', 'User', 'CustomAction', 'CustomTrigger', 'Action', 'Trigger', 'proxyObjectResolver', function($scope, $filter, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
 			$scope.users = User.query(function() {
