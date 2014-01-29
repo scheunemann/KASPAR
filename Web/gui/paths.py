@@ -23,6 +23,7 @@ config = {
           '/static': {
                'tools.staticdir.on': True,
                'tools.staticdir.dir': os.path.join(_dir, 'static'),
-               'tools.caching.on': False
+               'tools.caching.on': False,
+               'tools.staticdir.content_types': {'woff': 'application/x-font-woff'}
                },
           }

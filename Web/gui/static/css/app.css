@@ -136,3 +136,7 @@ body {
 	background-color: #f4f8fa;
 	border-color: #3a87ad;
 }
+
+.nav,.pagination,.carousel,.panel-title a {
+	cursor: pointer;
+}

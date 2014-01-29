@@ -48,11 +48,13 @@
 		</div>
 	</div>
 	<operator-interaction
-		ng-if="operatorMode && interaction != null"
+		ng-show="operatorMode && interaction != null"
 		operator="operator"
+		buttons="buttons"
 		interaction="interaction"></operator-interaction>
 	<user-interaction
-		ng-if="!operatorMode && interaction != null"
+		ng-show="!operatorMode && interaction != null"
 		user="user"
+		buttons="buttons"
 		interaction="interaction"></user-interaction>
 </div>

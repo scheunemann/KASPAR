@@ -1,6 +1,23 @@
-<h3 class="text-center">Operator View</h3>
-<strong>TODO</strong>
-<ul>
-	<li><strong> User Buttons (collapsed) </strong></li>
-	<li><strong>Log window with ??? </strong></li>
-</ul>
+<div>
+	<h3 class="text-center">Operator View</h3>
+	<strong>TODO</strong>
+	<ul>
+		<li><strong>Button to activate key bindings</strong>
+		<li><strong>Confirm page change if binding active</strong>
+		<li><strong>Log window with ??? </strong></li>
+	</ul>
+	<accordion close-others="true"> 
+		<accordion-group is-open="isopen">
+			<accordion-heading>
+				User Buttons <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+			</accordion-heading>
+			<button ng-model="keyBind" type="button" class="btn btn-primary" data-toggle="button">KeyBind</button>
+			<button ng-model="showHotKeys" type="button" class="btn btn-primary" data-toggle="button">HotKeys</button>
+			<action-buttons
+				interaction= "interaction"
+				buttons="buttons"
+				key-bind="keyBind"
+				show-hot-keys="showHotKeys" />
+		</accordion-group>
+	</accordion>
+</div>

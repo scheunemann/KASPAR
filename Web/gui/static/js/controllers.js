@@ -46,6 +46,9 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 					});
 				}
 			});
+			
+			$scope.buttons = Trigger.query({'type': 'Button'});
+
 			$scope.operatorMode = true;
 			
 			$scope.showOperator = function() {

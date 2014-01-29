@@ -6,22 +6,5 @@
 		<li><strong> Feedback on keypress </strong></li>
 	</ul>
 	<div>{{user.fullname}}</div>
-	<div class="row">
-		<div
-			class="col-lg-3 col-md-6 col-sm-12 col-xs-12"
-			ng-repeat="button in buttons | orderBy:'name'">
-			{{proxyObjectResolver.resolveProp(button, 'hotKeys')}}
-			<div class="input-group">
-				<span class="input-group-btn">
-					<button
-						class="btn btn-default btn-xlarge"
-						type="button"
-						ng-click="newUserAction(button.id)">{{button.name}}</button>
-				</span>
-				<span
-					class="form-control"
-					ng-disabled="true">{{getKeyDisplay(button.hotKeys)}}</span>
-			</div>
-		</div>
-	</div>
+<!-- 	<action-buttons buttons="buttons" showHotKeys="true" interaction="=" keyBind="true"/> -->
 </div>

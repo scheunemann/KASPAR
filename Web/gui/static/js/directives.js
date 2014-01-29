@@ -739,79 +739,110 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 	  
 	  return def;
   }])
-  .directive('operatorInteraction', [ 'proxyObjectResolver', function(proxyObjectResolver, Operator, Interaction) {
+  .directive('operatorInteraction', [ function() {
 	  var def = {
 			  templateUrl: 'static/partials/interaction/operator.html',
 			  restrict: 'E',
 			  scope: {
 				  operator: "=",
 				  interaction: "=",
+				  buttons: "=",
+			  },
+			  link : function(scope, element, attrs, controller) {
 			  },
 			  controller: function($scope) {
-				  $scope.proxyObjectResolver = proxyObjectResolver;
+				  $scope.showHotKeys = true;
+				  $scope.keyBind = false;
+				  $scope.isopen = false;
 			  },
 	  };
 	  
 	  return def;
   }])
-  .directive('userInteraction', [ 'proxyObjectResolver', 'hotkeyFormatter', 'User', 'UserAction', 'Trigger', function(proxyObjectResolver, hotkeyFormatter, User, UserAction, Trigger) {
+  .directive('userInteraction', [ function() {
 	  var def = {
 			  templateUrl: 'static/partials/interaction/user.html',
 			  restrict: 'E',
 			  scope: {
 				  user: "=",
 				  interaction: "=",
+				  buttons: "=",
 			  },
 			  link : function(scope, element, attrs, controller) {
+			  },
+			  controller: function($scope) {
+			  },
+	  };
+	  
+	  return def;
+  }])
+  .directive('actionButton', ['$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
+	  var def = {
+			  templateUrl: 'static/partials/interaction/actionButton.html',
+			  restrict: 'E',
+			  scope: {
+				  button: "=",
+				  interaction: "=",
+				  showHotKeys: "=",
+				  keyBind: "=",
+			  },
+			  link: function(scope, element, attrs, controller) {
 				  var doc = angular.element(element[0].ownerDocument);
-				  doc.on('keydown', function($event) {
-					  scope.checkCallAction(hotkeyFormatter.getDisplayFromEvent($event));
-					  $event.preventDefault();
+				  doc.on('keyDown', function($event) {
+					  if(scope.keyBind) {
+						  if(hotKeyFormatter.getDisplayFromEvent($event) == scope.keyDisplay) {
+							  $scope.newUserAction(hk.trigger_id);
+						  }
+					  }
 				  });
 			  },
-			  controller: function($scope, $document) {
-				  $scope.proxyObjectResolver = proxyObjectResolver;
-				  $scope.buttons = Trigger.query({'type': 'Button'}, function(results) {
-					
+			  controller: function($scope) {
+				  $scope.$watch($scope.button, function(button) {
+					 if(button != undefined) {
+						 proxyObjectResolver.resolveProp(button, 'hotKeys', function(keys) {
+							 $scope.keyDisplay = $scope.getKeyDisplay(keys);
+						 });
+					 }
 				  });
 				  
-				  $scope.checkCallAction = function(keyDisplay) {
-					  for (var btnIndex in $scope.buttons) {
-						  proxyObjectResolver.resolveProp($scope.buttons[btnIndex], 'hotKeys', function(hotKeys) {
-							  for (var hkIndex in hotKeys) {
-								  var hk = hotKeys[hkIndex];
-								  //TODO: This is a dumb way to handle this...
-								  if(hotkeyFormatter.getDisplay(hk) == keyDisplay) {
-									  $scope.newUserAction(hk.trigger_id);
-									  break;
-								  }
-							  }
-						  });
-					  }
-				  }
-				  
 				  $scope.getKeyDisplay = function(keys) {
-					  if (keys != undefined) {
-						  var disp = ""
-						  for(var i = 0; i < keys.length; i++) {
-							  disp += " | " + hotkeyFormatter.getDisplay(keys[i]);
-						  }
-						  
-						  if (disp != "") {
-							  disp = disp.substring(3);
-						  }
-						  
-						  return disp;
-					  }
+                      if (keys != undefined) {
+                          var disp = ""
+                          for(var i = 0; i < keys.length; i++) {
+                              disp += " | " + hotkeyFormatter.getDisplay(keys[i]);
+                          }
+                          
+                          if (disp != "") {
+                              disp = disp.substring(3);
+                          }
+                          
+                          return disp;
+                      }
 				  };
-				  
+
 				  $scope.newUserAction = function(buttonId) {
 					  var a = new UserAction({'button_id': buttonId, 'user_id': $scope.user.id, 'interaction_id': $scope.interaction.id});
 					  a.$save();
 				  };
+			  }
+	  };
+	  return def;
+  }])
+  .directive('actionButtons', ['$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
+	  var def = {
+			  templateUrl: 'static/partials/interaction/actionButtons.html',
+			  restrict: 'E',
+			  scope: {
+				  buttons: "=",
+				  interaction: "=",
+				  showHotKeys: "=",
+				  keyBind: "=",
+			  },
+			  link : function(scope, element, attrs, controller) {
+			  },
+			  controller: function($scope) {				  
 			  },
 	  };
-	  
 	  return def;
   }])
 ;

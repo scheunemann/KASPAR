@@ -6,7 +6,7 @@ webConfig = {
         'server.socket_port': 1065,
         'server.thread_pool': 10,
         'server.thread_pool_max': -1,
-        'environment': 'production'
+#         'environment': 'production'
 }
 
 dbConfig = {
