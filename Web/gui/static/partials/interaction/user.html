@@ -1,10 +1,14 @@
 <div>
-	<h3 class="text-center">User View</h3>
 	<strong>TODO</strong>
 	<ul>
 		<li><strong> FullScreen/No Menus </strong></li>
 		<li><strong> Feedback on keypress </strong></li>
 	</ul>
-	<div>{{user.fullname}}</div>
-<!-- 	<action-buttons buttons="buttons" showHotKeys="true" interaction="=" keyBind="true"/> -->
+	<div>User: {{user.fullname}}</div>
+	<action-buttons
+		interaction="interaction"
+		buttons="buttons"
+		show-hot-keys="showHotKeys"
+		user="user"
+		key-bind="keyBind" />
 </div>

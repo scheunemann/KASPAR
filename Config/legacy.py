@@ -371,7 +371,7 @@ class TriggerImporter(object):
                     t.action = action
                     for key in keys:
                         hk = ButtonHotKey()
-                        hk.keyCode = self.getKeyCode(key)
+                        hk.keyString = key.lower()
                         t.hotKeys.append(hk)
                     triggers[name] = t
                 else:
@@ -386,67 +386,6 @@ class TriggerImporter(object):
                 continue
 
         return triggers.values()
-
-    def getKeyCode(self, key):
-        key = key.strip().lower()
-        if key == "backspace": char = 8
-        elif key == "enter": char = 13
-        elif key == "pause/break": char = 19
-        elif key == "break": char = 19
-        elif key == "pause": char = 19
-        elif key == "escape": char = 27
-        elif key == "space": char = 32
-        elif key == "pageUp": char = 33
-        elif key == "pageDown": char = 34
-        elif key == "end": char = 35
-        elif key == "home": char = 36
-        elif key == "left": char = 37
-        elif key == "up": char = 38
-        elif key == "right": char = 39
-        elif key == "down": char = 40
-        elif key == "insert": char = 45
-        elif key == "delete": char = 46
-        elif key == "num0": char = 96
-        elif key == "num1": char = 97
-        elif key == "num2": char = 98
-        elif key == "num3": char = 99
-        elif key == "num4": char = 100
-        elif key == "num5": char = 101
-        elif key == "num6": char = 102
-        elif key == "num7": char = 103
-        elif key == "num8": char = 104
-        elif key == "num9": char = 105
-        elif key == "num*": char = 106
-        elif key == "num+": char = 107
-        elif key == "num-": char = 109
-        elif key == "num.": char = 110
-        elif key == "num/": char = 111
-        elif key == "F1": char = 112
-        elif key == "F2": char = 113
-        elif key == "F3": char = 114
-        elif key == "F4": char = 115
-        elif key == "F5": char = 116
-        elif key == "F6": char = 117
-        elif key == "F7": char = 118
-        elif key == "F8": char = 119
-        elif key == "F9": char = 120
-        elif key == "F10": char = 121
-        elif key == "F11": char = 122
-        elif key == "F12": char = 123
-        elif key == ";": char = 186
-        elif key == "=": char = 187
-        elif key == ",": char = 188
-        elif key == "-": char = 189
-        elif key == ".": char = 190
-        elif key == "/": char = 191
-        elif key == "`": char = 192
-        elif key == "[": char = 219
-        elif key == "\\": char = 220
-        elif key == "]": char = 221
-        elif key == "'": char = 222
-        else: char = ord(key)
-
-        return char
 
 
 def loadAllConfigs():

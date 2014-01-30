@@ -2,6 +2,11 @@
 	<div
 		class="col-lg-3 col-md-6 col-sm-12 col-xs-12"
 		ng-repeat="button in buttons | orderBy:'name'">
-		<action-button button="button" interaction="interaction" user="user" show-hot-keys="showHotKeys" key-bind="keyBind"/>
+		<action-button
+			button="button"
+			interaction="interaction"
+			user="user"
+			show-hot-keys="showHotKeys"
+			key-bind="keyBind" />
 	</div>
 </div>

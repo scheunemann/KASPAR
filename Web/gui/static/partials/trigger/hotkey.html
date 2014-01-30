@@ -10,7 +10,7 @@
 			placeholder="Click here to enter keys"
 			saveable
 			ng-keydown="updateKey($event, hotkey)"
-			ng-model="hotkey.display">
+			ng-model="hotkey.keyString">
 		<span class="input-group-btn">
 			<button
 				class="btn btn-default"
@@ -18,4 +18,5 @@
 				ng-click="deleteKey()">Delete</button>
 		</span>
 	</div>
+	{{hotkey}}
 </ng-form>

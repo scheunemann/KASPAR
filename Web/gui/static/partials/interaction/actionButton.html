@@ -3,6 +3,7 @@
 	<span ng-class="{'input-group-btn': showHotKeys }">
 		<button
 			class="btn btn-default btn-xlarge"
+			ng-class="{active: active}"
 			type="button"
 			ng-click="newUserAction(button.id)">{{button.name}}</button>
 	</span>

@@ -140,3 +140,22 @@ body {
 .nav,.pagination,.carousel,.panel-title a {
 	cursor: pointer;
 }
+
+.tab-content {
+	border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    padding: 10px;
+    color: #555;
+	cursor: default;
+	background-color: #fff;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+
+.btn-primary[btn-checkbox].active {
+	background-color: green !important;
+}

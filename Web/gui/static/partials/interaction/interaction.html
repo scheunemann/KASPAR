@@ -34,27 +34,19 @@
 				ng-if="interaction != null"
 				ng-click="stop()">Stop</button>
 		</div>
-		<div class="btn-group">
-			<button
-				class="btn btn-default"
-				type="button"
-				ng-show="interaction != null"
-				ng-click="showUser()">Show User Window</button>
-			<button
-				class="btn btn-default"
-				type="button"
-				ng-show="interaction != null"
-				ng-click="showOperator()">Show Operator Window</button>
-		</div>
 	</div>
-	<operator-interaction
-		ng-show="operatorMode && interaction != null"
+	<tabset ng-show="interaction != null"> <tab
+		heading="Operator View"> <operator-interaction
 		operator="operator"
 		buttons="buttons"
-		interaction="interaction"></operator-interaction>
-	<user-interaction
-		ng-show="!operatorMode && interaction != null"
+		user="user"
+		interaction="interaction"
+		key-bind="keyBind"
+		show-hot-keys="showHotKeys"></operator-interaction> </tab> <tab 
+		heading="User View"> <user-interaction
 		user="user"
 		buttons="buttons"
-		interaction="interaction"></user-interaction>
+		interaction="interaction"
+		key-bind="keyBind"
+		show-hot-keys="showHotKeys"></user-interaction> </tab></tabset>
 </div>

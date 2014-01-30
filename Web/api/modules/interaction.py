@@ -57,6 +57,8 @@ class UserAction(object):
             handle.stop()
         else:
             robot = cherrypy.request.db.query(Data.Model.Robot).join(Model.model.Setting, Data.Model.Robot.name == Model.model.Setting.value).filter(Model.model.Setting.key == 'robot').first()
+            if not robot:
+                raise cherrypy.HTTPError(message="No robot configured in settings")
             handle = ActionRunner(robot).executeAsync(action)
             UserAction._runners[action.id] = handle
 
