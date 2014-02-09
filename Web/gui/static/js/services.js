@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 angular.module('displayService', [])
 .service('hotkeyFormatter', [ function() {
 	this.getDisplayFromEvent = function(keyEvent) {
@@ -224,7 +226,7 @@ angular.module('proxyService', [ 'ngResource' ])
 		if (object != undefined) {
 			if (object[propName + '_metaData'] != undefined && object[propName + '_metaData'].resolved == false) {
 				var metaData = object[propName + '_metaData'];
-				metaData.resolved = null;
+				var obj = object;
 				var result;
 				if (metaData.data.isList) {
 					var objs = [];
@@ -240,23 +242,16 @@ angular.module('proxyService', [ 'ngResource' ])
 				}
 
 				result.then(function(vars) {
-					metaData.defer.resolve(vars);
 					metaData.resolved = true;
-					if (!$rootScope.$$phase) {
-						$rootScope.$apply();
-					}
+					angular.extend(obj[propName], vars);
+					$rootScope.$$phase ||$rootScope.$digest();
 					if (callback != undefined) {
 						callback(vars);
 					}
 				});
 			} else {
-				if (!$rootScope.$$phase) {
-					$rootScope.$apply();
-				}
 				if (callback != undefined) {
-					$q.when(object[propName]).then(function(val) {
-						callback(val);
-					});
+					callback(object[propName]);
 				}
 			}
 		}
@@ -268,10 +263,9 @@ angular.module('proxyService', [ 'ngResource' ])
 			if (respObj[prop] != undefined && respObj[prop].hasOwnProperty('proxyObject') && $injector.has(respObj[prop].type)) {
 				respObj[prop + '_metaData'] = {};
 				respObj[prop + '_metaData']['data'] = respObj[prop];
-				respObj[prop + '_metaData']['defer'] = $q.defer();
 				respObj[prop + '_metaData']['resolved'] = false;
 				respObj[prop + '_metaData']['resource'] = $injector.get(respObj[prop].type);
-				respObj[prop] = respObj[prop + '_metaData'].defer.promise;
+				respObj[prop] = {};
 			}
 		}
 	};
@@ -282,7 +276,7 @@ angular.module('proxyService', [ 'ngResource' ])
 				if (!reqObj[prop + '_metaData']['resolved']) {
 					reqObj[prop] = reqObj[prop + '_metaData']['data'];
 				} else {
-					reqObj[prop] = reqObj[prop].$$v;
+//					reqObj[prop] = reqObj[prop].$$v;
 				}
 
 				delete reqObj[prop + '_metaData'];

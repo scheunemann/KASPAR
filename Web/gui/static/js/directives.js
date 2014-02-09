@@ -1,8 +1,7 @@
 'use strict';
 
 /* Directives */
-angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGUI.filters', 'displayService' ])
-.directive('model', [ function() {
+angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGUI.filters', 'displayService' ]).directive('model', [ function() {
 	return {
 		restrict : 'A',
 		require : 'form',
@@ -46,8 +45,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			};
 		}
 	};
-} ])
-.directive('saveable', [ '$compile', function($compile) {
+} ]).directive('saveable', [ '$compile', function($compile) {
 	return {
 		restrict : 'A',
 		require : [ 'ngModel', '^form', '^model' ],
@@ -104,8 +102,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			});
 		}
 	}
-} ])
-.directive('notEmpty', [ function() {
+} ]).directive('notEmpty', [ function() {
 	return {
 		restrict : 'A',
 		require : 'ngModel',
@@ -120,8 +117,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			});
 		}
 	}
-} ])
-.directive('robotEditor', [ 'RobotModel', function(RobotModel) {
+} ]).directive('robotEditor', [ 'RobotModel', function(RobotModel) {
 	return {
 		templateUrl : 'static/partials/robot/edit.html',
 		restrict : 'E',
@@ -140,8 +136,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			};
 		}
 	};
-} ])
-.directive('actionEditor', [ '$compile', function($compile) {
+} ]).directive('actionEditor', [ '$compile', function($compile) {
 	return {
 		restrict : 'E',
 		scope : {
@@ -165,8 +160,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			});
 		},
 	};
-} ])
-.directive('poseEditor', [ 'JointPosition', function(JointPosition) {
+} ]).directive('poseEditor', [ 'JointPosition', function(JointPosition) {
 	return {
 		templateUrl : 'static/partials/action/pose.html',
 		restrict : 'E',
@@ -176,8 +170,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		controller : function($scope) {
 		}
 	};
-} ])
-.directive('robotInterface', [ '$q', 'Robot', 'Setting', 'proxyObjectResolver', function($q, Robot, Setting, proxyObjectResolver) {
+} ]).directive('robotInterface', [ '$q', 'Robot', 'Setting', 'proxyObjectResolver', function($q, Robot, Setting, proxyObjectResolver) {
 	return {
 		templateUrl : 'static/partials/robot/interface.html',
 		restrict : 'E',
@@ -215,11 +208,10 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			}
 		}
 	};
-} ])
-.directive(
+} ]).directive(
 		'advancedPoseEditor',
-		[ '$q', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', 'ServoInterface',
-				function($q, $filter, proxyObjectResolver, JointPosition, RobotInterface, ServoInterface) {
+		[ '$q', '$rootScope', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', 'ServoInterface',
+				function($q, $rootScope, $filter, proxyObjectResolver, JointPosition, RobotInterface, ServoInterface) {
 					return {
 						templateUrl : 'static/partials/action/poseadvanced.html',
 						restrict : 'E',
@@ -232,12 +224,9 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 							$scope.proxyObjectResolver = proxyObjectResolver;
 
 							$scope.$watch('pose', function() {
-								if ($scope.pose != undefined) {
-									proxyObjectResolver.resolveProp($scope.pose, 'jointPositions');
-									$scope.pose.jointPositions.then(function(result) {
-										$scope.groups = $scope.getGroups(result, $scope.robot);
-									});
-								}
+								proxyObjectResolver.resolveProp($scope.pose, 'jointPositions', function(result) {
+									$scope.getGroups(result, $scope.robot);
+								});
 							});
 
 							$scope.cometGet = function(data) {
@@ -250,16 +239,15 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 
 							$scope.$watch('robot', function() {
 								if ($scope.robot != undefined) {
-									proxyObjectResolver.resolveProp($scope.robot, 'servos');
-									$scope.robot.servos.then(function(result) {
+									proxyObjectResolver.resolveProp($scope.robot, 'servos', function(servos) {
 										$scope.joints = [];
-										for ( var index in result) {
-											$scope.joints.push(result[index].jointName);
+										for (var i = 0; i < servos.length; i++) {
+											$scope.joints.push(servos[i].jointName);
 										}
 									});
 								}
 
-								$scope.groups = $scope.getGroups($scope.pose.jointPositions, $scope.robot);
+								$scope.getGroups($scope.pose.jointPositions, $scope.robot);
 							});
 
 							$scope.getJointNames = function(servos) {
@@ -287,11 +275,11 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 								}
 
 								return null;
-							}
+							};
 
 							var processGroup = function(servoGroup, positions) {
-								proxyObjectResolver.resolveProp(servoGroup, 'servos');
-								return $q.when(servoGroup.servos).then(function(servos) {
+								var def = $q.defer();
+								proxyObjectResolver.resolveProp(servoGroup, 'servos', function(servos) {
 									var joints = [];
 									var ids = [];
 									for ( var servoIndex in servos) {
@@ -318,35 +306,42 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 										}
 									}
 
+									var result = null;
 									if (joints.length > 0) {
-										return [ ids, {
+										result = [ ids, {
 											'name' : servoGroup.name,
 											'rows' : getRows(joints)
 										} ];
-									} else {
-										return null;
 									}
+
+									def.resolve(result);
 								});
-							}
+
+								return def.promise;
+							};
 
 							$scope.getGroups = function(jointPositions, robot) {
-								if (jointPositions != undefined) { return $q.when(jointPositions).then(function(positions) {
-									var posCopy = positions.slice(0);
+								if (jointPositions != undefined) {
+									var posCopy = [];
+									for(var index in jointPositions) {
+										posCopy.push(jointPositions[index]);
+									}
+									
 									var groups = [];
+									var def = $q.defer();
 									if (robot == undefined) {
-										return [ {
+										$scope.groups = [ {
 											'name' : 'Pose Joints',
 											'rows' : getRows(posCopy)
 										} ];
 									} else {
-										proxyObjectResolver.resolveProp(robot, 'servoGroups');
-										return robot.servoGroups.then(function(servoGroups) {
+										proxyObjectResolver.resolveProp(robot, 'servoGroups', function(servoGroups) {
 											var promises = [];
-											for ( var groupIndex in servoGroups) {
-												promises.push(processGroup(servoGroups[groupIndex], posCopy));
+											for (var index = 0; index < servoGroups.length; index++) {
+												promises.push(processGroup(servoGroups[index], posCopy));
 											}
 
-											return $q.all(promises).then(function(res) {
+											$q.all(promises).then(function(res) {
 												var groups = [];
 												for (var index = 0; index < res.length; index++) {
 													if (res[index] != null) {
@@ -369,11 +364,13 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 													});
 												}
 
-												return groups;
+												$scope.groups = groups;
+												$rootScope.$$phase || $rootScope.$apply();
 											});
 										});
+
 									}
-								}); }
+								}
 							};
 
 							var getRows = function(positions) {
@@ -424,8 +421,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 							};
 						},
 					};
-				} ])
-.directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
+				} ]).directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
 	return {
 		templateUrl : 'static/partials/action/joint.html',
 		restrict : 'E',
@@ -439,6 +435,10 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		controller : function($scope) {
 			$scope.proxyObjectResolver = proxyObjectResolver;
 			$scope.moving = false;
+
+			$scope.$watch('servo', function(servo) {
+				proxyObjectResolver.resolveProp(servo, 'model')
+			});
 
 			var servoInt = null;
 			var getInt = function() {
@@ -495,8 +495,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			});
 		},
 	};
-} ])
-.directive('soundEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+} ]).directive('soundEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	return {
 		templateUrl : 'static/partials/action/sound.html',
 		restrict : 'E',
@@ -507,8 +506,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			$scope.proxyObjectResolver = proxyObjectResolver;
 		},
 	};
-} ])
-.directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+} ]).directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	return {
 		templateUrl : 'static/partials/action/group.html',
 		restrict : 'E',
@@ -536,8 +534,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			};
 		},
 	};
-} ])
-.directive('sequenceEditor', [ 'proxyObjectResolver', 'OrderedAction', function(proxyObjectResolver, OrderedAction) {
+} ]).directive('sequenceEditor', [ 'proxyObjectResolver', 'OrderedAction', function(proxyObjectResolver, OrderedAction) {
 	return {
 		templateUrl : 'static/partials/action/sequence.html',
 		restrict : 'E',
@@ -597,8 +594,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			}
 		},
 	};
-} ])
-.directive('triggerEditor', [ '$compile', function($compile) {
+} ]).directive('triggerEditor', [ '$compile', function($compile) {
 	return {
 		restrict : 'E',
 		scope : {
@@ -618,8 +614,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			});
 		},
 	};
-} ])
-.directive('buttonTriggerEditor', [ 'proxyObjectResolver', 'ButtonHotKey', function(proxyObjectResolver, ButtonHotKey) {
+} ]).directive('buttonTriggerEditor', [ 'proxyObjectResolver', 'ButtonHotKey', function(proxyObjectResolver, ButtonHotKey) {
 	return {
 		templateUrl : 'static/partials/trigger/button.html',
 		restrict : 'E',
@@ -629,18 +624,18 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		},
 		controller : function($scope) {
 			$scope.proxyObjectResolver = proxyObjectResolver;
+			$scope.$watch('button', function(button) {
+				$scope.proxyObjectResolver.resolveProp(button, 'hotKeys');
+			});
 
 			$scope.addButton = function() {
-				proxyObjectResolver.resolveProp($scope.button, 'hotKeys', function(keys) {
-					keys.push(new ButtonHotKey({
-						'trigger_id' : $scope.button.id
-					}));
-				});
+				$scope.button.hotKeys.push(new ButtonHotKey({
+					'trigger_id' : $scope.button.id
+				}));
 			}
 		},
 	};
-} ])
-.directive('hotkeyEditor', [ 'proxyObjectResolver', 'hotkeyFormatter', function(proxyObjectResolver, hotkeyFormatter) {
+} ]).directive('hotkeyEditor', [ 'proxyObjectResolver', 'hotkeyFormatter', function(proxyObjectResolver, hotkeyFormatter) {
 	return {
 		templateUrl : 'static/partials/trigger/hotkey.html',
 		restrict : 'E',
@@ -652,12 +647,10 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			$scope.proxyObjectResolver = proxyObjectResolver;
 
 			$scope.deleteKey = function() {
-				proxyObjectResolver.resolveProp($scope.button, 'hotKeys', function(keys) {
-					keys.splice(keys.indexOf($scope.hotkey), 1);
-					if ($scope.hotkey.id != undefined) {
-						$scope.hotkey.$delete();
-					}
-				});
+				$scope.button.hotKeys.splice(keys.indexOf($scope.hotkey), 1);
+				if ($scope.hotkey.id != undefined) {
+					$scope.hotkey.$delete();
+				}
 			}
 
 			$scope.updateKey = function($event, hotKey) {
@@ -671,8 +664,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			};
 		},
 	};
-} ])
-.directive('timeTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+} ]).directive('timeTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	return {
 		templateUrl : 'static/partials/trigger/time.html',
 		restrict : 'E',
@@ -682,10 +674,13 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		},
 		controller : function($scope) {
 			$scope.proxyObjectResolver = proxyObjectResolver;
+
+			$scope.$watch('time', function(time) {
+				proxyObjectResolver.resolveProp(time, 'action');
+			});
 		},
 	};
-} ])
-.directive('sensorTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+} ]).directive('sensorTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 	return {
 		templateUrl : 'static/partials/trigger/sensor.html',
 		restrict : 'E',
@@ -695,10 +690,13 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		},
 		controller : function($scope) {
 			$scope.proxyObjectResolver = proxyObjectResolver;
+
+			$scope.$watch('sensor', function(sensor) {
+				proxyObjectResolver.resolveProp(sensor, 'action');
+			});
 		},
 	};
-} ])
-.directive('operatorInteraction', [ function() {
+} ]).directive('operatorInteraction', [ function() {
 	return {
 		templateUrl : 'static/partials/interaction/operator.html',
 		restrict : 'E',
@@ -725,8 +723,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			};
 		},
 	};
-} ])
-.directive('userInteraction', [ function() {
+} ]).directive('userInteraction', [ function() {
 	return {
 		templateUrl : 'static/partials/interaction/user.html',
 		restrict : 'E',
@@ -742,8 +739,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		controller : function($scope) {
 		},
 	};
-} ])
-.directive('actionButton',
+} ]).directive('actionButton',
 		[ '$q', '$timeout', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, $timeout, proxyObjectResolver, UserAction, hotkeyFormatter) {
 			return {
 				templateUrl : 'static/partials/interaction/actionButton.html',
@@ -788,8 +784,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 					$scope.active = false;
 				}
 			};
-		} ])
-.directive('actionButtons',
+		} ]).directive('actionButtons',
 		[ '$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
 			return {
 				templateUrl : 'static/partials/interaction/actionButtons.html',
@@ -806,8 +801,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				controller : function($scope) {
 				},
 			};
-		} ])
-.directive('keybinding', [ '$timeout', function($timeout) {
+		} ]).directive('keybinding', [ '$timeout', function($timeout) {
 	return {
 		restrict : 'E',
 		scope : {

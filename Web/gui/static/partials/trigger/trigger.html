@@ -16,13 +16,14 @@
 				type="button"
 				ng-click="newTrigger()">New</button>
 			<button
+				ng-disabled="!trigger"
 				class="btn btn-default"
 				type="button"
 				ng-click="deleteTrigger(trigger)">Delete</button>
 		</span>
 	</div>
 	<hr />
-	<div ng-show="trigger != ''">
+	<div ng-show="trigger">
 		<div class="input-group">
 			<span class="input-group-addon">Type</span>
 			<select

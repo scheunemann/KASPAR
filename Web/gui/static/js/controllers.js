@@ -50,19 +50,13 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 						}
 					});
 
+					$scope.$watch('operator', function(operator) {
+						proxyObjectResolver.resolveProp(operator, 'users');
+					});
+					
 					$scope.buttons = Trigger.query({
 						'type' : 'Button'
 					});
-
-					$scope.operatorMode = true;
-
-					$scope.showOperator = function() {
-						$scope.operatorMode = true;
-					}
-
-					$scope.showUser = function() {
-						$scope.operatorMode = false;
-					}
 
 					$scope.start = function() {
 						$scope.interaction = new Interaction({
@@ -97,9 +91,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			$scope.usersSaved = false;
 			$scope.users = User.query();
 			$scope.$watch('selectedOperator', function(operator) {
-				if (operator != undefined) {
-					proxyObjectResolver.resolveProp(operator, 'users');
-				}
+				proxyObjectResolver.resolveProp(operator, 'users');
 			});
 
 			$scope.$watch('operatorsForm.$pristine', function(value) {
@@ -243,7 +235,7 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 		} ])
 .controller('triggerController',
 		[ '$scope', '$http', '$q', '$timeout', 'Action', 'Trigger', 'TriggerType', function($scope, $http, $q, $timeout, Action, Trigger, TriggerType) {
-			$scope.trigger = '';
+			$scope.trigger = null;
 			$scope.triggers = Trigger.query();
 			$scope.actions = Action.query();
 			$scope.newobjs = [];
@@ -296,9 +288,14 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 		[ '$scope', '$state', 'RobotModel', 'Robot', 'Servo', 'ServoConfig', 'ServoGroup', 'proxyObjectResolver',
 				function($scope, $state, RobotModel, Robot, Servo, ServoConfig, ServoGroup, proxyObjectResolver) {
 					$scope.proxyObjectResolver = proxyObjectResolver;
-					$scope.robots = Robot.query();
+					$scope.robots = Robot.query(function(robots) {
+						for(var i = 0; i < $scope.robots.length; i++) {
+							$scope.proxyObjectResolver.resolveProp(robots[i], 'model');
+						}
+					});
+					
 					$scope.connected = false;
-
+					
 					$scope.connect = function(robot) {
 						$scope.connected = true;
 					}
@@ -313,7 +310,12 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 			var settings = Setting.query({
 				'key' : 'robot'
 			});
-			$scope.robots = Robot.query();
+			$scope.robots = Robot.query(function(robots) {
+				for(var i = 0; i < $scope.robots.length; i++) {
+					$scope.proxyObjectResolver.resolveProp(robots[i], 'model');
+				}
+			});
+			
 			$scope.connected = false;
 
 			$q.all($scope.robots.$promise, settings.$promise).then(function() {

@@ -1,5 +1,5 @@
 <div>
-	<form
+	<ng-form
 		name="buttonEditor"
 		model="button">
 		<div class="input-group">
@@ -23,7 +23,6 @@
 				<option value="">--Select Action--</option>
 			</select>
 		</div>
-		{{proxyObjectResolver.resolveProp(button, 'hotKeys')}}
 		<hotkey-editor
 			hotkey="hotkey"
 			button="button"
@@ -34,5 +33,5 @@
 			ng-click="addButton()"
 			ng-disabled="button.hotKeys == undefined">New Keyboard
 			Button</button>
-	</form>
+	</ng-form>
 </div>
