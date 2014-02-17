@@ -10,7 +10,7 @@ from trigger import Trigger
 from interaction import Interaction
 import cherrypy
 
-__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface', 'ServoInterface']
+__all__ = ['Operator', 'Robot', 'User', 'Action', 'Joint', 'Trigger', 'RobotInterface', 'ServoInterface', 'OrderedAction']
 
 
 class Interaction(Interaction):
@@ -43,8 +43,7 @@ class OrderedAction(crud.ModelCRUD):
     exposed = True
 
     def __init__(self):
-        super(OrderedAction, self).__init__(Data.Model.OrderedAction, ['GET', ])
-
+        super(OrderedAction, self).__init__(Data.Model.OrderedAction, ['GET', 'POST', 'DELETE'])
 
 class Action(crud.ModelCRUD):
     exposed = True

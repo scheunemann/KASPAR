@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 angular.module('displayService', [])
 .service('hotkeyFormatter', [ function() {
 	this.getDisplayFromEvent = function(keyEvent) {
@@ -168,7 +166,7 @@ angular.module('proxyService', [ 'ngResource' ])
 	// GC, but we'll see I guess...
 
 	// Can't remember why I wanted to cache objects, disabling for now
-	var cache = false;
+	var cache = true;
 
 	this.getObj = function(key) {
 		if (cache) {
@@ -243,8 +241,14 @@ angular.module('proxyService', [ 'ngResource' ])
 
 				result.then(function(vars) {
 					metaData.resolved = true;
-					angular.extend(obj[propName], vars);
-					$rootScope.$$phase ||$rootScope.$digest();
+					if(metaData.data.isList) {
+						for (var index = 0; index < vars.length; index++) {
+							obj[propName].push(vars[index]);
+						}
+					} else {					
+						angular.extend(obj[propName], vars);
+					}
+					$rootScope.$$phase || $rootScope.$digest();
 					if (callback != undefined) {
 						callback(vars);
 					}
@@ -265,7 +269,11 @@ angular.module('proxyService', [ 'ngResource' ])
 				respObj[prop + '_metaData']['data'] = respObj[prop];
 				respObj[prop + '_metaData']['resolved'] = false;
 				respObj[prop + '_metaData']['resource'] = $injector.get(respObj[prop].type);
-				respObj[prop] = {};
+				if(respObj[prop + '_metaData']['data'].isList) {
+					respObj[prop] = [];
+				} else {
+					respObj[prop] = {};
+				}
 			}
 		}
 	};

@@ -3,13 +3,13 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 
-import cherrypy
+import cherrypy #sudo pip install cherrypy
 
 from Data.storage import StorageFactory
 import api
 from Config.config import dbConfig, webConfig, configureLogging
 import gui
-from sqlAlchemyPlugin import SATool, SAEnginePlugin
+from sqlAlchemyPlugin import SATool, SAEnginePlugin #sudo pip install sqlAlchemy
 import logging
 
 _dir = os.path.dirname(os.path.realpath(__file__))

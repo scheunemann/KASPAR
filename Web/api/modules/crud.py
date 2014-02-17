@@ -28,9 +28,9 @@ class ModelCRUD(object):
     @cherrypy.tools.json_out()
     def POST(self, oid=None, **constraint):
         if not self._exposed['POST']:
-            raise cherrypy.NotFound()
+            raise cherrypy.HTTPError(405)
 
-        data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
+        (data, resolveList) = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
         try:
             if oid == None:
                 # New object
@@ -41,12 +41,12 @@ class ModelCRUD(object):
             print ex
 
         cherrypy.request.db.commit()
-        return self.GET(data.id)
+        return self.GET(oid=data.id, resolve=resolveList)
 
     @cherrypy.tools.json_out()
-    def GET(self, oid=None, **constraint):
+    def GET(self, oid=None, resolve=[], **constraint):
         if not self._exposed['GET']:
-            raise cherrypy.NotFound()
+            raise cherrypy.HTTPError(405)
 
         if oid == None:
             queryClass = with_polymorphic(self._modelClass, '*')
@@ -54,15 +54,15 @@ class ModelCRUD(object):
                 for (key, value) in constraint.iteritems():
                     if value == 'null' or value == 'None':
                         constraint[key] = None
-                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).filter_by(**constraint).all()]
+                ret = [o.serialize(urlResolver=self._urlResolver, resolveProps=resolve) for o in cherrypy.request.db.query(queryClass).filter_by(**constraint).all()]
             else:
-                ret = [o.serialize(urlResolver=self._urlResolver) for o in cherrypy.request.db.query(queryClass).all()]
+                ret = [o.serialize(urlResolver=self._urlResolver, resolveProps=resolve) for o in cherrypy.request.db.query(queryClass).all()]
         else:
             ret = cherrypy.request.db.query(self._modelClass).get(oid)
             if ret == None:
                 raise cherrypy.NotFound()
             else:
-                ret = ret.serialize(urlResolver=self._urlResolver)
+                ret = ret.serialize(urlResolver=self._urlResolver, resolveProps=resolve)
 
         return ret
 
@@ -70,15 +70,15 @@ class ModelCRUD(object):
     @cherrypy.tools.json_out()
     def PUT(self, data):
         if not self._exposed['PUT']:
-            raise cherrypy.NotFound()
+            raise cherrypy.HTTPError(405)
 
-        data = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
+        (data, resolveList) = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
         cherrypy.request.db.add(data)
-        return data.serialize(urlResolver=self._urlResolver)
+        return self.GET(oid=data.id, resolve=resolveList)
 
     def DELETE(self, oid):
         if not self._exposed['DELETE']:
-            raise cherrypy.NotFound()
+            raise cherrypy.HTTPError(405)
 
         obj = cherrypy.request.db.query(self._modelClass).get(oid)
         cherrypy.request.db.delete(obj)
