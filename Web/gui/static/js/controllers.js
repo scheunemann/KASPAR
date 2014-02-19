@@ -62,8 +62,10 @@ angular.module('kasparGUI.controllers', [ 'dataModels', 'proxyService', 'ui.rout
 						$scope.interaction = new Interaction({
 							startTime : new Date(),
 							users : [ $scope.user ],
-							operator : $scope.operator
+							robot : $scope.robot,
+							operator : $scope.operator,
 						});
+						
 						$scope.interaction.$save();
 					};
 

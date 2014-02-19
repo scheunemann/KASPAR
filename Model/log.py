@@ -39,5 +39,5 @@ class InteractionLog(Log):
             'polymorphic_identity': 'interaction',
     }
 
-    sensor_id = Column(Integer, ForeignKey('Sensor.id'))
-    sensor = relationship("Sensor")
+    trigger_id = Column(Integer, ForeignKey('Trigger.id'))
+    trigger = relationship("Trigger")
