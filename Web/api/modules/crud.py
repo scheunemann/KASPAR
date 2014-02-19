@@ -24,24 +24,30 @@ class ModelCRUD(object):
             else:
                 logging.warn("Unknown request method: %s" % method)
 
+    def _save(self, oid, **constraint):
+        (data, resolveList) = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
+        try:
+            if data.id == None:
+                # New object
+                cherrypy.request.db.add(data)
+            else:
+                cherrypy.request.db.merge(data)
+        except Exception as ex:
+            raise cherrypy.HTTPError(500, ex)
+
+        cherrypy.request.db.commit()
+        
+        return (data, resolveList)
+
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self, oid=None, **constraint):
         if not self._exposed['POST']:
             raise cherrypy.HTTPError(405)
 
-        (data, resolveList) = self._modelClass.deserialize(self._modelClass, cherrypy.request.json, cherrypy.request.db)
-        try:
-            if oid == None:
-                # New object
-                cherrypy.request.db.add(data)
-            else:
-                cherrypy.request.db.merge(data)
-        except Exception as ex:
-            print ex
+        (data, resolveList) = self._save(oid, **constraint)
 
-        cherrypy.request.db.commit()
-        return self.GET(oid=data.id, resolve=resolveList)
+        return data.serialize(urlResolver=self._urlResolver, resolveProps=resolveList)
 
     @cherrypy.tools.json_out()
     def GET(self, oid=None, resolve=[], **constraint):

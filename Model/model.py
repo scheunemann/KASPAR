@@ -20,10 +20,13 @@ interactionUsers_table = Table('interactionUsers', Base.metadata,
 class Interaction(StandardMixin, Base):
 
     users = relationship("User", secondary=interactionUsers_table)
+    robot_id = Column(Integer, ForeignKey('Robot.id'))
+    robot = relationship("Robot")
     operator_id = Column(Integer, ForeignKey('Operator.id'))
     operator = relationship("Operator")
     startTime = Column(DateTime, nullable=False)
     endTime = Column(DateTime)
+
 
 operatorUsers_table = Table('operatorUsers', Base.metadata,
     Column('Operator_id', Integer, ForeignKey('Operator.id')),
