@@ -18,11 +18,69 @@
 	<div>
 		<span>TODO:</span>
 		<ul>
-			<li>Sensors<small>(inc 'ActionSensor' which triggers on action change)</small></li>
+			<li>Sensors<small>(inc 'ActionSensor' which triggers on
+					action change)</small></li>
 			<li>All/Any</li>
-			<li>Time Since Activated</li>
-			<li>Time Without Activation</li>
+			<li>Time With Activated</li>
+			<li>Time Since Deactivated</li>
 		</ul>
 	</div>
-
+	<div class="btn-group">
+		<button
+			type="button"
+			class="btn btn-primary"
+			ng-model="trigger.requireAll"
+			btn-radio="1">All</button>
+		<button
+			type="button"
+			class="btn btn-primary"
+			ng-model="trigger.requireAll"
+			btn-radio="0">Any</button>
+	</div>
+	<div class="row">
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">All Triggers</div>
+				<div class="input-group container fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toAdd"
+						ng-options="trigger.name for trigger in triggers | orderBy:'name'">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2">
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toAdd || toAdd.length == 0"
+					type="button"
+					ng-click="addTriggers(toAdd);toAdd=[]">Add</button>
+			</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toRemove || toRemove.length == 0"
+					type="button"
+					ng-click="removeTriggers(toRemove);toRemove=[]">Remove</button>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">Selected Triggers</div>
+				<div class="input-group container fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toRemove"
+						ng-options="trigger.name for trigger in trigger.triggers | orderBy:'name'">
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

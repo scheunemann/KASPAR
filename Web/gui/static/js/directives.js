@@ -755,13 +755,45 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		scope : {
 			time : "=trigger",
 			actions : "=",
+			triggers : "=",
 		},
 		controller : function($scope) {
 			$scope.proxyObjectResolver = proxyObjectResolver;
 
 			$scope.$watch('time', function(time) {
 				proxyObjectResolver.resolveProp(time, 'action');
+				proxyObjectResolver.resolveProp(time, 'triggers');
 			});
+			
+			$scope.addTriggers = function(triggers) {
+				if($scope.trigger.triggers === undefined) {
+					$scope.trigger.triggers = [];
+				}
+				
+				for (var i = 0; i < triggers.length; i++) {
+					$scope.trigger.triggers.push(triggers[i]);
+				}
+				
+				var selfIndex = $scope.trigger.triggers.indexOf(time);
+				if (selfIndex >=0 && $scope.trigger.triggers[selfIndex].id === undefined){
+					$scope.trigger.triggers.splice(selfIndex, 1)
+					$scope.trigger.$save(function() {
+						$scope.trigger.triggers.push(time);
+						$scope.trigger.$save();
+					});
+				} else {
+					$scope.trigger.$save();
+				}
+			};
+
+			$scope.removeTriggers = function(triggers) {
+				for (var i = 0; i < actions.length; i++) {
+					$scope.trigger.triggers.splice($scope.trigger.triggers.indexOf(triggers[i]), 1);
+				}
+
+				$scope.trigger.$save();
+			};
+			
 		},
 	};
 } ]).directive('sensorTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
