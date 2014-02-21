@@ -184,8 +184,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			robot : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-
 			var settings = Setting.query({
 				'key' : 'robot'
 			});
@@ -226,8 +224,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 							connected : "=",
 						},
 						controller : function($scope) {
-							$scope.proxyObjectResolver = proxyObjectResolver;
-
 							$scope.$watch('pose', function() {
 								proxyObjectResolver.resolveProp($scope.pose, 'jointPositions', function(result) {
 									$scope.getGroups(result, $scope.robot);
@@ -438,7 +434,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			connected : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
 			$scope.moving = false;
 
 			$scope.$watch('servo', function(servo) {
@@ -508,7 +503,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			sound : "=action",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
 		},
 	};
 } ]).directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
@@ -520,8 +514,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			actions : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-			
 			$scope.$watch('group', function(group) {
 				proxyObjectResolver.resolveProp(group, 'actions');
 			});
@@ -556,8 +548,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			actions : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-
 			$scope.$watch('sequence', function(sequence) {
 				proxyObjectResolver.resolveProp(sequence, 'ordered_actions', function(oactions) {
 					if (oactions != undefined) {
@@ -684,12 +674,13 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		scope : {
 			type : "=",
 			trigger : "=",
+			triggers : "=",
 			actions : "=",
 		},
 		link : function(scope, iElement, iAttrs, controller) {
 			scope.$watch('type', function(newType) {
 				if (newType != "" && newType != undefined) {
-					iElement.html('<' + newType + '-trigger-editor trigger="trigger" actions="actions"></' + newType + '-editor>');
+					iElement.html('<' + newType + '-trigger-editor trigger="trigger" triggers="triggers" actions="actions"></' + newType + '-editor>');
 					$compile(iElement.contents())(scope);
 				} else {
 					iElement.html('');
@@ -705,11 +696,11 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		scope : {
 			button : "=trigger",
 			actions : "=",
+			triggers: "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
 			$scope.$watch('button', function(button) {
-				$scope.proxyObjectResolver.resolveProp(button, 'hotKeys');
+				proxyObjectResolver.resolveProp(button, 'hotKeys');
 			});
 
 			$scope.addButton = function() {
@@ -728,8 +719,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			button : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-
 			$scope.deleteKey = function() {
 				$scope.button.hotKeys.splice(keys.indexOf($scope.hotkey), 1);
 				if ($scope.hotkey.id != undefined) {
@@ -758,45 +747,43 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			triggers : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-
 			$scope.$watch('time', function(time) {
 				proxyObjectResolver.resolveProp(time, 'action');
 				proxyObjectResolver.resolveProp(time, 'triggers');
 			});
 			
 			$scope.addTriggers = function(triggers) {
-				if($scope.trigger.triggers === undefined) {
-					$scope.trigger.triggers = [];
+				if($scope.time.triggers === undefined) {
+					$scope.time.triggers = [];
 				}
 				
 				for (var i = 0; i < triggers.length; i++) {
-					$scope.trigger.triggers.push(triggers[i]);
+					$scope.time.triggers.push(triggers[i]);
 				}
 				
-				var selfIndex = $scope.trigger.triggers.indexOf(time);
-				if (selfIndex >=0 && $scope.trigger.triggers[selfIndex].id === undefined){
-					$scope.trigger.triggers.splice(selfIndex, 1)
-					$scope.trigger.$save(function() {
-						$scope.trigger.triggers.push(time);
-						$scope.trigger.$save();
+				var selfIndex = $scope.time.triggers.indexOf($scope.time);
+				if (selfIndex >=0 && $scope.time.triggers[selfIndex].id === undefined){
+					$scope.time.triggers.splice(selfIndex, 1)
+					$scope.time.$save(function() {
+						$scope.time.triggers.push(time);
+						$scope.time.$save();
 					});
 				} else {
-					$scope.trigger.$save();
+					$scope.time.$save();
 				}
 			};
 
 			$scope.removeTriggers = function(triggers) {
-				for (var i = 0; i < actions.length; i++) {
-					$scope.trigger.triggers.splice($scope.trigger.triggers.indexOf(triggers[i]), 1);
+				for (var i = 0; i < triggers.length; i++) {
+					$scope.time.triggers.splice($scope.time.triggers.indexOf(triggers[i]), 1);
 				}
 
-				$scope.trigger.$save();
+				$scope.time.$save();
 			};
 			
 		},
 	};
-} ]).directive('sensorTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
+} ]).directive('sensorTriggerEditor', [ 'proxyObjectResolver', 'Sensor', function(proxyObjectResolver, Sensor) {
 	return {
 		templateUrl : 'static/partials/trigger/sensor.html',
 		restrict : 'E',
@@ -805,10 +792,45 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			actions : "=",
 		},
 		controller : function($scope) {
-			$scope.proxyObjectResolver = proxyObjectResolver;
-
+			/*
+			 *     id = Column(Integer, ForeignKey('%s.id' % 'Trigger'), primary_key=True)
+			 *     sensorName = Column(String(50))
+			 *     sensorValue = Column(String(50))  # >0, >=0, <0, <=0, ==0,=='abc'
+ 			 */
 			$scope.$watch('sensor', function(sensor) {
 				proxyObjectResolver.resolveProp(sensor, 'action');
+			});
+			
+			$scope.$watch('selectedSensor', function(sensor) {
+				if(sensor !== undefined) {
+					$scope.sensor.sensorName = sensor.name;
+				}
+			});
+			
+			$scope.sensors = Sensor.query();
+		},
+	};
+} ]).directive('sensorValueEditor', [ '$compile', function($compile) {
+	return {
+		restrict : 'E',
+		scope : {
+			type : "=",
+			sensor: "=",
+			value: "=",
+		},
+		link : function(scope, iElement, iAttrs, controller) {
+			scope.$watch('type', function(newType) {
+				if (newType != "" && newType != undefined) {
+					if (newType.toLowerCase() == "group" || newType.toLowerCase() == "sequence") {
+						iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
+					} else {
+						iElement.html('<' + newType + '-editor action="action"></' + newType + '-editor>');
+					}
+					$compile(iElement.contents())(scope);
+				} else {
+					iElement.html('');
+					$compile(iElement.contents())(scope);
+				}
 			});
 		},
 	};
@@ -863,7 +885,6 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				scope : {
 					button : "=",
 					interaction : "=",
-					user : "=",
 					showHotKeys : "=",
 					keyBind : "=",
 				},
@@ -884,11 +905,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 										scope.active = false;
 									}, 2000);
 									if (scope.keyBind) {
-										new UserAction({
-											'button_id' : scope.button.id,
-											'user_id' : scope.user.id,
-											'interaction_id' : scope.interaction.id
-										}).$save();
+										scope.callButton(scope.button.id);
 										return false;
 									}
 								});
@@ -898,46 +915,54 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				},
 				controller : function($scope) {
 					$scope.active = false;
+					
+					$scope.callButton = function(buttonId) {
+						new UserAction({
+							'trigger_id' : buttonId,
+							'interaction_id' : $scope.interaction.id
+						}).$save();
+					}
 				}
 			};
-		} ]).directive('actionButtons',
-		[ '$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
-			return {
-				templateUrl : 'static/partials/interaction/actionButtons.html',
-				restrict : 'E',
-				scope : {
-					buttons : "=",
-					user : "=",
-					interaction : "=",
-					showHotKeys : "=",
-					keyBind : "=",
-				},
-				link : function(scope, element, attrs, controller) {
-				},
-				controller : function($scope) {
-				},
-			};
-		} ]).directive('keybinding', [ '$timeout', function($timeout) {
-	return {
-		restrict : 'E',
-		scope : {
-			invoke : '&'
-		},
-		link : function(scope, element, attrs, controller) {
-			if (attr.button) {
-				Mousetrap.bind(attr.on, function() {
-					scope.invoke();
-					var elem = angular.element(el).parent().find(attr.button)
-					if (elem) {
-						elem.addClass('active');
-						$timeout(elem.removeClass('active'), 2000);
-					}
-				});
-			} else {
-				Mousetrap.bind(attr.on, scope.invoke);
-			}
-		},
-		controller : function($scope) {
-		},
-	};
+} ]).directive('actionButtons',
+	[ '$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
+		return {
+			templateUrl : 'static/partials/interaction/actionButtons.html',
+			restrict : 'E',
+			scope : {
+				buttons : "=",
+				user : "=",
+				interaction : "=",
+				showHotKeys : "=",
+				keyBind : "=",
+			},
+			link : function(scope, element, attrs, controller) {
+			},
+			controller : function($scope) {
+			},
+		};
+} ]).directive('keybinding', 
+	[ '$timeout', function($timeout) {
+		return {
+			restrict : 'E',
+			scope : {
+				invoke : '&'
+			},
+			link : function(scope, element, attrs, controller) {
+				if (attr.button) {
+					Mousetrap.bind(attr.on, function() {
+						scope.invoke();
+						var elem = angular.element(el).parent().find(attr.button)
+						if (elem) {
+							elem.addClass('active');
+							$timeout(elem.removeClass('active'), 2000);
+						}
+					});
+				} else {
+					Mousetrap.bind(attr.on, scope.invoke);
+				}
+			},
+			controller : function($scope) {
+			},
+		};
 } ]);

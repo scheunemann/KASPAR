@@ -1,4 +1,3 @@
-
 <div>
 	<form
 		name="sensorEditor"
@@ -24,13 +23,22 @@
 				<option value="">--Select Action--</option>
 			</select>
 		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Sensor</span>
+			<select
+				class="selectpicker form-control"
+				saveable
+				name="sensor"
+				ng-model="selectedSensor"
+				ng-options="sensor.name group by sensor.type for sensor in sensors | orderBy:'name'">
+				<option value="">--Select Sensor--</option>
+			</select>
+		</div>
+		<sensor-value-editor type='selectedSensor.type' sensor="selectedSensor" value="sensor.sensorValue"></sensor-value-editor>
 		<div>
 			<span>TODO:</span>
 			<ul>
-				<li>Sensor<small>(inc 'ActionSensor' which triggers on
-						action change)</small></li>
-				<li>Value Editor<small>(dependent on sensor type: GT LT
-						EQ RANGE DISCRETE*)</small></li>
+				<li>'ActionSensor' which triggers on action change</li>
 			</ul>
 		</div>
 	</form>

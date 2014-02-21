@@ -3,11 +3,12 @@ import datetime
 from threading import RLock
 from crud import ModelCRUD
 import Data.Model
-import Model.model
+import Model
 from controller import Helper
 from Data.storage import StorageFactory
 from Processor import TriggerProcessor
 from ActionRunner import ActionRunner
+from Model.log import InteractionLog
 
 interactionManagers = {}
 
@@ -17,41 +18,54 @@ class UserAction(object):
     def __init__(self):
         pass
 
+    def _cp_dispatch(self, vpath):
+        if vpath and len(vpath) > 1:
+            cherrypy.request.params['interactionId'] = vpath.pop(0)
+        if not vpath[0].isdigit():
+            return getattr(self, vpath.pop(0), None)
+        
     @cherrypy.tools.json_out()
-    def GET(self, actionId, interactionId, timestamp=None):
-
-        active = interactionId in interactionManagers and actionId in interactionManagers[interactionId].activeActions
-
-        if timestamp != None:
-            pass
+    def GET(self, interactionId, logId=None, timestamp=None):
+        if logId:
+            logs = cherrypy.request.db.query(Model.InteractionLog).get(logId)
         else:
-            pass
+            logs = cherrypy.request.db.query(Model.InteractionLog).filter(Model.InteractionLog.interaction_id==interactionId)
 
-        ret = {
-               'id': actionId,
-               'output': "Not implemented",
-               'active': active,
-               'timestamp': Helper._utcDateTime(datetime.datetime.now()),
-               }
-
-        return ret
+        ret = []
+        for log in logs:
+            ret.append({
+                           'id': log.id,
+                           'button_id': log.trigger_id,
+                           'interaction_id': log.interaction_id,
+                           'timestamp': Helper._utcDateTime(log.timestamp),
+                           'active': log.finished == None,
+                        })
+            
+        return ret[0] if logId else ret
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def POST(self, buttonId, interactionId):
-        if interactionId not in interactionManagers:
-            raise cherrypy.NotFound()
+    def POST(self, interactionId):
+        if 'trigger_id' in cherrypy.request.json:
+            triggerId = cherrypy.request.json['trigger_id']
+        else:
+            raise cherrypy.HTTPError("Invalid JSON, missing 'trigger_id'")
         
-        exists = cherrypy.request.db.query(Data.Model.Trigger).filter(Data.Model.Trigger.id==buttonId).count() > 0
+        if interactionId not in interactionManagers:
+            raise cherrypy.HTTPError("Cannot update an inactive interaction.")
+        
+        exists = cherrypy.request.db.query(Data.Model.Trigger).filter(Data.Model.Trigger.id==triggerId).count() > 0
         if not exists:
-            raise cherrypy.NotFound()
+            raise cherrypy.NotFound("Invalid trigger id: %s" % triggerId)
 
-        interactionManagers[interactionId].triggerActivated(buttonId, 1)
+        log = interactionManagers[interactionId].doTrigger(triggerId)
 
         ret = {
-               'button_id': buttonId,
-               'interaction_id': interactionId,
-               'timestamp': Helper._utcDateTime(datetime.datetime.now()),
+               'id': log.id,
+               'button_id': log.trigger_id,
+               'interaction_id': log.interaction_id,
+               'timestamp': Helper._utcDateTime(log.timestamp),
+               'active': True
         }
 
         return ret
@@ -84,7 +98,7 @@ class InteractionManager(object):
         self._interactionId = interaction.id
         triggers = self._getTriggers(interaction.robot, interaction.user)
         self._triggerProcessor = TriggerProcessor(triggers, datetime.timedelta(seconds=0.01))
-        self._triggerProcessor.triggerActivated += self.triggerActivated
+        self._triggerProcessor.triggerActivated += self._triggerActivated
         self._actionRunner = ActionRunner(interaction.robot)
         self._handles = {}
         self._handleLock = RLock()
@@ -105,24 +119,34 @@ class InteractionManager(object):
             if actionId in self._handles:
                 self._handles[actionId].stop()
         
-    def _handleComplete(self, handle):
+    def _handleComplete(self, handle, logId=None):
         ds = StorageFactory.getNewSession()
+        if logId:
+            iLog = ds.query(InteractionLog).get(logId)
+            iLog.finished = datetime.datetime.now()
         log = Model.DebugLog()
         log.data = "/n".join(handle.output)
         ds.add(log)
+        if iLog:
+            iLog.logs.append(log)
         ds.commit()
         with self._handleLock:
             self._handles.pop(handle.actionId, None)
 
-    def triggerActivated(self, trigger_id, value):
+    def _triggerActivated(self, trigger_id, value):
+        self.doTrigger(trigger_id, value)
+
+    def doTrigger(self, trigger_id, value):
         ds = StorageFactory.getNewSession()
         log = Model.InteractionLog()
         log.interaction_id = self._interactionId
         log.trigger_id = trigger_id
+        log.trigger_value = value
         ds.add(log)
         ds.commit()
         action = ds.query(Data.Model.Action).join(Data.Model.Trigger).filter(Data.Model.Trigger.id==trigger_id).first()
         with self._handleLock:
             if action.id in self._handles:
                 self._handles[action.id].stop()
-            self._handles[action.id] = self._actionRunner.executeAsync(action, self._handleComplete)
+            self._handles[action.id] = self._actionRunner.executeAsync(action, self._handleComplete, (log.id, ))
+        return log

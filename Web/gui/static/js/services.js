@@ -162,19 +162,13 @@ angular.module('displayService', [])
 
 angular.module('proxyService', [ 'ngResource' ])
 .service('objectCache', [ '$q', '$timeout', function($q, $timeout) {
+	var cache = false; // Use built-in caching from $resource object
 	var objCache = {}; // Don't know if this is a good idea since it'll prevent
 	// GC, but we'll see I guess...
 
-	// Can't remember why I wanted to cache objects, disabling for now
-	var cache = true;
-
 	this.getObj = function(key) {
-		if (cache) {
-			if (objCache[key] != undefined) {
-				return objCache[key].obj;
-			} else {
-				return null;
-			}
+		if (cache && objCache[key] != undefined) {
+			return objCache[key].obj;
 		} else {
 			return null;
 		}
@@ -205,19 +199,23 @@ angular.module('proxyService', [ 'ngResource' ])
 } ])
 .service('proxyObjectResolver', [ '$q', '$timeout', '$rootScope', 'objectCache', function($q, $timeout, $rootScope, objectCache) {
 	var getObj = function(metaData, id) {
-		var key = metaData.data.uri.replace(':id', id.toString());
-		if (!objectCache.hasObj(key)) {
-			var obj = metaData.resource.get({
-				id : id
-			}).$promise;
-			obj.then(function(o) {
-				objectCache.setObj(key, o);
-			});
-
-			return obj;
+		if(id !== undefined) {
+			var key = metaData.data.uri.replace(':id', id.toString());
+			if (!objectCache.hasObj(key)) {
+				var obj = metaData.resource.get({
+					id : id
+				}).$promise;
+				obj.then(function(o) {
+					objectCache.setObj(key, o);
+				});
+	
+				return obj;
+			}
+	
+			return objectCache.getObj(key);
+		} else {
+			return null;
 		}
-
-		return objectCache.getObj(key);
 	}
 
 	this.resolveProp = function(object, propName, callback) {
@@ -280,14 +278,18 @@ angular.module('proxyService', [ 'ngResource' ])
 
 	var unModObject = function(reqObj) {
 		for ( var prop in reqObj) {
-			if (reqObj[prop] != undefined && reqObj[prop + '_metaData'] != undefined) {
-				if (!reqObj[prop + '_metaData']['resolved']) {
-					reqObj[prop] = reqObj[prop + '_metaData']['data'];
-				} else {
-//					reqObj[prop] = reqObj[prop].$$v;
+			if (reqObj[prop] != undefined ) {
+				if (reqObj[prop + '_metaData'] != undefined) {
+					if (!reqObj[prop + '_metaData']['resolved']) {
+						reqObj[prop] = reqObj[prop + '_metaData']['data'];
+					}
+	
+					delete reqObj[prop + '_metaData'];
+				} else if (angular.isArray(reqObj[prop])) {
+					for(var idx in reqObj[prop]) {
+						unModObject(reqObj[prop][idx]);
+					}
 				}
-
-				delete reqObj[prop + '_metaData'];
 			}
 		}
 	}

@@ -17,7 +17,7 @@ class Trigger(crud.ModelCRUD):
     type = base.SimpleBase([
                         {'name':'Sensor'},
                         {'name':'Button', 'desc':'On Screen button with optional keyboard hotkeys'},
-                        {'name':'Time', 'desc': 'Based on system clock'},  # clock should be adjusted per each users global speed setting
+                        {'name':'Time', 'desc': 'Based on interaction clock'},  # clock should be adjusted per each users global speed setting
                         ])
 
     _import = TriggerImport()
