@@ -159,3 +159,17 @@ body {
 .btn-primary[btn-checkbox].active {
 	background-color: green !important;
 }
+
+.input-group-btn>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.input-group-btn>.btn:last-child:not(:first-child), .input-group-btn>.dropdown-toggle:not(:first-child) {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.input-group-btn:not(:first-child):not(:last-child)>.btn {
+	border-radius: 0;
+}

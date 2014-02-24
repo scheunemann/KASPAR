@@ -8,7 +8,7 @@
 		<div class="col-lg-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">All Behaviours</div>
-				<div class="input-group container fill">
+				<div class="input-group fill">
 					<select class="selectpicker fill form-control" multiple
 						ng-multiple="true" ng-model="toAdd"
 						ng-options="action.name for action in actions | except:sequence | orderBy:'name'">
@@ -41,7 +41,7 @@
 		<div class="col-lg-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">Sequence Behaviours</div>
-				<div class="input-group container fill">
+				<div class="input-group fill">
 					<select class="selectpicker fill form-control" multiple
 						ng-multiple="true" ng-model="toRemove"
 						ng-options="((action.order + 1) + '. ' + action.action.name) for action in sequence.ordered_actions | orderBy:'order'">

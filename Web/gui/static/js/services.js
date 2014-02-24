@@ -162,7 +162,9 @@ angular.module('displayService', [])
 
 angular.module('proxyService', [ 'ngResource' ])
 .service('objectCache', [ '$q', '$timeout', function($q, $timeout) {
-	var cache = false; // Use built-in caching from $resource object
+	// $resource does it's own caching, but still builds a new object
+	// so need to do our own caching
+	var cache = true; 
 	var objCache = {}; // Don't know if this is a good idea since it'll prevent
 	// GC, but we'll see I guess...
 
