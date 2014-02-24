@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<KASPAR version="1A">
+<KASPAR version="1A" configType="legacy">
 	<NAME>Dummy Kaspar</NAME>
 	<DUMMY>
 	</DUMMY>

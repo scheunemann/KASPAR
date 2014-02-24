@@ -4,7 +4,7 @@
 	instance, like servo specific information (limits and defaults) and information 
 	that KasparGUI uses to display and format information for this Kaspar type -->
 
-<KASPAR version="1C">
+<KASPAR version="1C" configType="legacy">
 	<NAME>Kaspar_1C - #2</NAME>
 
 	<!-- Connection Settings -->

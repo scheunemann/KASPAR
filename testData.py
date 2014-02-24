@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 from Config.config import dbConfig
 from Model import Base, User, Operator
 from Data.storage import StorageFactory
+from Robot import importer
 
 
 def _flushAndFillTestData():
@@ -15,14 +16,17 @@ def _flushAndFillTestData():
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
 
-    from Config.legacy import loadAllConfigs
     o = Operator('oNathan', 'oNathan Burke')
     o.password = '1234'
 
     u = User('uNathan', 'uNathan Burke')
     o.users.append(u)
 
-    (robots, actions, triggers) = loadAllConfigs()
+    baseDir = os.path.dirname(os.path.realpath(__file__))
+    configDir = os.path.join(baseDir, 'Config/kasparConfigs')
+    print "Loading configs..."
+    (robots, actions, triggers) = importer.loadAllDirectories(configDir)
+    print "Done."
 
     session = StorageFactory.getNewSession()
     for sound in [a for a in actions if a.type == 'Sound']:

@@ -1,352 +1,296 @@
 <?xml version="1.0"?>
-
 <!-- Definition file for KASPAR Holds all information for a single Kaspar 
 	instance, like servo specific information (limits and defaults) and information 
 	that KasparGUI uses to display and format information for this Kaspar type -->
+<ROBOT type="KASPAR" version="3A" name="Kaspar(new)"
+	defaultAction="Neutral">
+	<SERVOCONFIGS>
+		<!-- Connection Settings -->
+		<HERKULEX>
+			<PORT>COM4</PORT>
+			<SPEED>115200</SPEED>
+			<DEFAULT>
+				<POS>0</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>True</MANUAL_POSITIONING>
+				<IS_UPDATED>True</IS_UPDATED>
+			</DEFAULT>
+			<SCALING>
+				<!-- 360 / 1023 -->
+				<POS>0.352</POS>
+				<POS_OFFSET>512</POS_OFFSET>
+				<SPEED>0.098</SPEED>
+			</SCALING>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>200</MAX>
+				</SPEED>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</HERKULEX>
 
-<KASPAR version="3A">
-	<NAME>Kaspar_3A</NAME>
+		<SSC32>
+			<PORT>COM15</PORT>
+			<SPEED>115200</SPEED>
+			<DEFAULT>
+				<POS>0</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
+			</DEFAULT>
+			<SCALING>
+				<!-- 360 / 2000 -->
+				<POS>0.18</POS>
+				<POS_OFFSET>1000</POS_OFFSET>
+				<SPEED>0.1</SPEED>
+			</SCALING>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</SSC32>
+	</SERVOCONFIGS>
 
-	<!-- Connection Settings -->
-	<HERKULEX>
-		<PORT>COM4</PORT>
-		<SPEED>115200</SPEED>
-		<MANUAL_POSITIONING>true</MANUAL_POSITIONING>
-		<DEFAULT>
-			<POS>512</POS>
-			<SPEED>36</SPEED>
-		</DEFAULT>
-		<SCALING>
-			<POS>0.325</POS>
-			<POS_OFFSET>512</POS_OFFSET>
-			<SPEED>0.39</SPEED>
-		</SCALING>
-		<LIMITS>
-			<SPEED>
-				<MIN>0</MIN>
-				<MAX>4</MAX>
-			</SPEED>
-			<POS>
-				<MIN>0</MIN>
-				<MAX>1023</MAX>
-			</POS>
-		</LIMITS>
-	</HERKULEX>
+	<SENSORCONFIGS>
+		<FSR></FSR>
+	</SENSORCONFIGS>
 
-	<SSC32>
-		<PORT>COM15</PORT>
-		<SPEED>115200</SPEED>
-		<MANUAL_POSITIONING>false</MANUAL_POSITIONING>
-	</SSC32>
-
-	<!-- List of all servos used in this KASPAR Contains physical information 
-		for all servos and other information needed by KasparGUI -->
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="253">
 			<NAME>HEAD_ROT</NAME>
-
-			<!-- Limits for motors as real motor values. Possible types: "pos","speed" -->
-			<LIMITS type="pos">
-				<MIN>200</MIN>
-				<MAX>800</MAX>
+			<OFFSET>178.77</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-108</MIN>
+					<MAX>103</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>508</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="102">
 			<NAME>HEAD_VERT</NAME>
-
-			<LIMITS type="pos">
-				<MIN>440</MIN>
-				<MAX>580</MAX>
+			<OFFSET>180.18</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-25</MIN>
+					<MAX>24</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>512</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="103">
 			<NAME>HEAD_TLT</NAME>
-
-			<LIMITS type="pos">
-				<MIN>450</MIN>
-				<MAX>620</MAX>
+			<OFFSET>187.92</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-30</MIN>
+					<MAX>30</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>534</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="116">
 			<NAME>ARM_L_1</NAME>
-
-			<LIMITS type="pos">
-				<MIN>0</MIN>
-				<MAX>640</MAX>
+			<OFFSET>112.61</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-113</MIN>
+					<MAX>113</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>320</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="117">
 			<NAME>ARM_L_2</NAME>
-
-			<LIMITS type="pos">
-				<MIN>280</MIN>
-				<MAX>710</MAX>
+			<OFFSET>174.19</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-76</MIN>
+					<MAX>76</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>495</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="118">
 			<NAME>ARM_L_3</NAME>
-
-			<LIMITS type="pos">
-				<MIN>480</MIN>
-				<MAX>810</MAX>
+			<OFFSET>226.98</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-58</MIN>
+					<MAX>58</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>645</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="119">
 			<NAME>ARM_L_4</NAME>
-
-			<LIMITS type="pos">
-				<MIN>203</MIN>
-				<MAX>624</MAX>
+			<OFFSET>145.34</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-74</MIN>
+					<MAX>74</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>413</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="132">
 			<NAME>ARM_R_1</NAME>
-
-			<LIMITS type="pos">
-				<MIN>360</MIN>
-				<MAX>750</MAX>
+			<OFFSET>191.79</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-65</MIN>
+					<MAX>72</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>545</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="133">
 			<NAME>ARM_R_2</NAME>
-
-			<LIMITS type="pos">
-				<MIN>310</MIN>
-				<MAX>920</MAX>
+			<OFFSET>216.42</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-107</MIN>
+					<MAX>107</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>615</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="134">
 			<NAME>ARM_R_3</NAME>
-
-			<LIMITS type="pos">
-				<MIN>200</MIN>
-				<MAX>510</MAX>
+			<OFFSET>124.93</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-55</MIN>
+					<MAX>55</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>355</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="HERKULEX" id="135">
 			<NAME>ARM_R_4</NAME>
-
-			<LIMITS type="pos">
-				<MIN>388</MIN>
-				<MAX>800</MAX>
+			<OFFSET>167.16</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-31</MIN>
+					<MAX>114</MAX>
+				</POS>
 			</LIMITS>
-
-			<DEFAULT>
-				<POS>475</POS>
-			</DEFAULT>
-
-			<IS_UPDATED>false</IS_UPDATED>
-			<IS_REACTIVE>false</IS_REACTIVE>
 		</SERVO>
-
 		<SERVO type="SSC32" id="3">
 			<NAME>EYES_LR</NAME>
-
-			<LIMITS type="pos">
-				<MIN>720</MIN>
-				<MAX>1880</MAX>
+			<OFFSET>234</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-104</MIN>
+					<MAX>104</MAX>
+				</POS>
 			</LIMITS>
-
-			<LIMITS type="speed">
-				<MIN>5000</MIN>
-				<MAX>500</MAX>
-			</LIMITS>
-
-			<DEFAULT>
-				<POS>1300</POS>
-				<SPEED>1000</SPEED>
-			</DEFAULT>
 		</SERVO>
-
 		<SERVO type="SSC32" id="4">
 			<NAME>EYES_UD</NAME>
-
-			<LIMITS type="pos">
-				<MIN>1080</MIN>
-				<MAX>2000</MAX>
+			<OFFSET>277</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-83</MIN>
+					<MAX>83</MAX>
+				</POS>
+				<SPEED>
+					<MIN>5000</MIN>
+					<MAX>500</MAX>
+				</SPEED>
 			</LIMITS>
-
-			<LIMITS type="speed">
-				<MIN>5000</MIN>
-				<MAX>500</MAX>
-			</LIMITS>
-
-			<DEFAULT type="real">
-				<POS>1500</POS>
-				<SPEED>1000</SPEED>
-			</DEFAULT>
 		</SERVO>
-
 		<SERVO type="SSC32" id="6">
 			<NAME>MOUTH_OPEN</NAME>
-
-			<LIMITS type="pos">
-				<MIN>600</MIN>
-				<MAX>1900</MAX>
+			<OFFSET>108</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>234</MAX>
+				</POS>
+				<SPEED>
+					<MAX>250</MAX>
+				</SPEED>
 			</LIMITS>
-
-			<LIMITS type="speed">
-				<MIN>5000</MIN>
-				<MAX>500</MAX>
-			</LIMITS>
-
 			<DEFAULT>
-				<POS>525</POS>
-				<SPEED>100</SPEED>
+				<SPEED>50</SPEED>
 			</DEFAULT>
 		</SERVO>
-
 		<SERVO type="SSC32" id="7">
 			<NAME>MOUTH_SMILE</NAME>
-
-			<LIMITS type="pos">
-				<MIN>700</MIN>
-				<MAX>1850</MAX>
+			<OFFSET>174.6</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-48.6</MIN>
+					<MAX>158.4</MAX>
+				</POS>
+				<SPEED>
+					<MAX>250</MAX>
+				</SPEED>
 			</LIMITS>
-
-			<LIMITS type="speed">
-				<MIN>5000</MIN>
-				<MAX>500</MAX>
-			</LIMITS>
-
-			<DEFAULT type="scaled">
-				<POS>970</POS>
-				<SPEED>1000</SPEED>
+			<DEFAULT>
+				<SPEED>50</SPEED>
 			</DEFAULT>
 		</SERVO>
-
 		<SERVO type="SSC32" id="5">
 			<NAME>EYELIDS</NAME>
-
-			<LIMITS type="pos">
-				<MIN>1230</MIN>
-				<MAX>1900</MAX>
+			<OFFSET>342</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-120.6</MIN>
+					<MAX>0</MAX>
+				</POS>
+				<SPEED>
+					<MAX>50</MAX>
+				</SPEED>
 			</LIMITS>
-
-			<LIMITS type="speed">
-				<MIN>5000</MIN>
-				<MAX>500</MAX>
-			</LIMITS>
-
 			<DEFAULT>
-				<POS>614</POS>
-				<SPEED>100</SPEED>
+				<SPEED>1</SPEED>
 			</DEFAULT>
 		</SERVO>
+	</SERVOLIST>
 
-		<!-- A servo group defines the logical connection between servos. It is 
-			used by KasparGUI to do the correct layout (each servo group is displayed 
-			together as a unit) and offer the correct functionality -->
+	<SERVOGROUPS>
 		<SERVOGROUP>
 			<NAME>Head</NAME>
-			<MEMBER pos="0">HEAD_VERT</MEMBER>
-			<MEMBER pos="1">HEAD_ROT</MEMBER>
-			<MEMBER pos="2">HEAD_TLT</MEMBER>
+			<MEMBER>HEAD_VERT</MEMBER>
+			<MEMBER>HEAD_ROT</MEMBER>
+			<MEMBER>HEAD_TLT</MEMBER>
 		</SERVOGROUP>
 
 		<SERVOGROUP>
 			<NAME>Face</NAME>
-			<MEMBER pos="0">EYES_LR</MEMBER>
-			<MEMBER pos="1">EYES_UD</MEMBER>
-			<MEMBER pos="2">EYELIDS</MEMBER>
-			<MEMBER pos="3">MOUTH_OPEN</MEMBER>
-			<MEMBER pos="4">MOUTH_SMILE</MEMBER>
+			<MEMBER>EYES_LR</MEMBER>
+			<MEMBER>EYES_UD</MEMBER>
+			<MEMBER>EYELIDS</MEMBER>
+			<MEMBER>MOUTH_OPEN</MEMBER>
+			<MEMBER>MOUTH_SMILE</MEMBER>
 		</SERVOGROUP>
 
 		<SERVOGROUP>
 			<NAME>Left Arm</NAME>
-			<MEMBER pos="0">ARM_L_1</MEMBER>
-			<MEMBER pos="1">ARM_L_2</MEMBER>
-			<MEMBER pos="2">ARM_L_3</MEMBER>
-			<MEMBER pos="3">ARM_L_4</MEMBER>
+			<MEMBER>ARM_L_1</MEMBER>
+			<MEMBER>ARM_L_2</MEMBER>
+			<MEMBER>ARM_L_3</MEMBER>
+			<MEMBER>ARM_L_4</MEMBER>
 		</SERVOGROUP>
 
 		<SERVOGROUP>
 			<NAME>Right Arm</NAME>
-			<MEMBER pos="0">ARM_R_1</MEMBER>
-			<MEMBER pos="1">ARM_R_2</MEMBER>
-			<MEMBER pos="2">ARM_R_3</MEMBER>
-			<MEMBER pos="3">ARM_R_4</MEMBER>
+			<MEMBER>ARM_R_1</MEMBER>
+			<MEMBER>ARM_R_2</MEMBER>
+			<MEMBER>ARM_R_3</MEMBER>
+			<MEMBER>ARM_R_4</MEMBER>
 		</SERVOGROUP>
-	</SERVOLIST>
-</KASPAR>
+	</SERVOGROUPS>
+
+	<SENSORLIST>
+		<SENSOR type="FSR" datatype="continuous" id="1" extraData="index:0">
+			<NAME>FSR_FOOT</NAME>
+			<LIMITS>
+				<MAX>5</MAX>
+				<MIN>0</MIN>
+				<PRECISION>2</PRECISION>
+			</LIMITS>
+		</SENSOR>
+	</SENSORLIST>
+</ROBOT>
