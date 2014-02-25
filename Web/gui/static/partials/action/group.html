@@ -17,15 +17,16 @@
 			</div>
 		</div>
 		<div class="col-lg-2">
+			<div class="row">&nbsp;</div>
 			<div class="row">
 				<button class="btn btn-default col-lg-12"
 					ng-disabled="!toAdd || toAdd.length == 0" type="button"
-					ng-click="addActions(toAdd);toAdd=[]">Add</button>
+					ng-click="addActions(toAdd);toAdd=[]">Add &rarr;</button>
 			</div>
 			<div class="row">
 				<button class="btn btn-default col-lg-12"
 					ng-disabled="!toRemove || toRemove.length == 0" type="button"
-					ng-click="removeActions(toRemove);toRemove=[]">Remove</button>
+					ng-click="removeActions(toRemove);toRemove=[]">&larr; Remove</button>
 			</div>
 		</div>
 		<div class="col-lg-5">

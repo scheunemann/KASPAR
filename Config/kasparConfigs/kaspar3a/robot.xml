@@ -61,7 +61,13 @@
 	</SERVOCONFIGS>
 
 	<SENSORCONFIGS>
-		<FSR></FSR>
+		<FSR>
+			<EXTRADATA>
+				<PORT>COM10</PORT>
+				<SPEED>19200</SPEED>
+			</EXTRADATA>
+			<ONSTATE>>0</ONSTATE>
+		</FSR>
 	</SENSORCONFIGS>
 
 	<SERVOLIST>
@@ -193,10 +199,6 @@
 					<MIN>-83</MIN>
 					<MAX>83</MAX>
 				</POS>
-				<SPEED>
-					<MIN>5000</MIN>
-					<MAX>500</MAX>
-				</SPEED>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="SSC32" id="6">
@@ -284,7 +286,7 @@
 	</SERVOGROUPS>
 
 	<SENSORLIST>
-		<SENSOR type="FSR" datatype="continuous" id="1" extraData="index:0">
+		<SENSOR type="FSR" datatype="continuous" id="1">
 			<NAME>FSR_FOOT</NAME>
 			<LIMITS>
 				<MAX>5</MAX>

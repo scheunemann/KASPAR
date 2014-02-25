@@ -79,7 +79,7 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 				if (!value) {
 					parentElement.removeClass('has-success');
 				} else if (updateCalled) {
-					uiMessages.transitionElement()
+//					uiMessages.transitionElement()
 					parentElement.addClass('has-success');
 					$timeout(function() {
 						parentElement.removeClass('has-success');
@@ -746,6 +746,8 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 			actions : "=",
 			triggers : "=",
 		},
+		link : function(scope, iElement, iAttrs, controller) {
+		},
 		controller : function($scope) {
 			$scope.$watch('time', function(time) {
 				proxyObjectResolver.resolveProp(time, 'action');
@@ -818,6 +820,8 @@ angular.module('kasparGUI.directives', [ 'proxyService', 'dataModels', 'kasparGU
 		scope : {
 			sensor : "=trigger",
 			actions : "=",
+		},
+		link : function(scope, iElement, iAttrs, controller) {
 		},
 		controller : function($scope) {
 			/*

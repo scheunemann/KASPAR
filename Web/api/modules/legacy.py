@@ -1,6 +1,6 @@
 import cherrypy
 
-from Config.legacy import ActionImporter, TriggerImporter
+from Robot.legacy import ActionImporter, TriggerImporter
 from Data.Model import Pose, Trigger
 from crud import ModelCRUD
 

@@ -1,7 +1,7 @@
 import cherrypy
 import json
 
-import Config.legacy
+import Robot.legacy
 import Data.Model
 from crud import ModelCRUD
 
@@ -95,7 +95,7 @@ class Robot(ModelCRUD):
     def POST(self, oid=None, **constraint):
         """Robot level is currently not handled properly for new robots, hacked for the time being to known versions"""
         if oid == None:
-            data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
+            data = Robot.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
             data.name = cherrypy.request.json['name']
             cherrypy.request.db.add(data)
             cherrypy.request.db.commit()
