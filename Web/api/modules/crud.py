@@ -36,7 +36,7 @@ class ModelCRUD(object):
             raise cherrypy.HTTPError(500, ex)
 
         cherrypy.request.db.commit()
-        
+
         return (data, resolveList)
 
     @cherrypy.tools.json_in()

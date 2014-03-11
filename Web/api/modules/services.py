@@ -45,6 +45,7 @@ class OrderedAction(crud.ModelCRUD):
     def __init__(self):
         super(OrderedAction, self).__init__(Data.Model.OrderedAction, ['GET', 'POST', 'DELETE'])
 
+
 class Action(crud.ModelCRUD):
     exposed = True
     test = controller.ActionTest()

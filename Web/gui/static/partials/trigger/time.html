@@ -18,11 +18,21 @@
 				<span class="input-group-addon">Action</span> <select
 					class="selectpicker form-control"
 					ng-model="time.action_id"
-					required
 					saveable
 					name="actionId"
 					ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-					<option value="">--Select Action--</option>
+					<option value="">No Action</option>
+				</select>
+			</div>		
+			<div class="input-group">
+				<span class="input-group-addon">Trigger</span> <select
+					class="selectpicker form-control"
+					ng-model="time.trigger_id"
+					required
+					saveable
+					name="triggerId"
+					ng-options="trigger.id as trigger.name group by trigger.type for trigger in triggers | orderBy:'name'">
+					<option value="">--Select Trigger--</option>
 				</select>
 			</div>
 		</div>
@@ -68,74 +78,6 @@
 					required
 					ng-model="time.variance" />
 				<div class="input-group-addon">{{time.variance}} seconds</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-5">
-			<div class="panel panel-default">
-				<div class="panel-heading">All Triggers</div>
-				<div class="input-group fill">
-					<select
-						class="selectpicker fill form-control"
-						multiple
-						ng-multiple="true"
-						ng-model="toAdd"
-						ng-options="item.name group by item.type for item in triggers | except:time.triggers | orderBy:'name'">
-					</select>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-2">
-			<div class="row">&nbsp;</div>
-			<div class="row">
-				<button
-					class="btn btn-default col-lg-12"
-					ng-disabled="!toAdd || toAdd.length == 0"
-					type="button"
-					ng-click="addTriggers(toAdd);toAdd=[]">Add &rarr;</button>
-			</div>
-			<div class="row">
-				<button
-					class="btn btn-default col-lg-12"
-					ng-disabled="!toRemove || toRemove.length == 0"
-					type="button"
-					ng-click="removeTriggers(toRemove);toRemove=[]">&larr; Remove</button>
-			</div>
-		</div>
-		<div class="col-lg-5">
-			<div class="panel panel-default">
-				<div class="panel-heading has-warning">
-					Require
-					<div class="btn-group">
-						<button
-							type="button"
-							class="btn btn-primary"
-							saveable
-							required
-							name="requireAll"
-							ng-model="time.requireAll"
-							btn-radio="true">All</button>
-						<button
-							type="button"
-							class="btn btn-primary"
-							saveable
-							required
-							name="requireAny"
-							ng-model="time.requireAll"
-							btn-radio="false">Any</button>
-					</div>
-					listed trigger(s) to be active
-				</div>
-				<div class="input-group fill">
-					<select
-						class="selectpicker fill form-control"
-						multiple
-						ng-multiple="true"
-						ng-model="toRemove"
-						ng-options="trigger.name for trigger in time.triggers | orderBy:'name'">
-					</select>
-				</div>
 			</div>
 		</div>
 	</div>

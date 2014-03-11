@@ -2,7 +2,6 @@
 	<form
 		name="sensorEditor"
 		model="sensor">
-		<span>Sensor Trigger Editor</span>
 		<div class="input-group">
 			<span class="input-group-addon">Name</span>
 			<input
@@ -10,6 +9,8 @@
 				class="form-control"
 				placeholder="Name"
 				name="name"
+				saveable
+				required
 				ng-model="sensor.name">
 		</div>
 		<div class="input-group">
@@ -20,7 +21,7 @@
 				name="action"
 				ng-model="sensor.action_id"
 				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-				<option value="">--Select Action--</option>
+				<option value="">No Action</option>
 			</select>
 		</div>
 		<div class="input-group">
@@ -28,6 +29,7 @@
 			<select
 				class="selectpicker form-control"
 				saveable
+				required
 				name="sensor"
 				ng-model="selectedSensor"
 				ng-options="sensor.name group by sensor.type for sensor in sensors | orderBy:'name'">

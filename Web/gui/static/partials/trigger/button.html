@@ -7,6 +7,7 @@
 			<input
 				name="buttonName"
 				saveable
+				required
 				type="text"
 				class="form-control"
 				placeholder="Button Name"
@@ -20,7 +21,7 @@
 				name="action"
 				ng-model="button.action_id"
 				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-				<option value="">--Select Action--</option>
+				<option value="">No Action</option>
 			</select>
 		</div>
 		<hotkey-editor
