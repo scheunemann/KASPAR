@@ -2,12 +2,12 @@
 <!-- Definition file for KASPAR Holds all information for a single Kaspar 
 	instance, like servo specific information (limits and defaults) and information 
 	that KasparGUI uses to display and format information for this Kaspar type -->
-<ROBOT type="KASPAR" version="3A" name="Kaspar(new)"
+<ROBOT type="KASPAR" version="3" name="Kaspar Prototype A"
 	defaultAction="Neutral">
 	<SERVOCONFIGS>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>COM4</PORT>
+			<PORT>bodyServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -34,7 +34,7 @@
 		</HERKULEX>
 
 		<SSC32>
-			<PORT>COM15</PORT>
+			<PORT>headServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -62,30 +62,40 @@
 
 	<SENSORCONFIGS>
 		<ROBOT>
-			<FSR>
-				<EXTRADATA>
-					<PORT>COM10</PORT>
-					<SPEED>19200</SPEED>
-				</EXTRADATA>
-				<ONSTATE>>0</ONSTATE>
-			</FSR>
+		<FSR>
+			<EXTRADATA>
+				<PORT>headServos</PORT>
+				<SPEED>19200</SPEED>
+			</EXTRADATA>
+			<ONSTATE>&gt;0</ONSTATE>
+		</FSR>
 		</ROBOT>
 	</SENSORCONFIGS>
 
 	<SERVOLIST>
-		<SERVO type="HERKULEX" id="253">
-			<NAME>HEAD_ROT</NAME>
-			<OFFSET>178.77</OFFSET>
+		<SERVO type="HERKULEX" id="1">
+			<NAME>TORSO_ROT</NAME>
+			<OFFSET>171</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-108</MIN>
-					<MAX>103</MAX>
+					<MIN>-27</MIN>
+					<MAX>27</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="102">
+		<SERVO type="HERKULEX" id="2">
+			<NAME>HEAD_ROT</NAME>
+			<OFFSET>169</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-51</MIN>
+					<MAX>51</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_VERT</NAME>
-			<OFFSET>180.18</OFFSET>
+			<OFFSET>180</OFFSET>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -93,9 +103,9 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="103">
+		<SERVO type="HERKULEX" id="4">
 			<NAME>HEAD_TLT</NAME>
-			<OFFSET>187.92</OFFSET>
+			<OFFSET>180</OFFSET>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
@@ -103,86 +113,107 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="116">
+		<SERVO type="HERKULEX" id="16">
 			<NAME>ARM_L_1</NAME>
-			<OFFSET>112.61</OFFSET>
+			<OFFSET>180</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-113</MIN>
-					<MAX>113</MAX>
+					<MIN>60</MIN>
+					<MAX>-180</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="117">
+		<SERVO type="HERKULEX" id="17">
 			<NAME>ARM_L_2</NAME>
-			<OFFSET>174.19</OFFSET>
+			<OFFSET>250</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-76</MIN>
-					<MAX>76</MAX>
+					<MIN>45</MIN>
+					<MAX>-90</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="118">
+		<SERVO type="HERKULEX" id="18">
 			<NAME>ARM_L_3</NAME>
-			<OFFSET>226.98</OFFSET>
+			<OFFSET>80</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-58</MIN>
-					<MAX>58</MAX>
+					<MIN>145</MIN>
+					<MAX>-30</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="119">
+		<SERVO type="HERKULEX" id="19">
 			<NAME>ARM_L_4</NAME>
-			<OFFSET>145.34</OFFSET>
+			<OFFSET>180</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-74</MIN>
-					<MAX>74</MAX>
+					<MIN>-80</MIN>
+					<MAX>70</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="132">
+		<SERVO type="HERKULEX" id="20">
+			<NAME>ARM_L_5</NAME>
+			<OFFSET>275</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>-50</MIN>
+					<MAX>-235</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="32">
 			<NAME>ARM_R_1</NAME>
-			<OFFSET>191.79</OFFSET>
+			<OFFSET>180</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-65</MIN>
-					<MAX>72</MAX>
+					<MIN>-60</MIN>
+					<MAX>180</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="133">
+		<SERVO type="HERKULEX" id="33">
 			<NAME>ARM_R_2</NAME>
-			<OFFSET>216.42</OFFSET>
+			<OFFSET>95</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-107</MIN>
-					<MAX>107</MAX>
+					<MIN>-45</MIN>
+					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="134">
+		</SERVO>		
+		<SERVO type="HERKULEX" id="34">
 			<NAME>ARM_R_3</NAME>
-			<OFFSET>124.93</OFFSET>
+			<OFFSET>280</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-55</MIN>
-					<MAX>55</MAX>
+					<MIN>-145</MIN>
+					<MAX>30</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HERKULEX" id="135">
+		<SERVO type="HERKULEX" id="35">
 			<NAME>ARM_R_4</NAME>
-			<OFFSET>167.16</OFFSET>
+			<OFFSET>198</OFFSET>
 			<LIMITS>
 				<POS>
-					<MIN>-31</MIN>
-					<MAX>114</MAX>
+					<MIN>80</MIN>
+					<MAX>-70</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
+		<SERVO type="HERKULEX" id="36">
+			<NAME>ARM_R_5</NAME>
+			<OFFSET>100</OFFSET>
+			<LIMITS>
+				<POS>
+					<MIN>50</MIN>
+					<MAX>235</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		
 		<SERVO type="SSC32" id="3">
 			<NAME>EYES_LR</NAME>
 			<OFFSET>234</OFFSET>
@@ -276,6 +307,7 @@
 			<MEMBER>ARM_L_2</MEMBER>
 			<MEMBER>ARM_L_3</MEMBER>
 			<MEMBER>ARM_L_4</MEMBER>
+			<MEMBER>ARM_L_5</MEMBER>
 		</SERVOGROUP>
 
 		<SERVOGROUP>
@@ -284,6 +316,7 @@
 			<MEMBER>ARM_R_2</MEMBER>
 			<MEMBER>ARM_R_3</MEMBER>
 			<MEMBER>ARM_R_4</MEMBER>
+			<MEMBER>ARM_R_5</MEMBER>
 		</SERVOGROUP>
 	</SERVOGROUPS>
 
