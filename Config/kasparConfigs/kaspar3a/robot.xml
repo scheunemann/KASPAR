@@ -61,13 +61,15 @@
 	</SERVOCONFIGS>
 
 	<SENSORCONFIGS>
-		<FSR>
-			<EXTRADATA>
-				<PORT>COM10</PORT>
-				<SPEED>19200</SPEED>
-			</EXTRADATA>
-			<ONSTATE>>0</ONSTATE>
-		</FSR>
+		<ROBOT>
+			<FSR>
+				<EXTRADATA>
+					<PORT>COM10</PORT>
+					<SPEED>19200</SPEED>
+				</EXTRADATA>
+				<ONSTATE>>0</ONSTATE>
+			</FSR>
+		</ROBOT>
 	</SENSORCONFIGS>
 
 	<SERVOLIST>
@@ -286,13 +288,15 @@
 	</SERVOGROUPS>
 
 	<SENSORLIST>
-		<SENSOR type="FSR" datatype="continuous" id="1">
-			<NAME>FSR_FOOT</NAME>
-			<LIMITS>
-				<MAX>5</MAX>
-				<MIN>0</MIN>
-				<PRECISION>2</PRECISION>
-			</LIMITS>
-		</SENSOR>
+		<ROBOT>
+			<SENSOR type="FSR" datatype="continuous" id="1">
+				<NAME>FSR_FOOT</NAME>
+				<LIMITS>
+					<MAX>5</MAX>
+					<MIN>0</MIN>
+					<PRECISION>2</PRECISION>
+				</LIMITS>
+			</SENSOR>
+		</ROBOT>
 	</SENSORLIST>
 </ROBOT>
