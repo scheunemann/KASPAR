@@ -33,7 +33,7 @@
 			</LIMITS>
 		</HERKULEX>
 
-		<SSC32>
+		<HS82MG>
 			<PORT>headServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
@@ -42,8 +42,8 @@
 				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
 			</DEFAULT>
 			<SCALING>
-				<!-- 360 / 2000 -->
-				<POS>0.18</POS>
+				<!-- 360 / 1000 -->
+				<POS>0.36</POS>
 				<POS_OFFSET>1000</POS_OFFSET>
 				<SPEED>0.1</SPEED>
 			</SCALING>
@@ -57,23 +57,21 @@
 					<MAX>180</MAX>
 				</POS>
 			</LIMITS>
-		</SSC32>
+		</HS82MG>
 	</SERVOCONFIGS>
 
 	<SENSORCONFIGS>
 		<FSR>
-			<EXTRADATA>
-				<PORT>headServos</PORT>
-				<SPEED>19200</SPEED>
-			</EXTRADATA>
-			<ONSTATE>&gt;0</ONSTATE>
+			<PORT>headServos</PORT>
+			<SPEED>115200</SPEED>
+			<ONSTATE>&gt;10</ONSTATE>
 		</FSR>
 	</SENSORCONFIGS>
 
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
 			<NAME>TORSO_ROT</NAME>
-			<OFFSET>171</OFFSET>
+			<CENTER>171</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-27</MIN>
@@ -83,7 +81,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="2">
 			<NAME>HEAD_ROT</NAME>
-			<OFFSET>169</OFFSET>
+			<CENTER>169</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-51</MIN>
@@ -93,7 +91,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_VERT</NAME>
-			<OFFSET>180</OFFSET>
+			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -103,7 +101,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="4">
 			<NAME>HEAD_TLT</NAME>
-			<OFFSET>180</OFFSET>
+			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
@@ -113,7 +111,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="16">
 			<NAME>ARM_L_1</NAME>
-			<OFFSET>180</OFFSET>
+			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>60</MIN>
@@ -123,7 +121,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="17">
 			<NAME>ARM_L_2</NAME>
-			<OFFSET>250</OFFSET>
+			<CENTER>250</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>45</MIN>
@@ -133,7 +131,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="18">
 			<NAME>ARM_L_3</NAME>
-			<OFFSET>80</OFFSET>
+			<CENTER>80</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>145</MIN>
@@ -143,7 +141,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="19">
 			<NAME>ARM_L_4</NAME>
-			<OFFSET>180</OFFSET>
+			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-80</MIN>
@@ -153,7 +151,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>ARM_L_5</NAME>
-			<OFFSET>275</OFFSET>
+			<CENTER>275</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-50</MIN>
@@ -163,7 +161,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="32">
 			<NAME>ARM_R_1</NAME>
-			<OFFSET>180</OFFSET>
+			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-60</MIN>
@@ -173,17 +171,17 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="33">
 			<NAME>ARM_R_2</NAME>
-			<OFFSET>95</OFFSET>
+			<CENTER>95</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-45</MIN>
 					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
-		</SERVO>		
+		</SERVO>
 		<SERVO type="HERKULEX" id="34">
 			<NAME>ARM_R_3</NAME>
-			<OFFSET>280</OFFSET>
+			<CENTER>280</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-145</MIN>
@@ -193,7 +191,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="35">
 			<NAME>ARM_R_4</NAME>
-			<OFFSET>198</OFFSET>
+			<CENTER>198</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>80</MIN>
@@ -203,7 +201,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="36">
 			<NAME>ARM_R_5</NAME>
-			<OFFSET>100</OFFSET>
+			<CENTER>100</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>50</MIN>
@@ -211,10 +209,10 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		
-		<SERVO type="SSC32" id="3">
+
+		<SERVO type="HS82MG" id="7">
 			<NAME>EYES_LR</NAME>
-			<OFFSET>234</OFFSET>
+			<CENTER>234</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-104</MIN>
@@ -222,9 +220,9 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="SSC32" id="4">
+		<SERVO type="HS82MG" id="8">
 			<NAME>EYES_UD</NAME>
-			<OFFSET>277</OFFSET>
+			<CENTER>277</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-83</MIN>
@@ -232,9 +230,9 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="SSC32" id="6">
+		<SERVO type="HS82MG" id="9">
 			<NAME>MOUTH_OPEN</NAME>
-			<OFFSET>108</OFFSET>
+			<CENTER>108</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>0</MIN>
@@ -248,9 +246,9 @@
 				<SPEED>50</SPEED>
 			</DEFAULT>
 		</SERVO>
-		<SERVO type="SSC32" id="7">
+		<SERVO type="HS82MG" id="10">
 			<NAME>MOUTH_SMILE</NAME>
-			<OFFSET>174.6</OFFSET>
+			<CENTER>174.6</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-48.6</MIN>
@@ -264,9 +262,9 @@
 				<SPEED>50</SPEED>
 			</DEFAULT>
 		</SERVO>
-		<SERVO type="SSC32" id="5">
+		<SERVO type="HS82MG" id="11">
 			<NAME>EYELIDS</NAME>
-			<OFFSET>342</OFFSET>
+			<CENTER>342</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-120.6</MIN>
@@ -319,12 +317,20 @@
 	</SERVOGROUPS>
 
 	<SENSORLIST>
+		<SENSOR type="FSR" datatype="continuous" id="0">
+			<NAME>FSR_FOOT</NAME>
+			<LIMITS>
+				<MAX>256</MAX>
+				<MIN>0</MIN>
+				<PRECISION>0</PRECISION>
+			</LIMITS>
+		</SENSOR>
 		<SENSOR type="FSR" datatype="continuous" id="1">
 			<NAME>FSR_FOOT</NAME>
 			<LIMITS>
-				<MAX>5</MAX>
+				<MAX>256</MAX>
 				<MIN>0</MIN>
-				<PRECISION>2</PRECISION>
+				<PRECISION>0</PRECISION>
 			</LIMITS>
 		</SENSOR>
 	</SENSORLIST>
