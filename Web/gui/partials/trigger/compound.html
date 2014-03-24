@@ -1,0 +1,83 @@
+<form
+	name="compountTriggerForm"
+	model="compound.">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="input-group">
+				<span class="input-group-addon">Name</span> <input
+					type="text"
+					class="form-control"
+					placeholder="Time Name"
+					saveable
+					required
+					name="name"
+					ng-model="time.name">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">Action</span> <select
+					class="selectpicker form-control"
+					ng-model="time.action_id"
+					saveable
+					name="actionId"
+					ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
+					<option value="">No Action</option>
+				</select>
+			</div>		
+			<div class="input-group">
+				<span class="input-group-addon">Trigger</span> <select
+					class="selectpicker form-control"
+					ng-model="time.trigger_id"
+					required
+					saveable
+					name="triggerId"
+					ng-options="trigger.id as trigger.name group by trigger.type for trigger in triggers | orderBy:'name'">
+					<option value="">--Select Trigger--</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="input-group">
+				<div class="input-group-addon">Time</div>
+				<span class="input-group-btn">
+					<button
+						type="button"
+						class="btn btn-primary"
+						ng-model="time.mustStayActive"
+						saveable
+						required
+						name="whileActive"
+						btn-radio="true">While Active</button>
+					<button
+						type="button"
+						class="btn btn-primary"
+						saveable
+						required
+						name="stayActive"
+						ng-model="time.mustStayActive"
+						btn-radio="false">Since Deactivated</button>
+				</span> <input
+					name="time"
+					type="range"
+					class="form-control"
+					min="0"
+					max="300"
+					saveable
+					required
+					ng-model="time.time" />
+				<div class="input-group-addon">{{time.time}} seconds &#177;</div>
+				<input
+					name="variance"
+					type="range"
+					class="form-control"
+					min="0"
+					max="300"
+					saveable
+					required
+					ng-model="time.variance" />
+				<div class="input-group-addon">{{time.variance}} seconds</div>
+			</div>
+		</div>
+	</div>
+</form>

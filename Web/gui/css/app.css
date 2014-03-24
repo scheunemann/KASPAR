@@ -1,0 +1,179 @@
+/*  !important tags are a temporary hack since moving to require-css no longer guarentees load order */
+@media ( min-width : 768px) {
+	body {
+		padding-top: 93px !important;
+		padding-bottom: 37px !important;
+	}
+}
+
+body {
+	background: #fff !important;
+}
+
+.fill {
+	height: 100% !important;
+	width: 100% !important;
+}
+
+.container {
+	max-width: 100% !important;
+	width: 100% !important;
+}
+
+.maxHeight {
+	margin-top: 0px !important;
+	margin-bottom: 7px !important;
+}
+
+@media ( max-width : 767px ) {
+	html.maxHeight {
+		margin-top: 0px !important;
+		margin-bottom: 0px !important;
+	}
+}
+
+@media ( min-width : 768px ) {
+	.maxHeight {
+		height: 100% !important;
+		max-height: 100% !important;
+		margin-bottom: 0 !important;
+		margin-top: 0 !important;
+	}
+}
+
+.navbar {
+	overflow-x: hidden !important;
+}
+
+.navbar,.mainContent {
+	padding-left: 1px !important;
+	padding-right: 1px !important;
+}
+
+@media ( min-width : 768px) {
+	.navbar {
+		padding-left: 2px !important;
+		padding-right: 0.5px !important;
+	}
+	.mainContent {
+		padding-left: 2px !important;
+		padding-right: 0.5px !important;
+	}
+}
+
+@media ( min-width : 992px) {
+	.navbar {
+		padding-left: 4px !important;
+		padding-right: 1px !important;
+	}
+	.mainContent {
+		padding-left: 4px !important;
+		padding-right: 1px !important;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.navbar {
+		padding-left: 10px !important;
+		padding-right: 2.5px !important;
+	}
+	.mainContent {
+		padding-left: 2.5px !important;
+		padding-right: 10px !important;
+	}
+}
+
+.scrollable {
+	overflow-x: hidden !important;
+}
+
+@media ( min-width : 768px ) {
+	.scrollable {
+		overflow-y: auto !important;
+	}
+}
+
+@media ( min-width : 768px ) {
+	.header {
+		background: #e6e6e6 url("../img/logo.png") no-repeat -85px 0px
+			!important;
+	}
+}
+
+@media ( min-width : 992px ) {
+	.header {
+		background: #e6e6e6 url("../img/logo.png") no-repeat top left !important;
+	}
+}
+
+.jointEditor {
+	padding-right: 2px !important;
+	padding-left: 2px !important;
+	margin-top: 2px !important;
+	margin-bottom: 2px !important;
+}
+
+.highlight {
+	background-color: #f7f7f9 !important;
+	border: 1px solid #e1e1e8 !important;
+}
+
+.btn-xlarge {
+	padding: 18px 28px !important;
+	font-size: 22px !important;
+	line-height: normal !important;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	border-radius: 8px !important;
+}
+
+.has-info .form-control {
+	border-color: #3a87ad !important;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !important;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !important;
+}
+
+.has-info .input-group-addon {
+	color: #3a87ad !important;
+	background-color: #f4f8fa !important;
+	border-color: #3a87ad !important;
+}
+
+.nav,.pagination,.carousel,.panel-title a {
+	cursor: pointer !important;
+}
+
+.tab-content {
+	border-bottom: 1px solid #ddd !important;
+	border-left: 1px solid #ddd !important;
+	border-right: 1px solid #ddd !important;
+	border-radius: 0 0 4px 4px !important;
+	padding: 10px !important;
+	color: #555 !important;
+	cursor: default !important;
+	background-color: #fff !important;
+}
+
+.nav-tabs {
+	margin-bottom: 0 !important;
+}
+
+.btn-primary[btn-checkbox].active {
+	background-color: green !important;
+}
+
+.input-group-btn>.btn:first-child:not (:last-child ):not (.dropdown-toggle
+	) {
+	border-bottom-right-radius: 0 !important;
+	border-top-right-radius: 0 !important;
+}
+
+.input-group-btn>.btn:last-child:not (:first-child ),.input-group-btn>.dropdown-toggle:not
+	(:first-child ) {
+	border-bottom-left-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+}
+
+.input-group-btn:not (:first-child ):not (:last-child )>.btn {
+	border-radius: 0 !important;
+}

@@ -1,0 +1,21 @@
+{
+  "name": "kaspar-gui",
+  "version": "0.0.7",
+  "ignore": [
+    "bower_components"
+  ],
+  "devDependencies": {
+    "requirejs": "~2.1.9",
+    "angular": "~1.3.0",
+    "angular-slider": "~0.1.6",
+	"angular-ui-router": "~0.2.10",
+	"angular-resource" : "~1.3.0",
+    "angular-route": "~1.3.0",
+    "angular-toggle-switch": "~0.3.0",
+    "angular-bootstrap": "~0.10.0",
+    "mousetrap": "~1.4.6",
+    "requirejs-text": "~2.0.10",
+    "require-css": "~0.1.2"
+  },
+  "private": true
+}

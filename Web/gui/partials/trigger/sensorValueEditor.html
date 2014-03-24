@@ -1,0 +1,64 @@
+<div>
+	<accordion close-others="true"> <accordion-group
+		is-open="basicopen"> <accordion-heading>
+	Basic <i
+		class="pull-right glyphicon"
+		ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
+	</accordion-heading> <toggle-switch
+		model="onValue"
+		on-label="Active"
+		off-label="Inactive" />
+	<div>On/Off (As determined by sensor type)</div>
+	</accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
+	Detailed <i
+		class="pull-right glyphicon"
+		ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
+	</accordion-heading>
+	<div>Show Current Value (Connect/Disconnect button?)</div>
+	<ng-form
+		name="sensorValueForm"
+		ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
+		model="jointPosition">
+	<div class="input-group">
+		<span class="input-group-addon">Sensor</span>
+		<select
+			class="selectpicker form-control"
+			name="sensor"
+			ng-model="value.sensorName"
+			required
+			saveable
+			ng-options="sensor.name as action.name for sensor in sensors | orderBy:'name'">
+			<option value="">--Select Sensor--</option>
+		</select>
+	</div>
+	<div>
+		<div class="input-group">
+			<span class="input-group-addon">Value</span>
+			<select
+				class="selectpicker form-control"
+				name="dValue"
+				ng-model="value.sensorValue"
+				required
+				saveable
+				ng-options="value.id as value.name for value in values | orderBy:'name'">
+				<option value="">--Select Value--</option>
+			</select>
+		</div>
+	</div>
+	<div>
+		<div class="input-group">
+			<span class="input-group-addon">Comparison</span>
+			<select
+				class="selectpicker form-control"
+				saveable
+				name="action"
+				ng-model="sensor.action_id"
+				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
+				<option value="">--Select Action--</option>
+			</select>
+		</div>
+		<span>Continuous Value</span>
+		<div>Comparison: '&gt;', '&gt;=', '&lt;', '&lt;=', '=='</div>
+	</div>
+	</ng-form></accordion-group> </accordion>
+</div>
