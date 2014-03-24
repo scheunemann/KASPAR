@@ -1,5 +1,4 @@
-define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mousetrap', 'mousetrapPause' ], function(angular, proxyServices, models, filters,
-		displayServices, mousetrap, mousetrapPause) {
+define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mousetrap', 'mousetrapPause' ], function(angular) {
 	'use strict';
 
 	return angular.module('kasparGUI.directives', [ 'kasparGUI.proxyServices', 'kasparGUI.models', 'kasparGUI.filters', 'kasparGUI.displayServices' ])
@@ -132,7 +131,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('robotEditor', [ 'RobotModel', function(RobotModel) {
 		return {
-			templateUrl : 'static/partials/robot/edit.html',
+			templateUrl : 'partials/robot/edit.html',
 			restrict : 'E',
 			scope : {
 				robot : "=",
@@ -179,7 +178,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('poseEditor', [ 'JointPosition', function(JointPosition) {
 		return {
-			templateUrl : 'static/partials/action/pose.html',
+			templateUrl : 'partials/action/pose.html',
 			restrict : 'E',
 			scope : {
 				pose : "=action",
@@ -191,7 +190,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('robotInterface', [ '$q', 'Robot', 'Setting', 'proxyObjectResolver', function($q, Robot, Setting, proxyObjectResolver) {
 		return {
-			templateUrl : 'static/partials/robot/interface.html',
+			templateUrl : 'partials/robot/interface.html',
 			restrict : 'E',
 			scope : {
 				connected : "=",
@@ -232,7 +231,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 			[ '$q', '$rootScope', '$filter', 'proxyObjectResolver', 'JointPosition', 'RobotInterface', 'ServoInterface',
 					function($q, $rootScope, $filter, proxyObjectResolver, JointPosition, RobotInterface, ServoInterface) {
 						return {
-							templateUrl : 'static/partials/action/poseadvanced.html',
+							templateUrl : 'partials/action/poseadvanced.html',
 							restrict : 'E',
 							scope : {
 								pose : "=",
@@ -442,7 +441,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('jointEditor', [ 'proxyObjectResolver', 'ServoInterface', function(proxyObjectResolver, ServoInterface) {
 		return {
-			templateUrl : 'static/partials/action/joint.html',
+			templateUrl : 'partials/action/joint.html',
 			restrict : 'E',
 			scope : {
 				jointNames : "=",
@@ -517,7 +516,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('soundEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 		return {
-			templateUrl : 'static/partials/action/sound.html',
+			templateUrl : 'partials/action/sound.html',
 			restrict : 'E',
 			scope : {
 				sound : "=action",
@@ -529,7 +528,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('groupEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 		return {
-			templateUrl : 'static/partials/action/group.html',
+			templateUrl : 'partials/action/group.html',
 			restrict : 'E',
 			scope : {
 				group : "=action",
@@ -565,7 +564,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('sequenceEditor', [ 'proxyObjectResolver', 'OrderedAction', function(proxyObjectResolver, OrderedAction) {
 		return {
-			templateUrl : 'static/partials/action/sequence.html',
+			templateUrl : 'partials/action/sequence.html',
 			restrict : 'E',
 			scope : {
 				sequence : "=action",
@@ -715,7 +714,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('buttonTriggerEditor', [ 'proxyObjectResolver', 'ButtonHotKey', function(proxyObjectResolver, ButtonHotKey) {
 		return {
-			templateUrl : 'static/partials/trigger/button.html',
+			templateUrl : 'partials/trigger/button.html',
 			restrict : 'E',
 			scope : {
 				button : "=trigger",
@@ -738,7 +737,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('hotkeyEditor', [ 'proxyObjectResolver', 'hotkeyFormatter', function(proxyObjectResolver, hotkeyFormatter) {
 		return {
-			templateUrl : 'static/partials/trigger/hotkey.html',
+			templateUrl : 'partials/trigger/hotkey.html',
 			restrict : 'E',
 			scope : {
 				hotkey : "=",
@@ -767,7 +766,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('timeTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 		return {
-			templateUrl : 'static/partials/trigger/time.html',
+			templateUrl : 'partials/trigger/time.html',
 			restrict : 'E',
 			scope : {
 				time : "=trigger",
@@ -841,7 +840,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('compoundTriggerEditor', [ 'proxyObjectResolver', function(proxyObjectResolver) {
 		return {
-			templateUrl : 'static/partials/trigger/compound.html',
+			templateUrl : 'partials/trigger/compound.html',
 			restrict : 'E',
 			scope : {
 				compound : "=trigger",
@@ -901,7 +900,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('sensorTriggerEditor', [ 'proxyObjectResolver', 'Sensor', function(proxyObjectResolver, Sensor) {
 		return {
-			templateUrl : 'static/partials/trigger/sensor.html',
+			templateUrl : 'partials/trigger/sensor.html',
 			restrict : 'E',
 			scope : {
 				sensor : "=trigger",
@@ -932,7 +931,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('sensorValueEditor', [ '$compile', function($compile) {
 		return {
-			templateUrl : 'static/partials/trigger/sensorValueEditor.html',
+			templateUrl : 'partials/trigger/sensorValueEditor.html',
 			restrict : 'E',
 			scope : {
 				type : "=",
@@ -964,7 +963,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('operatorInteraction', [ function() {
 		return {
-			templateUrl : 'static/partials/interaction/operator.html',
+			templateUrl : 'partials/interaction/operator.html',
 			restrict : 'E',
 			scope : {
 				operator : "=",
@@ -993,7 +992,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('userInteraction', [ function() {
 		return {
-			templateUrl : 'static/partials/interaction/user.html',
+			templateUrl : 'partials/interaction/user.html',
 			restrict : 'E',
 			scope : {
 				user : "=",
@@ -1014,7 +1013,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 			[ '$q', '$timeout', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter',
 					function($q, $timeout, proxyObjectResolver, UserAction, hotkeyFormatter) {
 						return {
-							templateUrl : 'static/partials/interaction/actionButton.html',
+							templateUrl : 'partials/interaction/actionButton.html',
 							restrict : 'E',
 							scope : {
 								button : "=",
@@ -1062,7 +1061,7 @@ define([ 'angular', 'proxyServices', 'models', 'filters', 'displayServices', 'mo
 	//
 	.directive('actionButtons', [ '$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
 		return {
-			templateUrl : 'static/partials/interaction/actionButtons.html',
+			templateUrl : 'partials/interaction/actionButtons.html',
 			restrict : 'E',
 			scope : {
 				buttons : "=",

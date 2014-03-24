@@ -1,4 +1,4 @@
-define([ 'angular', 'angularResource' ], function(angular, angularResource) {
+define([ 'angular', 'angularResource' ], function(angular) {
 	'use strict';
 
 	return angular.module('kasparGUI.models', [ 'ngResource', 'ng' ])

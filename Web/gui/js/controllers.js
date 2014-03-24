@@ -1,4 +1,4 @@
-define([ 'angular', 'models', 'proxyServices', 'displayServices',  'angularUIRouter'], function(angular, models, proxyServices, displayServices, angularUIRouter) {
+define([ 'angular', 'models', 'proxyServices', 'displayServices',  'angularUIRouter'], function(angular) {
 	'use strict';
 
 	return angular.module('kasparGUI.controllers', [ 'kasparGUI.models', 'kasparGUI.proxyServices', 'ui.router', 'kasparGUI.displayServices' ])

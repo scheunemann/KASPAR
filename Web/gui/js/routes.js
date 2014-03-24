@@ -1,4 +1,4 @@
-define(['app', 'angularUIRouter'], function(app, angularUIRouter) {
+define(['app', 'angularUIRouter'], function(app) {
 	'use strict';
 
 	return app.config([ '$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

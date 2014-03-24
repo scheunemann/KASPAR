@@ -24,14 +24,15 @@ require.config({
 		'angular' : {
 			'exports' : 'angular'
 		},
-		'angularSlider' : [ 'angular' ],
+		'angularSlider' : [ 'angular', 'css!bower_components/angular-slider/angular-slider.min.css' ],
+		'angularToggleSwitch' : [ 'angular', 'css!bower_components/angular-toggle-switch/angular-toggle-switch.css', 'css!bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css' ],
 		'angularUIRouter' : [ 'angular' ],
 		'angularResource' : [ 'angular' ],
 		'angularRouter' : [ 'angular' ],
-		'mouseTrap' : {
-			'exports' : 'mouseTrap'
+		'mousetrap' : {
+			'exports' : 'mousetrap'
 		},
-		'mouseTrapPause' : [ 'mouseTrap' ],
+		'mousetrapPause' : [ 'mousetrap' ],
 		'angularBoostrap' : {
 			exports : 'angularBoostrap',
 			deps : [ 'text', 'css!lib/bootstrap/dist/css/bootstrap.min.css', 'css!lib/bootstrap/dist/css/bootstrap-theme.min.css' ]
@@ -48,7 +49,7 @@ require.config({
 // http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
 window.name = "NG_DEFER_BOOTSTRAP!";
 
-require([ 'angular', 'app', 'routes' ], function(angular, app, routes) {
+require([ 'angular', 'app', 'routes' ], function(angular, app) {
 	'use strict';
 	var $html = angular.element(document.getElementsByTagName('html')[0]);
 
