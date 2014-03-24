@@ -3,13 +3,12 @@
 
 	var dependancies = [ 
 	                     'angular', 
-	                     'angularResource', 
-	                     'js/services/ProxyObjectResolver', 
+	                     'angularResource',
 	                     'js/services/ObjectCache' 
 	                     ];
 	
-	define(dependancies, function(angular, resource, proxyObjectResolver, objectCache) {
-		var ProxyResourceInterceptor = function($injector, $q, proxyObjectResolver, objectCache) {
+	define(dependancies, function(angular, resource, objectCache) {
+		var ProxyResourceInterceptor = function($injector, $q, objectCache) {
 			var modObject = function(respObj) {
 				for ( var prop in respObj) {
 					if (respObj[prop] != undefined && respObj[prop].hasOwnProperty('proxyObject') && $injector.has(respObj[prop].type)) {
@@ -88,6 +87,6 @@
 			}
 		};
 
-		return [ '$injector', '$q', 'proxyObjectResolver', 'objectCache', ProxyResourceInterceptor ];
+		return [ '$injector', '$q', 'objectCache', ProxyResourceInterceptor ];
 	});
 }());

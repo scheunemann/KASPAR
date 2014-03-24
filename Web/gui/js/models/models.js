@@ -2,7 +2,7 @@
 	'use strict';
 
 	var dependancies = [
-                    	'js/services/proxyServices',
+                    	'js/services/ProxyResourceInterceptor',
 	                    'js/models/Action',
 	                    'js/models/ActionTest',
 	                    'js/models/ActionType',
@@ -33,7 +33,7 @@
 	                    ];	
 	
 	define(dependancies, function(
-			proxyServices,
+			proxyResourceInterceptor,
 			Action,
             ActionTest,
             ActionType,
@@ -96,6 +96,9 @@
 			.factory('User', User)
 			.factory('UserAction', UserAction)
 		
+		module.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.interceptors.push(proxyResourceInterceptor);
+		}]);
 		return module;
 	});
 }());

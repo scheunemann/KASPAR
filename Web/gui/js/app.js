@@ -31,9 +31,11 @@
 		var moduleName = 'kasparGUI';		
 		var controllerDeps = [
 		                      'ui.router',
+		                      'ui.bootstrap',
 		                      'kasparGUI.controllers',
-		                      'kasparGUI.models'
-		                     ];
+		                      'kasparGUI.directives',
+		                      'kasparGUI.filters'
+		                      ];
 		
 		var kasparGUI = angular.module(moduleName, controllerDeps);
 		kasparGUI.config(routes);
