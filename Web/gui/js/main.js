@@ -11,26 +11,19 @@ require.config({
 		mousetrap : 'bower_components/mousetrap/mousetrap.min',
 		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
 		text : 'bower_components/requirejs-text/text',
-		app : 'js/app',
-		models : 'js/models',
-		displayServices : 'js/displayServices',
-		proxyServices : 'js/proxyServices',
-		controllers : 'js/controllers',
-		filters : 'js/filters',
-		routes : 'js/routes',
-		directives : 'js/directives',
 	},
 	shim : {
 		'angular' : {
 			'exports' : 'angular'
 		},
 		'angularSlider' : [ 'angular', 'css!bower_components/angular-slider/angular-slider.min.css' ],
-		'angularToggleSwitch' : [ 'angular', 'css!bower_components/angular-toggle-switch/angular-toggle-switch.css', 'css!bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css' ],
+		'angularToggleSwitch' : [ 'angular', 'css!bower_components/angular-toggle-switch/angular-toggle-switch.css',
+				'css!bower_components/angular-toggle-switch/angular-toggle-switch-bootstrap.css' ],
 		'angularUIRouter' : [ 'angular' ],
 		'angularResource' : [ 'angular' ],
 		'angularRouter' : [ 'angular' ],
 		'mousetrap' : {
-			'exports' : 'mousetrap'
+			exports : 'mousetrap'
 		},
 		'mousetrapPause' : [ 'mousetrap' ],
 		'angularBoostrap' : {
@@ -46,14 +39,10 @@ require.config({
 	priority : [ "angular" ]
 });
 
-// http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
-window.name = "NG_DEFER_BOOTSTRAP!";
-
-require([ 'angular', 'app', 'routes' ], function(angular, app) {
+require([ 'angular', 'js/app' ], function(angular, app) {
 	'use strict';
-	var $html = angular.element(document.getElementsByTagName('html')[0]);
-
-	angular.element().ready(function() {
-		angular.resumeBootstrap([ app['name'] ]);
+	
+	angular.element(document).ready(function() {
+		angular.bootstrap(document, [app['name'], ]);
 	});
 });
