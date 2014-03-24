@@ -4,7 +4,7 @@
 	define(dependancies, function(angular) {
 		'use strict';
 
-		var HotKeyFormatter = function() {
+		var HotkeyFormatter = function() {
 			this.getDisplayFromEvent = function(keyEvent) {
 				var code = keyEvent.which || keyEvent.keyCode; // Not-IE || IE
 				var modifiers = ""
@@ -163,6 +163,6 @@
 			}
 		};
 
-		return [ HotKeyFormatter ];
+		return HotkeyFormatter;
 	});
 }());

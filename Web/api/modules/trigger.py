@@ -19,11 +19,11 @@ class TimeTrigger(crud.ModelCRUD):
         super(TimeTrigger, self).__init__(Data.Model.TimeTrigger, ['GET', 'POST', 'DELETE'])
 
 
-class ButtonHotKey(crud.ModelCRUD):
+class ButtonHotkey(crud.ModelCRUD):
     exposed = True
 
     def __init__(self):
-        super(ButtonHotKey, self).__init__(Data.Model.ButtonHotKey, ['GET', 'POST', 'DELETE'])
+        super(ButtonHotkey, self).__init__(Data.Model.ButtonHotkey, ['GET', 'POST', 'DELETE'])
 
 
 class Trigger(crud.ModelCRUD):
@@ -36,7 +36,7 @@ class Trigger(crud.ModelCRUD):
                         ])
 
     _import = TriggerImport()
-    hotkey = ButtonHotKey()
+    hotkey = ButtonHotkey()
     button = crud.ModelCRUD(Data.Model.ButtonTrigger, ['GET', 'POST', 'DELETE'])
     time = TimeTrigger()
     sensor = crud.ModelCRUD(Data.Model.SensorTrigger, ['GET', 'POST', 'DELETE'])

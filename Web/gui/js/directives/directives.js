@@ -9,7 +9,7 @@
 	                    'js/directives/ButtonTriggerEditor',
 	                    'js/directives/CompoundTriggerEditor',
 	                    'js/directives/GroupEditor',
-	                    'js/directives/HotKeyEditor',
+	                    'js/directives/HotkeyEditor',
 	                    'js/directives/JointEditor',
 	                    'js/directives/KeyBinding',
 	                    'js/directives/Model',
@@ -36,7 +36,7 @@
             ButtonTriggerEditor,
             CompoundTriggerEditor,
             GroupEditor,
-            HotKeyEditor,
+            HotkeyEditor,
             JointEditor,
             KeyBinding,
             Model,
@@ -77,7 +77,7 @@
 			.directive('sequenceEditor', SequenceEditor)
 			.directive('triggerEditor', TriggerEditor)
 			.directive('buttonTriggerEditor', ButtonTriggerEditor)
-			.directive('hotkeyEditor', HotKeyEditor)
+			.directive('hotkeyEditor', HotkeyEditor)
 			.directive('timeTriggerEditor', TimeTriggerEditor)
 			.directive('compoundTriggerEditor', CompoundTriggerEditor)
 			.directive('sensorTriggerEditor', SensorTriggerEditor)

@@ -2,16 +2,16 @@
 	'use strict';
 
 	var dependancies = [
-	                    'js/services/HotKeyFormatter'
+	                    'js/services/HotkeyFormatter'
 	                    ];	
 	
 	define(dependancies, function(
-			HotKeyFormatter){
+			HotkeyFormatter){
 
 		var moduleName = 'kasparGUI.displayServices';
 		
 		var module = angular.module(moduleName, [])
-			.service('hotKeyFormatter', HotKeyFormatter);
+			.service('hotkeyFormatter', HotkeyFormatter);
 		
 		return module;
 	});
