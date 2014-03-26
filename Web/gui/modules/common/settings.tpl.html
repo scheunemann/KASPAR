@@ -1,0 +1,12 @@
+<div
+	ng-cloak>
+	<div class="input-group">
+		<span class="input-group-addon">Attached Robot</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="robot"
+			ng-options="(item.name + ' (' + item.model.name + ': ' + item.version + ')' ) for item in robots | orderBy:'name'">
+			<option value="">--Select Robot--</option>
+		</select>
+	</div>
+</div>

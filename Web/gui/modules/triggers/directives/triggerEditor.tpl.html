@@ -1,0 +1,42 @@
+<div
+	ng-controller="triggerController"
+	id="triggersList">
+	<div class="input-group">
+		<span class="input-group-addon">Trigger</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="trigger"
+			ng-disabled="triggers.length == 0"
+			ng-options="item.name group by item.type for item in triggers | orderBy:'name'">
+			<option value="">--Select Trigger--</option>
+		</select>
+		<span class="input-group-btn">
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-click="newTrigger()">New</button>
+			<button
+				ng-disabled="!trigger"
+				class="btn btn-default"
+				type="button"
+				ng-click="deleteTrigger(trigger)">Delete</button>
+		</span>
+	</div>
+	<div ng-show="trigger">
+		<div class="input-group">
+			<span class="input-group-addon">Type</span>
+			<select
+				ng-disabled="trigger.id"
+				class="selectpicker form-control"
+				ng-model="trigger.type"
+				ng-options="type for type in types | orderBy:'type'">
+				<option value="">--Select Type--</option>
+			</select>
+		</div>
+		<trigger-editor
+			type='trigger.type'
+			trigger="trigger"
+			actions="actions"
+			triggers="triggers"></trigger-editor>
+	</div>
+</div>

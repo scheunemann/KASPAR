@@ -1,0 +1,51 @@
+<div>
+	<div class="input-group">
+		<span class="input-group-addon">Operator</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="operator"
+			ng-disabled="interaction"
+			ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
+			<option value="">--Select Operator--</option>
+		</select>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">User</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="user"
+			ng-disabled="interaction"
+			ng-options="user.fullname group by getCategory(user, operator.users) for user in users | orderBy:'fullname'">
+			<option value="">--Select User--</option>
+		</select>
+	</div>
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-disabled="!(user && operator)"
+				ng-if="interaction == null"
+				ng-click="start()">Start</button>
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-if="interaction != null"
+				ng-click="stop()">Stop</button>
+		</div>
+	</div>
+	<tabset ng-show="interaction != null"> <tab
+		heading="Operator View"> <operator-interaction
+		operator="operator"
+		buttons="buttons"
+		user="user"
+		interaction="interaction"
+		key-bind="keyBind"
+		show-hot-keys="showHotKeys"></operator-interaction> </tab> <tab
+		heading="User View"> <user-interaction
+		user="user"
+		buttons="buttons"
+		interaction="interaction"
+		key-bind="keyBind"
+		show-hot-keys="showHotKeys"></user-interaction> </tab></tabset>
+</div>

@@ -1,0 +1,110 @@
+<div class="clearfix">
+	<div class="input-group">
+		<span class="input-group-addon">Created</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Create Date"
+			ng-model="selected.created"
+			disabled="disabled">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Modified</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Modify Date"
+			ng-model="selected.modified"
+			disabled="disabled">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Servo Configs</span>
+		<div class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'configs')">
+				<span class="input-group">
+					<span class="input-group-addon">Port</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Port"
+						ng-model="item.port"
+						disabled="disabled">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon">Port Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Port Speed"
+						ng-model="item.portSpeed"
+						disabled="disabled">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon">Rotation Scale</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Rotation Scale"
+						ng-model="item.rotationScale"
+						disabled="disabled">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon">Rotation Offset</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Rotation Offset"
+						ng-model="item.rotationOffset"
+						disabled="disabled">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon">Speed Scale</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Speed Scale"
+						ng-model="item.speedScale"
+						disabled="disabled">
+				</span>
+			</span>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Servo Groups</span>
+		<div class="list-group form-control">
+			<span class="list-group-item">
+				<span
+					class="input-group"
+					ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'servogroups')">
+					<span class="input-group-addon">Name</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Port"
+						ng-model="item.name"
+						disabled="disabled">
+				</span>
+			</span>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Servos</span>
+		<div class="list-group form-control">
+			<span class="list-group-item">
+				<span
+					class="input-group"
+					ng-repeat="item in proxyObjectResolver.resolveProp(selected, 'servos')">
+					<span class="input-group-addon">Name</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Port"
+						ng-model="item.jointName"
+						disabled="disabled">
+				</span>
+			</span>
+		</div>
+	</div>
+</div>
