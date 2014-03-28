@@ -10,8 +10,8 @@
 			<div class="nav-collapse in">
 				<div
 					ng-repeat="link in group.links | orderBy:'order'"
-					ng-class="{highlight: state.current.url==link.path}">
-					<a href="#{{link.path}}">{{link.title}}</a>
+					ui-sref-active="highlight">
+					<a ui-sref="{{link.path}}">{{link.title}}</a>
 				</div>
 			</div>
 		</div>

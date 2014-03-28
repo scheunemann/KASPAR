@@ -31,31 +31,31 @@ _menuLinks = [
                 {
                  'title': 'Admin',
                  'links': [
-                            ('Operators', '/admin/operator'),
-                            ('Users', '/admin/user'),
-                            ('Robots', '/admin/robot'),
-                            ('Settings', '/admin/settings'),
+                            ('Operators', 'admin.operator'),
+                            ('Users', 'admin.user'),
+                            ('Robots', 'admin.robot'),
+                            ('Settings', 'admin.setting'),
                           ]},
                 {
                  'title':'Action',
                  'links': [
-                            ('Create/Edit', '/action'),
-                            ('Test', '/action/test'),
-                            ('Import', '/action/import'),
+                            ('Create/Edit', 'action.edit'),
+                            ('Test', 'action.test'),
+                            ('Import', 'action.import'),
                           ]},
                 {
                  'title':'Trigger',
                  'links': [
-                            ('Create/Edit', '/trigger'),
-                            ('Test', '/trigger/test'),
-                            ('Import', '/trigger/import'),
+                            ('Create/Edit', 'trigger.edit'),
+                            ('Test', 'trigger.test'),
+                            ('Import', 'trigger.import'),
                           ]},
                 {
                  'title':'Interactions',
                  'links': [
-                            ('View History', '/interaction/log'),
-                            ('Begin New', '/interaction'),
-                            ('Manage History', '/interaction/manage'),
+                            ('View History', 'interaction.view'),
+                            ('Begin New', 'interaction.begin'),
+                            ('Manage History', 'interaction.manage'),
                           ]},
             ]
 root.menuOptions = menu.MenuData(_menuLinks)

@@ -39,7 +39,7 @@
 			$urlRouterProvider.otherwise("/");
 			$stateProvider.state('admin', {
 				url : '/admin',
-				template : '',
+				template : '<ui-view/>',
 				abstract: true,
 			}).state('admin.operator', {
 				url : '/operator/:id',
