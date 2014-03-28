@@ -28,7 +28,7 @@
 			css) {
 
 		var moduleName = 'kasparGUI';
-		var controllerDeps = [ 'ui.router', 'ui.bootstrap', commonControllers, commonDirectives, ];
+		var controllerDeps = [ 'ui.router', 'ui.bootstrap', commonControllers, commonDirectives, action, admin, interaction, trigger ];
 
 		var Routes = function($stateProvider, $urlRouterProvider, $locationProvider) {
 			$locationProvider.html5Mode(true);

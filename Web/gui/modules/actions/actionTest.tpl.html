@@ -1,13 +1,15 @@
 <div>
 	<div class="row">
 		<div class="input-group col-lg-6">
-			<span class="input-group-addon">Action</span> <select
+			<span class="input-group-addon">Action</span>
+			<select
 				class="selectpicker form-control"
 				ng-model="action"
 				ng-options="action.name group by action.type for action in actions | orderBy:'name'"
 				ng-disabled="actions.length == 0">
 				<option value="">--Select Action--</option>
-			</select> <span class="input-group-btn">
+			</select>
+			<span class="input-group-btn">
 				<button
 					class="btn btn-default"
 					type="button"
@@ -28,6 +30,8 @@
 	<div
 		class="row maxHeight"
 		ng-show="action != ''">
-		<div class="col-lg-12 well maxHeight"><pre class="scrollable maxHeight">{{output}}</pre></div>
+		<div class="col-lg-12 well maxHeight">
+			<pre class="scrollable maxHeight">{{output}}</pre>
+		</div>
 	</div>
 </div>

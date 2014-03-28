@@ -29,18 +29,18 @@
 		var Routes = function($stateProvider, $urlRouterProvider) {
 			$urlRouterProvider.otherwise("/");
 			$stateProvider.state('trigger', {
-				url : '/',
+				url : '/trigger',
 				template : defaultTemplate,
-				controller: 'triggerController',
+				abstract: true,
 			}).state('trigger.edit', {
 				url : '/:id/edit',
 				template: editTemplate,
 				controller: 'triggerController',
-			}).state('test', {
+			}).state('trigger.test', {
 				url : '/:id/test',
 				template : testTemplate,
 				controller: 'triggerController',
-			}).state('import', {
+			}).state('trigger.import', {
 				url : '/import',
 				template : importTemplate,
 				controller: 'triggerController',

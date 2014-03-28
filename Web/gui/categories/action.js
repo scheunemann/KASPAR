@@ -18,7 +18,6 @@
 			defaultTemplate,
 			editTemplate,
 			importTemplate,
-			testController,
 			testTemplate) {
 
 		var moduleName = 'kasparGUI.menu.action';		
@@ -30,9 +29,9 @@
 		var Routes = function($stateProvider, $urlRouterProvider) {
 			$urlRouterProvider.otherwise("/");
 			$stateProvider.state('action', {
-				url : '/',
+				url : '/action',
 				template : defaultTemplate,
-				controller: 'actionController',
+				abstract: true,
 			}).state('action.edit', {
 				url : '/:id/edit',
 				template: editTemplate,

@@ -31,7 +31,7 @@
 			$stateProvider.state('interaction', {
 				url : '/interaction',
 				template : defaultTemplate,
-				controller: 'interactionController',
+				abstract: true,
 			}).state('interaction.begin', {
 				url : '/begin',
 				template: beginTemplate,

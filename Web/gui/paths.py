@@ -37,10 +37,10 @@ config = {
                'tools.staticfile.filename': os.path.join(_dir, 'static/images/favicon.ico')
                },
           '/': {
-#                'tools.staticdir.on': True,
-#                'tools.staticdir.dir': _dir,
+                'tools.staticdir.on': True,
+                'tools.staticdir.dir': _dir,
                 'tools.caching.on': True,
-#                'tools.staticdir.index': 'index.html',
-#                'tools.staticdir.content_types': addTypes
+                'tools.staticdir.index': 'index.html',
+                'tools.staticdir.content_types': addTypes
                },
           }
