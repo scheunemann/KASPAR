@@ -33,11 +33,11 @@
 				template : defaultTemplate,
 				abstract: true,
 			}).state('action.edit', {
-				url : '/:id/edit',
+				url : '{id:(?:/[0-9]{1,8})?}/edit',
 				template: editTemplate,
 				controller: 'actionController',
 			}).state('action.test', {
-				url : '/:id/test',
+				url : '{id:(?:/[0-9]{1,8})?}/test',
 				template : testTemplate,
 				controller: 'actionTestController',
 			}).state('action.import', {

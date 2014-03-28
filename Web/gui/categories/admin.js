@@ -42,15 +42,15 @@
 				template : '<ui-view/>',
 				abstract: true,
 			}).state('admin.operator', {
-				url : '/operator/:id',
+				url : '/operator{id:(?:/[0-9]{1,8})?}',
 				template: operatorTemplate,
 				controller: 'operatorController',
 			}).state('admin.user', {
-				url : '/user/:id',
+				url : '/user{id:(?:/[0-9]{1,8})?}',
 				template : userTemplate,
 				controller: 'userController',
 			}).state('admin.robot', {
-				url : '/robot/:id',
+				url : '/robot{id:(?:/[0-9]{1,8})?}',
 				template : robotTemplate,
 				controller: 'robotController',
 			}).state('admin.setting', {

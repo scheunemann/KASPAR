@@ -33,11 +33,11 @@
 				template : defaultTemplate,
 				abstract: true,
 			}).state('trigger.edit', {
-				url : '/:id/edit',
+				url : '{id:(?:/[0-9]{1,8})?}/edit',
 				template: editTemplate,
 				controller: 'triggerController',
 			}).state('trigger.test', {
-				url : '/:id/test',
+				url : '{id:(?:/[0-9]{1,8})?}/test',
 				template : testTemplate,
 				controller: 'triggerController',
 			}).state('trigger.import', {

@@ -37,11 +37,11 @@
 				template: beginTemplate,
 				controller: 'interactionController',
 			}).state('interaction.view', {
-				url : '/view/:id',
+				url : '{id:(?:/[0-9]{1,8})?}/view',
 				template : viewTemplate,
 				controller: 'interactionController',
 			}).state('interaction.manage', {
-				url : '/manage/:id',
+				url : '{id:(?:/[0-9]{1,8})?}/manage',
 				template : manageTemplate,
 				controller: 'interactionController',
 			});
