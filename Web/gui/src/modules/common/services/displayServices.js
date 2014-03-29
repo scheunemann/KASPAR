@@ -1,6 +1,8 @@
 'use strict';
 
-define([ 'angular', './HotkeyFormatter' ], function(angular, HotkeyFormatter) {
+define(function(require) {
+	var angular = require('angular');
+	var HotkeyFormatter = require('./HotkeyFormatter'); 
 
 	var moduleName = 'kasparGUI.common.displayServices';
 	var dependancies = [];

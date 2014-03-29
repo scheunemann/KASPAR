@@ -1,6 +1,6 @@
 'use strict';
 
-define([], function() {
+define(function(require) {
 	var IntersectFilter = function() {
 		return function(inputList, inputProp, objList, objProp) {
 			var ret = [];

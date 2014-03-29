@@ -1,25 +1,15 @@
 'use strict';
 
-define([
-        'angular',
-        'common/services/displayServices',
-        'common/services/proxyServices',
-        'common/filters',
-        'common/models',
-        'robots/models',
-        './directives/JointEditor',
-        './directives/RobotEditor',
-        './directives/RobotInterface',
-        ], function(
-        angular,
-		displayServices,
-		proxyServices,
-		filters,
-		commonModels,
-		robotModels,
-        JointEditor,
-        RobotEditor,
-        RobotInterface){
+define(function(require) {
+	var angular = require('angular');
+	var displayServices = require('common/services/displayServices');
+	var proxyServices = require('common/services/proxyServices');
+	var filters = require('common/filters');
+	var commonModels = require('common/models');
+	var robotModels = require('robots/models');
+	var JointEditor = require('./directives/JointEditor');
+	var RobotEditor = require('./directives/RobotEditor');
+	var RobotInterface = require('./directives/RobotInterface');
 
 	var moduleName = 'kasparGUI.robots.directives';
 	var dependancies = [

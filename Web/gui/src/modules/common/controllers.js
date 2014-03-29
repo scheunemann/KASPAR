@@ -1,21 +1,13 @@
 'use strict';
 
-define([
-        'angular',
-        'angularUIRouter',
-        'common/services/proxyServices',
-        'common/models',
-        'robots/models',
-        './CommonController',
-        './SettingsController',
-      ], function(
-		angular,
-		uiRouter,
-		proxyServices,
-		commonModels,
-		robotModels,
-        CommonController,
-        SettingsController){
+define(function(require) {
+	var angular = require('angular');
+	var uiRouter = require('angularUIRouter');
+	var proxyServices = require('common/services/proxyServices');
+	var commonModels = require('common/models');
+	var robotModels = require('robots/models');
+	var CommonController = require('./CommonController');
+	var SettingsController = require('./SettingsController');
 	
 	var moduleName = 'kasparGUI.common.controllers';
 	var dependancies = [

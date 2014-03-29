@@ -1,22 +1,16 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'angularUIRouter',
-        'common/models',
-        'text!./navbar.tpl.html',
-        ], function(
-		angular, 
-		uiRouter, 
-		commonModels, 
-		template) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularUIRouter');
+	var commonModels = require('common/models');
+	var template = require('text!./navbar.tpl.html');
 
 	var Navbar = function($state, Menu) {
 		return {
 			template : template,
 			restrict : 'E',
-			scope : {
-			},
+			scope : {},
 			controller : function($scope) {
 				Menu.get(function(m) {
 					$scope.title = m.title;
@@ -27,5 +21,5 @@ define([
 		};
 	};
 
-	return [ '$state', 'Menu', Navbar ];		
+	return [ '$state', 'Menu', Navbar ];
 });

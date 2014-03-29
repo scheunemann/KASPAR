@@ -1,15 +1,10 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'common/services/proxyServices',
-        'users/models',
-        'operators/models',
-        ], function(
-		angular, 
-		proxyServices, 
-		userModels, 
-		operatorModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('users/models');
+	require('operators/models');
 
 	var OperatorController = function($scope, Operator, User, proxyObjectResolver) {
 		$scope.operators = Operator.query(function() {

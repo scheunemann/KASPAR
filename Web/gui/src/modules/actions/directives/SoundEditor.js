@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular',
-        'text!./soundEditor.tpl.html',
-        'common/services/proxyServices'
-        ], function(angular, template, proxyServices) {
+define(function(require) {
+	var angular = require('angular');
+	var template = require('text!./soundEditor.tpl.html');
+	require('common/services/proxyServices');
 
 	var SoundEditor = function(proxyObjectResolver) {
 		return {

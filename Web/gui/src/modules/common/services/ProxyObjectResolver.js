@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-         'angular', 
-         'angularResource', 
-         './ObjectCache' ], 
-         function(angular, resource, objectCache) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	require('./ObjectCache'); 
 
 	var ProxyObjectResolver = function($q, $timeout, $rootScope, objectCache) {
 		var getObj = function(metaData, id) {

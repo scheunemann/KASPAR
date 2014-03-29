@@ -1,6 +1,8 @@
 'use strict';
 
-define([ 'angular', 'angularResource' ], function(angular) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
 
 	var ServoConfig = function($resource) {
 		return $resource('/api/robot/:robot/servoconfig/:id', {

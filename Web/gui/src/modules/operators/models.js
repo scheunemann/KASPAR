@@ -1,15 +1,10 @@
 'use strict';
 
-define([
-        'angular',
-        'angularResource',
-    	'common/services/proxyServices',
-        './models/Operator',
-       ], function(
-		angular,
-		resource,
-		proxyServices,
-        Operator){
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	var proxyServices = require('common/services/proxyServices');
+	var Operator = require('./models/Operator');
 
 	var moduleName = 'kasparGUI.operators.models';
 	var dependancies = [

@@ -1,18 +1,11 @@
 'use strict';
 
-define([
-        'angular',
-        'angularResource',
-    	'common/services/proxyServices',
-        './models/Menu',
-        './models/Setting',
-        ], function(
-		angular,
-		resource,
-		proxyServices,
-        Menu,
-        Setting
-        ){
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	var proxyServices = require('common/services/proxyServices');
+	var Menu = require('./models/Menu');
+	var Setting = require('./models/Setting');
 
 	var moduleName = 'kasparGUI.common.models';
 	var dependancies = [

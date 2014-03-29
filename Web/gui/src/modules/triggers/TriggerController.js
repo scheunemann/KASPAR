@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'actions/models',
-        'triggers/models',
-        ], function(angular, Action, Trigger, TriggerType) {
+define(function(require) {
+	var angular = require('angular');
+	require('actions/models');
+	require('triggers/models');
 
 	var TriggerController = function($scope, $http, $q, $timeout, Action, Trigger, TriggerType) {
 		$scope.trigger = null;

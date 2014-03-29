@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'common/services/proxyServices',
-        'robots/models' 
-        ], function(angular, proxyServices, robotModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('robots/models');
 
 	var SensorTriggerEditor = function(proxyObjectResolver, Sensor) {
 		return {

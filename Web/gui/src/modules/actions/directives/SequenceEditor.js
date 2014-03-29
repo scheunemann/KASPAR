@@ -1,11 +1,10 @@
 'use strict';
 
-define([ 
-        'angular',
-        'text!./sequenceEditor.tpl.html',
-        'actions/models',
-        'common/services/proxyServices',
-        ], function(angular, template, actionModels, proxyService) {
+define(function(require) {
+	var angular = require('angular');
+	var template = require('text!./sequenceEditor.tpl.html');
+	require('actions/models');
+	require('common/services/proxyServices');
 
 	var SequenceEditor = function(proxyObjectResolver, OrderedAction) {
 		return {

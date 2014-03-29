@@ -1,10 +1,10 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'angularResource',
-        './proxyServices' 
-        ], function(angular, resource, proxyServices) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	require('./proxyServices');
+
 	var ProxyResourceInterceptor = function($injector, $q, objectCache) {
 		var modObject = function(respObj) {
 			for ( var prop in respObj) {

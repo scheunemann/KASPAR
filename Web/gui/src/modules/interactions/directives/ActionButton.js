@@ -1,16 +1,15 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'text!./actionButton.tpl.html',
-        'common/services/proxyServices', 
-        'common/services/displayServices', 
-        'actions/models',
-        ], function(angular, proxyServices, displayServices, actionModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('common/services/displayServices');
+	require('actions/models');
+	var template = require('text!./actionButton.tpl.html');
 
 	var ActionButton = function($q, $timeout, proxyObjectResolver, UserAction, hotkeyFormatter) {
 		return {
-			templateUrl : 'partials/interaction/actionButton.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				button : "=",

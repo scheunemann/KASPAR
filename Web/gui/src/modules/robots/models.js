@@ -1,35 +1,20 @@
 'use strict';
 
-define([
-        'angular',
-        'angularResource',
-    	'common/services/proxyServices',
-        './models/Robot',
-        './models/RobotInterface',
-        './models/RobotModel',
-        './models/Sensor',
-        './models/SensorGroup',
-        './models/SensorModel',
-        './models/Servo',
-        './models/ServoConfig',
-        './models/ServoGroup',
-        './models/ServoInterface',
-        './models/ServoModel',
-        ], function(
-		angular,
-		resource,
-		proxyServices,
-        Robot,
-        RobotInterface,
-        RobotModel,
-        Sensor,
-        SensorGroup,
-        SensorModel,
-        Servo,
-        ServoConfig,
-        ServoGroup,
-        ServoInterface,
-        ServoModel){
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	var proxyServices = require('common/services/proxyServices');
+	var Robot = require('./models/Robot');
+	var RobotInterface = require('./models/RobotInterface');
+	var RobotModel = require('./models/RobotModel');
+	var Sensor = require('./models/Sensor');
+	var SensorGroup = require('./models/SensorGroup');
+	var SensorModel = require('./models/SensorModel');
+	var Servo = require('./models/Servo');
+	var ServoConfig = require('./models/ServoConfig');
+	var ServoGroup = require('./models/ServoGroup');
+	var ServoInterface = require('./models/ServoInterface');
+	var ServoModel = require('./models/ServoModel');
 
 	var moduleName = 'kasparGUI.robots.models';
 	var dependancies = [

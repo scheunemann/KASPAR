@@ -1,36 +1,19 @@
 'use strict';
 
-define([
-		'angular',
-		'angularUIRouter',
-		'operators/controllers',
-		'text!operators/index.tpl.html',
-		'users/controllers',
-		'text!users/index.tpl.html',
-		'robots/controllers',
-		'text!robots/index.tpl.html',
-		'common/controllers',
-		'text!common/settings.tpl.html',
-], function(
-		angular,
-		angularUIRouter,
-		operatorControllers,
-		operatorTemplate,
-		userControllers,
-		userTemplate,
-		robotControllers,
-		robotTemplate,
-		settingsControllers,
-		settingsTemplate) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularUIRouter');
+	var operatorControllers = require('operators/controllers');
+	var operatorTemplate = require('text!operators/index.tpl.html');
+	var userControllers = require('users/controllers');
+	var userTemplate = require('text!users/index.tpl.html');
+	var robotControllers = require('robots/controllers');
+	var robotTemplate = require('text!robots/index.tpl.html');
+	var settingsControllers = require('common/controllers');
+	var settingsTemplate = require('text!common/settings.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.admin';
-	var dependancies = [ 
-	                     'ui.router', 
-	                     operatorControllers, 
-	                     userControllers, 
-	                     robotControllers,
-	                     settingsControllers, 
-	                   ];
+	var dependancies = [ 'ui.router', operatorControllers, userControllers, robotControllers, settingsControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

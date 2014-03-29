@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'robots/models/RobotModel',
-        'text!./robotEditor.tpl.html',
-        ], function(angular, RobotModel, template) {
+define(function(require) {
+	var angular = require('angular');
+	require('robots/models');
+	var template = require('text!./robotEditor.tpl.html');
 
 	var RobotEditor = function(RobotModel) {
 		return {

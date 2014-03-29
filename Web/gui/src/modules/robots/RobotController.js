@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'common/services/proxyServices',
-        'robots/models',
-        ], function(angular, proxyServices, models) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('robots/models');
 
 	var RobotController = function($scope, Robot, proxyObjectResolver) {
 		$scope.proxyObjectResolver = proxyObjectResolver;

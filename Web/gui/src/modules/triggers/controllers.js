@@ -1,15 +1,10 @@
 'use strict';
 
-define([
-        'angular',
-        'actions/models',
-        'triggers/models',
-        './TriggerController',
-      ], function(
-		angular,
-		actionModels,
-		triggerModels,
-        TriggerController){
+define(function(require) {
+	var angular = require('angular');
+	var actionModels = require('actions/models');
+	var triggerModels = require('triggers/models');
+	var TriggerController = require('./TriggerController');
 	
 	var moduleName = 'kasparGUI.triggers.controllers';
 	var dependancies = [

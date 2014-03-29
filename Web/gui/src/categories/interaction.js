@@ -1,20 +1,16 @@
 'use strict';
 
-define([
-		'angular',
-		'angularUIRouter',
-		'interactions/controllers',
-		'text!interactions/index.tpl.html',
-		'text!interactions/begin.tpl.html',
-		'text!interactions/log.tpl.html',
-		'text!interactions/manage.tpl.html',
-], function(angular, angularUIRouter, interactionControllers, defaultTemplate, beginTemplate, viewTemplate, manageTemplate) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularUIRouter');
+	var interactionControllers = require('interactions/controllers');
+	var defaultTemplate = require('text!interactions/index.tpl.html');
+	var beginTemplate = require('text!interactions/begin.tpl.html');
+	var viewTemplate = require('text!interactions/log.tpl.html');
+	var manageTemplate = require('text!interactions/manage.tpl.htm');
 
 	var moduleName = 'kasparGUI.menu.interaction';
-	var dependancies = [ 
-	                     'ui.router', 
-	                     interactionControllers, 
-	                   ];
+	var dependancies = [ 'ui.router', interactionControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

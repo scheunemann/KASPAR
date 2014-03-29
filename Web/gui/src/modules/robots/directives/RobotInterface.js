@@ -1,12 +1,11 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'robots/models/Robot',
-        'text!./robotInterface.tpl.html',
-        'common/services/proxyServices',
-        'common/models'
-        ], function(angular, Robot, template, proxyServices, commonModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('common/models');
+	require('robots/models');
+	var template = require('text!./robotInterface.tpl.html');
 
 	var RobotInterface = function($q, Robot, Setting, proxyObjectResolver) {
 		return {

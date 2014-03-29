@@ -1,12 +1,11 @@
 'use strict';
 
-define([ 
-        'angular',
-        'text!./poseEditor.tpl.html',
-        'actions/models',
-        'actions/directives',
-        'robots/directives'
-        ], function(angular, template, actionModels, actionDirectives, robotDirectives) {
+define(function(require) {
+	var angular = require('angular');
+	var template = require('text!./poseEditor.tpl.html');
+	require('actions/models');
+	require('actions/directives');
+	require('robots/directives');
 
 	var PoseEditor = function(JointPosition, RobotInterface) {
 		return {

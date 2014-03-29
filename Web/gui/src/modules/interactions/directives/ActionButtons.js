@@ -1,11 +1,10 @@
 'use strict';
 
-define([ 
-         'angular', 
-         'common/services/proxyServices', 
-         'common/services/displayServices', 
-         'actions/models',
-         ], function(angular, proxyServices, displayServices, actionModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('common/services/displayServices');
+	require('actions/models');
 
 	var ActionButtons = function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
 		return {

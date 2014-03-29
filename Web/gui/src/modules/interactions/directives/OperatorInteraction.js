@@ -1,6 +1,7 @@
 'use strict';
 
-define([ 'angular' ], function(angular) {
+define(function(require) {
+	var angular = require('angular');
 
 	var OperatorInteraction = function() {
 		return {

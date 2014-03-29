@@ -1,15 +1,10 @@
 'use strict';
 
-define([
-        'angular',
-        './ObjectCache',
-        './ProxyObjectResolver',
-        './ProxyResourceInterceptor'
-        ], function(
-		angular,
-		ObjectCache,
-		ProxyObjectResolver,
-		ProxyResourceInterceptor){
+define(function(require) {
+	var angular = require('angular');
+	var ObjectCache = require('./ObjectCache');
+	var ProxyObjectResolver = require('./ProxyObjectResolver');
+	var ProxyResourceInterceptor = require('./ProxyResourceInterceptor');
 
 	var moduleName = 'kasparGUI.common.proxyServices';
 	var dependancies = [];

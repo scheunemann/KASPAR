@@ -1,19 +1,12 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'common/services/proxyServices',
-        'operators/models',
-        'users/models',
-        'triggers/models',
-        'interactions/models',
-        ], function(
-		angular, 
-		proxyServices, 
-		Operator, 
-		User, 
-		Trigger,
-		Interaction) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('operators/models');
+	require('users/models');
+	require('triggers/models');
+	require('interactions/models');
 
 	var InteractionController = function($q, $scope, Operator, User, Interaction, Trigger, proxyObjectResolver) {
 		$scope.operators = Operator.query();

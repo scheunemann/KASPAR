@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'common/services/proxyServices', 
-        'triggers/models' 
-        ], function(angular, proxyServices, triggerModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('triggers/models');
 
 	var ButtonTriggerEditor = function(proxyObjectResolver, ButtonHotkey) {
 		return {

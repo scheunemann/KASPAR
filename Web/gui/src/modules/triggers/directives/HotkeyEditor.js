@@ -1,11 +1,10 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'mousetrap', 
-        'mousetrapPause', 
-        'common/services/displayServices' 
-        ], function(angular, mousetrap, mousetrapPause, displayServices) {
+define(function(require) {
+	var angular = require('angular');
+	require('mousetrap');
+	require('mousetrapPause');
+	require('common/services/displayServices');
 
 	var HotkeyEditor = function(hotkeyFormatter) {
 		return {

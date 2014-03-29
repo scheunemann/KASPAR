@@ -1,6 +1,8 @@
 'use strict';
 
-define([ 'angular', 'actions/models', ], function(angular, actionModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
 
 	var ActionController = function($scope, $http, $q, $timeout, Action, ActionType) {
 		$scope.action = '';

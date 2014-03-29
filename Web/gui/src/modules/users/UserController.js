@@ -1,18 +1,11 @@
 'use strict';
 
-define([ 
-        'angular',
-        'common/services/proxyServices',
-        'actions/models',
-        'triggers/models',
-        'users/models',
-        ], function(
-		angular, 
-		proxyServices, 
-		actionModels, 
-		triggerModels, 
-		userModels) {
-	'use strict';
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('actions/models');
+	require('triggers/models');
+	require('users/models');
 
 	var UserController = function($scope, $filter, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
 		$scope.users = User.query(function() {

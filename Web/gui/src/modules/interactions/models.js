@@ -1,15 +1,10 @@
 'use strict';
 
-define([
-        'angular',
-        'angularResource',
-    	'common/services/proxyServices',
-        './models/Interaction',
-        ], function(
-		angular,
-		resource,
-		proxyServices,
-        Interaction){
+define(function(require) {
+	var angular = require('angular');
+	var resource = require('angularResource');
+	var proxyServices = require('common/services/proxyServices');
+	var Interaction = require('./models/Interaction');
 
 	var moduleName = 'kasparGUI.interactions.models';
 	var dependancies = [

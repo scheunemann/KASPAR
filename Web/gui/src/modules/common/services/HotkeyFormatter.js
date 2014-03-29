@@ -1,6 +1,6 @@
 'use strict';
 
-define([], function() {
+define(function(require) {
 
 	var HotkeyFormatter = function() {
 		this.getDisplayFromEvent = function(keyEvent) {

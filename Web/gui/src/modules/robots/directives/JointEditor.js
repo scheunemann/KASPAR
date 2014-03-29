@@ -1,11 +1,10 @@
 'use strict';
 
-define([ 
-        'angular',
-        'robots/models/ServoInterface',
-        'text!./jointEditor.tpl.html',
-        'common/services/proxyServices',
-        ], function(angular, ServoInterface, template, proxyServices) {
+define(function(require) {
+	var angular = require('angular');
+	require('common/services/proxyServices');
+	require('robots/models');
+	var template = require('text!./jointEditor.tpl.html');
 
 	var JointEditor = function(proxyObjectResolver, ServoInterface) {
 		return {

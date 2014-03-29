@@ -1,12 +1,11 @@
 'use strict';
 
-define([ 
-        'angular',
-        './controllers',
-        './directives',
-        './models'
-        ], function(angular, controllers, directives, models) {
-
+define(function(require) {
+	angular = require('angular');
+	controllers = require('./controllers');
+	directives = require('./directives');
+	models = require('./models');
+	
 	var moduleName = 'kasparGUI.common';
 	var dependancies = [ 
 							controllers,

@@ -1,14 +1,13 @@
 'use strict';
 
-define([
-		'angular',
-		'angularUIRouter',
-		'actions/controllers',
-		'text!actions/index.tpl.html',
-		'text!actions/actionEdit.tpl.html',
-		'text!actions/actionImport.tpl.html',
-		'text!actions/actionTest.tpl.html',
-], function(angular, angularUIRouter, actionControllers, defaultTemplate, editTemplate, importTemplate, testTemplate) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularUIRouter');
+	var actionControllers = require('actions/controllers');
+	var defaultTemplate = require('text!actions/index.tpl.html');
+	var editTemplate = require('text!actions/actionEdit.tpl.html');
+	var importTemplate = require('text!actions/actionImport.tpl.html');
+	var testTemplate = require('text!actions/actionTest.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.action';
 	var dependancies = [ 'ui.router', actionControllers, ];

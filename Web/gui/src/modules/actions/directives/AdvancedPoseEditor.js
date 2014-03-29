@@ -1,13 +1,12 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'text!./advancedPoseEditor.tpl.html',
-        'actions/models', 
-        'common/services/proxyServices', 
-        'common/filters', 
-        'robots/directives'
-        ], function(angular, template, actionModels, proxyServices, filters, robotDirectives) {
+define(function(require) {
+	var angular = require('angular');
+	var template = require('text!./advancedPoseEditor.tpl.html');
+	require('actions/models');
+	require('common/services/proxyServices');
+	require('common/filters');
+	require('robots/directives');
 
 	var AdvancedPoseEditor = function($q, $rootScope, $filter, proxyObjectResolver, JointPosition, RobotInterface) {
 		return {

@@ -1,6 +1,7 @@
 'use strict';
 
-define([ 'angular' ], function(angular) {
+define(function(require) {
+	var angular = require('angular');
 
 	var ObjectCache = function($q, $timeout) {
 		// $resource does it's own caching, but still builds a new object

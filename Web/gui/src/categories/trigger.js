@@ -1,20 +1,16 @@
 'use strict';
 
-define([
-		'angular',
-		'angularUIRouter',
-		'triggers/controllers',
-		'text!triggers/index.tpl.html',
-		'text!triggers/triggerEdit.tpl.html',
-		'text!triggers/triggerTest.tpl.html',
-		'text!triggers/triggerImport.tpl.html',
-], function(angular, angularUIRouter, triggerControllers, defaultTemplate, editTemplate, testTemplate, importTemplate) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularUIRouter');
+	var triggerControllers = require('triggers/controllers');
+	var defaultTemplate = require('text!triggers/index.tpl.html');
+	var editTemplate = require('text!triggers/triggerEdit.tpl.html');
+	var testTemplate = require('text!triggers/triggerTest.tpl.html');
+	var importTemplate = require('text!triggers/triggerImport.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.trigger';
-	var dependancies = [ 
-	                     'ui.router', 
-	                     triggerControllers, 
-	                   ];
+	var dependancies = [ 'ui.router', triggerControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

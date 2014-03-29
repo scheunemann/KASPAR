@@ -1,20 +1,13 @@
 'use strict';
 
-define([ 
-        'angular',
-        'actions/models',
-        './ActionController',
-        './ActionTestController',
-       ], function(
-		angular,
-		actionModels,
-		ActionController,
-		ActionTestController){
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
+	var ActionController = require('./ActionController');
+	var ActionTestController = require('./ActionTestController');
 
 	var moduleName = 'kasparGUI.actions';
-	var dependancies = [ 
-	                      actionModels,
-                         ];
+	var dependancies = [ actionModels, ];
 
 	var module = angular.module(moduleName, dependancies)
 		.controller('actionController', ActionController)

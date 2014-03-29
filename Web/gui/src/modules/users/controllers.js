@@ -1,19 +1,12 @@
 'use strict';
 
-define([ 
-        'angular',
-        'common/services/proxyServices',
-        'actions/models',
-        'triggers/models',
-        'users/models',
-        './UserController'
-        ], function(
-		angular,
-		proxyServices, 
-		actionModels, 
-		triggerModels, 
-		userModels, 
-		UserController) {
+define(function(require) {
+	var angular = require('angular');
+	var proxyServices = require('common/services/proxyServices');
+	var actionModels = require('actions/models');
+	var triggerModels = require('triggers/models');
+	var userModels = require('users/models');
+	var UserController = require('./UserController');
 
 	var moduleName = 'kasparGUI.users.controllers';
 	var dependancies = [ 

@@ -1,10 +1,9 @@
 'use strict';
 
-define([ 
-        'angular', 
-        'text!./groupEditor.tpl.html',
-        'common/services/proxyServices'
-        ], function(angular, template, proxyServices) {
+define(function(require) {
+	var angular = require('angular');
+	var template = require('text!./groupEditor.tpl.html');
+	require('common/services/proxyServices');
 
 	var GroupEditor = function(proxyObjectResolver) {
 		return {

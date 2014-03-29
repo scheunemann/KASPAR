@@ -1,6 +1,8 @@
 'use strict';
 
-define([ 'angular', 'angularResource' ], function(angular) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
 
 	var TriggerType = function($resource) {
 		return $resource('/api/trigger/type/:id', {

@@ -1,6 +1,8 @@
 'use strict';
 
-define([ 'angular', 'angularResource' ], function(angular) {
+define(function(require) {
+	var angular = require('angular');
+	require('angularResource');
 
 	var CustomAction = function($resource) {
 		return $resource('/api/user/:uid/customaction/:id', {

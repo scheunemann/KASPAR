@@ -1,9 +1,8 @@
 'use strict';
 
-define([ 
-         'angular', 
-         'actions/models', ], 
-         function(angular, actionModels) {
+define(function(require) {
+	var angular = require('angular');
+	require('actions/models');
 
 	var ActionTestController = function($scope, $http, $q, $timeout, Action, ActionTest) {
 		$scope.running = false;

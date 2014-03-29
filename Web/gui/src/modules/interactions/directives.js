@@ -1,25 +1,15 @@
 'use strict';
 
-define([
-        'angular',
-        'common/services/displayServices',
-        'common/services/proxyServices',
-        'common/filters',
-        'interactions/models',
-        './directives/ActionButton',
-        './directives/ActionButtons',
-        './directives/OperatorInteraction',
-        './directives/UserInteraction'
-        ], function(
-		angular,
-		displayServices,
-		proxyServices,
-		filters,
-		interactionModels,
-        ActionButton,
-        ActionButtons,
-        OperatorInteraction,
-        UserInteraction){
+define(function(require) {
+	var angular = require('angular');
+	var displayServices = require('common/services/displayServices');
+	var proxyServices = require('common/services/proxyServices');
+	var filters = require('common/filters');
+	var interactionModels = require('interactions/models');
+	var ActionButton = require('./directives/ActionButton');
+	var ActionButtons = require('./directives/ActionButtons');
+	var OperatorInteraction = require('./directives/OperatorInteraction');
+	var UserInteraction = require('./directives/UserInteraction');
 
 	var moduleName = 'kasparGUI.interactions.directives';
 	var dependancies = [
