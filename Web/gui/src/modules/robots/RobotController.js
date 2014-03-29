@@ -8,8 +8,8 @@ define(function(require) {
 	var RobotController = function($scope, Robot, proxyObjectResolver) {
 		$scope.proxyObjectResolver = proxyObjectResolver;
 		$scope.robots = Robot.query(function(robots) {
-			for (var i = 0; i < $scope.robots.length; i++) {
-				$scope.proxyObjectResolver.resolveProp(robots[i], 'model');
+			for (var i = 0; i < robots.length; i++) {
+				proxyObjectResolver.resolveProp(robots[i], 'model');
 			}
 		});
 

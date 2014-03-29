@@ -6,7 +6,7 @@ from cherrypy.lib.static import serve_file
 addTypes = {'woff': 'application/x-font-woff'}
 name = "Kaspar GUI Root"
 _curDir = os.path.dirname(os.path.realpath(__file__))
-_subDir = 'build'
+_subDir = 'src'
 _dir = os.path.join(_curDir, _subDir)
 isFile = re.compile('(.*/)?.+\.[^/]+')
 

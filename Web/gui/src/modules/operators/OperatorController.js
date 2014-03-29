@@ -7,8 +7,8 @@ define(function(require) {
 	require('operators/models');
 
 	var OperatorController = function($scope, Operator, User, proxyObjectResolver) {
-		$scope.operators = Operator.query(function() {
-			$scope.selectedOperator = $scope.operators[0];
+		$scope.operators = Operator.query(function(operators) {
+			$scope.selectedOperator = operators[0];
 		});
 
 		$scope.usersSaved = false;

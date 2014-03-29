@@ -8,8 +8,8 @@ define(function(require) {
 	require('users/models');
 
 	var UserController = function($scope, $filter, User, CustomAction, CustomTrigger, Action, Trigger, proxyObjectResolver) {
-		$scope.users = User.query(function() {
-			$scope.selectedUser = $scope.users[0];
+		$scope.users = User.query(function(users) {
+			$scope.selectedUser = users[0];
 		});
 
 		$scope.$watch('selectedUser', function() {
