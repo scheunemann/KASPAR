@@ -3,7 +3,7 @@
 define(function(require) {
 	var angular = require('angular');
 	require('angularResource');
-	require('./proxyServices');
+	require('./ObjectCache');
 
 	var ProxyResourceInterceptor = function($injector, $q, objectCache) {
 		var modObject = function(respObj) {

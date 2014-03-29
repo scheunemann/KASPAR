@@ -1,9 +1,8 @@
 'use strict';
 
-define( [ 
-         'angular', 
-         'common/services/proxyServices'
-         ], function(angular, proxyServices) {
+define(function(require) {
+	angular = require('angular');
+	require('common/services/proxyServices');
 
 	var TimeTriggerEditor = function(proxyObjectResolver) {
 		return {
