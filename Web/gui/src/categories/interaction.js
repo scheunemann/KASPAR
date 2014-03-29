@@ -7,7 +7,7 @@ define(function(require) {
 	var defaultTemplate = require('text!interactions/index.tpl.html');
 	var beginTemplate = require('text!interactions/begin.tpl.html');
 	var viewTemplate = require('text!interactions/log.tpl.html');
-	var manageTemplate = require('text!interactions/manage.tpl.htm');
+	var manageTemplate = require('text!interactions/manage.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.interaction';
 	var dependancies = [ 'ui.router', interactionControllers, ];
