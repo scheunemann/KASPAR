@@ -3,6 +3,7 @@
 define(function(require) {
 	var angular = require('angular');
 	require('angularResource');
+	require('actions/directives');
 
 	var ActionController = function($scope, $http, $q, $timeout, Action, ActionType) {
 		$scope.action = '';

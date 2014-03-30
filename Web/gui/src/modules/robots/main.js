@@ -1,10 +1,10 @@
 'use strict';
 
 define(function(require) {
-	angular = require('angular');
-	controllers = require('./controllers');
-	directives = require('./directives');
-	models = require('./models');
+	var angular = require('angular');
+	var controllers = require('./controllers');
+	var directives = require('./directives');
+	var models = require('./models');
 
 	var moduleName = 'kasparGUI.robots';
 	var dependancies = [ 

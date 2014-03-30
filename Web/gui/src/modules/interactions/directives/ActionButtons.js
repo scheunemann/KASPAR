@@ -5,10 +5,11 @@ define(function(require) {
 	require('common/services/proxyServices');
 	require('common/services/displayServices');
 	require('actions/models');
+	var template = require('text!./actionButtons.tpl.html');
 
 	var ActionButtons = function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
 		return {
-			templateUrl : 'partials/interaction/actionButtons.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				buttons : "=",

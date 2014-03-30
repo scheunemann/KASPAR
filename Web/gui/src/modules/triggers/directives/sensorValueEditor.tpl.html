@@ -1,63 +1,62 @@
 <div>
-	<ng-form
-		name="sensorValueForm"
-		ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
-		model="jointPosition"> <accordion close-others="true">
-	<accordion-group is-open="basicopen"> <accordion-heading>
-	Basic <i
-		class="pull-right glyphicon"
-		ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
-	</accordion-heading> <toggle-switch
-		model="onValue"
-		on-label="Active"
-		off-label="Inactive" />
-	<div>On/Off (As determined by sensor type)</div>
-	</accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
-	Detailed <i
-		class="pull-right glyphicon"
-		ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
-	</accordion-heading>
 	<div>Show Current Value (Connect/Disconnect button?)</div>
-	<div class="input-group">
-		<span class="input-group-addon">Sensor</span>
-		<select
-			class="selectpicker form-control"
-			name="sensor"
-			ng-model="value.sensorName"
-			required
-			saveable
-			ng-options="sensor.name as action.name for sensor in sensors | orderBy:'name'">
-			<option value="">--Select Sensor--</option>
-		</select>
-	</div>
-	<div>
-		<div class="input-group">
-			<span class="input-group-addon">Value</span>
-			<select
-				class="selectpicker form-control"
-				name="dValue"
-				ng-model="value.sensorValue"
-				required
-				saveable
-				ng-options="value.id as value.name for value in values | orderBy:'name'">
-				<option value="">--Select Value--</option>
-			</select>
+	<div ng-show="sensor">
+		<accordion close-others="true"> <accordion-group
+			is-open="basicopen"> <accordion-heading>
+		Basic <i
+			class="pull-right glyphicon"
+			ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
+		</accordion-heading>
+		<div>
+			<div class="btn-group">
+				<button
+					type="button"
+					class="btn btn-primary"
+					ng-model="basicOn"
+					btn-radio="'on'">Active</button>
+				<button
+					type="button"
+					class="btn btn-primary"
+					ng-model="basicOn"
+					btn-radio="'off'">Inactive</button>
+			</div>
+			(As determined by sensor type)
 		</div>
-	</div>
-	<div>
-		<div class="input-group">
-			<span class="input-group-addon">Comparison</span>
-			<select
-				class="selectpicker form-control"
-				saveable
-				name="action"
-				ng-model="sensor.action_id"
-				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-				<option value="">--Select Action--</option>
-			</select>
+		</accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
+		Detailed <i
+			class="pull-right glyphicon"
+			ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
+		</accordion-heading>
+		<div class="col-lg-12">
+			<div class="input-group">
+				<div class="input-group-addon">Active when current value</div>
+				<select
+					class="selectpicker form-control"
+					name="dValue"
+					ng-model="trigger.comparison"
+					required
+					style="width: 25%"
+					ng-options="value.compare as value.name for value in comparisons">
+					<option value="">--Select Value--</option>
+				</select> <input
+					name="time"
+					type="range"
+					class="form-control"
+					style="width: 75%"
+					value="{{trigger.sensorValue}}"
+					min="{{sensor.value_type.minValue}}"
+					max="{{sensor.value_type.maxValue}}"
+					step="{{math.pow(10, -1 * sensor.value_type.precision)}}"
+					required
+					ng-model="trigger.sensorValue" />
+				<div
+					ng-if="sensor.value_type.type=='Continuous'"
+					class="input-group-addon">{{trigger.sensorValue}}</div>
+				<div
+					ng-if="sensor.value_type.type=='Discrete'"
+					class="input-group-addon">TODO: Discrete Values</div>
+			</div>
 		</div>
-		<span>Continuous Value</span>
-		<div>Comparison: '&gt;', '&gt;=', '&lt;', '&lt;=', '=='</div>
+		</accordion-group> </accordion>
 	</div>
-	</accordion-group> </accordion></ng-form>
 </div>

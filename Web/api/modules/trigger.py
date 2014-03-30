@@ -5,20 +5,6 @@ from legacy import TriggerImport
 import cherrypy
 
 
-class CompoundTrigger(crud.ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(TimeTrigger, self).__init__(Data.Model.CompoundTrigger, ['GET', 'POST', 'DELETE'])
-
-
-class TimeTrigger(crud.ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(TimeTrigger, self).__init__(Data.Model.TimeTrigger, ['GET', 'POST', 'DELETE'])
-
-
 class ButtonHotkey(crud.ModelCRUD):
     exposed = True
 
@@ -37,27 +23,45 @@ class Trigger(crud.ModelCRUD):
 
     _import = TriggerImport()
     hotkey = ButtonHotkey()
-    button = crud.ModelCRUD(Data.Model.ButtonTrigger, ['GET', 'POST', 'DELETE'])
-    time = TimeTrigger()
-    sensor = crud.ModelCRUD(Data.Model.SensorTrigger, ['GET', 'POST', 'DELETE'])
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self, oid=None, **constraint):
         if 'type' in cherrypy.request.json:
             triggerType = cherrypy.request.json['type']
-            if triggerType == 'Button':
-                return Trigger.button.POST(oid, **constraint)
-            elif triggerType == 'Time':
-                return Trigger.time.POST(oid, **constraint)
-            elif triggerType == 'Sensor':
-                return Trigger.sensor.POST(oid, **constraint)
 
         return super(Trigger, self).POST(oid, **constraint)
 
     def __init__(self):
         super(Trigger, self).__init__(Data.Model.Trigger, ['GET', 'POST', 'DELETE'])
         setattr(self, 'import', Trigger._import)
+
+    def _save(self, oid, **constraint):
+        triggerType = cherrypy.request.json['type']
+        if triggerType == 'Button':
+            modelClass = Data.Model.ButtonTrigger
+        elif triggerType == 'Time':
+            modelClass = Data.Model.TimeTrigger
+        elif triggerType == 'Sensor':
+            modelClass = Data.Model.SensorTrigger
+        elif triggerType == 'Compound':
+            modelClass = Data.Model.CompoundTrigger
+        else:
+            raise cherrypy.HTTPError(500, "Unknown trigger class %s" % triggerType)
+
+        (data, resolveList) = modelClass.deserialize(modelClass, cherrypy.request.json, cherrypy.request.db)
+        try:
+            if data.id == None:
+                # New object
+                cherrypy.request.db.add(data)
+            else:
+                cherrypy.request.db.merge(data)
+        except Exception as ex:
+            raise cherrypy.HTTPError(500, ex)
+
+        cherrypy.request.db.commit()
+
+        return (data, resolveList)
 
     def _cp_dispatch(self, vpath):
         if vpath and len(vpath) > 1:

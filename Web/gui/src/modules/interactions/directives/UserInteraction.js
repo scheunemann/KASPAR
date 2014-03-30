@@ -2,10 +2,11 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var template = require('text!./userInteraction.tpl.html');
 
 	var UserInteraction = function() {
 		return {
-			templateUrl : 'partials/interaction/user.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				user : "=",

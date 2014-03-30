@@ -42,9 +42,17 @@ class SensorModel(ModelCRUD):
         super(SensorModel, self).__init__(Data.Model.SensorModel, ['GET', ])
 
 
+class SensorValueType(ModelCRUD):
+    exposed = True
+
+    def __init__(self):
+        super(SensorValueType, self).__init__(Data.Model.SensorValueType, ['GET', ])
+
+
 class Sensor(ModelCRUD):
     exposed = True
     model = SensorModel()
+    valuetype = SensorValueType()
 
     def __init__(self):
         super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])

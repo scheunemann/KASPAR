@@ -1,12 +1,13 @@
 'use strict';
 
 define(function(require) {
-	angular = require('angular');
+	var angular = require('angular');
 	require('common/services/proxyServices');
+	var template = require('text!./timeTriggerEditor.tpl.html');
 
 	var TimeTriggerEditor = function(proxyObjectResolver) {
 		return {
-			templateUrl : 'partials/trigger/time.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				time : "=trigger",
@@ -17,8 +18,10 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.$watch('time', function(time) {
-					proxyObjectResolver.resolveProp(time, 'action');
-					proxyObjectResolver.resolveProp(time, 'trigger');
+					if(time != undefined) {
+						proxyObjectResolver.resolveProp(time, 'action');
+						proxyObjectResolver.resolveProp(time, 'trigger');
+					}
 				});
 
 				$scope.addTriggers = function(triggers) {

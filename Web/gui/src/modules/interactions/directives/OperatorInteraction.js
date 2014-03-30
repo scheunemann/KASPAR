@@ -2,10 +2,11 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var template = require('text!./operatorInteraction.tpl.html')
 
 	var OperatorInteraction = function() {
 		return {
-			templateUrl : 'partials/interaction/operator.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				operator : "=",

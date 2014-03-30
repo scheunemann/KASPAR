@@ -35,7 +35,7 @@
 				name="jointposition"
 				type="range"
 				class="form-control"
-				value="coalesce(jointPosition.position, servo.defaultPosition, servo.model.defaultPosition)"
+				value="{{coalesce(jointPosition.position, servo.defaultPosition, servo.model.defaultPosition)}}"
 				min="{{coalesce(servo.minPosition, servo.model.minPosition, -180)}}"
 				max="{{coalesce(servo.maxPosition, servo.maxPosition, 180)}}"
 				ng-model="jointPosition.position"

@@ -10,7 +10,7 @@ define(function(require) {
 	var testTemplate = require('text!actions/actionTest.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.action';
-	var dependancies = [ 'ui.router', actionControllers, ];
+	var dependancies = [ 'ui.router', actionControllers ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

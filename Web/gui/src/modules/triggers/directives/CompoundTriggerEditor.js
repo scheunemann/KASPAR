@@ -3,10 +3,11 @@
 define(function(require) {
 	var angular = require('angular');
 	require('common/services/proxyServices');
+	var template = require('text!./compoundTriggerEditor.tpl.html');
 
 	var CompoundTriggerEditor = function(proxyObjectResolver) {
 		return {
-			templateUrl : 'partials/trigger/compound.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				compound : "=trigger",
@@ -17,8 +18,10 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.$watch('compound', function(compound) {
-					proxyObjectResolver.resolveProp(compound, 'action');
-					proxyObjectResolver.resolveProp(compound, 'triggers');
+					if(compound != undefined) {
+						proxyObjectResolver.resolveProp(compound, 'action');
+						proxyObjectResolver.resolveProp(compound, 'triggers');
+					}
 				});
 
 				$scope.addTriggers = function(triggers) {

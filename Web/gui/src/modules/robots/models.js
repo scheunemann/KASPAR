@@ -10,6 +10,7 @@ define(function(require) {
 	var Sensor = require('./models/Sensor');
 	var SensorGroup = require('./models/SensorGroup');
 	var SensorModel = require('./models/SensorModel');
+	var SensorValueType = require('./models/SensorValueType');
 	var Servo = require('./models/Servo');
 	var ServoConfig = require('./models/ServoConfig');
 	var ServoGroup = require('./models/ServoGroup');
@@ -32,6 +33,7 @@ define(function(require) {
 		.factory('Servo', Servo)
 		.factory('ServoConfig', ServoConfig)
 		.factory('ServoGroup', ServoGroup)
+		.factory('SensorValueType', SensorValueType)
 		.factory('ServoInterface', ServoInterface)
 		.factory('ServoModel', ServoModel);
 	

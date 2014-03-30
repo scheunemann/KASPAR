@@ -7,7 +7,6 @@ define(function(require) {
 	var filters = require('common/filters');
 	var commonModels = require('common/models');
 	var robotModels = require('robots/models');
-	var JointEditor = require('./directives/JointEditor');
 	var RobotEditor = require('./directives/RobotEditor');
 	var RobotInterface = require('./directives/RobotInterface');
 
@@ -22,8 +21,7 @@ define(function(require) {
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('robotEditor', RobotEditor)
-		.directive('robotInterface', RobotInterface)
-		.directive('jointEditor', JointEditor);
+		.directive('robotInterface', RobotInterface);
 
 	return moduleName;
 });		

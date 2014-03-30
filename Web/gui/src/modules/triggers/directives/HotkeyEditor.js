@@ -5,10 +5,11 @@ define(function(require) {
 	require('mousetrap');
 	require('mousetrapPause');
 	require('common/services/displayServices');
+	var template = require('text!./hotkeyEditor.tpl.html');
 
 	var HotkeyEditor = function(hotkeyFormatter) {
 		return {
-			templateUrl : 'partials/trigger/hotkey.html',
+			template : template,
 			restrict : 'E',
 			scope : {
 				hotkey : "=",
@@ -16,7 +17,7 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.deleteKey = function() {
-					$scope.button.hotKeys.splice(keys.indexOf($scope.hotkey), 1);
+					$scope.button.hotKeys.splice($scope.button.hotKeys.indexOf($scope.hotkey), 1);
 					if ($scope.hotkey.id != undefined) {
 						$scope.hotkey.$delete();
 					}

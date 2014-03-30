@@ -12,6 +12,7 @@ define(function(require) {
 	var trigger = require('categories/trigger');
 	var commonControllers = require('common/controllers');
 	var commonDirectives = require('common/directives');
+	var actionDirectives = require('actions/directives');
 	
 	var moduleName = 'kasparGUI';
 	var dependancies = [ 'ui.router', 'ui.bootstrap', commonControllers, commonDirectives, action, admin, interaction, trigger ];

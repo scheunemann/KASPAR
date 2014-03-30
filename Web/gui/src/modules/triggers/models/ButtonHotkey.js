@@ -1,7 +1,7 @@
 'use strict';
 
 define(function(require) {
-	angular = require('angular');
+	var angular = require('angular');
 	require('angularResource');
 
 	var ButtonHotkey = function($resource) {

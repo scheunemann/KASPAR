@@ -16,10 +16,10 @@ def _flushAndFillTestData():
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
 
-    o = Operator('oNathan', 'oNathan Burke')
+    o = Operator('Operator1', 'Test Operator')
     o.password = '1234'
 
-    u = User('uNathan', 'uNathan Burke')
+    u = User('User1', 'Test User')
     o.users.append(u)
 
     baseDir = os.path.dirname(os.path.realpath(__file__))
