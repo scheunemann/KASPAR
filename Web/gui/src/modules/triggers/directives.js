@@ -20,7 +20,6 @@ define(function(require) {
 		        			proxyServices,
 		        			filters,
 		        			triggerModels,
-		        			'rzModule',
 	                     ];
 	
 	var module = angular.module(moduleName, dependancies)
