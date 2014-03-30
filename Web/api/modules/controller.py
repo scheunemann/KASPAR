@@ -4,9 +4,10 @@ from dateutil.tz import tzutc
 import logging
 import time
 
-from Data.Model import Servo, Robot, Action
+from Data.Model import Servo, Sensor, Robot, Action
 from Robot.ServoInterface import ServoInterface as ServoInterface_
 from ActionRunner import ActionRunner
+from Processor.SensorInterface.sensorInterface import SensorInterface as SensorInterface_
 
 
 class Helper(object):
@@ -23,24 +24,20 @@ class Helper(object):
         return dt.isoformat() + 'Z'
 
     @staticmethod
-    def _getInterface(servoId):
-        # if not Helper._interfaces.has_key(servoId):
-        #    servo = Helper._getServo(servoId)
-        #    if servo != None:
-        #        Helper._interfaces[servoId] = ServoInterface_.getServoInterface(servo)
-        #    else:
-        #        Helper._interfaces[servoId] = None
-        # return Helper._interfaces[servoId]
+    def _getServoInterface(servoId):
         return ServoInterface_.getServoInterface(Helper._getServo(servoId))
 
     @staticmethod
+    def _getSensorInterface(servoId):
+        return SensorInterface_.getSensorInterface(Helper._getSensor(servoId))
+
+    @staticmethod
     def _getServo(servoId):
-        servo = cherrypy.request.db.query(Servo).get(servoId)
-        if servo == None:
-            # self._logger.critical("Could not locate servo with id %s", servoId)
-            return None
-        else:
-            return servo
+        return cherrypy.request.db.query(Servo).get(servoId)
+
+    @staticmethod
+    def _getSensor(sensorId):
+        return cherrypy.request.db.query(Sensor).get(sensorId)
 
 
 class ActionTest(object):
@@ -86,7 +83,7 @@ class ActionTest(object):
             handle.stop()
         else:
             action = cherrypy.request.db.query(Action).get(actionId)
-            #TODO: Robot selection
+            # TODO: Robot selection
             robot = cherrypy.request.db.query(Robot).filter(Robot.name == 'Kaspar_1C - #2').first()
             handle = ActionRunner(robot).executeAsync(action)
             ActionTest._runners[actionId] = handle
@@ -110,6 +107,7 @@ class RobotInterface(object):
         self._interfaces = {}
         self._logger = logging.getLogger(__name__)
         self._lastPositions = {}
+        self._lastValues = {}
 
     @cherrypy.tools.json_out()
     def GET(self, robotId, timestamp=None):
@@ -123,6 +121,7 @@ class RobotInterface(object):
             while servos['timestamp'] <= Helper._fromUtcDateTime(timestamp) and (datetime.datetime.now() - startTime).seconds < timeout:
                 time.sleep(0.1)
                 servos = self._getServos(robotId)
+                sensors = self._getSensors(robotId)
 
         ret = {
                'servos': map(
@@ -132,6 +131,11 @@ class RobotInterface(object):
                                                  'poseable': value['poseable'],
                                                  'jointName': value['jointName'],
                                                  }, servos['servos'].iteritems()),
+               'sensors': map(
+                              lambda (key, value): {
+                                                    'id': key,
+                                                    'value': value['value']
+                                                    }, sensors['']),
                'timestamp': Helper._utcDateTime(servos['timestamp']),
                }
 
@@ -171,6 +175,32 @@ class RobotInterface(object):
                }
 
         return ret
+
+    def _getServos(self, robotId):
+        robot = cherrypy.request.db.query(Robot).get(robotId)
+        if robot == None:
+            self._logger.critical("Could not locate robot with id %s", robotId)
+            return None
+        else:
+            if robotId not in self._lastPositions:
+                self._lastValues[robotId] = {'timestamp': None, 'sensors': {}}
+
+            for sensor in robot.sensors:
+                if sensor.id not in self._lastPositions[robotId]['sensors']:
+                    self._lastValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None}
+
+                interface = Helper._getInterface(sensor.id)
+                if interface == None:
+                    self._logger._logger.critical("Could not locate sensor with id %s", sensor.Id)
+                    continue
+                currentPos = interface.getPosition()
+                if self._lastValues[robotId]['sensors'][sensor.id]['position'] != currentPos:
+                    self._lastValues[robotId]['sensors'][sensor.id]['position'] = currentPos
+                    self._lastValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
+
+            self._lastPositions[robotId]['timestamp'] = max(self._lastPositions[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
+
+        return self._lastPositions[robotId]
 
     def _getServos(self, robotId):
         robot = cherrypy.request.db.query(Robot).get(robotId)

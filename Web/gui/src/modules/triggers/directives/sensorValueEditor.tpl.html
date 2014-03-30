@@ -1,6 +1,18 @@
 <div>
 	<div ng-show="sensor">
-		<div>Show Current Value (Connect/Disconnect button?)</div>
+		<div ng-if="sensor.value_type.type=='Discrete'">TODO: Show
+			discrete values</div>
+		<div ng-if="sensor.value_type.type=='Continuous'">
+			<button
+				type="button"
+				class="btn btn-primary"
+				ng-disabled="true">Connect</button>
+			Current
+			<progressbar
+				class="progress-striped active"
+				max="sensor.value_type.maxValue - sensor.value_type.minValue"
+				value="currentValue"> <i>{{current_value}}</i></progressbar>
+		</div>
 		<accordion close-others="true"> <accordion-group
 			is-open="basicopen"> <accordion-heading>
 		Basic <i

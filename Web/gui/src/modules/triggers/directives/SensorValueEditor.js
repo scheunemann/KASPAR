@@ -12,6 +12,7 @@ define(function(require) {
 			scope : {
 				sensor : "=",
 				trigger: "=",
+				currentValue: "=value",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
 				scope.basicopen = false;

@@ -16,11 +16,27 @@ def _flushAndFillTestData():
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
 
-    o = Operator('Operator1', 'Test Operator')
-    o.password = '1234'
+    operators = [
+                    Operator('Operator1', 'Test Operator 1'),
+                    Operator('Operator2', 'Test Operator 2'),
+                 ]
 
-    u = User('User1', 'Test User')
-    o.users.append(u)
+    users = [
+             User('User1', 'Test User 1'),
+             User('User2', 'Test User 2'),
+             User('User3', 'Test User 3'),
+             User('User4', 'Test User 4'),
+             User('User5', 'Test User 5'),
+             User('User6', 'Test User 6'),
+             User('User7', 'Test User 7'),
+             User('User8', 'Test User 8'),
+             User('User9', 'Test User 9'),
+             User('User0', 'Test User 10'),
+             User('User11', 'Test User 11'),
+             User('User12', 'Test User 12'),
+             User('User13', 'Test User 13'),
+             User('User14', 'Test User 14'),
+             ]
 
     baseDir = os.path.dirname(os.path.realpath(__file__))
     configDir = os.path.join(baseDir, 'Config/kasparConfigs')
@@ -35,7 +51,8 @@ def _flushAndFillTestData():
     session.add_all(robots)
     session.add_all(actions)
     session.add_all(triggers)
-    session.add(o)
+    session.add_all(operators)
+    session.add_all(users)
     session.commit()
     session.close()
 
