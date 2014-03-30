@@ -11,7 +11,6 @@ from Processor.SensorInterface.sensorInterface import SensorInterface as SensorI
 
 
 class Helper(object):
-    _interfaces = {}
 
     @staticmethod
     def _fromUtcDateTime(dt):
@@ -22,22 +21,6 @@ class Helper(object):
         if dt.tzinfo:
             dt = dt.astimezone(tzutc()).replace(tzinfo=None)
         return dt.isoformat() + 'Z'
-
-    @staticmethod
-    def _getServoInterface(servoId):
-        return ServoInterface_.getServoInterface(Helper._getServo(servoId))
-
-    @staticmethod
-    def _getSensorInterface(servoId):
-        return SensorInterface_.getSensorInterface(Helper._getSensor(servoId))
-
-    @staticmethod
-    def _getServo(servoId):
-        return cherrypy.request.db.query(Servo).get(servoId)
-
-    @staticmethod
-    def _getSensor(sensorId):
-        return cherrypy.request.db.query(Sensor).get(sensorId)
 
 
 class ActionTest(object):
@@ -146,7 +129,8 @@ class RobotInterface(object):
     def POST(self, robotId):
         data = cherrypy.request.json
         for servo in data['servos']:
-            interface = Helper._getServoInterface(servo['id'])
+            servo = cherrypy.request.db.query(Servo).get(servo['id'])
+            interface = ServoInterface_.getServoInterface(servo)
             if interface == None:
                 # TODO: Error handling
                 continue
@@ -189,7 +173,8 @@ class RobotInterface(object):
                 if sensor.id not in self._lastPositions[robotId]['sensors']:
                     self._lastValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None}
 
-                interface = Helper._getServoInterface(sensor.id)
+                sensor = cherrypy.request.db.query(Sensor).get(sensor.id)
+                interface = SensorInterface_.getSensorInterface(sensor)
                 if interface == None:
                     self._logger._logger.critical("Could not locate sensor with id %s", sensor.Id)
                     continue
@@ -215,7 +200,8 @@ class RobotInterface(object):
                 if servo.id not in self._lastPositions[robotId]['servos']:
                     self._lastPositions[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None}
 
-                interface = Helper._getServoInterface(servo.id)
+                servo = cherrypy.request.db.query(Servo).get(servo.id)
+                interface = ServoInterface_.getServoInterface(servo)
                 if interface == None:
                     self._logger._logger.critical("Could not locate servo with id %s", servo.Id)
                     continue
@@ -251,7 +237,8 @@ class ServoInterface(object):
         return ret
 
     def GET(self, servoId, position=None):
-        interface = Helper._getServoInterface(servoId)
+        servo = cherrypy.request.db.query(Servo).get(servoId)
+        interface = ServoInterface_.getServoInterface(servo)
         if interface == None:
             raise cherrypy.NotFound()
 
@@ -269,7 +256,8 @@ class ServoInterface(object):
     def POST(self, servoId):
         data = cherrypy.request.json
         try:
-            interface = Helper._getServoInterface(servoId)
+            servo = cherrypy.request.db.query(Servo).get(servoId)
+            interface = ServoInterface_.getServoInterface(servo)
         except Exception as e:
             import traceback
             self._logger.critical(traceback.format_exc())
