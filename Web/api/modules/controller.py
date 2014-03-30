@@ -146,7 +146,7 @@ class RobotInterface(object):
     def POST(self, robotId):
         data = cherrypy.request.json
         for servo in data['servos']:
-            interface = Helper._getInterface(servo['id'])
+            interface = Helper._getServoInterface(servo['id'])
             if interface == None:
                 # TODO: Error handling
                 continue
@@ -176,7 +176,7 @@ class RobotInterface(object):
 
         return ret
 
-    def _getServos(self, robotId):
+    def _getSensors(self, robotId):
         robot = cherrypy.request.db.query(Robot).get(robotId)
         if robot == None:
             self._logger.critical("Could not locate robot with id %s", robotId)
