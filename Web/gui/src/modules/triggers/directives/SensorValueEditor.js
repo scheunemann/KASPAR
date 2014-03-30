@@ -14,8 +14,8 @@ define(function(require) {
 				trigger: "=",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
-				scope.basicopen = true;
-				scope.advancedopen = false;
+				scope.basicopen = false;
+				scope.advancedopen = true;
 				scope.comparisons = [ {
 					name : 'less than',
 					compare : '<'
@@ -34,7 +34,7 @@ define(function(require) {
 				} ]
 			},
 			controller : function($scope, $window) {
-				$scope.Math = $window.Math;
+				$scope.Math = $window.Math;				
 				$scope.$watch('sensor', function(sensor) {
 					proxyObjectResolver.resolveProp(sensor, 'value_type');
 				});

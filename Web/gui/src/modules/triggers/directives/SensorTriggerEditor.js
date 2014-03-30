@@ -17,17 +17,24 @@ define(function(require) {
 			link : function(scope, iElement, iAttrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.sensors = Sensor.query();
+
 				$scope.$watch('trigger', function(trigger) {
 					proxyObjectResolver.resolveProp(trigger, 'action');
 				});
 
-				$scope.$watch('selectedSensor', function(sensor) {
-					if (sensor !== undefined) {
-						$scope.trigger.sensorName = sensor.name;
-					}
+				$scope.$watch('trigger.sensorName', function(sensorName) {
+					$scope.sensors.$promise.then(function(sensors) {
+						if (sensorName !== undefined) {
+							for (var i = 0; i < sensors.length; i++) {
+								if (sensors[i].name == sensorName) {
+									$scope.selectedSensor = sensors[i];
+									break;
+								}
+							}
+						}
+					});
 				});
-
-				$scope.sensors = Sensor.query();
 			},
 		};
 	};

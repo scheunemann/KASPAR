@@ -17,12 +17,14 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.$watch('button', function(button) {
-					if (button != undefined) {
-						proxyObjectResolver.resolveProp(button, 'hotKeys');
-					}
+					proxyObjectResolver.resolveProp(button, 'hotKeys');
 				});
 
 				$scope.addButton = function() {
+					if ($scope.button.hotKeys == undefined) {
+						$scope.button.hotKeys = [];
+					}
+
 					$scope.button.hotKeys.push(new ButtonHotkey({
 						'trigger_id' : $scope.button.id
 					}));

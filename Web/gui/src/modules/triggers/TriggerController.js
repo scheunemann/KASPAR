@@ -24,9 +24,7 @@ define(function(require) {
 		};
 
 		$scope.newTrigger = function() {
-			$scope.trigger = new Trigger({
-				name : 'New Trigger',
-			});
+			$scope.trigger = new Trigger();
 			$scope.triggers.push($scope.trigger);
 		};
 

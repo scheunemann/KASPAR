@@ -7,7 +7,7 @@
 		<input
 			type="text"
 			class="form-control"
-			placeholder="Name"
+			placeholder="Sensor Trigger Name"
 			name="name"
 			saveable
 			required
@@ -31,8 +31,8 @@
 			saveable
 			required
 			name="sensor"
-			ng-model="selectedSensor"
-			ng-options="sensor as sensor.name group by sensor.type for sensor in sensors | orderBy:'name'">
+			ng-model="trigger.sensorName"
+			ng-options="sensor.name as sensor.name group by sensor.type for sensor in sensors | orderBy:'name'">
 			<option value="">--Select Sensor--</option>
 		</select>
 	</div>

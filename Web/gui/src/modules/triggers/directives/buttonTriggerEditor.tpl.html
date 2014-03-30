@@ -2,37 +2,35 @@
 	<ng-form
 		name="buttonEditor"
 		model="button">
-		<div class="input-group">
-			<span class="input-group-addon">Name</span>
-			<input
-				name="buttonName"
-				saveable
-				required
-				type="text"
-				class="form-control"
-				placeholder="Button Name"
-				ng-model="button.name">
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon">Action</span>
-			<select
-				class="selectpicker form-control"
-				saveable
-				name="action"
-				ng-model="button.action_id"
-				ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-				<option value="">No Action</option>
-			</select>
-		</div>
-		<hotkey-editor
-			hotkey="hotkey"
-			button="button"
-			ng-repeat="hotkey in button.hotKeys"></hotkey-editor>
-		<button
-			class="btn btn-default"
-			type="button"
-			ng-click="addButton()"
-			ng-disabled="button.hotKeys == undefined">New Keyboard
-			Button</button>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span>
+		<input
+			name="buttonName"
+			saveable
+			required
+			type="text"
+			class="form-control"
+			placeholder="Button Trigger Name"
+			ng-model="button.name">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Action</span>
+		<select
+			class="selectpicker form-control"
+			saveable
+			name="action"
+			ng-model="button.action_id"
+			ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
+			<option value="">No Action</option>
+		</select>
+	</div>
+	<hotkey-editor
+		hotkey="hotkey"
+		button="button"
+		ng-repeat="hotkey in button.hotKeys"></hotkey-editor>
+	<button
+		class="btn btn-default"
+		type="button"
+		ng-click="addButton()">New Keyboard Button</button>
 	</ng-form>
 </div>

@@ -327,6 +327,10 @@
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
+				<ONSTATE>
+					<COMPARISON>&gt;</COMPARISON>
+					<VALUE>10</VALUE>
+				</ONSTATE>
 			</SENSOR>
 			<SENSOR type="FSR" datatype="continuous" id="1">
 				<NAME>FSR_FOOT_L</NAME>
@@ -335,6 +339,10 @@
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
+				<ONSTATE>
+					<COMPARISON>&gt;</COMPARISON>
+					<VALUE>10</VALUE>
+				</ONSTATE>
 			</SENSOR>
 		</ROBOT>
 	</SENSORLIST>

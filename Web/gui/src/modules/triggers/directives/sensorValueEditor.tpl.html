@@ -1,6 +1,6 @@
 <div>
-	<div>Show Current Value (Connect/Disconnect button?)</div>
 	<div ng-show="sensor">
+		<div>Show Current Value (Connect/Disconnect button?)</div>
 		<accordion close-others="true"> <accordion-group
 			is-open="basicopen"> <accordion-heading>
 		Basic <i
@@ -32,14 +32,16 @@
 				<div class="input-group-addon">Active when current value</div>
 				<select
 					class="selectpicker form-control"
-					name="dValue"
+					name="sensorCompare"
 					ng-model="trigger.comparison"
+					saveable
 					required
 					style="width: 25%"
-					ng-options="value.compare as value.name for value in comparisons">
+					ng-options="value.compare as (value.name + ' (' + value.compare + ')') for value in comparisons">
 					<option value="">--Select Value--</option>
 				</select> <input
-					name="time"
+					name="sensorValue"
+					saveable
 					type="range"
 					class="form-control"
 					style="width: 75%"
