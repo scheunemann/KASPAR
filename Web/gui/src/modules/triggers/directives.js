@@ -2,7 +2,6 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularSlider');
 	var displayServices = require('common/services/displayServices');
 	var proxyServices = require('common/services/proxyServices');
 	var filters = require('common/filters');
