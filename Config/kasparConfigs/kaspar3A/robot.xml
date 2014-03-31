@@ -72,7 +72,7 @@
 
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
-			<NAME>TORSO_ROT</NAME>
+			<NAME>TORSO</NAME>
 			<CENTER>171</CENTER>
 			<LIMITS>
 				<POS>

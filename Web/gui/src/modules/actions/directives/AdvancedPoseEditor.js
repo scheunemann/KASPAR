@@ -18,8 +18,8 @@ define(function(require) {
 				connected : "=",
 			},
 			controller : function($scope) {
-				$scope.$watch('pose', function() {
-					proxyObjectResolver.resolveProp($scope.pose, 'jointPositions', function(result) {
+				$scope.$watch('pose', function(pose) {
+					proxyObjectResolver.resolveProp(pose, 'jointPositions', function(result) {
 						$scope.getGroups(result, $scope.robot);
 					});
 				});
@@ -32,17 +32,17 @@ define(function(require) {
 					}, $scope.cometGet);
 				}
 
-				$scope.$watch('robot', function() {
-					if ($scope.robot != undefined) {
-						proxyObjectResolver.resolveProp($scope.robot, 'servos', function(servos) {
+				$scope.$watch('robot', function(robot) {
+					if (robot != undefined) {
+						proxyObjectResolver.resolveProp(robot, 'servos', function(servos) {
 							$scope.joints = [];
 							for (var i = 0; i < servos.length; i++) {
 								$scope.joints.push(servos[i].jointName);
 							}
+
+							$scope.getGroups($scope.pose.jointPositions, robot);
 						});
 					}
-
-					$scope.getGroups($scope.pose.jointPositions, $scope.robot);
 				});
 
 				var processGroup = function(servoGroup, positions) {
@@ -78,7 +78,7 @@ define(function(require) {
 						if (joints.length > 0) {
 							result = [ ids, {
 								'name' : servoGroup.name,
-								'rows' : getRows(joints)
+								'rows' : joints
 							} ];
 						}
 
