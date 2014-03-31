@@ -224,7 +224,7 @@ class ServoInterface(object):
     @cherrypy.tools.json_out()
     def _getReturn(self, interface):
         ret = {
-               'id': interface.servo.id,
+               'id': interface.servoId,
                'position': interface.getPosition(),
                }
         try:
