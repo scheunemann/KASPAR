@@ -2,16 +2,14 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('operators/models');
 	require('users/models');
 	require('triggers/models');
 	require('interactions/models');
 
-	var InteractionController = function($q, $scope, Operator, User, Interaction, Trigger, proxyObjectResolver) {
+	var InteractionController = function($q, $scope, Operator, User, Interaction, Trigger) {
 		$scope.operators = Operator.query();
 		$scope.users = User.query();
-		$scope.proxyObjectResolver = proxyObjectResolver;
 		$scope.interaction = null;
 		$scope.keyBind = true;
 		$scope.showHotKeys = true;
@@ -20,30 +18,20 @@ define(function(require) {
 		}, function(result) {
 			if (result != undefined && result.length > 0) {
 				$scope.interaction = result[0];
-				proxyObjectResolver.resolveProp($scope.interaction, 'operator', function(iOperator) {
-					proxyObjectResolver.resolveProp($scope.interaction, 'users', function(iUsers) {
-						$q.all($scope.operators.$promise, $scope.users.$promise).then(function() {
-							for (var i = 0; i < $scope.operators.length; i++) {
-								if ($scope.operators[i].id == iOperator.id) {
-									$scope.operator = $scope.operators[i];
-									break;
-								}
-							}
+				for (var i = 0; i < $scope.operators.length; i++) {
+					if ($scope.operators[i].id == $scope.interaction.operator_id) {
+						$scope.operator = $scope.operators[i];
+						break;
+					}
+				}
 
-							for (var i = 0; i < $scope.users.length; i++) {
-								if ($scope.users[i].id == iUsers[0].id) {
-									$scope.user = $scope.users[i];
-									break;
-								}
-							}
-						});
-					});
-				});
+				for (var i = 0; i < $scope.users.length; i++) {
+					if ($scope.users[i].id == $scope.interaction.users[0].id) {
+						$scope.user = $scope.users[i];
+						break;
+					}
+				}
 			}
-		});
-
-		$scope.$watch('operator', function(operator) {
-			proxyObjectResolver.resolveProp(operator, 'users');
 		});
 
 		$scope.buttons = Trigger.query({
@@ -77,5 +65,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', '$scope', 'Operator', 'User', 'Interaction', 'Trigger', 'proxyObjectResolver', InteractionController ];
+	return [ '$q', '$scope', 'Operator', 'User', 'Interaction', 'Trigger', InteractionController ];
 });

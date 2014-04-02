@@ -1,17 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var CustomTrigger = function($resource) {
-		return $resource('/api/user/:uid/customtrigger/:id', {
-			uid : '@user_id',
-			id : '@id'
-		}, {
-			cache : true
-		});
+	var CustomTrigger = function(modelBuilder) {
+		var _service = modelBuilder.getModel('CustomTrigger');
+		
+		return _service;
 	};
 
-	return [ '$resource', CustomTrigger ];
+	return [ 'modelBuilder', CustomTrigger ];
 });

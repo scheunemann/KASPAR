@@ -3,9 +3,8 @@
 define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./soundEditor.tpl.html');
-	require('common/services/proxyServices');
 
-	var SoundEditor = function(proxyObjectResolver) {
+	var SoundEditor = function() {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,5 +16,5 @@ define(function(require) {
 		};
 	}
 
-	return [ 'proxyObjectResolver', SoundEditor ];
+	return SoundEditor;
 });

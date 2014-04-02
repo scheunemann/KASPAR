@@ -2,8 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularResource');
-	var proxyServices = require('common/services/proxyServices');
+	var angularResource = require('angularResource');
 	var Robot = require('./models/Robot');
 	var RobotInterface = require('./models/RobotInterface');
 	var RobotModel = require('./models/RobotModel');
@@ -19,8 +18,7 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.robots.models';
 	var dependancies = [
-	                   	'ngResource',
-	                  	proxyServices,
+	                   	angularResource,
 	                  ];
 	
 	var module = angular.module(moduleName, dependancies)
@@ -36,10 +34,6 @@ define(function(require) {
 		.factory('SensorValueType', SensorValueType)
 		.factory('ServoInterface', ServoInterface)
 		.factory('ServoModel', ServoModel);
-	
-	module.config(['$httpProvider', function($httpProvider) {
-		$httpProvider.interceptors.push('proxyResourceInterceptor');
-	}]);
 
 	return moduleName;
 });

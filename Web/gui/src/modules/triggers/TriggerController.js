@@ -4,18 +4,14 @@ define(function(require) {
 	var angular = require('angular');
 	require('actions/models');
 	require('triggers/models');
+	require('robots/models');
 
-	var TriggerController = function($scope, $http, $q, $timeout, Action, Trigger, TriggerType) {
+	var TriggerController = function($scope, Action, Trigger, TriggerType, Robot) {
 		$scope.trigger = null;
 		$scope.triggers = Trigger.query();
 		$scope.actions = Action.query();
+		$scope.types = TriggerType.query();
 		$scope.newobjs = [];
-		TriggerType.query(function(data) {
-			$scope.types = [];
-			for (var i = 0; i < data.length; i++) {
-				$scope.types.push(data[i].name);
-			}
-		});
 
 		$scope.setFiles = function(element) {
 			$scope.$apply(function($scope) {
@@ -39,7 +35,7 @@ define(function(require) {
 				var fd = new FormData();
 				fd.append("data", files[i]);
 
-				var obj = $http.post('/api/trigger/import', fd, {
+				var obj = $http.post('/api/Trigger/import', fd, {
 					headers : {
 						'Content-Type' : undefined
 					},
@@ -53,5 +49,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', '$http', '$q', '$timeout', 'Action', 'Trigger', 'TriggerType', TriggerController ];
+	return [ '$scope', 'Action', 'Trigger', 'TriggerType', 'Robot', TriggerController ];
 });

@@ -1,16 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var Interaction = function($resource) {
-		return $resource('/api/interaction/:id', {
-			id : '@id'
-		}, {
-			cache : false
-		});
+	var Interaction = function(modelBuilder) {
+		var _service = modelBuilder.getModel('Interaction');
+		
+		return _service;
 	};
 
-	return [ '$resource', Interaction ];
+	return [ 'modelBuilder', Interaction ];
 });

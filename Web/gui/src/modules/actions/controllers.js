@@ -2,7 +2,6 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularResource');
 	var actionModels = require('actions/models');
 	var actionDirectives = require('actions/directives');
 	var ActionController = require('./ActionController');

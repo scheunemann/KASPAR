@@ -1,33 +1,9 @@
-import cherrypy
+import Model
 
-import Data.Model
-from crud import ModelCRUD
+models = [
+          {'class': Model.CustomAction, },
+          {'class': Model.CustomTrigger, },
+          {'class': Model.User, },
+         ]
 
-
-class CustomAction(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(CustomAction, self).__init__(Data.Model.CustomAction, ['GET', 'POST', 'DELETE'])
-
-
-class CustomTrigger(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(CustomTrigger, self).__init__(Data.Model.CustomTrigger, ['GET', 'POST', 'DELETE'])
-
-
-class User(ModelCRUD):
-    exposed = True
-    customaction = CustomAction()
-    customtrigger = CustomTrigger()
-
-    def _cp_dispatch(self, vpath):
-        if vpath:
-            cherrypy.request.params['user_id'] = vpath.pop(0)
-        if vpath:
-            return getattr(self, vpath.pop(0), None)
-
-    def __init__(self):
-        super(User, self).__init__(Data.Model.User, ['GET', 'POST', 'DELETE'])
+blueprints = []

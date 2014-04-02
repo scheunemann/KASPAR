@@ -2,16 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('robots/models');
 
-	var RobotController = function($scope, Robot, proxyObjectResolver) {
-		$scope.proxyObjectResolver = proxyObjectResolver;
-		$scope.robots = Robot.query(function(robots) {
-			for (var i = 0; i < robots.length; i++) {
-				proxyObjectResolver.resolveProp(robots[i], 'model');
-			}
-		});
+	var RobotController = function($scope, Robot) {
+		$scope.robots = Robot.query();
 
 		$scope.connected = false;
 
@@ -24,5 +18,5 @@ define(function(require) {
 		}
 	};
 
-	return [ '$scope', 'Robot', 'proxyObjectResolver', RobotController ];
+	return [ '$scope', 'Robot', RobotController ];
 });

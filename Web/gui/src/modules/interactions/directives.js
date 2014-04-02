@@ -3,7 +3,6 @@
 define(function(require) {
 	var angular = require('angular');
 	var displayServices = require('common/services/displayServices');
-	var proxyServices = require('common/services/proxyServices');
 	var filters = require('common/filters');
 	var interactionModels = require('interactions/models');
 	var ActionButton = require('./directives/ActionButton');
@@ -14,7 +13,6 @@ define(function(require) {
 	var moduleName = 'kasparGUI.interactions.directives';
 	var dependancies = [
 		         			displayServices,
-		        			proxyServices,
 		        			filters,
 		        			interactionModels,
 	                     ];

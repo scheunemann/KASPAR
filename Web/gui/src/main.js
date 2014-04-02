@@ -5,7 +5,6 @@ require.config({
 		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
 		angularResource : 'bower_components/angular-resource/angular-resource.min',
 		angularRoute : 'bower_components/angular-route/angular-route.min',
-		angularToggleSwitch : 'bower_components/angular-toggle-switch/angular-toggle-switch.min',
 		angularUIRouter : 'bower_components/angular-ui-router/release/angular-ui-router.min',
 		mousetrap : 'bower_components/mousetrap/mousetrap.min',
 		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
@@ -14,13 +13,36 @@ require.config({
 	},
 	shim : {
 		'angular' : {
-			'exports' : 'angular'
+			exports : 'angular'
 		},
-		'angularBoostrap' : [ 'text', 'angular' ],
-		'angularResource' : [ 'angular' ],
-		'angularRouter' : [ 'angular' ],
-		'angularToggleSwitch' : [ 'angular' ],
-		'angularUIRouter' : [ 'angular' ],
+		'angularBoostrap' : {
+			exports : 'angularBootstrap',
+			init : function() {
+				return 'ui.bootstrap';
+			},
+			deps : [ 'text', 'angular' ],
+		},
+		'angularResource' : {
+			exports : 'angularResource',
+			init : function() {
+				return 'ngResource';
+			},
+			deps : [ 'angular', ],
+		},
+		'angularRouter' : {
+			exports : 'angularRouter',
+			init : function() {
+				return 'angularRouter';
+			},
+			deps : [ 'angular' ],
+		},
+		'angularUIRouter' : {
+			exports : 'angularUIRouter',
+			init : function() {
+				return 'ui.router';
+			},
+			deps : [ 'angular' ]
+		},
 		'mousetrap' : {
 			exports : 'mousetrap'
 		},

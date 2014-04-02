@@ -1,54 +1,37 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('common/services/proxyServices');
+	var angular = require('angular')
 	require('common/models');
 	require('robots/models');
 
-	var SettingsController = function($q, $scope, Setting, Robot, proxyObjectResolver) {
-		$scope.proxyObjectResolver = proxyObjectResolver;
-		var settings = Setting.query({
-			'key' : 'robot'
-		});
-		$scope.robots = Robot.query(function(robots) {
-			for (var i = 0; i < $scope.robots.length; i++) {
-				$scope.proxyObjectResolver.resolveProp(robots[i], 'model');
-			}
-		});
-
-		$scope.connected = false;
-
-		$q.all($scope.robots.$promise, settings.$promise).then(function() {
-			if (settings.length > 0) {
-				$scope.robotSetting = settings[0];
-				for (var i = 0; i < $scope.robots.length; i++) {
-					if ($scope.robots[i].name == $scope.robotSetting.value) {
-						$scope.robot = $scope.robots[i];
-						break;
-					}
+	var SettingsController = function($q, $scope, Setting, Robot) {
+		$scope.robots = Robot.query();
+		$scope.settings = Setting.query();
+		
+		$scope.settings.$promise.then(function(settings) {
+			for (var i = 0; i < settings.length; i++) {
+				if (settings[i].key == 'robot') {
+					$scope.robotSetting = settings[i];
+					break;
 				}
 			}
+
+			if ($scope.robotSetting == undefined) {
+				$scope.robotSetting = new Setting({
+					key : 'robot',
+					value: '',
+				});
+			}
 		});
 
-		$scope.$watch('robot', function(selected) {
-			if (selected != undefined) {
-				settings.$promise.then(function() {
-					if ($scope.robotSetting == undefined) {
-						$scope.robotSetting = new Setting({
-							'key' : 'robot',
-							'value' : $scope.robot.name
-						});
-						$scope.robotSetting.$save();
-					} else if ($scope.robotSetting.value != $scope.robot.name) {
-						$scope.robotSetting.value = $scope.robot.name;
-						$scope.robotSetting.$save();
-					}
-				});
+		$scope.$watch('robotSetting.value', function(newValue, oldValue) {
+			if (newValue != undefined) {
+				$scope.robotSetting.$save();
 			}
 		});
 	};
 
-	return [ '$q', '$scope', 'Setting', 'Robot', 'proxyObjectResolver', SettingsController ];
+	return [ '$q', '$scope', 'Setting', 'Robot', SettingsController ];
 
 });

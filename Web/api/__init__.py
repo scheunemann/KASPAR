@@ -1,5 +1,3 @@
-import cherrypy
+import paths
 
-from paths import root, config
-
-
+root = None

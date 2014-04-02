@@ -1,19 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var RobotModel = function($resource) {
-		return $resource('/api/robot/model/:id', {
-			id : '@id'
-		}, {
-			get : {
-				method : 'GET',
-				cache : true
-			}
-		});
+	var RobotModel = function(modelBuilder) {
+		var _service = modelBuilder.getModel('RobotModel');
+		
+		return _service;
 	};
 
-	return [ '$resource', RobotModel ];
+	return [ 'modelBuilder', RobotModel ];
 });

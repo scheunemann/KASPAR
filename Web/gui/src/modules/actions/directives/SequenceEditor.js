@@ -4,9 +4,8 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./sequenceEditor.tpl.html');
 	require('actions/models');
-	require('common/services/proxyServices');
 
-	var SequenceEditor = function(proxyObjectResolver, OrderedAction) {
+	var SequenceEditor = function(OrderedAction) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -15,16 +14,18 @@ define(function(require) {
 				actions : "=",
 			},
 			controller : function($scope) {
-				$scope.$watch('sequence', function(sequence) {
-					proxyObjectResolver.resolveProp(sequence, 'ordered_actions', function(oactions) {
-						if (oactions != undefined) {
-							for (var i = 0; i < oactions.length; i++) {
-								proxyObjectResolver.resolveProp(oactions[i], 'action');
+				$scope.getName = function(actionId) {
+					if($scope.actions != undefined) {
+						for(var i = 0; i < $scope.actions.length; i++) {
+							if($scope.actions[i].id == actionId) {
+								return $scope.actions[i].name;
 							}
 						}
-					});
-				});
-
+					}
+					
+					return "Unknown action";
+				}
+				
 				$scope.moveActions = function(oactions, change) {
 					// Change == 1
 					// oactions.length = 3
@@ -106,5 +107,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', 'OrderedAction', SequenceEditor ];
+	return [ 'OrderedAction', SequenceEditor ];
 });

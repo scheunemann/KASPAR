@@ -1,19 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var RobotInterface = function($resource) {
-		return $resource('/api/robotinterface/:id', {
-			id : '@id'
-		}, {
-			get : {
-				method : 'GET',
-				cache : true
-			}
-		});
+	var RobotInterface = function(modelBuilder) {
+		var _service = modelBuilder.getModel('RobotInterface');
+		
+		return _service;
 	};
 
-	return [ '$resource', RobotInterface ];
+	return [ 'modelBuilder', RobotInterface ];
 });

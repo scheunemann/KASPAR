@@ -2,10 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
+	require('triggers/models')
 	var template = require('text!./timeTriggerEditor.tpl.html');
 
-	var TimeTriggerEditor = function(proxyObjectResolver) {
+	var TimeTriggerEditor = function() {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,13 +17,6 @@ define(function(require) {
 			link : function(scope, iElement, iAttrs, controller) {
 			},
 			controller : function($scope) {
-				$scope.$watch('time', function(time) {
-					if(time != undefined) {
-						proxyObjectResolver.resolveProp(time, 'action');
-						proxyObjectResolver.resolveProp(time, 'trigger');
-					}
-				});
-
 				$scope.addTriggers = function(triggers) {
 					if ($scope.time.triggers === undefined) {
 						$scope.time.triggers = [];
@@ -81,5 +74,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', TimeTriggerEditor ];
+	return TimeTriggerEditor;
 });

@@ -6,20 +6,16 @@ define(function(require) {
 	var commonModels = require('common/models');
 	var template = require('text!./navbar.tpl.html');
 
-	var Navbar = function($state, Menu) {
+	var Navbar = function(Menu) {
 		return {
 			template : template,
 			restrict : 'E',
 			scope : {},
 			controller : function($scope) {
-				Menu.get(function(m) {
-					$scope.title = m.title;
-					$scope.groups = m.groups;
-				});
-				$scope.state = $state;
+				$scope.groups = Menu.query();
 			},
 		};
 	};
 
-	return [ '$state', 'Menu', Navbar ];
+	return [ 'Menu', Navbar ];
 });

@@ -1,70 +1,56 @@
-import crud
-import Data.Model
-import base
-from legacy import TriggerImport
-import cherrypy
+from flask import Blueprint, jsonify, abort, redirect
+from Robot.legacy import TriggerImporter
+import Model
+
+models = [
+          {'class': Model.Trigger, 'kwargs': {'include_columns': ['id', 'name', 'type']}},
+          {'class': Model.SensorTrigger, },
+          {'class': Model.TimeTrigger, },
+          {'class': Model.CompoundTrigger, },
+          {'class': Model.ButtonTrigger, },
+          {'class': Model.ButtonHotkey, },
+         ]
+
+__types = Blueprint('trigger.type', __name__)
+__test = Blueprint('trigger.test', __name__)
+__importer = Blueprint('trigger.import', __name__)
+blueprints = [
+              __types,
+              __test
+             ]
+
+__triggerTypes = [
+            {'id': 1, 'name': 'SensorTrigger', 'disp': 'Sensor'},
+            {'id': 2, 'name': 'ButtonTrigger', 'disp': 'Button', 'desc': 'On Screen button with optional keyboard hotkeys'},
+            {'id': 3, 'name': 'TimeTrigger', 'disp': 'Time', 'desc': 'Based on interaction clock'},  # clock should be adjusted per each users global speed setting
+            {'id': 4, 'name': 'CompoundTrigger', 'disp': 'Compound', 'desc': 'Combination of multiple triggers'},  # clock should be adjusted per each users global speed setting
+        ]
 
 
-class ButtonHotkey(crud.ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(ButtonHotkey, self).__init__(Data.Model.ButtonHotkey, ['GET', 'POST', 'DELETE'])
-
-
-class Trigger(crud.ModelCRUD):
-    exposed = True
-    type = base.SimpleBase([
-                        {'name':'Sensor'},
-                        {'name':'Button', 'desc':'On Screen button with optional keyboard hotkeys'},
-                        {'name':'Time', 'desc': 'Based on interaction clock'},  # clock should be adjusted per each users global speed setting
-                        {'name':'Compound', 'desc': 'Combination of multiple triggers'},  # clock should be adjusted per each users global speed setting
-                        ])
-
-    _import = TriggerImport()
-    hotkey = ButtonHotkey()
-
-    @cherrypy.tools.json_in()
-    @cherrypy.tools.json_out()
-    def POST(self, oid=None, **constraint):
-        if 'type' in cherrypy.request.json:
-            triggerType = cherrypy.request.json['type']
-
-        return super(Trigger, self).POST(oid, **constraint)
-
-    def __init__(self):
-        super(Trigger, self).__init__(Data.Model.Trigger, ['GET', 'POST', 'DELETE'])
-        setattr(self, 'import', Trigger._import)
-
-    def _save(self, oid, **constraint):
-        triggerType = cherrypy.request.json['type']
-        if triggerType == 'Button':
-            modelClass = Data.Model.ButtonTrigger
-        elif triggerType == 'Time':
-            modelClass = Data.Model.TimeTrigger
-        elif triggerType == 'Sensor':
-            modelClass = Data.Model.SensorTrigger
-        elif triggerType == 'Compound':
-            modelClass = Data.Model.CompoundTrigger
+@__types.route('/TriggerType', methods=['GET'])
+@__types.route('/TriggerType/<int:id_>', methods=['GET'])
+def typesGet(id_=None):
+    if id_:
+        ret = [a for a in __triggerTypes if a['id'] == id_]
+        if ret == None:
+            abort(404)
         else:
-            raise cherrypy.HTTPError(500, "Unknown trigger class %s" % triggerType)
+            ret = ret[0]
+    else:
+        ret = {'num_results': len(__triggerTypes), 'objects': __triggerTypes, 'page': 1, 'total_pages': 1}
+    return jsonify(ret)
 
-        (data, resolveList) = modelClass.deserialize(modelClass, cherrypy.request.json, cherrypy.request.db)
-        try:
-            if data.id == None:
-                # New object
-                cherrypy.request.db.add(data)
-            else:
-                cherrypy.request.db.merge(data)
-        except Exception as ex:
-            raise cherrypy.HTTPError(500, ex)
 
-        cherrypy.request.db.commit()
+@__importer.route('/Trigger/Import', methods=['POST'])
+def importPost(self, data=None):
+    lines = data.file.readlines()
+    poses = db_session.query(Model.PoseAction).all()
+    t = TriggerImporter()
+    triggers = t.getTriggers(lines, poses)
+    if triggers != None and len(triggers) > 0:
+        for trigger in triggers:
+            db_session.add(trigger)
+        db_session.commit()
 
-        return (data, resolveList)
-
-    def _cp_dispatch(self, vpath):
-        if vpath and len(vpath) > 1:
-            cherrypy.request.params['trigger_id'] = vpath.pop(0)
-        if not vpath[0].isdigit():
-            return getattr(self, vpath.pop(0), None)
+    url = '/Trigger/id=%s' % [t.id for d in triggers]
+    return redirect(url)

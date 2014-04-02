@@ -2,17 +2,16 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	var template = require('text!./sensorValueEditor.tpl.html');
 
-	var SensorValueEditor = function($compile, proxyObjectResolver) {
+	var SensorValueEditor = function(Sensor) {
 		return {
 			template : template,
 			restrict : 'E',
 			scope : {
 				sensor : "=",
-				trigger: "=",
-				currentValue: "=value",
+				trigger : "=",
+				currentValue : "=value",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
 				scope.basicopen = false;
@@ -35,13 +34,23 @@ define(function(require) {
 				} ]
 			},
 			controller : function($scope, $window) {
-				$scope.Math = $window.Math;				
+				$scope.Math = $window.Math;
+				$scope.sensor = null;
 				$scope.$watch('sensor', function(sensor) {
-					proxyObjectResolver.resolveProp(sensor, 'value_type');
+					if (sensor != undefined && sensor.id != undefined) {
+						$scope.sensor = Sensor.get({
+							id : sensor.id
+						});
+						$scope.sensor.$promise.then(function(sensor) {
+							if ($scope.sensor != undefined) {
+								$scope.sensor.fillConcreteClassData();
+							}
+						});
+					}
 				});
 			}
 		};
 	};
 
-	return [ '$compile', 'proxyObjectResolver', SensorValueEditor ];
+	return [ 'Sensor', SensorValueEditor ];
 });

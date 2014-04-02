@@ -2,12 +2,11 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('common/models');
 	require('robots/models');
 	var template = require('text!./robotInterface.tpl.html');
 
-	var RobotInterface = function($q, Robot, Setting, proxyObjectResolver) {
+	var RobotInterface = function($q, Robot, Setting) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -45,5 +44,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', 'Robot', 'Setting', 'proxyObjectResolver', RobotInterface ];
+	return [ '$q', 'Robot', 'Setting', RobotInterface ];
 });

@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularUIRouter');
+	var uiRouter = require('angularUIRouter');
 	var operatorControllers = require('operators/controllers');
 	var operatorTemplate = require('text!operators/index.tpl.html');
 	var userControllers = require('users/controllers');
@@ -13,7 +13,7 @@ define(function(require) {
 	var settingsTemplate = require('text!common/settings.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.admin';
-	var dependancies = [ 'ui.router', operatorControllers, userControllers, robotControllers, settingsControllers, ];
+	var dependancies = [ uiRouter, operatorControllers, userControllers, robotControllers, settingsControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

@@ -2,11 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('robots/models');
 	var template = require('text!./sensorTriggerEditor.tpl.html');
 
-	var SensorTriggerEditor = function(proxyObjectResolver, Sensor) {
+	var SensorTriggerEditor = function(Sensor, Trigger) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -18,10 +17,6 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.sensors = Sensor.query();
-
-				$scope.$watch('trigger', function(trigger) {
-					proxyObjectResolver.resolveProp(trigger, 'action');
-				});
 
 				$scope.$watch('trigger.sensorName', function(sensorName) {
 					$scope.sensors.$promise.then(function(sensors) {
@@ -39,5 +34,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', 'Sensor', SensorTriggerEditor ];
+	return [ 'Sensor', 'Trigger', SensorTriggerEditor ];
 });

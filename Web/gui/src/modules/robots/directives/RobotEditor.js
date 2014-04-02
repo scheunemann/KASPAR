@@ -16,7 +16,6 @@ define(function(require) {
 				$scope.models = RobotModel.query();
 
 				$scope.viewJoints = function(robot) {
-//						$state.transitionTo('robot.view');
 				};
 
 				$scope.calibrateJoints = function(robot) {

@@ -3,7 +3,6 @@
 define(function(require) {
 	var angular = require('angular');
 	var displayServices = require('common/services/displayServices');
-	var proxyServices = require('common/services/proxyServices');
 	var robotDirectives = require('robots/directives');
 	var filters = require('common/filters');
 	var actionModels = require('actions/models');
@@ -18,7 +17,6 @@ define(function(require) {
 	var moduleName = 'kasparGUI.actions.directives';
 	var dependancies = [ 
 	                     displayServices, 
-	                     proxyServices, 
 	                     filters, 
 	                     actionModels,
 	                     robotDirectives,
@@ -27,10 +25,10 @@ define(function(require) {
 	var module = angular.module(moduleName, dependancies)
 		.directive('actionEditor', ActionEditor)
 		.directive('advancedPoseEditor', AdvancedPoseEditor)
-		.directive('groupEditor', GroupEditor)
-		.directive('poseEditor', PoseEditor)
-		.directive('sequenceEditor', SequenceEditor)
-		.directive('soundEditor', SoundEditor)
+		.directive('groupactionEditor', GroupEditor)
+		.directive('poseactionEditor', PoseEditor)
+		.directive('sequenceactionEditor', SequenceEditor)
+		.directive('soundactionEditor', SoundEditor)
 		.directive('jointEditor', JointEditor);
 
 	return moduleName;

@@ -1,17 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var CustomAction = function($resource) {
-		return $resource('/api/user/:uid/customaction/:id', {
-			uid : '@user_id',
-			id : '@id'
-		}, {
-			cache : true
-		});
+	var CustomAction = function(modelBuilder) {
+		var _service = modelBuilder.getModel('CustomAction');
+		
+		return _service;
 	};
 
-	return [ '$resource', CustomAction ];
+	return [ 'modelBuilder', CustomAction ];
 });

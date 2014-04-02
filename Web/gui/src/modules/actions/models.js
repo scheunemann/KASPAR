@@ -2,16 +2,17 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularResource');
-	var proxyServices = require('common/services/proxyServices');
+	var angularResource = require('angularResource');
 	var Action = require('./models/Action');
 	var ActionTest = require('./models/ActionTest');
 	var ActionType = require('./models/ActionType');
 	var JointPosition = require('./models/JointPosition');
-	var OrderedAction = require('./models/OrderedAction');
+	var OrderedAction = require('./models/SequenceOrder');
 
 	var moduleName = 'kasparGUI.actions.models';
-	var dependancies = [ 'ngResource', proxyServices, ];
+	var dependancies = [ 
+	                     angularResource,
+	                   ];
 
 	var module = angular.module(moduleName, dependancies)
 		.factory('Action', Action)
@@ -19,10 +20,6 @@ define(function(require) {
 		.factory('ActionType', ActionType)
 		.factory('JointPosition', JointPosition)
 		.factory('OrderedAction', OrderedAction);
-
-	module.config([ '$httpProvider', function($httpProvider) {
-		$httpProvider.interceptors.push('proxyResourceInterceptor');
-	} ]);
 
 	return moduleName;
 });

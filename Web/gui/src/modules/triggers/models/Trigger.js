@@ -1,16 +1,32 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
+	var Trigger = function($rootScope, modelBuilder) {
+		var resource = modelBuilder.getModel('Trigger');
 
-	var Trigger = function($resource) {
-		return $resource('/api/trigger/:id', {
-			id : '@id'
-		}, {
-			cache : true
-		});
+		resource.prototype.fillConcreteClassData = function() {
+			if (this.$concreteResolved || this.type == undefined) { return; }
+
+			var concreteModel = modelBuilder.getModel(this.type);
+
+			if (this.id != undefined) {
+				var self = this;
+				concreteModel.get({
+					id : this.id
+				}).$promise.then(function(res) {
+					angular.extend(self, res);
+					$rootScope.$$phase || $rootScope.$digest();
+					this.$concreteResolved = true;
+				});
+			} else {
+				angular.extend(this, new _service());
+				$rootScope.$$phase || $rootScope.$digest();
+				this.$concreteResolved = true;
+			}
+		};
+
+		return resource;
 	};
 
-	return [ '$resource', Trigger ];
+	return [ '$rootScope', 'modelBuilder', Trigger ];
 });

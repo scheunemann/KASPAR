@@ -2,21 +2,16 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('users/models');
 	require('operators/models');
 
-	var OperatorController = function($scope, Operator, User, proxyObjectResolver) {
+	var OperatorController = function($scope, Operator, User) {
 		$scope.operators = Operator.query(function(operators) {
 			$scope.selectedOperator = operators[0];
 		});
 
 		$scope.usersSaved = false;
 		$scope.users = User.query();
-		$scope.$watch('selectedOperator', function(operator) {
-			proxyObjectResolver.resolveProp(operator, 'users');
-		});
-
 		$scope.$watch('operatorsForm.$pristine', function(value) {
 			if (!value) {
 				$scope.usersSaved = false;
@@ -25,18 +20,19 @@ define(function(require) {
 
 		$scope.saveOperator = function() {
 			if ($scope.formCtrl.$valid) {
-				$scope.selectedOperator.$save(function() {
-					$scope.usersSaved = true;
-					$scope.operatorsForm.$setPristine();
-					proxyObjectResolver.resolveProp($scope.selectedOperator, 'users');
-				});
+				if ($scope.selectedOperator.$fromServer) {
+					$scope.selectedOperator.$save(function() {
+						$scope.usersSaved = true;
+						$scope.operatorsForm.$setPristine();
+					});
+				}
 			}
 		}
 
 		$scope.newOperator = function() {
 			var newOp = new Operator({
-				fullname : 'New Operator',
-				name : 'New',
+				fullname : '',
+				name : '',
 				users : []
 			});
 			$scope.selectedOperator = newOp;
@@ -44,11 +40,9 @@ define(function(require) {
 		};
 
 		$scope.deleteOperator = function(operator) {
-			// operator.$delete(function() {
+			operator.$delete();
 			$scope.operators.splice($scope.operators.indexOf(operator), 1);
 			$scope.selectedOperator = $scope.operators[0];
-			// }
-			// );
 		};
 
 		$scope.updateOperatorUser = function($event, users, user) {
@@ -70,6 +64,6 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', 'Operator', 'User', 'proxyObjectResolver', OperatorController ];
+	return [ '$scope', 'Operator', 'User', OperatorController ];
 
 });

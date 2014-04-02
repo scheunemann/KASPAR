@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularUIRouter');
+	var uiRouter = require('angularUIRouter');
 	var interactionControllers = require('interactions/controllers');
 	var defaultTemplate = require('text!interactions/index.tpl.html');
 	var beginTemplate = require('text!interactions/begin.tpl.html');
@@ -10,7 +10,7 @@ define(function(require) {
 	var manageTemplate = require('text!interactions/manage.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.interaction';
-	var dependancies = [ 'ui.router', interactionControllers, ];
+	var dependancies = [ uiRouter, interactionControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

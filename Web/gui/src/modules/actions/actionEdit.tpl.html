@@ -38,7 +38,7 @@
 				ng-disabled="action.id"
 				class="selectpicker form-control"
 				ng-model="action.type"
-				ng-options="type for type in types | orderBy:'type'">
+				ng-options="type.name as type.disp for type in types | orderBy:'type.disp'">
 				<option value="">--Select Type--</option>
 			</select>
 		</div>

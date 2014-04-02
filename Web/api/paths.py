@@ -1,68 +1,18 @@
-import cherrypy
-import os
+from flask.ext.restless import APIManager
+from modules import blueprints, models
+from Web.site import app
+from database import db_session
 
-from modules import menu, moduleParser
+# app.converters.extend({'datetime': Helper})
 
+manager = APIManager(app, session=db_session)
 
-name = "Kaspar API"
-_dir = os.path.dirname(os.path.realpath(__file__))
+for opts in models:
+    opts.setdefault('kwargs', {})
+    opts['kwargs'].setdefault('methods', ['GET', 'PUT', 'POST', 'DELETE'])
+    opts['kwargs'].setdefault('results_per_page', None)
+    opts['kwargs'].setdefault('max_results_per_page', None)
+    manager.create_api(opts['class'], **opts['kwargs'])
 
-
-class Root(object):
-    @cherrypy.expose
-    def GET(self):
-        return "API Index"
-
-_modules = moduleParser.loadModules('modules/services.py')
-# _moduleLinks = {}
-
-root = Root()
-for name, type_ in _modules.iteritems():
-    setattr(root, name.lower(), type_)
-#    links = []
-#    for link in type_.links:
-#        links.append((link[0], "%s/%s" %(name.lower(), link[1])))
-#
-#    _moduleLinks[type_.title] = links
-
-# root.menuOptions = menu.MenuData(_moduleLinks)
-
-_menuLinks = [
-                {
-                 'title': 'Admin',
-                 'links': [
-                            ('Operators', 'admin.operator'),
-                            ('Users', 'admin.user'),
-                            ('Robots', 'admin.robot'),
-                            ('Settings', 'admin.setting'),
-                          ]},
-                {
-                 'title':'Action',
-                 'links': [
-                            ('Create/Edit', 'action.edit'),
-                            ('Test', 'action.test'),
-                            ('Import', 'action.import'),
-                          ]},
-                {
-                 'title':'Trigger',
-                 'links': [
-                            ('Create/Edit', 'trigger.edit'),
-                            ('Test', 'trigger.test'),
-                            ('Import', 'trigger.import'),
-                          ]},
-                {
-                 'title':'Interactions',
-                 'links': [
-                            ('View History', 'interaction.view'),
-                            ('Begin New', 'interaction.begin'),
-                            ('Manage History', 'interaction.manage'),
-                          ]},
-            ]
-root.menuOptions = menu.MenuData(_menuLinks)
-
-config = {
-          '/': {
-               'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-               'tools.trailing_slash.on': True,
-               }
-          }
+for blueprint in blueprints:
+    app.register_blueprint(blueprint, url_prefix='/api')

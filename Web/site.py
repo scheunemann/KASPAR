@@ -1,52 +1,24 @@
 #!/usr/bin/python
 import os
 import sys
+import logging
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 
-import cherrypy  # sudo pip install cherrypy
-
-from Data.storage import StorageFactory
-import api
-from Config.config import dbConfig, webConfig, configureLogging
-import gui
-from sqlAlchemyPlugin import SATool, SAEnginePlugin  # sudo pip install sqlAlchemy
-import logging
+from Config.config import webConfig, configureLogging
+from Web import app
 
 _dir = os.path.dirname(os.path.realpath(__file__))
 
 if __name__ == '__main__':
-    # global settings
+    global settings
     profile = False
-    cherrypy.config.update(webConfig)
-    StorageFactory.config['engine'].update(dbConfig)
-    StorageFactory.config['debug'] = False
+    app.config.update(webConfig)
 
     # Configure logging
-    configureLogging(level=logging.CRITICAL)
+#     configureLogging(level=logging.CRITICAL)
 
-    # attach the database
-    SAEnginePlugin(cherrypy.engine).subscribe()
-    cherrypy.tools.db = SATool()
-    cherrypy.config.update({'tools.db.on': True})
+    print app.url_map
 
-    # mount the root paths
-    siteRoot = cherrypy.Application(gui.root, '/', gui.config)
-    apiRoot = cherrypy.Application(api.root, '/api', api.config)
-
-    if profile:
-        from cherrypy.lib import profiler
-        baseDir = os.path.dirname(os.path.abspath(__file__))
-        profDir = os.path.join(baseDir, 'profiles')
-        if not os.path.isdir(profDir):
-            os.makedirs(profDir)
-
-        cherrypy.tree.mount(profiler.make_app(siteRoot, path=profDir), '/', gui.config)
-        cherrypy.tree.mount(profiler.make_app(apiRoot, path=profDir), '/api', api.config)
-    else:
-        cherrypy.tree.mount(siteRoot)
-        cherrypy.tree.mount(apiRoot)
-
-    # start the server
-    cherrypy.engine.start()
-    cherrypy.engine.block()
+#     start the server
+    app.run(use_reloader=False)

@@ -1,135 +1,213 @@
-import cherrypy
-import json
+import datetime
+import time
+from flask import Blueprint, jsonify, abort
+from utils import DateUtil
+from Robot.ServoInterface import ServoInterface
+from Processor.SensorInterface import SensorInterface
+from Web.api.database import db_session
+import Model
 
-import Robot.legacy
-import Data.Model
-from crud import ModelCRUD
-
-
-class ServoModel(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(ServoModel, self).__init__(Data.Model.ServoModel, ['GET', ])
-
-
-class Servo(ModelCRUD):
-    exposed = True
-    model = ServoModel()
-
-    def __init__(self):
-        super(Servo, self).__init__(Data.Model.Servo, ['GET', 'POST', 'DELETE'])
-
-
-class ServoGroup(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(ServoGroup, self).__init__(Data.Model.ServoGroup, ['GET', 'POST', 'DELETE'])
+models = [
+          {
+            'class': Model.ServoModel,
+            'kwargs': {'methods':['GET'], }
+          },
+          {'class': Model.Servo, },
+          {'class': Model.ServoGroup, },
+          {'class': Model.ServoConfig, },
+          {
+            'class': Model.RobotModel,
+            'kwargs': {'methods':['GET'], }
+          },
+          {'class': Model.Robot, }
+         ]
 
 
-class ServoConfig(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(ServoConfig, self).__init__(Data.Model.ServoConfig, ['GET', 'POST', 'DELETE'])
-
-
-class SensorModel(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(SensorModel, self).__init__(Data.Model.SensorModel, ['GET', ])
+__robotInterface = Blueprint('robot.interface', __name__)
+__servoInterface = Blueprint('servo.interface', __name__)
+blueprints = [
+              __robotInterface,
+              __servoInterface,
+             ]
 
 
-class SensorValueType(ModelCRUD):
-    exposed = True
+@__robotInterface.route('/Robot/Interface/<int:oid>?<timestamp>', methods=['GET'])
+def __robotInterfaceGet(robotId, timestamp=None):
+    servos = __getServos(robotId)
+    if servos == None:
+        abort(404)
 
-    def __init__(self):
-        super(SensorValueType, self).__init__(Data.Model.SensorValueType, ['GET', ])
+    startTime = datetime.datetime.now()
+    timeout = 5
+    if timestamp != None:
+        while servos['timestamp'] <= DateUtil.fromUtcDateTime(timestamp) and (datetime.datetime.now() - startTime).seconds < timeout:
+            time.sleep(0.1)
+            servos = __getServos(robotId)
+            sensors = __getSensors(robotId)
 
+    ret = {
+           'servos': map(
+                         lambda (key, value): {
+                                             'id': key,
+                                             'position': value['position'],
+                                             'poseable': value['poseable'],
+                                             'jointName': value['jointName'],
+                                             }, servos['servos'].iteritems()),
+           'sensors': map(
+                          lambda (key, value): {
+                                                'id': key,
+                                                'value': value['value']
+                                                }, sensors['']),
+           'timestamp': DateUtil.utcDateTime(servos['timestamp']),
+           }
 
-class Sensor(ModelCRUD):
-    exposed = True
-    model = SensorModel()
-    valuetype = SensorValueType()
-
-    def __init__(self):
-        super(Sensor, self).__init__(Data.Model.Sensor, ['GET', 'POST', 'DELETE'])
-
-
-class SensorGroup(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(SensorGroup, self).__init__(Data.Model.SensorGroup, ['GET', 'POST', 'DELETE'])
-
-
-class SensorConfig(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(SensorConfig, self).__init__(Data.Model.SensorConfig, ['GET', 'POST', 'DELETE'])
-
-
-class RobotModel(ModelCRUD):
-    exposed = True
-
-    def __init__(self):
-        super(RobotModel, self).__init__(Data.Model.RobotModel, ['GET', ])
+    return jsonify(ret)
 
 
-class Robot(ModelCRUD):
-    exposed = True
-    model = RobotModel()
-    servo = Servo()
-    servogroup = ServoGroup()
-    servoconfig = ServoConfig()
-    sensor = Sensor()
-    sensorgroup = SensorGroup()
-    sensorconfig = SensorConfig()
-
-    def _cp_dispatch(self, vpath):
-        if vpath and len(vpath) > 1:
-            cherrypy.request.params['robot_id'] = vpath.pop(0)
-        if not vpath[0].isdigit():
-            return getattr(self, vpath.pop(0), None)
-
-    def __init__(self):
-        super(Robot, self).__init__(Data.Model.Robot, ['GET', 'POST', 'DELETE'])
-
-    @cherrypy.tools.json_in()
-    @cherrypy.tools.json_out()
-    def POST(self, oid=None, **constraint):
-        """Robot level is currently not handled properly for new robots, hacked for the time being to known versions"""
-        if oid == None:
-            data = Robot.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
-            data.name = cherrypy.request.json['name']
-            cherrypy.request.db.add(data)
-            cherrypy.request.db.commit()
-            return json.dumps(data.serialize())
+@__robotInterface.route('/Robot/Interface/<int:oid>', methods=['POST'])
+def __robotInterfacePost(robotId):
+    data = cherrypy.request.json
+    for servo in data['servos']:
+        servo = db_session.query(Model.Servo).get(servo['id'])
+        interface = ServoInterface.getServoInterface(servo)
+        if interface == None:
+            # TODO: Error handling
+            continue
+            # raise cherrypy.NotFound()
         else:
-            cur = cherrypy.request.db.query(self._modelClass).get(oid)
-            if cur.version != cherrypy.request.json['version']:
-                # basically have to rebuild the whole thing here
-                for servoGroup in cur.servoGroups:
-                    cherrypy.request.db.delete(servoGroup)
+            try:
+                if servo['position'] != None:
+                    interface.setPosition(int(servo['position']), 100)
+                if servo['poseable'] != None:
+                    interface.setPositioning(bool(servo['poseable']))
+                return 'OK'
+            except Exception:
+                # TODO: Error handling
+                continue
+                # raise cherrypy.HTTPError(message=e.message)
 
-                for servo in cur.servos:
-                    cherrypy.request.db.delete(servo)
+    ret = {
+           'servos': map(
+                         lambda servo: {
+                                             'id': servo['id'],
+                                             'position': servo['position'],
+                                             'poseable': servo['poseable'],
+                                             'jointName': servo['jointName'],
+                                             }, data['servos']),
+           'timestamp': DateUtil.utcDateTime(),
+           }
 
-                for config in cur.servoConfigs:
-                    cherrypy.request.db.delete(config)
-                cherrypy.request.db.commit()
-                cherrypy.request.db.expunge(cur)
+    return jsonify(ret)
 
-                try:
-                    data = Config.legacy.KasparImporter(cherrypy.request.json['version']).getRobot()
-                    data.name = cherrypy.request.json['name']
-                    data.id = oid
-                    cherrypy.request.db.merge(data)
-                    return data.serialize(urlResolver=self._urlResolver)
-                except Exception:
-                    raise cherrypy.HTTPError("Unknown version string")
-            else:
-                return super(Robot, self).POST(oid)
+__lastPositions = {}
+__lastValues = {}
+
+
+def __getSensors(robotId):
+    robot = db_session.query(Model.Robot).get(robotId)
+    if robot == None:
+        return None
+    else:
+        if robotId not in __lastPositions:
+            __lastValues[robotId] = {'timestamp': None, 'sensors': {}}
+
+        for sensor in robot.sensors:
+            if sensor.id not in __lastValues[robotId]['sensors']:
+                __lastValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None}
+
+            sensor = db_session.query(Model.Sensor).get(sensor.id)
+            interface = SensorInterface.getSensorInterface(sensor)
+            if interface == None:
+                continue
+            currentPos = interface.getPosition()
+            if __lastValues[robotId]['sensors'][sensor.id]['position'] != currentPos:
+                __lastValues[robotId]['sensors'][sensor.id]['position'] = currentPos
+                __lastValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
+
+        __lastValues[robotId]['timestamp'] = max(__lastValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
+
+    return __lastValues[robotId]
+
+
+def __getServos(robotId):
+    robot = db_session.query(Model.Robot).get(robotId)
+    if robot == None:
+        return None
+    else:
+        if robotId not in __lastPositions:
+            __lastPositions[robotId] = {'timestamp': None, 'servos': {}}
+
+        for servo in robot.servos:
+            if servo.id not in __lastPositions[robotId]['servos']:
+                __lastPositions[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None}
+
+            servo = db_session.query(Model.Servo).get(servo.id)
+            interface = ServoInterface.getServoInterface(servo)
+            if interface == None:
+                continue
+            currentPos = interface.getPosition()
+            if __lastPositions[robotId]['servos'][servo.id]['position'] != currentPos:
+                __lastPositions[robotId]['servos'][servo.id]['position'] = currentPos
+                __lastPositions[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
+
+        __lastPositions[robotId]['timestamp'] = max(__lastPositions[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
+
+    return __lastPositions[robotId]
+
+
+def __getReturn(interface):
+    ret = {
+           'id': interface.servoId,
+           'position': interface.getPosition(),
+           }
+    try:
+        ret['poseable'] = interface.getPositioning()
+    except:
+        ret['poseable'] = None
+
+    ret['timestamp'] = DateUtil.utcDateTime()
+
+    return ret
+
+
+@__servoInterface.route('/Servo/Interface/<int:oid>', methods=['GET'])
+def __servoInterfaceGet(oid, position=None):
+    servo = db_session.query(Model.Servo).get(oid)
+    interface = ServoInterface.getServoInterface(servo)
+    if interface == None:
+        raise abort(404)
+
+    currentPosition = interface.getPosition()
+    if position != None:
+        position = int(position)
+        while(currentPosition == position):
+            time.sleep(0.1)
+            currentPosition = interface.getPosition()
+
+    return jsonify(__getReturn(interface))
+
+
+@__servoInterface.route('/Servo/Interface/<int:oid>', methods=['POST'])
+def __servoInterfacePost(oid):
+    data = cherrypy.request.json
+    try:
+        servo = db_session.query(Model.Servo).get(oid)
+        interface = ServoInterface.getServoInterface(servo)
+    except Exception as e:
+        abort(500, "Error connecting to servos: %s" % e.message)
+
+    if interface == None:
+        abort(404)
+    else:
+        try:
+            if 'position' in data and data['position'] != None:
+                if 'speed' in data and data['speed'] != None:
+                    interface.setPosition(data['position'], data['speed'])
+                else:
+                    interface.setPosition(data['position'], 100)
+            if 'poseable' in data and data['poseable'] != None:
+                interface.setPositioning(data['poseable'])
+        except Exception as e:
+            abort(500, e.message)
+
+    return jsonify(__getReturn(interface))

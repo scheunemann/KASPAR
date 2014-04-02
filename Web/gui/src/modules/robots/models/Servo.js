@@ -1,20 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var Servo = function($resource) {
-		return $resource('/api/robot/:robot/servo/:id', {
-			robot : '@robot',
-			id : '@id'
-		}, {
-			get : {
-				method : 'GET',
-				cache : true
-			}
-		});
+	var Servo = function(modelBuilder) {
+		var _service = modelBuilder.getModel('Servo');
+		
+		return _service;
 	};
 
-	return [ '$resource', Servo ];
+	return [ 'modelBuilder', Servo ];
 });

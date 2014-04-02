@@ -12,13 +12,15 @@ define(function(require) {
 				actions : "=",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
+				scope.$watch('action', function(action) {
+					if(action != undefined) {
+						action.fillConcreteClassData();
+					}
+				});
+
 				scope.$watch('type', function(newType) {
 					if (newType != "" && newType != undefined) {
-						if (newType.toLowerCase() == "group" || newType.toLowerCase() == "sequence") {
-							iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
-						} else {
-							iElement.html('<' + newType + '-editor action="action"></' + newType + '-editor>');
-						}
+						iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
 						$compile(iElement.contents())(scope);
 					} else {
 						iElement.html('');

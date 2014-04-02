@@ -2,18 +2,13 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularResource');
+	require('actions/models');
 	require('actions/directives');
 
-	var ActionController = function($scope, $http, $q, $timeout, Action, ActionType) {
+	var ActionController = function($scope, Action, ActionType) {
 		$scope.action = '';
 		$scope.actions = Action.query();
-		ActionType.query(function(data) {
-			$scope.types = [];
-			for (var i = 0; i < data.length; i++) {
-				$scope.types.push(data[i].name);
-			}
-		});
+		$scope.types = ActionType.query();
 
 		$scope.setFiles = function(element) {
 			$scope.$apply(function($scope) {
@@ -22,9 +17,7 @@ define(function(require) {
 		};
 
 		$scope.newAction = function() {
-			$scope.action = new Action({
-				'name' : 'New Action'
-			});
+			$scope.action = new Action();
 			$scope.actions.push($scope.action);
 		};
 
@@ -36,7 +29,7 @@ define(function(require) {
 		$scope.uploadSound = function(file) {
 			var fd = new FormData();
 			fd.append("data", file);
-			var obj = $http.post('/api/action/sound/upload', fd, {
+			var obj = $http.post('/api/SoundAction/upload', fd, {
 				header : {
 					'Content-Type' : undefined
 				},
@@ -51,7 +44,7 @@ define(function(require) {
 				var fd = new FormData();
 				fd.append("data", files[i]);
 
-				var obj = $http.post('/api/action/import', fd, {
+				var obj = $http.post('/api/Action/Import', fd, {
 					headers : {
 						'Content-Type' : undefined
 					},
@@ -65,5 +58,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionType', ActionController ];
+	return [ '$scope', 'Action', 'ActionType', ActionController ];
 });

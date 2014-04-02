@@ -1,8 +1,8 @@
 <div>
 	<div ng-show="sensor">
-		<div ng-if="sensor.value_type.type=='Discrete'">TODO: Show
+		<div ng-if="sensor.value_type.type=='DiscreteValueType'">TODO: Show
 			discrete values</div>
-		<div ng-if="sensor.value_type.type=='Continuous'">
+		<div ng-if="sensor.value_type.type=='ContinuousValueType'">
 			<button
 				type="button"
 				class="btn btn-primary"
@@ -24,13 +24,13 @@
 				<button
 					type="button"
 					class="btn btn-primary"
-					ng-model="basicOn"
-					btn-radio="'on'">Active</button>
+					ng-model="trigger.sensorValue"
+					btn-radio="'eval::on'">Active</button>
 				<button
 					type="button"
 					class="btn btn-primary"
-					ng-model="basicOn"
-					btn-radio="'off'">Inactive</button>
+					ng-model="trigger.sensorValue"
+					btn-radio="'eval::off'">Inactive</button>
 			</div>
 			(As determined by sensor type)
 		</div>
@@ -64,10 +64,10 @@
 					required
 					ng-model="trigger.sensorValue" />
 				<div
-					ng-if="sensor.value_type.type=='Continuous'"
+					ng-if="sensor.value_type.type=='ContinuousValueType'"
 					class="input-group-addon">{{trigger.sensorValue}}</div>
 				<div
-					ng-if="sensor.value_type.type=='Discrete'"
+					ng-if="sensor.value_type.type=='DiscreteValueType'"
 					class="input-group-addon">TODO: Discrete Values</div>
 			</div>
 		</div>

@@ -2,11 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('robots/models');
 	var template = require('text!./jointEditor.tpl.html');
 
-	var JointEditor = function(proxyObjectResolver, ServoInterface) {
+	var JointEditor = function(ServoInterface) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -19,10 +18,6 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.moving = false;
-
-				$scope.$watch('servo', function(servo) {
-					proxyObjectResolver.resolveProp(servo, 'model');
-				});
 
 				var servoInt = null;
 				var getInt = function() {
@@ -82,5 +77,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', 'ServoInterface', JointEditor ];
+	return [ 'ServoInterface', JointEditor ];
 });

@@ -2,12 +2,11 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('common/services/displayServices');
 	require('actions/models');
 	var template = require('text!./actionButtons.tpl.html');
 
-	var ActionButtons = function($q, proxyObjectResolver, UserAction, hotkeyFormatter) {
+	var ActionButtons = function($q, UserAction, hotkeyFormatter) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -25,5 +24,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', 'proxyObjectResolver', 'UserAction', 'hotkeyFormatter', ActionButtons ];
+	return [ '$q', 'UserAction', 'hotkeyFormatter', ActionButtons ];
 });

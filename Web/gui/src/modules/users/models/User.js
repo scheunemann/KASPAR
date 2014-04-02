@@ -1,16 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var User = function($resource) {
-		return $resource('/api/user/:id', {
-			id : '@id'
-		}, {
-			cache : true
-		});
+	var User = function(modelBuilder) {
+		var _service = modelBuilder.getModel('User');
+		
+		return _service;
 	};
 
-	return [ '$resource', User ];
+	return [ 'modelBuilder', User ];
 });

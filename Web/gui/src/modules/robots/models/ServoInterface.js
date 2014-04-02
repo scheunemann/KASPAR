@@ -1,19 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var ServoInterface = function($resource) {
-		return $resource('/api/servointerface/:id', {
-			id : '@id'
-		}, {
-			get : {
-				method : 'GET',
-				cache : true
-			}
-		});
+	var ServoInterface = function(modelBuilder) {
+		var _service = modelBuilder.getModel('ServoInterface');
+		
+		return _service;
 	};
 
-	return [ '$resource', ServoInterface ];
+	return [ 'modelBuilder', ServoInterface ];
 });

@@ -2,11 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('common/services/proxyServices');
 	require('triggers/models');
 	var template = require('text!./buttonTriggerEditor.tpl.html');
 
-	var ButtonTriggerEditor = function(proxyObjectResolver, ButtonHotkey) {
+	var ButtonTriggerEditor = function(ButtonHotkey) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -16,10 +15,6 @@ define(function(require) {
 				triggers : "=",
 			},
 			controller : function($scope) {
-				$scope.$watch('button', function(button) {
-					proxyObjectResolver.resolveProp(button, 'hotKeys');
-				});
-
 				$scope.addButton = function() {
 					if ($scope.button.hotKeys == undefined) {
 						$scope.button.hotKeys = [];
@@ -33,5 +28,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', 'ButtonHotkey', ButtonTriggerEditor ];
+	return [ 'ButtonHotkey', ButtonTriggerEditor ];
 });

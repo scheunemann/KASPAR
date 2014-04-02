@@ -2,8 +2,9 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularUIRouter');
-	require('angularBoostrap');
+	var angularRouter = require('angularUIRouter');
+	var angularBootstrap = require('angularBoostrap');
+	var modelServices = require('common/services/modelServices');
 
 	var defaultTemplate = require('text!./default.tpl.html');
 	var action = require('categories/action');
@@ -15,8 +16,17 @@ define(function(require) {
 	var actionDirectives = require('actions/directives');
 	
 	var moduleName = 'kasparGUI';
-	var dependancies = [ 'ui.router', 'ui.bootstrap', commonControllers, commonDirectives, action, admin, interaction, trigger ];
-
+	var dependancies = [ 
+	                     angularRouter, 
+	                     angularBootstrap, 
+	                     commonControllers, 
+	                     commonDirectives, 
+	                     action, 
+	                     admin, 
+	                     interaction, 
+	                     trigger 
+	                   ];
+	
 	var Routes = function($stateProvider, $urlRouterProvider, $locationProvider) {
 		$locationProvider.html5Mode(true);
 		$urlRouterProvider.otherwise("/");
@@ -25,8 +35,13 @@ define(function(require) {
 			template : defaultTemplate,
 		});
 	};
+	
+	var ApiConfig = function(modelBuilderProvider) {
+		modelBuilderProvider.setBasePath('/api');
+	}
 
 	var module = angular.module(moduleName, dependancies);
 	module.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', Routes ]);
+	module.config([ 'modelBuilderProvider', ApiConfig ]);
 	return moduleName;
 });

@@ -3,9 +3,9 @@
 define(function(require) {
 	var angular = require('angular');
 	var displayServices = require('common/services/displayServices');
-	var proxyServices = require('common/services/proxyServices');
 	var filters = require('common/filters');
 	var triggerModels = require('triggers/models');
+	var robotModels = require('robots/models');
 	var ButtonTriggerEditor = require('./directives/ButtonTriggerEditor');
 	var CompoundTriggerEditor = require('./directives/CompoundTriggerEditor');
 	var HotkeyEditor = require('./directives/HotkeyEditor');
@@ -17,18 +17,18 @@ define(function(require) {
 	var moduleName = 'kasparGUI.triggers.directives';
 	var dependancies = [
 		         			displayServices,
-		        			proxyServices,
 		        			filters,
+		        			robotModels,
 		        			triggerModels,
 	                     ];
 	
 	var module = angular.module(moduleName, dependancies)
-		.directive('buttonTriggerEditor', ButtonTriggerEditor)
-		.directive('compoundTriggerEditor', CompoundTriggerEditor)
+		.directive('buttontriggerEditor', ButtonTriggerEditor)
+		.directive('compoundtriggerEditor', CompoundTriggerEditor)
 		.directive('hotkeyEditor', HotkeyEditor)
-		.directive('sensorTriggerEditor', SensorTriggerEditor)
+		.directive('sensortriggerEditor', SensorTriggerEditor)
 		.directive('sensorValueEditor', SensorValueEditor)
-		.directive('timeTriggerEditor', TimeTriggerEditor)
+		.directive('timetriggerEditor', TimeTriggerEditor)
 		.directive('triggerEditor', TriggerEditor);
 
 	return moduleName;

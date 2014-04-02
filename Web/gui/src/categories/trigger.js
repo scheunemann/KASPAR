@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('angularUIRouter');
+	var uiRouter = require('angularUIRouter');
 	var triggerControllers = require('triggers/controllers');
 	var defaultTemplate = require('text!triggers/index.tpl.html');
 	var editTemplate = require('text!triggers/triggerEdit.tpl.html');
@@ -10,7 +10,7 @@ define(function(require) {
 	var importTemplate = require('text!triggers/triggerImport.tpl.html');
 
 	var moduleName = 'kasparGUI.menu.trigger';
-	var dependancies = [ 'ui.router', triggerControllers, ];
+	var dependancies = [ uiRouter, triggerControllers, ];
 
 	var Routes = function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise("/");

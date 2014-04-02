@@ -2,11 +2,10 @@ import logging
 import sys
 
 webConfig = {
-        'server.socket_host': '0.0.0.0',
-        'server.socket_port': 1065,
-        'server.thread_pool': 10,
-        'server.thread_pool_max': -1,
-#         'environment': 'production'
+        'SERVER_NAME': 'localhost:1065',
+        'JSON_AS_ASCII': False,
+        'THREADS_PER_PAGE': 15,
+        'DEBUG': True,
 }
 
 dbConfig = {

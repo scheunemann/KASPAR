@@ -1,16 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var JointPosition = function($resource) {
-		return $resource('/api/jointposition/:id', {
-			id : '@id'
-		}, {
-			cache : false
-		});
+	var JointPosition = function(modelBuilder) {
+		var _service = modelBuilder.getModel('JointPosition');
+		
+		return _service;
 	};
 
-	return [ '$resource', JointPosition ];
+	return [ 'modelBuilder', JointPosition ];
 });

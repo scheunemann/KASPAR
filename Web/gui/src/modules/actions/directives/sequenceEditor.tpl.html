@@ -70,7 +70,7 @@
 						multiple
 						ng-multiple="true"
 						ng-model="toRemove"
-						ng-options="((action.order + 1) + '. ' + action.action.name) for action in sequence.ordered_actions | orderBy:'order'">
+						ng-options="((action.order + 1) + '. ' + getName(action.action_id)) for action in sequence.ordered_actions | orderBy:'order'">
 					</select>
 				</div>
 			</div>

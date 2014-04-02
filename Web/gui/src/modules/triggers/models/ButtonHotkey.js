@@ -1,17 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var ButtonHotkey = function($resource) {
-		return $resource('/api/trigger/:trigger/hotkey/:id', {
-			trigger : '@trigger_id',
-			id : '@id'
-		}, {
-			cache : true
-		});
+	var ButtonHotkey = function(modelBuilder) {
+		var _service = modelBuilder.getModel('ButtonHotkey');
+		
+		return _service;
 	};
 
-	return [ '$resource', ButtonHotkey ];
+	return [ 'modelBuilder', ButtonHotkey ];
 });

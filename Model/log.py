@@ -48,7 +48,7 @@ class InteractionLog(Log):
 
     trigger_id = Column(Integer, ForeignKey('Trigger.id'))
     trigger = relationship("Trigger")
-    
+
     logs = relationship("DebugLog", secondary=interactionDebugLog_table)
-    
+
     finished = Column(DateTime, nullable=True)

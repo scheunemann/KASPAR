@@ -1,19 +1,32 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
+	var Sensor = function($rootScope, modelBuilder) {
+		var resource = modelBuilder.getModel('Sensor');
+		
+		resource.prototype.fillConcreteClassData = function() {
+			if (this.$concreteResolved || this.type == undefined) { return; }
 
-	var Sensor = function($resource) {
-		return $resource('/api/robot/:id/sensor/:id', {
-			id : '@id'
-		}, {
-			get : {
-				method : 'GET',
-				cache : true
+			var concreteModel = modelBuilder.getModel(this.type);
+
+			if (this.id != undefined) {
+				var self = this;
+				concreteModel.get({
+					id : this.id
+				}).$promise.then(function(res) {
+					angular.extend(self, res);
+					$rootScope.$$phase || $rootScope.$digest();
+					this.$concreteResolved = true;
+				});
+			} else {
+				angular.extend(this, new _service());
+				$rootScope.$$phase || $rootScope.$digest();
+				this.$concreteResolved = true;
 			}
-		});
+		};
+		
+		return resource;
 	};
 
-	return [ '$resource', Sensor ];
+	return [ '$rootScope', 'modelBuilder', Sensor ];
 });

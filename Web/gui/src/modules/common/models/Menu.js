@@ -1,17 +1,9 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var Menu = function($resource) {
-		return $resource('/api/menuOptions', {}, {
-			'get' : {
-				method : 'GET',
-				cache : true
-			}
-		});
+	var Menu = function(modelBuilder) {
+		return modelBuilder.getModel('Menu');
 	};
 
-	return [ '$resource', Menu ];
+	return [ 'modelBuilder', Menu ];
 });

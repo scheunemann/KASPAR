@@ -1,16 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	require('angularResource');
-
-	var Operator = function($resource) {
-		return $resource('/api/operator/:id', {
-			id : '@id'
-		}, {
-			cache : true
-		});
+	var Operator = function(modelBuilder) {
+		var _service = modelBuilder.getModel('Operator');
+		
+		return _service;
 	};
 
-	return [ '$resource', Operator ];
+	return [ 'modelBuilder', Operator ];
 });

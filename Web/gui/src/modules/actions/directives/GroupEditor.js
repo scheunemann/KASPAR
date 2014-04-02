@@ -3,9 +3,8 @@
 define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./groupEditor.tpl.html');
-	require('common/services/proxyServices');
 
-	var GroupEditor = function(proxyObjectResolver) {
+	var GroupEditor = function() {
 		return {
 			template : template,
 			restrict : 'E',
@@ -14,10 +13,6 @@ define(function(require) {
 				actions : "=",
 			},
 			controller : function($scope) {
-				$scope.$watch('group', function(group) {
-					proxyObjectResolver.resolveProp(group, 'actions');
-				});
-
 				$scope.addActions = function(actions) {
 					if ($scope.group.actions === undefined) {
 						$scope.group.actions = [];
@@ -41,5 +36,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'proxyObjectResolver', GroupEditor ];
+	return GroupEditor;
 });
