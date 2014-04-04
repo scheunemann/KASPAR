@@ -43,7 +43,7 @@ define(function(require) {
 						});
 						$scope.sensor.$promise.then(function(sensor) {
 							if ($scope.sensor != undefined) {
-								$scope.sensor.fillConcreteClassData();
+								$scope.sensor = $scope.sensor.getConcreteClassInstance();
 							}
 						});
 					}

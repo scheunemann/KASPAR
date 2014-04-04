@@ -13,12 +13,6 @@ define(function(require) {
 				actions : "=",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
-				scope.$watch('trigger', function(trigger) {
-					if (trigger != undefined) {
-						trigger.fillConcreteClassData();
-					}
-				});
-
 				scope.$watch('type', function(newType) {
 					if (newType != "" && newType != undefined) {
 						iElement.html('<' + newType + '-editor trigger="trigger" triggers="triggers" actions="actions"></' + newType + '-editor>');
@@ -29,6 +23,13 @@ define(function(require) {
 					}
 				});
 			},
+			controller : function($scope) {
+				$scope.$watch('trigger', function(trigger) {
+					if (trigger != undefined) {
+						$scope.trigger = trigger.getConcreteClassInstance();
+					}
+				});
+			}
 		};
 	};
 

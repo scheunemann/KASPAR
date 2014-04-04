@@ -12,12 +12,6 @@ define(function(require) {
 				actions : "=",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
-				scope.$watch('action', function(action) {
-					if(action != undefined) {
-						action.fillConcreteClassData();
-					}
-				});
-
 				scope.$watch('type', function(newType) {
 					if (newType != "" && newType != undefined) {
 						iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
@@ -28,6 +22,13 @@ define(function(require) {
 					}
 				});
 			},
+			controller : function($scope) {
+				$scope.$watch('action', function(action) {
+					if (action != undefined) {
+						$scope.action = action.getConcreteClassInstance();
+					}
+				});
+			}
 		};
 	};
 
