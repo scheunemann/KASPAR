@@ -7,7 +7,7 @@
 	<SERVOCONFIGS>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>COM15</PORT>
+			<PORT>/dev/bodyServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -34,7 +34,7 @@
 		</HERKULEX>
 
 		<HS82MG>
-			<PORT>COM19</PORT>
+			<PORT>/dev/headServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>90</POS>
@@ -63,7 +63,7 @@
 	<SENSORCONFIGS>
 		<ROBOT>
 			<FSR_MiniMaestro>
-				<PORT>COM14</PORT>
+				<PORT>/dev/bodySensors</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
