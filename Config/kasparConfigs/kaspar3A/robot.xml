@@ -7,7 +7,7 @@
 	<SERVOCONFIGS>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>/dev/bodyServos</PORT>
+			<PORT>COM15</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -34,16 +34,16 @@
 		</HERKULEX>
 
 		<HS82MG>
-			<PORT>/dev/headServos</PORT>
+			<PORT>COM19</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
-				<POS>0</POS>
+				<POS>90</POS>
 				<SPEED>100</SPEED>
 				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
 			</DEFAULT>
 			<SCALING>
-				<!-- 360 / 1000 -->
-				<POS>0.36</POS>
+				<!-- 360 / 2000 -->
+				<POS>0.18</POS>
 				<POS_OFFSET>1000</POS_OFFSET>
 				<SPEED>0.1</SPEED>
 			</SCALING>
@@ -53,7 +53,7 @@
 					<MAX>500</MAX>
 				</SPEED>
 				<POS>
-					<MIN>-180</MIN>
+					<MIN>0</MIN>
 					<MAX>180</MAX>
 				</POS>
 			</LIMITS>
@@ -62,11 +62,11 @@
 
 	<SENSORCONFIGS>
 		<ROBOT>
-			<FSR>
-				<PORT>/dev/headServos</PORT>
+			<FSR_MiniMaestro>
+				<PORT>COM14</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
-			</FSR>
+			</FSR_MiniMaestro>
 		</ROBOT>
 	</SENSORCONFIGS>
 
@@ -211,9 +211,64 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-
-		<SERVO type="HS82MG" id="7">
-			<NAME>EYES_LR</NAME>
+		<SERVO type="HERKULEX" id="5">
+			<NAME>MOUTH_OPEN</NAME>
+			<CENTER>480</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-17</MIN>
+					<MAX>17</MAX>
+				</POS>
+			</LIMITS>
+			<DEFAULT>
+				<SPEED>50</SPEED>
+			</DEFAULT>
+		</SERVO>
+		<SERVO type="HERKULEX" id="6">
+			<NAME>MOUTH_SMILE</NAME>
+			<CENTER>158</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-14</MIN>
+					<MAX>10</MAX>
+				</POS>
+			</LIMITS>
+			<DEFAULT>
+				<SPEED>50</SPEED>
+			</DEFAULT>
+		</SERVO>
+		<SERVO type="HS82MG" id="0">
+			<NAME>EYE_R_LID</NAME>
+			<CENTER>0</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-144</MIN>
+					<MAX>0</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="1">
+			<NAME>EYE_R_PAN</NAME>
+			<CENTER>18</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-72</MIN>
+					<MAX>72</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="2">
+			<NAME>EYE_R_UD</NAME>
+			<CENTER>72</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-104</MIN>
+					<MAX>104</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="3">
+			<NAME>EYE_L_LR</NAME>
 			<CENTER>234</CENTER>
 			<LIMITS>
 				<POS>
@@ -222,63 +277,25 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="8">
-			<NAME>EYES_UD</NAME>
-			<CENTER>277</CENTER>
+		<SERVO type="HS82MG" id="4">
+			<NAME>EYE_L_LID</NAME>
+			<CENTER>234</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-83</MIN>
-					<MAX>83</MAX>
+					<MIN>-104</MIN>
+					<MAX>104</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="9">
-			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>108</CENTER>
+		<SERVO type="HS82MG" id="5">
+			<NAME>EYE_L_UD</NAME>
+			<CENTER>234</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>0</MIN>
-					<MAX>234</MAX>
+					<MIN>-104</MIN>
+					<MAX>104</MAX>
 				</POS>
-				<SPEED>
-					<MAX>250</MAX>
-				</SPEED>
 			</LIMITS>
-			<DEFAULT>
-				<SPEED>50</SPEED>
-			</DEFAULT>
-		</SERVO>
-		<SERVO type="HS82MG" id="10">
-			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>174.6</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-48.6</MIN>
-					<MAX>158.4</MAX>
-				</POS>
-				<SPEED>
-					<MAX>250</MAX>
-				</SPEED>
-			</LIMITS>
-			<DEFAULT>
-				<SPEED>50</SPEED>
-			</DEFAULT>
-		</SERVO>
-		<SERVO type="HS82MG" id="11">
-			<NAME>EYELIDS</NAME>
-			<CENTER>342</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-120.6</MIN>
-					<MAX>0</MAX>
-				</POS>
-				<SPEED>
-					<MAX>50</MAX>
-				</SPEED>
-			</LIMITS>
-			<DEFAULT>
-				<SPEED>1</SPEED>
-			</DEFAULT>
 		</SERVO>
 	</SERVOLIST>
 
@@ -320,7 +337,7 @@
 
 	<SENSORLIST>
 		<ROBOT>
-			<SENSOR type="FSR" datatype="continuous" id="0">
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="0">
 				<NAME>FSR_FOOT_R</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
@@ -332,7 +349,7 @@
 					<VALUE>10</VALUE>
 				</ONSTATE>
 			</SENSOR>
-			<SENSOR type="FSR" datatype="continuous" id="1">
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
 				<NAME>FSR_FOOT_L</NAME>
 				<LIMITS>
 					<MAX>256</MAX>

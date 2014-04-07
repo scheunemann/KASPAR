@@ -30,20 +30,40 @@ blueprints = [
               __servoInterface,
              ]
 
+__servoInterfaces = {}
+__sensorInterfaces = {}
+__servoValues = {}
+__sensorValues = {}
 
-@__robotInterface.route('/Robot/Interface/<int:oid>?<timestamp>', methods=['GET'])
+
+@__robotInterface.route('/Robot/<int:robotId>/Interface', methods=['GET'])
 def __robotInterfaceGet(robotId, timestamp=None):
-    servos = __getServos(robotId)
+    servos = __getServoValues(robotId)
     if servos == None:
         abort(404)
 
     startTime = datetime.datetime.now()
     timeout = 5
+    servos = None
+    sensors = None
+    while (datetime.datetime.now() - startTime).seconds < timeout:
+        time.sleep(0.1)
+        servos = __getServoValues(robotId)
+        sensors = __getSensorValues(robotId)
+
+    if servos == None or sensors == None:
+        msg = ''
+        if servos == None:
+            msg += "Servos, "
+        if sensors == None:
+            msg += "Sensors, "
+        msg = msg[:-2] + " not ready before timeout"
+        abort(500, msg)
+
     if timestamp != None:
-        while servos['timestamp'] <= DateUtil.fromUtcDateTime(timestamp) and (datetime.datetime.now() - startTime).seconds < timeout:
-            time.sleep(0.1)
-            servos = __getServos(robotId)
-            sensors = __getSensors(robotId)
+        ts = DateUtil.fromUtcDateTime(timestamp)
+        servos = [s for s in servos if s['timestamp'] >= ts]
+        sensors = [s for s in sensors if s['timestamp'] >= ts]
 
     ret = {
            'servos': map(
@@ -56,15 +76,17 @@ def __robotInterfaceGet(robotId, timestamp=None):
            'sensors': map(
                           lambda (key, value): {
                                                 'id': key,
-                                                'value': value['value']
-                                                }, sensors['']),
+                                                'value': value['value'],
+                                                'name': value['name'],
+                                                }, sensors['sensors'].iteritems()),
            'timestamp': DateUtil.utcDateTime(servos['timestamp']),
+           'id': robotId,
            }
 
     return jsonify(ret)
 
 
-@__robotInterface.route('/Robot/Interface/<int:oid>', methods=['POST'])
+@__robotInterface.route('/Robot/<int:robotId>/Interface', methods=['POST'])
 def __robotInterfacePost(robotId):
     data = cherrypy.request.json
     for servo in data['servos']:
@@ -99,80 +121,10 @@ def __robotInterfacePost(robotId):
 
     return jsonify(ret)
 
-__lastPositions = {}
-__lastValues = {}
 
-
-def __getSensors(robotId):
-    robot = db_session.query(Model.Robot).get(robotId)
-    if robot == None:
-        return None
-    else:
-        if robotId not in __lastPositions:
-            __lastValues[robotId] = {'timestamp': None, 'sensors': {}}
-
-        for sensor in robot.sensors:
-            if sensor.id not in __lastValues[robotId]['sensors']:
-                __lastValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None}
-
-            sensor = db_session.query(Model.Sensor).get(sensor.id)
-            interface = SensorInterface.getSensorInterface(sensor)
-            if interface == None:
-                continue
-            currentPos = interface.getPosition()
-            if __lastValues[robotId]['sensors'][sensor.id]['position'] != currentPos:
-                __lastValues[robotId]['sensors'][sensor.id]['position'] = currentPos
-                __lastValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
-
-        __lastValues[robotId]['timestamp'] = max(__lastValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
-
-    return __lastValues[robotId]
-
-
-def __getServos(robotId):
-    robot = db_session.query(Model.Robot).get(robotId)
-    if robot == None:
-        return None
-    else:
-        if robotId not in __lastPositions:
-            __lastPositions[robotId] = {'timestamp': None, 'servos': {}}
-
-        for servo in robot.servos:
-            if servo.id not in __lastPositions[robotId]['servos']:
-                __lastPositions[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None}
-
-            servo = db_session.query(Model.Servo).get(servo.id)
-            interface = ServoInterface.getServoInterface(servo)
-            if interface == None:
-                continue
-            currentPos = interface.getPosition()
-            if __lastPositions[robotId]['servos'][servo.id]['position'] != currentPos:
-                __lastPositions[robotId]['servos'][servo.id]['position'] = currentPos
-                __lastPositions[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
-
-        __lastPositions[robotId]['timestamp'] = max(__lastPositions[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
-
-    return __lastPositions[robotId]
-
-
-def __getReturn(interface):
-    ret = {
-           'id': interface.servoId,
-           'position': interface.getPosition(),
-           }
-    try:
-        ret['poseable'] = interface.getPositioning()
-    except:
-        ret['poseable'] = None
-
-    ret['timestamp'] = DateUtil.utcDateTime()
-
-    return ret
-
-
-@__servoInterface.route('/Servo/Interface/<int:oid>', methods=['GET'])
-def __servoInterfaceGet(oid, position=None):
-    servo = db_session.query(Model.Servo).get(oid)
+@__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['GET'])
+def __servoInterfaceGet(servoId, position=None):
+    servo = db_session.query(Model.Servo).get(servoId)
     interface = ServoInterface.getServoInterface(servo)
     if interface == None:
         raise abort(404)
@@ -187,11 +139,11 @@ def __servoInterfaceGet(oid, position=None):
     return jsonify(__getReturn(interface))
 
 
-@__servoInterface.route('/Servo/Interface/<int:oid>', methods=['POST'])
-def __servoInterfacePost(oid):
+@__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['POST'])
+def __servoInterfacePost(servoId):
     data = cherrypy.request.json
     try:
-        servo = db_session.query(Model.Servo).get(oid)
+        servo = db_session.query(Model.Servo).get(servoId)
         interface = ServoInterface.getServoInterface(servo)
     except Exception as e:
         abort(500, "Error connecting to servos: %s" % e.message)
@@ -211,3 +163,88 @@ def __servoInterfacePost(oid):
             abort(500, e.message)
 
     return jsonify(__getReturn(interface))
+
+
+def __getSensorValues(robotId):
+    robot = db_session.query(Model.Robot).get(robotId)
+    if robot == None:
+        return None
+    else:
+        if robotId not in __sensorValues:
+            __sensorValues[robotId] = {'timestamp': None, 'sensors': {}}
+
+        for sensor in robot.sensors:
+            if sensor.id not in __sensorValues[robotId]['sensors']:
+                __sensorValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None, 'name': sensor.name}
+
+            if sensor.id not in __sensorInterfaces:
+                sensor = db_session.query(Model.Sensor).get(sensor.id)
+                interface = SensorInterface.getSensorInterface(sensor)
+                __sensorInterfaces[sensor.id] = interface
+            else:
+                interface = __sensorInterfaces[sensor.id]
+
+            if interface == None:
+                continue
+
+            curValue = interface.getCurrentValue()
+            if __sensorValues[robotId]['sensors'][sensor.id]['value'] != curValue:
+                __sensorValues[robotId]['sensors'][sensor.id]['value'] = curValue
+                __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
+
+        __sensorValues[robotId]['timestamp'] = max(__sensorValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
+
+    return __sensorValues[robotId]
+
+
+def __getServoValues(robotId):
+    robot = db_session.query(Model.Robot).get(robotId)
+    if robot == None:
+        return None
+    else:
+        if robotId not in __servoValues:
+            __servoValues[robotId] = {'timestamp': None, 'servos': {}}
+
+        for servo in robot.servos:
+            if servo.id not in __servoValues[robotId]['servos']:
+                __servoValues[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None, 'jointName': servo.jointName}
+
+            if servo.id not in __servoInterfaces:
+                servo = db_session.query(Model.Servo).get(servo.id)
+                interface = ServoInterface.getServoInterface(servo)
+                __servoInterfaces[servo.id] = interface
+            else:
+                interface = __servoInterfaces[servo.id]
+
+            if interface == None:
+                continue
+
+            currentPos = interface.getPosition()
+            if __servoValues[robotId]['servos'][servo.id]['position'] != currentPos:
+                __servoValues[robotId]['servos'][servo.id]['position'] = currentPos
+                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
+
+            curPoseable = interface.getPositioning()
+            if __servoValues[robotId]['servos'][servo.id]['poseable'] != curPoseable:
+                __servoValues[robotId]['servos'][servo.id]['poseable'] = curPoseable
+                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
+
+        __servoValues[robotId]['timestamp'] = max(__servoValues[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
+
+    return __servoValues[robotId]
+
+
+def __getReturn(interface):
+    ret = {
+           'id': interface.servoId,
+           'position': interface.getPosition(),
+           }
+    try:
+        ret['poseable'] = interface.getPositioning()
+    except:
+        ret['poseable'] = None
+
+    ret['timestamp'] = DateUtil.utcDateTime()
+
+    return ret
+
