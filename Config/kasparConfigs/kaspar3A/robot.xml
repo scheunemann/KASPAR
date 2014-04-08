@@ -5,6 +5,24 @@
 <ROBOT type="KASPAR" version="3" name="Kaspar Prototype A"
 	defaultAction="Neutral">
 	<SERVOCONFIGS>
+		<VIRTUAL>
+			<DEFAULT>
+				<POS>0</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
+				<IS_UPDATED>True</IS_UPDATED>
+			</DEFAULT>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>200</MAX>
+				</SPEED>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</VIRTUAL>
 		<!-- Connection Settings -->
 		<HERKULEX>
 			<PORT>/dev/bodyServos</PORT>
@@ -258,7 +276,7 @@
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="2">
-			<NAME>EYE_R_UD</NAME>
+			<NAME>EYEBALL_R_UD</NAME>
 			<CENTER>72</CENTER>
 			<LIMITS>
 				<POS>
@@ -288,7 +306,7 @@
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="5">
-			<NAME>EYE_L_UD</NAME>
+			<NAME>EYEBALL_L_UD</NAME>
 			<CENTER>234</CENTER>
 			<LIMITS>
 				<POS>
@@ -296,6 +314,51 @@
 					<MAX>104</MAX>
 				</POS>
 			</LIMITS>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYES_UD</NAME>
+			<EXTRADATA>
+				<MASTER>EYE_R_UD</MASTER>
+				<SLAVE>EYE_L_UD</SLAVE>
+				<RATIO>1</RATIO>
+				<ABSOLUTE>True</ABSOLUTE>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYES_LR</NAME>
+			<EXTRADATA>
+				<MASTER>EYE_R_LR</MASTER>
+				<SLAVE>EYE_L_LR</SLAVE>
+				<RATIO>1</RATIO>
+				<ABSOLUTE>True</ABSOLUTE>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYE_R_UD</NAME>
+			<EXTRADATA>
+				<MASTER>EYEBALL_R_UD</MASTER>
+				<SLAVE>EYE_R_LID</SLAVE>
+				<ABSOLUTE>False</ABSOLUTE>
+				<RATIO>-1</RATIO>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYE_L_UD</NAME>
+			<EXTRADATA>
+				<MASTER>EYEBALL_L_UD</MASTER>
+				<SLAVE>EYE_L_LID</SLAVE>
+				<ABSOLUTE>False</ABSOLUTE>
+				<RATIO>-1</RATIO>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYELIDS</NAME>
+			<EXTRADATA>
+				<MASTER>EYE_L_LID</MASTER>
+				<SLAVE>EYE_R_LID</SLAVE>
+				<ABSOLUTE>True</ABSOLUTE>
+				<RATIO>1</RATIO>
+			</EXTRADATA>
 		</SERVO>
 	</SERVOLIST>
 
