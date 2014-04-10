@@ -6,19 +6,32 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 
 from Config.config import webConfig, configureLogging
-from Web import app
+from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.serving import run_simple
+siteRoot = None
 
-_dir = os.path.dirname(os.path.realpath(__file__))
+def configureSite():
+    from api.root import root as apiRoot
+    from gui.root import root as guiRoot
+    global siteRoot
+    siteRoot = DispatcherMiddleware(guiRoot, {'/api': apiRoot})
 
-if __name__ == '__main__':
-    global settings
-    profile = False
-    app.config.update(webConfig)
+    #siteRoot.config.update(webConfig)
 
     # Configure logging
-#     configureLogging(level=logging.CRITICAL)
+    # configureLogging(level=logging.CRITICAL)
 
-    print app.url_map
+    # start the server, use_reloader=False allows debugging in the IDE
 
-#     start the server
-    app.run(use_reloader=False)
+def runSite():
+    global siteRoot
+    if siteRoot == None:
+        raise Exception("Site not configured, run configureSite() first")
+
+    host = webConfig.get('server.socket_host', 'localhost')
+    port = webConfig.get('server.socket_port', 5000)
+    run_simple(host, port, siteRoot, use_reloader=True)
+
+if __name__ == '__main__':
+    configureSite()
+    runSite()

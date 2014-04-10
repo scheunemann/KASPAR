@@ -1,6 +1,6 @@
 import os
 import re
-from flask import Blueprint, abort
+from flask import Flask, abort
 from flask.helpers import send_file
 _curDir = os.path.dirname(os.path.realpath(__file__))
 _subDir = 'src'
@@ -8,16 +8,12 @@ _dir = os.path.join(_curDir, _subDir)
 isFile = re.compile('(.*/)?.+\.[^/]+')
 types = {'woff': 'application/x-font-woff'}
 
-root = Blueprint('gui', __name__, template_folder=_dir)
-excludePaths = []
+root = Flask(__name__, static_folder=None)
 
 
 @root.route('/', defaults={'page': 'index.html'})
 @root.route('/<path:page>')
 def default(page):
-    if any([page.startswith(p + '/') for p in excludePaths]):
-        abort(404)
-
     """since angular is set to html5Mode(true) anything that's not a direct file reference """
     """ has to redirect to the index.html file """
     """https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode"""

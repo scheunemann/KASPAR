@@ -2,10 +2,13 @@ import logging
 import sys
 
 webConfig = {
-        'SERVER_NAME': 'localhost:1065',
+        'server.socket_host': '0.0.0.0',
+        'server.socket_port': 1065,
+        'server.thread_pool': 10,
+        'server.thread_pool_max': -1,
         'JSON_AS_ASCII': False,
-        'THREADS_PER_PAGE': 15,
         'DEBUG': True,
+#         'environment': 'production'
 }
 
 dbConfig = {
@@ -28,7 +31,7 @@ class StreamHandler(logging.StreamHandler):
         else:
             self.stream = sys.stdout
 
-        if not 'cherrypy' in record.pathname and not 'sqlalchemy' in record.pathname:
+        if not 'python' in record.pathname:
             return super(StreamHandler, self).emit(record)
 
 
