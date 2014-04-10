@@ -1,6 +1,6 @@
 import datetime
 import time
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, jsonify, abort, request
 from utils import DateUtil
 from Robot.ServoInterface import ServoInterface
 from Processor.SensorInterface import SensorInterface
@@ -46,7 +46,7 @@ def __robotInterfaceGet(robotId, timestamp=None):
     timeout = 5
     servos = None
     sensors = None
-    while (datetime.datetime.now() - startTime).seconds < timeout:
+    while (datetime.datetime.now() - startTime).seconds < timeout and not servos and not sensors:
         time.sleep(0.1)
         servos = __getServoValues(robotId)
         sensors = __getSensorValues(robotId)
@@ -88,38 +88,31 @@ def __robotInterfaceGet(robotId, timestamp=None):
 
 @__robotInterface.route('/Robot/<int:robotId>/Interface', methods=['POST'])
 def __robotInterfacePost(robotId):
-    data = cherrypy.request.json
-    for servo in data['servos']:
-        servo = db_session.query(Model.Servo).get(servo['id'])
-        interface = ServoInterface.getServoInterface(servo)
-        if interface == None:
-            # TODO: Error handling
-            continue
-            # raise cherrypy.NotFound()
-        else:
-            try:
-                if servo['position'] != None:
-                    interface.setPosition(int(servo['position']), 100)
-                if servo['poseable'] != None:
-                    interface.setPositioning(bool(servo['poseable']))
-                return 'OK'
-            except Exception:
+    try:
+        data = request.json
+        for servo in data.get('servos', []):
+            if servo.get('id', None) == None:
+                continue
+            servo = db_session.query(Model.Servo).get(servo['id'])
+            interface = ServoInterface.getServoInterface(servo)
+            if interface == None:
                 # TODO: Error handling
                 continue
-                # raise cherrypy.HTTPError(message=e.message)
+                # raise cherrypy.NotFound()
+            else:
+                try:
+                    if servo.get('position', None) != None:
+                        interface.setPosition(int(servo['position']), 100)
+                    if servo.get('poseable', None) != None:
+                        interface.setPositioning(bool(servo['poseable']))
+                except Exception:
+                    # TODO: Error handling
+                    continue
+                    # raise cherrypy.HTTPError(message=e.message)
+    except Exception as e:
+        print e
 
-    ret = {
-           'servos': map(
-                         lambda servo: {
-                                             'id': servo['id'],
-                                             'position': servo['position'],
-                                             'poseable': servo['poseable'],
-                                             'jointName': servo['jointName'],
-                                             }, data['servos']),
-           'timestamp': DateUtil.utcDateTime(),
-           }
-
-    return jsonify(ret)
+    return __robotInterfaceGet(robotId)
 
 
 @__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['GET'])
@@ -141,7 +134,7 @@ def __servoInterfaceGet(servoId, position=None):
 
 @__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['POST'])
 def __servoInterfacePost(servoId):
-    data = cherrypy.request.json
+    data = request.json
     try:
         servo = db_session.query(Model.Servo).get(servoId)
         interface = ServoInterface.getServoInterface(servo)
@@ -192,7 +185,8 @@ def __getSensorValues(robotId):
                 __sensorValues[robotId]['sensors'][sensor.id]['value'] = curValue
                 __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
 
-        __sensorValues[robotId]['timestamp'] = max(__sensorValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
+        if __sensorValues[robotId]['sensors'].values():
+            __sensorValues[robotId]['timestamp'] = max(__sensorValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
 
     return __sensorValues[robotId]
 
@@ -229,7 +223,8 @@ def __getServoValues(robotId):
                 __servoValues[robotId]['servos'][servo.id]['poseable'] = curPoseable
                 __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
 
-        __servoValues[robotId]['timestamp'] = max(__servoValues[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
+        if __servoValues[robotId]['servos'].values():
+            __servoValues[robotId]['timestamp'] = max(__servoValues[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
 
     return __servoValues[robotId]
 

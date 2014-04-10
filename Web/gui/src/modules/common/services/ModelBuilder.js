@@ -29,8 +29,12 @@ define(function(require) {
 
 		this.$get = [ '$resource', function($resource) {
 			var root = this;
-			var getModel = function(model, params, methods) {
-				var url = root.basePath + model + '/:id';
+			var getModel = function(model, params, methods, url) {
+				if (url === undefined) {
+					url = root.basePath + model + '/:id';
+				} else {
+					url = root.basePath + url;
+				}
 
 				var defaultMethods = {
 					update : {

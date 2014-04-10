@@ -6,7 +6,7 @@ define(function(require) {
 	require('robots/models');
 	var template = require('text!./robotInterface.tpl.html');
 
-	var RobotInterface = function($q, Robot, Setting) {
+	var RobotInterface = function($q, Robot, robotInterface, Setting) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -32,6 +32,14 @@ define(function(require) {
 						}
 					}
 				});
+				
+				$scope.$watch('robot', function(robot) {
+					robotInterface.setRobot(robot);
+				});
+				
+				$scope.$watch('connected', function(connected) {
+					robotInterface.setConnected(connected);
+				})
 
 				$scope.connect = function(robot) {
 					$scope.connected = true;
@@ -44,5 +52,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', 'Robot', 'Setting', RobotInterface ];
+	return [ '$q', 'Robot', 'robotInterface', 'Setting', RobotInterface ];
 });

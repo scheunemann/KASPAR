@@ -10,18 +10,22 @@ from werkzeug.wsgi import DispatcherMiddleware
 from werkzeug.serving import run_simple
 siteRoot = None
 
+
 def configureSite():
     from api.root import root as apiRoot
     from gui.root import root as guiRoot
     global siteRoot
     siteRoot = DispatcherMiddleware(guiRoot, {'/api': apiRoot})
 
-    #siteRoot.config.update(webConfig)
-
     # Configure logging
-    # configureLogging(level=logging.CRITICAL)
+#     configureLogging(level=logging.INFO)
 
-    # start the server, use_reloader=False allows debugging in the IDE
+    # Disable connection for debugging without a robot
+    from Robot.ServoInterface import ServoInterface
+    from Processor.SensorInterface import SensorInterface
+    ServoInterface.disconnected = True
+    SensorInterface.disconnected = True
+
 
 def runSite():
     global siteRoot
@@ -30,7 +34,8 @@ def runSite():
 
     host = webConfig.get('server.socket_host', 'localhost')
     port = webConfig.get('server.socket_port', 5000)
-    run_simple(host, port, siteRoot, use_reloader=True)
+    # start the server, use_reloader=False allows debugging in the IDE
+    run_simple(host, port, siteRoot, use_reloader=False)
 
 if __name__ == '__main__':
     configureSite()

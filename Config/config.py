@@ -43,7 +43,7 @@ def configureLogging(level=None):
 
         logging.addLevelName(1, 'VERBOSE')
 
-        formatter = logging.Formatter("%(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
 
         streamHandler = StreamHandler()
         streamHandler.setFormatter(formatter)

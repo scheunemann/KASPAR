@@ -2,10 +2,10 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('robots/models');
+	require('robots/services/interfaceServices');
 	var template = require('text!./jointEditor.tpl.html');
 
-	var JointEditor = function(ServoInterface) {
+	var JointEditor = function(robotInterface, JointPosition, ServoModel) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -19,16 +19,19 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.moving = false;
 
-				var servoInt = null;
-				var getInt = function() {
-					if (servoInt == null) {
-						servoInt = new ServoInterface({
-							'id' : $scope.servo.id
-						});
+				$scope.$watch('jointPosition', function(jointPosition) {
+					if (jointPosition != undefined) {
+						if (typeof jointPosition.$save != 'function') {
+							$scope.jointPosition = JointPosition.get({
+								id : jointPosition.id
+							});
+						}
 					}
+				});
 
-					return servoInt;
-				}
+				$scope.$watch('servo.jointName', function(jointName) {
+					$scope.servoInt = robotInterface.getServo(jointName);
+				});
 
 				$scope.removeJoint = function() {
 					$scope.jointPosition.$delete(function() {
@@ -36,6 +39,14 @@ define(function(require) {
 						delete $scope.jointPosition.id;
 					});
 				};
+
+				$scope.$watch('servo.model_id', function(modelId) {
+					if (modelId != undefined) {
+						$scope.servoModel = new ServoModel({
+							id : modelId,
+						});
+					}
+				});
 
 				$scope.$watch('connected', function(value) {
 					if (value) {
@@ -52,30 +63,22 @@ define(function(require) {
 				}
 
 				$scope.writeToServo = function() {
-					if ($scope.jointPosition != undefined) {
-						var servoInt = getInt();
-						servoInt.position = $scope
-								.coalesce($scope.jointPosition.position, $scope.servo.defaultPosition, $scope.servo.model.defaultPosition);
-						servoInt.speed = $scope.coalesce($scope.jointPosition.speed, $scope.servo.defaultSpeed, $scope.servo.model.defaultSpeed);
-
-						if (!$scope.moving) {
-							servoInt.$save(function() {
-								$scope.moving = false;
-							}, function() {
-								$scope.moving = false;
-							});
-						}
+					if ($scope.jointPosition != undefined && $scope.servoInt != undefined) {
+						$scope.servoInt.speed = $scope.coalesce($scope.jointPosition.speed, $scope.coalesce($scope.servo, $scope.servoModel, {
+							defaultSpeed : 100
+						}).defaultSpeed);
+						$scope.servoInt.position = $scope.coalesce($scope.jointPosition.position, $scope.coalesce($scope.servo, $scope.servoModel, {
+							defaultPosition : 0
+						}).defaultPosition);
 					}
 				};
 
 				$scope.$watch('jointPosition.position', function() {
-					if ($scope.connected) {
-						$scope.writeToServo();
-					}
+					$scope.writeToServo();
 				});
 			},
 		};
 	};
 
-	return [ 'ServoInterface', JointEditor ];
+	return [ 'robotInterface', 'JointPosition', 'ServoModel', JointEditor ];
 });

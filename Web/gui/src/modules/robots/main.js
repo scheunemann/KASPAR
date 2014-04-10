@@ -10,7 +10,7 @@ define(function(require) {
 	var dependancies = [ 
 							controllers,
 							directives,
-							models
+							models,					
 	                     ];
 
 	var module = angular.module(moduleName, dependancies);
