@@ -5,7 +5,9 @@ Model Configs <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': configsOpen, 'glyphicon-chevron-right': !configsOpen}"></i>
 </accordion-heading>
-<div ng-repeat="item in servoConfigs" class="col-lg-6 col-sm-12">
+<div
+	ng-repeat="item in servoConfigs"
+	class="col-lg-6 col-sm-12">
 	<strong>{{item.model.name}}</strong>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Servo Model Id</span>
@@ -14,7 +16,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.id"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Port</span>
@@ -23,7 +25,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.port"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Port Speed</span>
@@ -32,7 +34,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.portSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Position Scale</span>
@@ -41,7 +43,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.positionScale"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Position Offset</span>
@@ -50,7 +52,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.positionOffset"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Speed</span>
@@ -59,7 +61,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.defaultSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Min Position</span>
@@ -68,7 +70,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.minPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Max Position</span>
@@ -77,7 +79,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.maxPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Position</span>
@@ -86,7 +88,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.defaultPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Speed Scale</span>
@@ -95,7 +97,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.speedScale"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Min Speed</span>
@@ -104,7 +106,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.minSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Max Speed</span>
@@ -113,7 +115,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.maxSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Speed</span>
@@ -122,7 +124,7 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.defaultSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Poseable</span>
@@ -131,7 +133,27 @@ Model Configs <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model.poseable"
-			ng-disabled="true">
+			ng-readonly="true">
+	</span>
+	<span
+		class="input-group"
+		ng-if="item.extraData">
+		<span class="input-group-addon inputLabel">Other</span>
+		<span class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="(key, value) in item.extraData">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">{{key}}</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="value"
+						ng-readonly="true">
+				</span>
+			</span>
+		</span>
 	</span>
 </div>
 </accordion-group> <accordion-group is-open="groupsOpen"> <accordion-heading>Servo
@@ -139,7 +161,9 @@ Groups <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': groupsOpen, 'glyphicon-chevron-right': !groupsOpen}"></i>
 </accordion-heading>
-<div ng-repeat="item in servoGroups" class="col-lg-4 col-md-6 col-sm-12">
+<div
+	ng-repeat="item in servoGroups"
+	class="col-lg-4 col-md-6 col-sm-12">
 	<strong>{{item.name}}</strong>
 	<span
 		class="input-group"
@@ -150,7 +174,7 @@ Groups <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="servo.jointName"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 </div>
 </accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>Servos
@@ -158,17 +182,10 @@ Groups <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': servosOpen, 'glyphicon-chevron-right': !servosOpen}"></i>
 </accordion-heading>
-<div ng-repeat="item in servos" class="col-lg-4 col-md-6 col-sm-12">
+<div
+	ng-repeat="item in servos"
+	class="col-lg-4 col-md-6 col-sm-12">
 	<strong>{{item.jointName}}</strong>
-	<span class="input-group">
-		<span class="input-group-addon inputLabel">Servo Id</span>
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Not Set"
-			ng-model="item.extraData.externalId"
-			ng-disabled="true">
-	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Servo Model Id</span>
 		<input
@@ -176,7 +193,7 @@ Groups <i
 			class="form-control"
 			placeholder="Not Set"
 			ng-model="item.model_id"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Speed</span>
@@ -185,7 +202,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.defaultSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Min Position</span>
@@ -194,7 +211,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.minPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Max Position</span>
@@ -203,7 +220,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.maxPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Position</span>
@@ -212,7 +229,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.defaultPosition"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Min Speed</span>
@@ -221,7 +238,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.minSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Max Speed</span>
@@ -230,7 +247,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.maxSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Default Speed</span>
@@ -239,7 +256,7 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.defaultSpeed"
-			ng-disabled="true">
+			ng-readonly="true">
 	</span>
 	<span class="input-group">
 		<span class="input-group-addon inputLabel">Poseable</span>
@@ -248,7 +265,27 @@ Groups <i
 			class="form-control"
 			placeholder="Inherit"
 			ng-model="item.poseable"
-			ng-disabled="true">
+			ng-readonly="true">
+	</span>
+	<span
+		class="input-group"
+		ng-if="item.extraData">
+		<span class="input-group-addon inputLabel">Other</span>
+		<span class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="(key, value) in item.extraData">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">{{key}}</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="value"
+						ng-readonly="true">
+				</span>
+			</span>
+		</span>
 	</span>
 </div>
 </accordion-group> </accordion>

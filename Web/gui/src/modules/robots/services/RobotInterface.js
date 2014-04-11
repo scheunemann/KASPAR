@@ -15,7 +15,7 @@ define(function(require) {
 		};
 
 		var sendChanges = function(newValue) {
-			if(robotId == null) {
+			if(robotId == null || !connected) {
 				return;
 			}
 			
