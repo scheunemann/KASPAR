@@ -21,34 +21,37 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.active = false;
 				var keyBinds = null;
-				
+
 				$scope.$watch('button', function(newValue, oldValue) {
 					if (newValue != undefined) {
-						var kb = [];
-						for (var i = 0; i < newValue.hotKeys.length; i++) {
-							kb.push(newValue.hotKeys[i].keyString);
-						}
-
-						scope.keyDisplay = kb.join(' | ');
-						if (keyBinds != null) {
-							Mousetrap.unbind(keyBinds);
-						}
-
-						keyBinds = kb;
-
-						Mousetrap.bind(keyBinds, function() {
-							scope.active = true;
-							$timeout(function() {
-								scope.active = false;
-							}, 2000);
-							if (scope.keyBind) {
-								scope.callButton(scope.button.id);
-								return false;
+						$scope.button = newValue.getConcreteClassInstance();
+						$scope.button.$promise.then(function() {
+							var kb = [];
+							for (var i = 0; i < $scope.button.hotKeys.length; i++) {
+								kb.push($scope.button.hotKeys[i].keyString);
 							}
+
+							$scope.keyDisplay = kb.join(' | ');
+							if (keyBinds != null) {
+								Mousetrap.unbind(keyBinds);
+							}
+
+							keyBinds = kb;
+
+							Mousetrap.bind(keyBinds, function() {
+								$scope.active = true;
+								$timeout(function() {
+									$scope.active = false;
+								}, 2000);
+								if ($scope.keyBind) {
+									$scope.callButton($scope.button.id);
+									return false;
+								}
+							});
 						});
 					}
 				});
-				
+
 				$scope.callButton = function(buttonId) {
 					new UserAction({
 						'trigger_id' : buttonId,

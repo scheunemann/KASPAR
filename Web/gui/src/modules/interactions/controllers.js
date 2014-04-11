@@ -7,6 +7,7 @@ define(function(require) {
 	var triggerModels = require('triggers/models');
 	var interactionModels = require('interactions/models');
 	var InteractionController = require('./InteractionController');
+	var interactionDirectives = require('interactions/directives');
 	
 	var moduleName = 'kasparGUI.interactions.controllers';
 	var dependancies = [
@@ -14,6 +15,7 @@ define(function(require) {
 		        			userModels,
 		        			triggerModels,
 		        			interactionModels,
+	                    	interactionDirectives,
 	                     ];
 	
 	var module = angular.module(moduleName, dependancies)
