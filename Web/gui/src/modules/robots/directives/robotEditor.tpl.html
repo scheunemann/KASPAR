@@ -40,18 +40,9 @@
 				required>
 		</div>
 	</form>
-	<div class="btn-group pull-right">
-		<button
-			class="btn btn-default"
-			type="button"
-			ng-disabled="false"
-			ng-click="viewJoints = !viewJoints">View Joints</button>
-		<button
-			class="btn btn-default"
-			type="button"
-			ng-disabled="true"
-			ng-click="calibrateJoints = !calibrateJoints">Calibrate Joints</button>
-	</div>
-	<view-robot robot="robot" ng-if=viewJoints></view-robot>
-	<calibrate-robot robot="robot" ng-if=calibrateJoints></calibrate-robot>
+	<hr />
+	<tabset ng-show="robot != null"> <tab heading="Servo Details">
+	<view-robot robot="robot"></view-robot> </tab> <tab
+		heading="Servo Calibration"> <calibrate-robot robot="robot"></calibrate-robot>
+	</tab></tabset>
 </div>

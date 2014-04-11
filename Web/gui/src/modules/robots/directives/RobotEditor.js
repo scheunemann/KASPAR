@@ -14,8 +14,6 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.models = RobotModel.query();
-				$scope.viewJoints = false;
-				$scope.calibrateJoints = false;
 			}
 		};
 	};
