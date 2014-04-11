@@ -8,7 +8,7 @@ module.exports = {
 			generateSourceMaps : true,
 			preserveLicenseComments : false,
 			findNestedDependencies : true,
-			removeCombined: true,
+			removeCombined : true,
 			inlineText : true,
 			fileExclusionRegExp : /^\.|\.md|bower.json|package.json/,
 			paths : {
@@ -21,6 +21,9 @@ module.exports = {
 				angularBoostrap : 'empty:',
 				mousetrap : 'empty:',
 				mousetrapPause : 'empty:'
+			},
+			uglify2 : {
+				mangle : false,
 			},
 			modules : [ {
 				name : 'app',
@@ -38,44 +41,6 @@ module.exports = {
 							'mousetrap',
 							'mousetrapPause',
 							'text' ],
-			// }, {
-			// name : 'actions/controllers',
-			// }, {
-			// name : 'actions/directives',
-			// }, {
-			// name : 'actions/models',
-			// }, {
-			// name : 'common/controllers',
-			// }, {
-			// name : 'common/directives',
-			// }, {
-			// name : 'common/filters',
-			// }, {
-			// name : 'common/models',
-			// }, {
-			// name : 'interactions/controllers',
-			// }, {
-			// name : 'interactions/directives',
-			// }, {
-			// name : 'interactions/models',
-			// }, {
-			// name : 'operators/controllers',
-			// }, {
-			// name : 'operators/directives',
-			// }, {
-			// name : 'operators/models',
-			// }, {
-			// name : 'robots/controllers',
-			// }, {
-			// name : 'robots/directives',
-			// }, {
-			// name : 'robots/models',
-			// }, {
-			// name : 'triggers/controllers',
-			// }, {
-			// name : 'triggers/directives',
-			// }, {
-			// name : 'triggers/models',
 			} ],
 			wrap : {
 				start : "(function() {",

@@ -3,7 +3,13 @@ import re
 from flask import Flask, abort
 from flask.helpers import send_file
 _curDir = os.path.dirname(os.path.realpath(__file__))
-_subDir = 'src'
+
+if os.path.exists(os.path.join(_curDir, 'build')):
+    print "Using build directory"
+    _subDir = 'build'
+else:
+    print "Using source director"
+    _subDir = 'src'
 _dir = os.path.join(_curDir, _subDir)
 isFile = re.compile('(.*/)?.+\.[^/]+')
 types = {'woff': 'application/x-font-woff'}
