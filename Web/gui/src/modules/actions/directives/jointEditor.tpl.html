@@ -5,7 +5,7 @@
 			ng-class="{'has-info': jointPosition.unused && jointForm.$pristine}"
 			model="jointPosition">
 		<div class="input-group">
-			<span class="input-group-addon">
+			<span class="input-group-addon inputLabel">
 				<span class="hidden-xs">Joint Name</span>
 				<span class="visible-xs">Name</span>
 			</span>
@@ -30,7 +30,7 @@
 			</span>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon">Position</span>
+			<span class="input-group-addon inputLabel">Position</span>
 			<input
 				name="jointposition"
 				type="range"
@@ -45,7 +45,7 @@
 				servo.defaultPosition, servo.model.defaultPosition)}}&deg;</span>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon">Speed</span>
+			<span class="input-group-addon inputLabel">Speed</span>
 			<input
 				name="jointspeed"
 				type="range"

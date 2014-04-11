@@ -4,7 +4,7 @@
 		name="robotForm"
 		model="robot">
 		<div class="input-group">
-			<span class="input-group-addon">Name</span>
+			<span class="input-group-addon inputLabel">Name</span>
 			<input
 				type="text"
 				name="name"
@@ -15,7 +15,7 @@
 				required>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon">Model</span>
+			<span class="input-group-addon inputLabel">Model</span>
 			<select
 				ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
 				name="model"
@@ -28,7 +28,7 @@
 			</select>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon">Version</span>
+			<span class="input-group-addon inputLabel">Version</span>
 			<input
 				type="text"
 				name="version"
@@ -44,13 +44,14 @@
 		<button
 			class="btn btn-default"
 			type="button"
-			ng-disabled="true"
-			ng-click="viewJoints(robot)">View Joints</button>
+			ng-disabled="false"
+			ng-click="viewJoints = !viewJoints">View Joints</button>
 		<button
 			class="btn btn-default"
 			type="button"
 			ng-disabled="true"
-			ng-click="calibrateJoints(robot)">Calibrate Joints</button>
+			ng-click="calibrateJoints = !calibrateJoints">Calibrate Joints</button>
 	</div>
-	<div ui-view></div>
+	<view-robot robot="robot" ng-if=viewJoints></view-robot>
+	<calibrate-robot robot="robot" ng-if=calibrateJoints></calibrate-robot>
 </div>

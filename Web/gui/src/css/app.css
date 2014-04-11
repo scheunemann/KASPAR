@@ -168,6 +168,19 @@ body {
 	border-radius: 0;
 }
 
+.list-group.form-control {
+	height: inherit;
+	padding-left: 12px;
+}
+
+.list-group.form-control .list-group-item{
+	padding: 1px;
+}
+
+.inputLabel {
+	min-width: 10em;
+}
+
 .actionButton {
 	width: 100%;
 	padding-top: 10px;

@@ -3,7 +3,7 @@
 		<div class="col-md-5 col-lg-4">
 			<div id="userList">
 				<div class="input-group">
-					<span class="input-group-addon">User</span> <select
+					<span class="input-group-addon inputLabel">User</span> <select
 						class="selectpicker form-control"
 						ng-model="selectedUser"
 						ng-options="user.fullname for user in users | orderBy:'fullname'">
@@ -23,7 +23,7 @@
 				name="userForm"
 				model="selectedUser">
 				<div class="input-group">
-					<span class="input-group-addon">Name</span> <input
+					<span class="input-group-addon inputLabel">Name</span> <input
 						type="text"
 						class="form-control"
 						placeholder="Full Name"
@@ -33,7 +33,7 @@
 						saveable>
 				</div>
 				<div class="input-group">
-					<span class="input-group-addon">Custom Behaviours</span> <select
+					<span class="input-group-addon inputLabel">Custom Behaviours</span> <select
 						class="selectpicker form-control"
 						ng-model="selectedAction"
 						ng-options="action.name for action in selectedUser.actions | orderBy:'name'">
@@ -51,7 +51,7 @@
 					</span>
 				</div>
 				<div class="input-group">
-					<span class="input-group-addon">Custom Triggers</span> <select
+					<span class="input-group-addon inputLabel">Custom Triggers</span> <select
 						class="selectpicker form-control"
 						ng-model="selectedTrigger"
 						ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:'name'">
@@ -69,7 +69,7 @@
 					</span>
 				</div>
 				<div class="input-group">
-					<span class="input-group-addon">Movement Speed</span> <input
+					<span class="input-group-addon inputLabel">Movement Speed</span> <input
 						type="range"
 						class="form-control"
 						min="1"

@@ -9,6 +9,7 @@ define(function(require) {
 	var robotModels = require('robots/models');
 	var RobotEditor = require('./directives/RobotEditor');
 	var RobotInterface = require('./directives/RobotInterface');
+	var ViewRobot = require('./directives/ViewRobot');
 
 	var moduleName = 'kasparGUI.robots.directives';
 	var dependancies = [
@@ -21,7 +22,8 @@ define(function(require) {
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('robotEditor', RobotEditor)
-		.directive('robotInterface', RobotInterface);
+		.directive('robotInterface', RobotInterface)
+		.directive('viewRobot', ViewRobot);
 
 	return moduleName;
 });		

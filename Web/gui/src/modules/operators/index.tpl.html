@@ -3,7 +3,7 @@
 		<div class="col-md-5 col-lg-4">
 			<div id="operatorsList">
 				<div class="input-group">
-					<span class="input-group-addon">Operator</span>
+					<span class="input-group-addon inputLabel">Operator</span>
 					<select
 						class="selectpicker form-control"
 						ng-model="selectedOperator"
@@ -26,7 +26,7 @@
 				name="operatorsForm"
 				model="selectedOperator">
 				<div class="input-group">
-					<span class="input-group-addon">Name</span>
+					<span class="input-group-addon inputLabel">Name</span>
 					<input
 						type="text"
 						class="form-control"
@@ -37,9 +37,9 @@
 						ng-model="selectedOperator.fullname">
 				</div>
 				<div class="input-group">
-					<span class="input-group-addon">Common Users</span>
+					<span class="input-group-addon inputLabel">Common Users</span>
 					<div
-						class="list-group form-control"
+						class="list-group form-control listForm"
 						ng-blur="saveOperator()"
 						ng-class="{ 'has-success': usersSaved, 'has-warning': operatorsForm.$dirty && !userSaved }">
 						<span

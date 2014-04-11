@@ -11,7 +11,7 @@
 	ng-cloak
 	id="actionsList">
 	<div class="input-group">
-		<span class="input-group-addon">Action</span>
+		<span class="input-group-addon inputLabel">Action</span>
 		<select
 			class="selectpicker form-control"
 			ng-model="action"
@@ -33,7 +33,7 @@
 	<hr />
 	<div ng-if="action">
 		<div class="input-group">
-			<span class="input-group-addon">Type</span>
+			<span class="input-group-addon inputLabel">Type</span>
 			<select
 				ng-disabled="action.id"
 				class="selectpicker form-control"

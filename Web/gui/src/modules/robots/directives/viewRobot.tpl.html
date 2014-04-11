@@ -1,0 +1,290 @@
+<div class="clearfix">
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">Created</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="selected.created"
+			ng-disabled="true">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">Modified</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="selected.modified"
+			ng-disabled="true">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">Servo Configs</span>
+		<div class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="item in servoConfigs">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Servo Model</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.name"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Servo Model Id</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.id"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Port</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.port"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Port Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.portSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Position Scale</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.positionScale"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Position Offset</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.positionOffset"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.defaultSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Min Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.minPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Max Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.maxPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.defaultPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Speed Scale</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.speedScale"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Min Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.minSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Max Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.maxSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.defaultSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Poseable</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model.poseable"
+						ng-disabled="true">
+				</span>
+			</span>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">Servo Groups</span>
+		<div class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="item in servoGroups">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Name</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.name"
+						ng-disabled="true">
+				</span>
+			</span>
+		</div>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">Servos</span>
+		<div class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="item in servos">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Name</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.jointName"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Servo Id</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.extraData.externalId"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Servo Model Id</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="item.model_id"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.defaultSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Min Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.minPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Max Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.maxPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Position</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.defaultPosition"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Min Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.minSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Max Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.maxSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Default Speed</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.defaultSpeed"
+						ng-disabled="true">
+				</span>
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">Poseable</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Inherit"
+						ng-model="item.poseable"
+						ng-disabled="true">
+				</span>
+			</span>
+		</div>
+	</div>
+</div>
