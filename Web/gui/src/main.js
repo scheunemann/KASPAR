@@ -16,28 +16,24 @@ require.config({
 			exports : 'angular'
 		},
 		'angularBoostrap' : {
-			exports : 'angularBootstrap',
 			init : function() {
 				return 'ui.bootstrap';
 			},
 			deps : [ 'text', 'angular' ],
 		},
 		'angularResource' : {
-			exports : 'angularResource',
 			init : function() {
 				return 'ngResource';
 			},
 			deps : [ 'angular', ],
 		},
 		'angularRouter' : {
-			exports : 'angularRouter',
 			init : function() {
 				return 'angularRouter';
 			},
 			deps : [ 'angular' ],
 		},
 		'angularUIRouter' : {
-			exports : 'angularUIRouter',
 			init : function() {
 				return 'ui.router';
 			},
