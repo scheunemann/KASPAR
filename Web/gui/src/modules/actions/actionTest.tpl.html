@@ -1,37 +1,35 @@
 <div>
-	<div class="row">
-		<div class="input-group col-lg-6">
-			<span class="input-group-addon inputLabel">Action</span>
-			<select
-				class="selectpicker form-control"
-				ng-model="action"
-				ng-options="action.name group by action.type for action in actions | orderBy:'name'"
-				ng-disabled="actions.length == 0">
-				<option value="">--Select Action--</option>
-			</select>
-			<span class="input-group-btn">
-				<button
-					class="btn btn-default"
-					type="button"
-					ng-if="!actionTest.active"
-					ng-disable="action==''"
-					ng-click="startAction(action)">Test</button>
-				<button
-					class="btn btn-default"
-					type="button"
-					ng-if="actionTest.active"
-					ng-disable="action==''"
-					ng-click="stopAction(action)">Stop</button>
-			</span>
-		</div>
-		<div class="col-lg-6"></div>
+	<div class="input-group col-lg-6">
+		<span class="input-group-addon inputLabel">Action</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="action"
+			ng-options="action.name group by action.type for action in actions | orderBy:'name'"
+			ng-disabled="actions.length == 0">
+			<option value="">--Select Action--</option>
+		</select>
+		<span class="input-group-btn">
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-if="!actionTest.active"
+				ng-disable="action==''"
+				ng-click="startAction(action)">Test</button>
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-if="actionTest.active"
+				ng-disable="action==''"
+				ng-click="stopAction(action)">Stop</button>
+		</span>
 	</div>
-	<hr />
-	<div
-		class="row maxHeight"
-		ng-show="action != ''">
-		<div class="col-lg-12 well maxHeight">
-			<pre class="scrollable maxHeight">{{output}}</pre>
-		</div>
+	<div class="col-lg-6"></div>
+</div>
+<hr />
+<div
+	class="maxHeight"
+	ng-show="action != ''">
+	<div class="col-lg-12 well maxHeight">
+		<pre class="scrollable maxHeight">{{output}}</pre>
 	</div>
 </div>
