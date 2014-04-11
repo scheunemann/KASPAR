@@ -1,90 +1,96 @@
-<div ng-controller="userController">
-	<div class="row">
-		<div class="col-md-5 col-lg-4">
-			<div id="userList">
-				<div class="input-group">
-					<span class="input-group-addon inputLabel">User</span> <select
-						class="selectpicker form-control"
-						ng-model="selectedUser"
-						ng-options="user.fullname for user in users | orderBy:'fullname'">
-					</select> <span class="input-group-btn">
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-click="newObj(User, users)">New</button>
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-click="deleteObj(item, users)">Delete</button>
-					</span>
-				</div>
+<div>
+	<div class="col-md-12 col-lg-12">
+		<div id="userList">
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">User</span>
+				<select
+					class="selectpicker form-control"
+					ng-model="selectedUser"
+					ng-options="user.fullname for user in users | orderBy:'fullname'">
+				</select>
+				<span class="input-group-btn">
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-click="newObj(User, users)">New</button>
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-click="deleteObj(item, users)">Delete</button>
+				</span>
 			</div>
-			<form
-				name="userForm"
-				model="selectedUser">
-				<div class="input-group">
-					<span class="input-group-addon inputLabel">Name</span> <input
-						type="text"
-						class="form-control"
-						placeholder="Full Name"
-						name="fullname"
-						required
-						ng-model="selectedUser.fullname"
-						saveable>
-				</div>
-				<div class="input-group">
-					<span class="input-group-addon inputLabel">Custom Behaviours</span> <select
-						class="selectpicker form-control"
-						ng-model="selectedAction"
-						ng-options="action.name for action in selectedUser.actions | orderBy:'name'">
-					</select> <span class="input-group-btn">
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-disabled="true"
-							ng-click="newAction()">New</button>
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-disabled="true"
-							ng-click="deleteAction(selectedAction)">Delete</button>
-					</span>
-				</div>
-				<div class="input-group">
-					<span class="input-group-addon inputLabel">Custom Triggers</span> <select
-						class="selectpicker form-control"
-						ng-model="selectedTrigger"
-						ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:'name'">
-					</select> <span class="input-group-btn">
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-click="newTrigger()"
-							ng-disabled="true">New</button>
-						<button
-							class="btn btn-default"
-							type="button"
-							ng-disabled="true"
-							ng-click="deleteTrigger(selectedTrigger)">Delete</button>
-					</span>
-				</div>
-				<div class="input-group">
-					<span class="input-group-addon inputLabel">Movement Speed</span> <input
-						type="range"
-						class="form-control"
-						min="1"
-						max="300"
-						placeholder="100"
-						name="speed"
-						ng-disabled="true"
-						saveable
-						ng-model="selectedUser.speedmodifier">
-					<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
-				</div>
-			</form>
 		</div>
+		<form
+			name="userForm"
+			model="selectedUser">
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">Name</span>
+				<input
+					type="text"
+					class="form-control"
+					placeholder="Full Name"
+					name="fullname"
+					required
+					ng-model="selectedUser.fullname"
+					saveable>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">Custom Behaviours</span>
+				<select
+					class="selectpicker form-control"
+					ng-model="selectedAction"
+					ng-options="action.name for action in selectedUser.actions | orderBy:'name'">
+				</select>
+				<span class="input-group-btn">
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-disabled="true"
+						ng-click="newAction()">New</button>
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-disabled="true"
+						ng-click="deleteAction(selectedAction)">Delete</button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">Custom Triggers</span>
+				<select
+					class="selectpicker form-control"
+					ng-model="selectedTrigger"
+					ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:'name'">
+				</select>
+				<span class="input-group-btn">
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-click="newTrigger()"
+						ng-disabled="true">New</button>
+					<button
+						class="btn btn-default"
+						type="button"
+						ng-disabled="true"
+						ng-click="deleteTrigger(selectedTrigger)">Delete</button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">Movement Speed</span>
+				<input
+					type="range"
+					class="form-control"
+					min="1"
+					max="300"
+					placeholder="100"
+					name="speed"
+					ng-disabled="true"
+					saveable
+					ng-model="selectedUser.speedmodifier">
+				<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
+			</div>
+		</form>
 	</div>
-	<div
-		class="col-md-7 col-lg-6"
-		ui-view></div>
 </div>
+<div
+	class="col-md-12 col-lg-12"
+	ui-view></div>
