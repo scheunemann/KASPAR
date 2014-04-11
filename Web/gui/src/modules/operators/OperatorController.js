@@ -45,19 +45,20 @@ define(function(require) {
 			$scope.selectedOperator = $scope.operators[0];
 		};
 
-		$scope.updateOperatorUser = function($event, users, user) {
-			if (users == undefined) { return; }
+		$scope.toggleOperatorUser = function(operator, user) {
+			if (operator == undefined || operator.users == undefined) { return; }
 
-			var checkbox = $event.target;
-			if (checkbox.checked) {
-				users.push(user);
-			} else {
-				for (var i = 0; i < users.length; i++) {
-					if (users[i].id == user.id) {
-						users.splice(i, 1);
-						break;
-					}
+			var found = false;
+			for (var i = 0; i < operator.users.length; i++) {
+				if (operator.users[i].id == user.id) {
+					operator.users.splice(i, 1);
+					found = true;
+					break;
 				}
+			}
+			
+			if(!found) {
+				operator.users.push(user);
 			}
 
 			$scope.saveOperator();

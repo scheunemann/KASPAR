@@ -44,17 +44,19 @@
 						ng-class="{ 'has-success': usersSaved, 'has-warning': operatorsForm.$dirty && !userSaved }">
 						<span
 							class="list-group-item"
-							ng-repeat="user in users | orderBy:'fullname'">
+							ng-repeat="user in users">
 							<span class="input-group">
 								<span class="input-group-addon">
 									<input
 										type="checkbox"
-										ng-checked="(selectedOperator.users | filter:{id:user.id}).length == 1"
-										ng-click="updateOperatorUser($event, selectedOperator.users, user)">
+										ng-disabled="!selectedOperator"
+										ng-checked="(selectedOperator.users | filter:{id:user.id}:true).length == 1"
+										ng-click="toggleOperatorUser(selectedOperator, user)">
 								</span>
 								<input
 									type="text"
 									class="form-control"
+									ng-click="toggleOperatorUser(selectedOperator, user)"
 									value="{{user.fullname}}"
 									ng-disabled="true">
 							</span>
