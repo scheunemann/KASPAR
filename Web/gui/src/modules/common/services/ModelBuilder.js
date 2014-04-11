@@ -51,6 +51,7 @@ define(function(require) {
 						method : 'GET',
 						isArray : true,
 						transformResponse : root.transformResponse,
+						transformRequest : root.transformRequest,
 					},
 				};
 
@@ -87,6 +88,24 @@ define(function(require) {
 						return this.$create();
 					} else {
 						return this.$update();
+					}
+				};
+
+				resource.queryBase = resource.query;
+				resource.query = function(params) {
+					if (params != undefined) {
+						var q = {}
+						q.filters = [];
+						for ( var key in params) {
+							q.filters.push({
+								name : key,
+								op: params[key] == null ? 'is_null' : '==',
+								val: params[key],
+							});
+						}
+						return this.queryBase({q: q});
+					} else {
+						return this.queryBase();
 					}
 				};
 

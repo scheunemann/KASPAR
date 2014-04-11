@@ -13,9 +13,10 @@ define(function(require) {
 		$scope.interaction = null;
 		$scope.keyBind = true;
 		$scope.showHotKeys = true;
-		Interaction.query({
-			endTime : 'null'
-		}, function(result) {
+		var activeInteractions = Interaction.query({
+			endTime : null
+		});
+		activeInteractions.$promise.then(function(result) {
 			if (result != undefined && result.length > 0) {
 				$scope.interaction = result[0];
 				for (var i = 0; i < $scope.operators.length; i++) {
@@ -35,7 +36,7 @@ define(function(require) {
 		});
 
 		$scope.buttons = Trigger.query({
-			'type' : 'Button'
+			'type' : 'ButtonTrigger'
 		});
 
 		$scope.start = function() {
@@ -51,8 +52,9 @@ define(function(require) {
 
 		$scope.stop = function() {
 			$scope.interaction.endTime = new Date();
-			$scope.interaction.$save();
-			$scope.interaction = null;
+			$scope.interaction.$save(function() {
+				$scope.interaction = null;
+			});
 		};
 
 		$scope.getCategory = function(user, userList) {
