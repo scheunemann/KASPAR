@@ -9,7 +9,7 @@ root = Flask(__name__, static_folder=None)
 manager = APIManager(root, session=db_session)
 
 
-def __delink(instance_id, data):
+def __delink(data, **kwargs):
     if type(data) == dict:
         data.pop('_link', None)
         values = data.itervalues()
@@ -18,7 +18,7 @@ def __delink(instance_id, data):
     else:
         values = []
     for value in values:
-        __delink(None, value)
+        __delink(value)
 
 
 def __link(instance):
@@ -42,7 +42,7 @@ for opts in models:
     opts['kwargs'].setdefault('url_prefix', '')
     opts['kwargs'].setdefault('max_results_per_page', None)
     opts['kwargs'].setdefault('include_methods', get_includes(opts['class']))
-    opts['kwargs'].setdefault('preprocessors', {'PATCH_SINGLE': [__delink]})
+    opts['kwargs'].setdefault('preprocessors', {'PATCH_SINGLE': [__delink], 'POST': [__delink]})
     manager.create_api(opts['class'], **opts['kwargs'])
 
 for blueprint in blueprints:

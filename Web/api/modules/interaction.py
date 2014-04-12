@@ -6,7 +6,7 @@ import Model
 models = [
           {
             'class': Model.Interaction,
-            'kwargs': {'methods':['GET', 'POST'], }
+            'kwargs': {'methods':['GET', 'POST', 'PUT'], }
           },
          ]
 

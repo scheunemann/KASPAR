@@ -19,18 +19,9 @@ define(function(require) {
 		activeInteractions.$promise.then(function(result) {
 			if (result != undefined && result.length > 0) {
 				$scope.interaction = result[0];
-				for (var i = 0; i < $scope.operators.length; i++) {
-					if ($scope.operators[i].id == $scope.interaction.operator_id) {
-						$scope.operator = $scope.operators[i];
-						break;
-					}
-				}
-
-				for (var i = 0; i < $scope.users.length; i++) {
-					if ($scope.users[i].id == $scope.interaction.users[0].id) {
-						$scope.user = $scope.users[i];
-						break;
-					}
+				$scope.operator_id = $scope.interaction.operator_id;
+				if($scope.interaction.users.length > 0) {
+					$scope.user_id = $scope.interaction.users[0].id;
 				}
 			}
 		});
@@ -40,9 +31,9 @@ define(function(require) {
 		$scope.start = function() {
 			$scope.interaction = new Interaction({
 				startTime : new Date(),
-				users : [ $scope.user ],
+				user_id : $scope.user_id,
 				robot : $scope.robot,
-				operator : $scope.operator,
+				operator_id : $scope.operator_id,
 			});
 
 			$scope.interaction.$save();
@@ -50,7 +41,7 @@ define(function(require) {
 
 		$scope.stop = function() {
 			$scope.interaction.endTime = new Date();
-			$scope.interaction.$save(function() {
+			$scope.interaction.$save().then(function() {
 				$scope.interaction = null;
 			});
 		};

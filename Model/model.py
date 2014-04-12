@@ -16,15 +16,10 @@ class Setting(StandardMixin, Base):
         self.value = value
 
 
-interactionUsers_table = Table('interactionUsers', Base.metadata,
-    Column('Interaction_id', Integer, ForeignKey('Interaction.id')),
-    Column('User_id', Integer, ForeignKey('User.id'))
-)
-
-
 class Interaction(StandardMixin, Base):
 
-    users = relationship("User", secondary=interactionUsers_table)
+    user_id = Column(Integer, ForeignKey('User.id'))
+    user = relationship("User")
     robot_id = Column(Integer, ForeignKey('Robot.id'))
     robot = relationship("Robot")
     operator_id = Column(Integer, ForeignKey('Operator.id'))
@@ -32,9 +27,10 @@ class Interaction(StandardMixin, Base):
     startTime = Column(DateTime, nullable=False)
     endTime = Column(DateTime)
 
-    def __init__(self, users=None, robot_id=None, robot=None, operator_id=None, operator=None, startTime=None, endTime=None, **kwargs):
+    def __init__(self, user=None, user_id=None, robot_id=None, robot=None, operator_id=None, operator=None, startTime=None, endTime=None, **kwargs):
         super(Interaction, self).__init__(**kwargs)
-        self.users = users
+        self.user_id = user_id
+        self.user = user
         self.robot_id = robot_id
         self.robot = robot
         self.operator_id = operator_id
@@ -54,7 +50,7 @@ class Operator(StandardMixin, Base):
     password = Column(String(500))
     users = relationship("User", secondary=operatorUsers_table)
 
-    def __init__(self, name=None, fullname=None, password=None, users=None, **kwargs):
+    def __init__(self, name=None, fullname=None, password=None, users=[], **kwargs):
         super(Operator, self).__init__(**kwargs)
         self.name = name
         self.fullname = fullname

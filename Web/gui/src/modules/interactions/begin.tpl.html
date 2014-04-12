@@ -3,9 +3,9 @@
 		<span class="input-group-addon inputLabel">Operator</span>
 		<select
 			class="selectpicker form-control"
-			ng-model="operator"
+			ng-model="operator_id"
 			ng-disabled="interaction"
-			ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
+			ng-options="operator.fullname for operator.id in operators | orderBy:'fullname'">
 			<option value="">--Select Operator--</option>
 		</select>
 	</div>
@@ -13,9 +13,9 @@
 		<span class="input-group-addon inputLabel">User</span>
 		<select
 			class="selectpicker form-control"
-			ng-model="user"
+			ng-model="user_id"
 			ng-disabled="interaction"
-			ng-options="user.fullname group by getCategory(user, operator.users) for user in users | orderBy:'fullname'">
+			ng-options="user.fullname group by getCategory(user, operator.users) for user.id in users | orderBy:'fullname'">
 			<option value="">--Select User--</option>
 		</select>
 	</div>

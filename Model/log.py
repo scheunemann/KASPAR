@@ -15,9 +15,8 @@ class Log(StandardMixin, Base):
             'polymorphic_on': type
         }
 
-    def __init__(self, type=None, timestamp=None, **kwargs):
+    def __init__(self, timestamp=None, **kwargs):
         super(Log, self).__init__(**kwargs)
-        self.type = type
         self.timestamp = timestamp
 
 
