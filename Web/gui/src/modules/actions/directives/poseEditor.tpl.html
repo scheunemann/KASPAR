@@ -55,11 +55,16 @@
 	robot="robot"
 	connected="connected"></robot-interface>
 <hr />
-<div class="row">
-	<div class="col-lg-12">
-		<advanced-pose-editor
-			pose="pose"
-			connected="connected"
-			robot="robot"></advanced-pose-editor>
-	</div>
-</div>
+<accordion close-others="true"> <accordion-group
+	is-open="basicopen"> <accordion-heading>
+Basic <i
+	class="pull-right glyphicon"
+	ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
+</accordion-heading> <basic-pose-editor pose="pose" connected="connected" robot="robot"></basic-pose-editor></accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
+Detailed <i
+	class="pull-right glyphicon"
+	ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
+</accordion-heading> <advanced-pose-editor
+	pose="pose"
+	connected="connected"
+	robot="robot"></advanced-pose-editor> </accordion-group> </accordion>

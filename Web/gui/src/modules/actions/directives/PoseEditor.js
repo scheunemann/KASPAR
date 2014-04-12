@@ -14,6 +14,8 @@ define(function(require) {
 				pose : "=action",
 			},
 			controller : function($scope) {
+				$scope.advancedopen = true;
+				$scope.basicopen = false;
 			}
 		};
 	};

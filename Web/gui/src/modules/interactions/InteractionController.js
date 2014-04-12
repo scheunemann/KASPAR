@@ -7,7 +7,7 @@ define(function(require) {
 	require('triggers/models');
 	require('interactions/models');
 
-	var InteractionController = function($q, $scope, Operator, User, Interaction, Trigger) {
+	var InteractionController = function($q, $scope, Operator, User, Interaction, ButtonTrigger) {
 		$scope.operators = Operator.query();
 		$scope.users = User.query();
 		$scope.interaction = null;
@@ -35,9 +35,7 @@ define(function(require) {
 			}
 		});
 
-		$scope.buttons = Trigger.query({
-			'type' : 'ButtonTrigger'
-		});
+		$scope.buttons = ButtonTrigger.query();
 
 		$scope.start = function() {
 			$scope.interaction = new Interaction({
@@ -67,5 +65,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', '$scope', 'Operator', 'User', 'Interaction', 'Trigger', InteractionController ];
+	return [ '$q', '$scope', 'Operator', 'User', 'Interaction', 'ButtonTrigger', InteractionController ];
 });
