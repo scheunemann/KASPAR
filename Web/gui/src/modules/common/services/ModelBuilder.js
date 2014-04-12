@@ -31,20 +31,6 @@ define(function(require) {
 			return newResponse;
 		}
 
-		this.transformRequest = function(data, headersGetter) {
-			if (data != null && data != undefined) {
-				for ( var i in data) {
-					if (data[i] != null && data[i] != undefined) {
-						delete data[i]._link;
-					}
-				}
-
-				delete data._link;
-			}
-
-			return angular.toJson(data);
-		}
-
 		this.$get = [ '$resource', function($resource) {
 			var root = this;
 			var getModel = function(model, params, methods, url) {
@@ -58,11 +44,9 @@ define(function(require) {
 					update : {
 						method : 'PUT',
 						isArray : false,
-						transformRequest : root.transformRequest,
 					},
 					create : {
 						method : 'POST',
-						transformRequest : root.transformRequest,
 					},
 					get : {
 						method : 'GET',
