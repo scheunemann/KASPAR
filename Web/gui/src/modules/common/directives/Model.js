@@ -3,7 +3,7 @@
 define(function(require) {
 	var angular = require('angular');
 
-	var Model = function() {
+	var Model = function(modelBuilder) {
 		return {
 			restrict : 'A',
 			require : 'form',
@@ -18,7 +18,17 @@ define(function(require) {
 			controller : function($scope) {
 				this.updateObj = function(modelCtrl) {
 					if ($scope.formCtrl.$valid) {
-						$scope.model.$save(function() {
+						if ($scope.model.$save === undefined) {
+							if ($scope.model._link != undefined) {
+								var Model = modelBuilder.getModel($scope.model._link.model);
+								$scope.model = new Model($scope.model);
+							} else {
+								//TODO: Error handling
+								return;
+							}
+						}
+						
+						$scope.model.$save().then(function() {
 							modelCtrl.$setPristine();
 						});
 					}
@@ -49,5 +59,5 @@ define(function(require) {
 		};
 	};
 
-	return Model;
+	return [ 'modelBuilder', Model ];
 });

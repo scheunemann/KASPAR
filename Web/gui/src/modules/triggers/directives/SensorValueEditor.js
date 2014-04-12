@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./sensorValueEditor.tpl.html');
 
-	var SensorValueEditor = function(Sensor) {
+	var SensorValueEditor = function(Sensor, modelBuilder) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -38,19 +38,24 @@ define(function(require) {
 				$scope.sensor = null;
 				$scope.$watch('sensor', function(sensor) {
 					if (sensor != undefined && sensor.id != undefined) {
-						$scope.sensor = Sensor.get({
-							id : sensor.id
-						});
-						$scope.sensor.$promise.then(function(sensor) {
-							if ($scope.sensor != undefined) {
-								$scope.sensor = $scope.sensor.getConcreteClassInstance();
-							}
-						});
+						if (sensor._link == undefined) {
+							$scope.sensor = Sensor.get({
+								id : sensor.id
+							});
+							$scope.sensor.$promise.then(function(sensor) {
+								if ($scope.sensor != undefined) {
+									$scope.sensor = $scope.sensor.getConcreteClassInstance();
+								}
+							});
+						} else {
+							var Model = modelBuilder.getModel(sensor._link.model);
+							$scope.model = Model.get({id: $scope.model});
+						}
 					}
 				});
 			}
 		};
 	};
 
-	return [ 'Sensor', SensorValueEditor ];
+	return [ 'Sensor', 'modelBuilder', SensorValueEditor ];
 });

@@ -17,7 +17,11 @@ define(function(require) {
 
 		this.transformResponse = function(data, headersGetter) {
 			data = angular.fromJson(data);
+			var headers = headersGetter();
 			var newResponse = data.objects;
+			for (var i = 0; i < newResponse.length; i++) {
+			}
+
 			newResponse.paging = {
 				num_results : data.num_results,
 				page : data.page,
@@ -25,6 +29,20 @@ define(function(require) {
 			}
 
 			return newResponse;
+		}
+
+		this.transformRequest = function(data, headersGetter) {
+			if (data != null && data != undefined) {
+				for ( var i in data) {
+					if (data[i] != null && data[i] != undefined) {
+						delete data[i]._link;
+					}
+				}
+
+				delete data._link;
+			}
+
+			return angular.toJson(data);
 		}
 
 		this.$get = [ '$resource', function($resource) {
@@ -40,9 +58,11 @@ define(function(require) {
 					update : {
 						method : 'PUT',
 						isArray : false,
+						transformRequest : root.transformRequest,
 					},
 					create : {
 						method : 'POST',
+						transformRequest : root.transformRequest,
 					},
 					get : {
 						method : 'GET',
@@ -51,7 +71,6 @@ define(function(require) {
 						method : 'GET',
 						isArray : true,
 						transformResponse : root.transformResponse,
-						transformRequest : root.transformRequest,
 					},
 				};
 
@@ -99,11 +118,13 @@ define(function(require) {
 						for ( var key in params) {
 							q.filters.push({
 								name : key,
-								op: params[key] == null ? 'is_null' : '==',
-								val: params[key],
+								op : params[key] == null ? 'is_null' : '==',
+								val : params[key],
 							});
 						}
-						return this.queryBase({q: q});
+						return this.queryBase({
+							q : q
+						});
 					} else {
 						return this.queryBase();
 					}

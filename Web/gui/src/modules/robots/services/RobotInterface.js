@@ -15,31 +15,32 @@ define(function(require) {
 		};
 
 		var sendChanges = function(newValue) {
-			if(robotId == null || !connected) {
-				return;
-			}
-			
+			if (robotId == null || !connected) { return; }
+
 			if (saving) {
 				delayedSave = components;
 				return;
 			}
 
+			return;
 			var servos = [];
-			for(var servoName in components.servos) {
+			for ( var servoName in components.servos) {
 				servos.push({
-					id: components.servos[servoName].id,
-					position: components.servos[servoName].position,
-					poseable: components.servos[servoName].poseable,
-					jointName: servoName,
+					id : components.servos[servoName].id,
+					position : components.servos[servoName].position,
+					poseable : components.servos[servoName].poseable,
+					jointName : servoName,
 				});
 			}
-			
+
 			var packet = {
-			    servos: servos,
+				servos : servos,
 			}
 
 			saving = true;
-			var save = RobotInterface.save({id: robotId}, packet);
+			var save = RobotInterface.save({
+				id : robotId
+			}, packet);
 			save.$promise.then(function() {
 				saving = false;
 				if (delayedSave != null) {
@@ -51,11 +52,15 @@ define(function(require) {
 		};
 
 		var updateStatus = function(lastUpdateTime) {
+			if(!connected) {
+				return;
+			}
+			
 			var status = lastUpdateTime == undefined ? RobotInterface.get({
 				id : robotId
 			}) : RobotInterface.get({
 				id : robotId,
-				lastUpdate : lastUpdateTime
+				timestamp : lastUpdateTime
 			});
 			status.$promise.then(processUpdate).then(updateStatus);
 		};
@@ -84,15 +89,16 @@ define(function(require) {
 				components.sensors[sensor.name].value = sensor.value;
 			}
 
+			$rootScope.$$phase || $rootScope.$digest();
 			return dataPackage.timestamp;
 		}
 
 		$rootScope.$watch(function() {
 			return components.servos;
 		}, sendChanges, true);
-		
+
 		this.setRobot = function(robot) {
-			if (robot == undefined || robot == null && this.robotId != null) {
+			if (robot == undefined || robot == null && robotId != null) {
 				this.setConnected(false);
 				robotId = null;
 				return;
@@ -106,8 +112,8 @@ define(function(require) {
 			}
 		};
 
-		this.setConnected = function(connected) {
-			connected = connected;
+		this.setConnected = function(connectedState) {
+			connected = connectedState;
 			if (connected) {
 				updateStatus();
 			}
@@ -117,7 +123,8 @@ define(function(require) {
 			if (componentName === undefined) { return null; }
 
 			if (components.servos[componentName] == undefined) {
-				components.servos[componentName] = {};
+				components.servos[componentName] = new function() {
+				};
 			}
 
 			return components.servos[componentName];

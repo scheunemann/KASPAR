@@ -7,7 +7,7 @@ define(function(require) {
 	require('common/filters');
 	require('robots/directives');
 
-	var AdvancedPoseEditor = function(JointPosition, RobotInterface) {
+	var AdvancedPoseEditor = function(JointPosition) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -22,14 +22,6 @@ define(function(require) {
 						$scope.getGroups(jointPositions, $scope.robot);
 					}
 				});
-
-				$scope.cometGet = function(data) {
-					// $scope.servoPositions = data;
-					// RobotInterface.get({
-					// 'id' : $scope.robot.id,
-					// 'timestamp' : data.timestamp
-					// }, $scope.cometGet);
-				}
 
 				$scope.$watch('robot.servos', function(servos) {
 					if (servos != undefined) {
@@ -57,13 +49,12 @@ define(function(require) {
 						}
 
 						if (posId == null) {
-							joints.push({
+							joints.push(new JointPosition({
 								'position' : servo.defaultPosition,
 								'speed' : servo.defaultSpeed,
 								'jointName' : servo.jointName,
-								'unused' : true,
-								'pose' : $scope.pose
-							});
+								'pose_id' : $scope.pose.id
+							}));
 						} else {
 							ids.push(posId);
 						}
@@ -159,5 +150,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'RobotInterface', AdvancedPoseEditor ];
+	return [ 'JointPosition', AdvancedPoseEditor ];
 });

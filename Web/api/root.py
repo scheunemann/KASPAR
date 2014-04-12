@@ -1,10 +1,27 @@
 from flask.ext.restless import APIManager
+from flask.ext.restless.views import get_relations
 from flask import Flask
 from modules import blueprints, models
 from database import db_session
+from Model import Base
 
 root = Flask(__name__, static_folder=None)
 manager = APIManager(root, session=db_session)
+
+
+def __link(instance):
+    name = type(instance).__name__
+    link = "%s/%s" % (name, instance.id)
+    return {'model': name, 'href': link}
+
+Base._link = __link
+
+
+def get_includes(class_):
+    includes = ['_link', ]
+    for item in frozenset(get_relations(class_)):
+        includes.append(item + '._link')
+    return includes
 
 for opts in models:
     opts.setdefault('kwargs', {})
@@ -12,6 +29,7 @@ for opts in models:
     opts['kwargs'].setdefault('results_per_page', None)
     opts['kwargs'].setdefault('url_prefix', '')
     opts['kwargs'].setdefault('max_results_per_page', None)
+    opts['kwargs'].setdefault('include_methods', get_includes(opts['class']))
     manager.create_api(opts['class'], **opts['kwargs'])
 
 for blueprint in blueprints:
@@ -25,5 +43,6 @@ def shutdown_session(exception=None):
 
 @root.errorhandler(500)
 def internal_error(exception):
-    root.logger.exception(exception)
+    import traceback
     print exception
+    print traceback.format_exc()

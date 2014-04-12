@@ -31,39 +31,34 @@ blueprints = [
              ]
 
 __servoInterfaces = {}
-__sensorInterfaces = {}
 __servoValues = {}
+__sensorInterfaces = {}
 __sensorValues = {}
 
 
 @__robotInterface.route('/Robot/<int:robotId>/Interface', methods=['GET'])
-def __robotInterfaceGet(robotId, timestamp=None):
-    servos = __getServoValues(robotId)
-    if servos == None:
-        abort(404)
-
+def __robotInterfaceGet(robotId):
+    timestamp = request.args.get('timestamp', None)
     startTime = datetime.datetime.now()
-    timeout = 5
+    responseTimeout = 60
     servos = None
     sensors = None
-    while (datetime.datetime.now() - startTime).seconds < timeout and not servos and not sensors:
-        time.sleep(0.1)
+
+    while (datetime.datetime.now() - startTime).seconds < responseTimeout and not servos and not sensors:
         servos = __getServoValues(robotId)
         sensors = __getSensorValues(robotId)
 
-    if servos == None or sensors == None:
-        msg = ''
-        if servos == None:
-            msg += "Servos, "
-        if sensors == None:
-            msg += "Sensors, "
-        msg = msg[:-2] + " not ready before timeout"
-        abort(500, msg)
+        if timestamp != None:
+            ts = DateUtil.fromUtcDateTime(timestamp)
+            for sId, sVal in servos.items():
+                if sVal['timestamp'] <= ts:
+                    servos.pop(sId)
+            for sId, sVal in sensors.items():
+                if sVal['timestamp'] <= ts:
+                    sensors.pop(sId)
 
-    if timestamp != None:
-        ts = DateUtil.fromUtcDateTime(timestamp)
-        servos = [s for s in servos if s['timestamp'] >= ts]
-        sensors = [s for s in sensors if s['timestamp'] >= ts]
+        if not sensors and not servos:
+            time.sleep(0.001)
 
     ret = {
            'servos': map(
@@ -72,16 +67,23 @@ def __robotInterfaceGet(robotId, timestamp=None):
                                              'position': value['position'],
                                              'poseable': value['poseable'],
                                              'jointName': value['jointName'],
-                                             }, servos['servos'].iteritems()),
+                                             }, servos.iteritems()),
            'sensors': map(
                           lambda (key, value): {
                                                 'id': key,
                                                 'value': value['value'],
                                                 'name': value['name'],
-                                                }, sensors['sensors'].iteritems()),
-           'timestamp': DateUtil.utcDateTime(servos['timestamp']),
+                                                }, sensors.iteritems()),
            'id': robotId,
            }
+
+    if servos or sensors:
+        timestamps = []
+        timestamps.extend([s['timestamp'] for s in servos.itervalues()])
+        timestamps.extend([s['timestamp'] for s in sensors.itervalues()])
+        ret['timestamp'] = DateUtil.utcDateTime(max(timestamps))
+    else:
+        ret['timestamp'] = timestamp
 
     return jsonify(ret)
 
@@ -185,10 +187,7 @@ def __getSensorValues(robotId):
                 __sensorValues[robotId]['sensors'][sensor.id]['value'] = curValue
                 __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
 
-        if __sensorValues[robotId]['sensors'].values():
-            __sensorValues[robotId]['timestamp'] = max(__sensorValues[robotId]['sensors'].values(), key=lambda x: x['timestamp'])['timestamp']
-
-    return __sensorValues[robotId]
+    return __sensorValues[robotId]['sensors'].copy()
 
 
 def __getServoValues(robotId):
@@ -223,10 +222,7 @@ def __getServoValues(robotId):
                 __servoValues[robotId]['servos'][servo.id]['poseable'] = curPoseable
                 __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
 
-        if __servoValues[robotId]['servos'].values():
-            __servoValues[robotId]['timestamp'] = max(__servoValues[robotId]['servos'].values(), key=lambda x: x['timestamp'])['timestamp']
-
-    return __servoValues[robotId]
+    return __servoValues[robotId]['servos'].copy()
 
 
 def __getReturn(interface):

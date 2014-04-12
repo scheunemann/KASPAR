@@ -17,25 +17,18 @@ define(function(require) {
 				connected : "=",
 			},
 			controller : function($scope) {
-				$scope.moving = false;
-
-				$scope.$watch('jointPosition', function(jointPosition) {
-					if (jointPosition != undefined) {
-						if (typeof jointPosition.$save != 'function') {
-							$scope.jointPosition = JointPosition.get({
-								id : jointPosition.id
-							});
-						}
-					}
-				});
-
 				$scope.$watch('servo.jointName', function(jointName) {
 					$scope.servoInt = robotInterface.getServo(jointName);
 				});
 
 				$scope.removeJoint = function() {
-					$scope.jointPosition.$delete(function() {
-						$scope.jointPosition.unused = true;
+					var promise;
+					if ($scope.jointPosition.$delete === undefined) {
+						promise = JointPosition.delete({id: $scope.jointPosition.id}).$promise;
+					} else {
+						promise = $scope.jointPosition.$delete().$promise;
+					}
+					promise.then(function() {
 						delete $scope.jointPosition.id;
 					});
 				};

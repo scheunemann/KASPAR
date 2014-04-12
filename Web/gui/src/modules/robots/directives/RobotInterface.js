@@ -39,15 +39,7 @@ define(function(require) {
 				
 				$scope.$watch('connected', function(connected) {
 					robotInterface.setConnected(connected);
-				})
-
-				$scope.connect = function(robot) {
-					$scope.connected = true;
-				}
-
-				$scope.disconnect = function(robot) {
-					$scope.connected = false;
-				}
+				});
 			}
 		};
 	};

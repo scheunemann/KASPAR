@@ -35,7 +35,7 @@ def runSite():
     host = webConfig.get('server.socket_host', 'localhost')
     port = webConfig.get('server.socket_port', 5000)
     # start the server, use_reloader=False allows debugging in the IDE
-    run_simple(host, port, siteRoot, use_reloader=False)
+    run_simple(host, port, siteRoot, threaded=True, use_reloader=False)
 
 if __name__ == '__main__':
     configureSite()

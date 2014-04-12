@@ -15,9 +15,10 @@ class Log(StandardMixin, Base):
             'polymorphic_on': type
         }
 
-    def __init__(self, type_=None):
-        super(Log, self).__init__()
-        self.type = type_
+    def __init__(self, type=None, timestamp=None, **kwargs):
+        super(Log, self).__init__(**kwargs)
+        self.type = type
+        self.timestamp = timestamp
 
 
 class DebugLog(Log):
@@ -28,6 +29,10 @@ class DebugLog(Log):
     __mapper_args__ = {
             'polymorphic_identity': 'debug',
     }
+
+    def __init__(self, data, **kwargs):
+        super(DebugLog, self).__init__(**kwargs)
+        self.data = data
 
 
 interactionDebugLog_table = Table('interactionDebugLog', Base.metadata,
@@ -52,3 +57,12 @@ class InteractionLog(Log):
     logs = relationship("DebugLog", secondary=interactionDebugLog_table)
 
     finished = Column(DateTime, nullable=True)
+
+    def __init__(self, interaction_id=None, interaction=None, trigger_id=None, trigger=None, logs=None, finished=None, **kwargs):
+        super(InteractionLog, self).__init__(**kwargs)
+        self.interaction_id = interaction_id
+        self.interaction = interaction
+        self.trigger_id = trigger_id
+        self.trigger = trigger
+        self.logs = logs
+        self.finished = finished
