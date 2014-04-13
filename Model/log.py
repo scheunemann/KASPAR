@@ -29,7 +29,7 @@ class DebugLog(Log):
             'polymorphic_identity': 'debug',
     }
 
-    def __init__(self, data, **kwargs):
+    def __init__(self, data=None, **kwargs):
         super(DebugLog, self).__init__(**kwargs)
         self.data = data
 

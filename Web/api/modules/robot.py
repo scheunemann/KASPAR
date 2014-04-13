@@ -39,12 +39,12 @@ __sensorValues = {}
 @__robotInterface.route('/Robot/<int:robotId>/Interface', methods=['GET'])
 def __robotInterfaceGet(robotId):
     timestamp = request.args.get('timestamp', None)
-    startTime = datetime.datetime.now()
+    startTime = datetime.datetime.utcnow()
     responseTimeout = 60
     servos = None
     sensors = None
 
-    while (datetime.datetime.now() - startTime).seconds < responseTimeout and not servos and not sensors:
+    while (datetime.datetime.utcnow() - startTime).seconds < responseTimeout and not servos and not sensors:
         servos = __getServoValues(robotId)
         sensors = __getSensorValues(robotId)
 
@@ -81,7 +81,7 @@ def __robotInterfaceGet(robotId):
         timestamps = []
         timestamps.extend([s['timestamp'] for s in servos.itervalues()])
         timestamps.extend([s['timestamp'] for s in sensors.itervalues()])
-        ret['timestamp'] = DateUtil.utcDateTime(max(timestamps))
+        ret['timestamp'] = max(timestamps)
     else:
         ret['timestamp'] = timestamp
 
@@ -185,7 +185,7 @@ def __getSensorValues(robotId):
             curValue = interface.getCurrentValue()
             if __sensorValues[robotId]['sensors'][sensor.id]['value'] != curValue:
                 __sensorValues[robotId]['sensors'][sensor.id]['value'] = curValue
-                __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.now()
+                __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.utcnow()
 
     return __sensorValues[robotId]['sensors'].copy()
 
@@ -215,12 +215,12 @@ def __getServoValues(robotId):
             currentPos = interface.getPosition()
             if __servoValues[robotId]['servos'][servo.id]['position'] != currentPos:
                 __servoValues[robotId]['servos'][servo.id]['position'] = currentPos
-                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
+                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.utcnow()
 
             curPoseable = interface.getPositioning()
             if __servoValues[robotId]['servos'][servo.id]['poseable'] != curPoseable:
                 __servoValues[robotId]['servos'][servo.id]['poseable'] = curPoseable
-                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.now()
+                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.utcnow()
 
     return __servoValues[robotId]['servos'].copy()
 
@@ -235,7 +235,7 @@ def __getReturn(interface):
     except:
         ret['poseable'] = None
 
-    ret['timestamp'] = DateUtil.utcDateTime()
+    ret['timestamp'] = datetime.datetime.utcnow()
 
     return ret
 

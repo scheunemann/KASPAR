@@ -55,8 +55,8 @@ def _flushAndFillTestData():
     session.add(setting)
 
     interaction = Interaction()
-    interaction.startTime = datetime.datetime.now()
-    interaction.endTime = datetime.datetime.now()
+    interaction.startTime = datetime.datetime.utcnow()
+    interaction.endTime = datetime.datetime.utcnow()
     interaction.operator = operators[0]
     interaction.user = users[3]
     session.add(interaction)

@@ -1,6 +1,5 @@
 import datetime
 from flask import Blueprint, jsonify, abort, request, redirect
-from utils import DateUtil
 from Robot.legacy import ActionImporter
 from ActionRunner import ActionRunner
 import Model
@@ -84,7 +83,7 @@ def testGet(self, oid=None, timestamp=None):
            'id': oid,
            'output': output,
            'active': active,
-           'timestamp': DateUtil.utcDateTime(),
+           'timestamp': datetime.datetime.utcnow(),
            }
 
     return ret
@@ -107,9 +106,9 @@ def testPost(self, oid):
 
     ret = {
            'id': oid,
-           'output': [(DateUtil.utcDateTime(o[0]), o[1]) for o in output],
+           'output': [(o[0].isoformat(), o[1]) for o in output],
            'active': active,
-           'timestamp': DateUtil.utcDateTime(datetime.datetime.now()),
+           'timestamp': datetime.datetime.utcnow().isoformat(),
     }
 
     return ret

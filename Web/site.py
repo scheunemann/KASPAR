@@ -18,7 +18,7 @@ def configureSite():
     siteRoot = DispatcherMiddleware(guiRoot, {'/api': apiRoot})
 
     # Configure logging
-#     configureLogging(level=logging.INFO)
+    configureLogging()
 
     # Disable connection for debugging without a robot
     from Robot.ServoInterface import ServoInterface

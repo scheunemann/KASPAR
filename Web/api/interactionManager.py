@@ -39,9 +39,11 @@ class InteractionManager(object):
         ds = StorageFactory.getNewSession()
         if logId:
             iLog = ds.query(Model.InteractionLog).get(logId)
-            iLog.finished = datetime.datetime.now()
+            iLog.finished = datetime.datetime.utcnow()
         log = Model.DebugLog()
-        log.data = "/n".join(handle.output)
+        log.data = ''
+        for timestamp, msg in handle.output:
+            log.data += '%s: %s\n' % (timestamp.isoformat(), msg)
         ds.add(log)
         if iLog:
             iLog.logs.append(log)

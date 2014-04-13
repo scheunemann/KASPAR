@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, abort, request
-from utils import DateUtil
 from Web.api.database import db_session
 from Web.api.interactionManager import InteractionManager
 import Model
@@ -47,7 +46,7 @@ def __interactionLogGet(interactionId, logId=None, timestamp=None):
                        'id': log.id,
                        'button_id': log.trigger_id,
                        'interaction_id': log.interaction_id,
-                       'timestamp': DateUtil.utcDateTime(log.timestamp),
+                       'timestamp': log.timestamp,
                        'active': log.finished == None,
                     })
 
@@ -78,7 +77,7 @@ def __interactionLogPost(interactionId):
            'id': log.id,
            'button_id': log.trigger_id,
            'interaction_id': log.interaction_id,
-           'timestamp': DateUtil.utcDateTime(log.timestamp),
+           'timestamp': log.timestamp,
            'active': True
     }
 
