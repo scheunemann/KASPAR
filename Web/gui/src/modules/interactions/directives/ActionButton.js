@@ -6,7 +6,7 @@ define(function(require) {
 	require('actions/models');
 	var template = require('text!./actionButton.tpl.html');
 
-	var ActionButton = function($q, $timeout, UserAction, hotkeyFormatter) {
+	var ActionButton = function($q, $timeout, InteractionLog, hotkeyFormatter) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -50,14 +50,16 @@ define(function(require) {
 				});
 
 				$scope.callButton = function(buttonId) {
-					new UserAction({
-						'trigger_id' : buttonId,
+					InteractionLog.save({
+						interactionId : $scope.interaction.id
+					}, {
+						'button_id' : buttonId,
 						'interaction_id' : $scope.interaction.id
-					}).$save();
+					});
 				}
 			}
 		};
 	};
 
-	return [ '$q', '$timeout', 'UserAction', 'hotkeyFormatter', ActionButton ];
+	return [ '$q', '$timeout', 'InteractionLog', 'hotkeyFormatter', ActionButton ];
 });

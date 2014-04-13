@@ -11,9 +11,9 @@
 				class="selectpicker form-control"
 				ng-model="robot"
 				ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:'name'">
-				<option value="">None</option>
+				<option value="">-- Select Robot --</option>
 			</select>
-			<span class="input-group-btn">
+			<span class="input-group-btn" ng-if="showConnect">
 				<button
 					class="btn btn-default"
 					type="button"

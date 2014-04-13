@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../robotActionController')))
 
 from Config.config import dbConfig
-from Model import Base, User, Operator, Interaction
+from Model import Base, User, Operator, Interaction, Setting
 from Data.storage import StorageFactory
 from Robot import importer
 
@@ -51,10 +51,14 @@ def _flushAndFillTestData():
     for sound in [a for a in actions if a.type == 'Sound']:
         session.add(sound)
 
+    setting = Setting(key='robot', value='Kaspar Prototype A')
+    session.add(setting)
+
     interaction = Interaction()
     interaction.startTime = datetime.datetime.now()
+    interaction.endTime = datetime.datetime.now()
     interaction.operator = operators[0]
-    interaction.users = users[3:5]
+    interaction.user = users[3]
     session.add(interaction)
 
     session.add_all(robots)

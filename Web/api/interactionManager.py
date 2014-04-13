@@ -8,10 +8,12 @@ import datetime
 
 class InteractionManager(object):
 
-    def __init__(self, interaction):
-        self._interactionId = interaction.id
-        triggers = self._getTriggers(interaction.robot, interaction.user)
-        self._triggerProcessor = TriggerProcessor(triggers, datetime.timedelta(seconds=0.01))
+    def __init__(self, interactionId):
+        self._interactionId = interactionId
+        ds = StorageFactory.getNewSession()
+        interaction = ds.query(Model.Interaction).get(interactionId)
+        triggers = self._getTriggers(ds, interaction.robot, interaction.user)
+        self._triggerProcessor = TriggerProcessor(triggers, interaction.robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
         self._actionRunner = ActionRunner(interaction.robot)
         self._handles = {}
@@ -46,6 +48,10 @@ class InteractionManager(object):
         ds.commit()
         with self._handleLock:
             self._handles.pop(handle.actionId, None)
+
+    def _getTriggers(self, ds, user, robot):
+        #TODO: This needs to filter by triggers that the robot supports (sensors, and user overrides)
+        return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, trigger_id, value):
         self.doTrigger(trigger_id, value)

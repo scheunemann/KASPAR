@@ -5,7 +5,7 @@
 			class="selectpicker form-control"
 			ng-model="operator_id"
 			ng-disabled="interaction"
-			ng-options="operator.fullname for operator.id in operators | orderBy:'fullname'">
+			ng-options="operator.id as operator.fullname for operator in operators | orderBy:'fullname'">
 			<option value="">--Select Operator--</option>
 		</select>
 	</div>
@@ -15,16 +15,17 @@
 			class="selectpicker form-control"
 			ng-model="user_id"
 			ng-disabled="interaction"
-			ng-options="user.fullname group by getCategory(user, operator.users) for user.id in users | orderBy:'fullname'">
+			ng-options="user.id as user.fullname group by getCategory(user, operator.users) for user in users | orderBy:'fullname'">
 			<option value="">--Select User--</option>
 		</select>
 	</div>
+	<robot-interface robot="robot"></robot-interface>
 	<div class="btn-toolbar">
 		<div class="btn-group">
 			<button
 				class="btn btn-default"
 				type="button"
-				ng-disabled="!(user && operator)"
+				ng-disabled="!(user_id && operator_id && robot.id)"
 				ng-if="interaction == null"
 				ng-click="start()">Start</button>
 			<button

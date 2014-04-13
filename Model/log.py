@@ -57,7 +57,7 @@ class InteractionLog(Log):
 
     finished = Column(DateTime, nullable=True)
 
-    def __init__(self, interaction_id=None, interaction=None, trigger_id=None, trigger=None, logs=None, finished=None, **kwargs):
+    def __init__(self, interaction_id=None, interaction=None, trigger_id=None, trigger=None, logs=[], finished=None, **kwargs):
         super(InteractionLog, self).__init__(**kwargs)
         self.interaction_id = interaction_id
         self.interaction = interaction

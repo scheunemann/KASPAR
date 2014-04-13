@@ -1,15 +1,8 @@
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, jsonify, abort, request
 from utils import DateUtil
 from Web.api.database import db_session
+from Web.api.interactionManager import InteractionManager
 import Model
-
-models = [
-          {
-            'class': Model.Interaction,
-            'kwargs': {'methods':['GET', 'POST', 'PUT'], }
-          },
-         ]
-
 
 __interactionLog = Blueprint('interaction.log', __name__)
 blueprints = [
@@ -19,8 +12,30 @@ blueprints = [
 __interactionManagers = {}
 
 
-@__interactionLog.route('/Interaction/Log/<int:interactionId>?<int:logId>?<timestamp>')
-def __interactionLogGet(self, interactionId, logId=None, timestamp=None):
+def __processInteraction(result=None, interactionId=None):
+    intId = result['id'] if result else interactionId
+    if intId:
+        if result and result['endTime']:
+            if intId in __interactionManagers:
+                __interactionManagers[result['id']].stop()
+                __interactionManagers.pop(result['id'], None)
+        else:
+            __interactionManagers[intId] = InteractionManager(intId)
+            __interactionManagers[intId].start()
+
+
+models = [
+          {
+            'class': Model.Interaction,
+            'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteraction, ], 'PUT': [__processInteraction, ]}}
+          },
+         ]
+
+
+@__interactionLog.route('/Interaction/<int:interactionId>/Log', defaults={'logId': None, 'timestamp': None}, methods=['GET'])
+@__interactionLog.route('/Interaction/<int:interactionId>/Log/<int:logId>', defaults={'timestamp': None}, methods=['GET'])
+@__interactionLog.route('/Interaction/<int:interactionId>/Log/<int:logId>?<timestamp>', methods=['GET'])
+def __interactionLogGet(interactionId, logId=None, timestamp=None):
     if logId:
         logs = db_session.query(Model.InteractionLog).get(logId)
     else:
@@ -39,21 +54,25 @@ def __interactionLogGet(self, interactionId, logId=None, timestamp=None):
     return jsonify(ret[0] if logId else ret)
 
 
-@__interactionLog.route('/Interaction/Log/<int:interactionId>')
-def __interactionLogPost(self, interactionId):
-    if 'trigger_id' in cherrypy.request.json:
-        triggerId = cherrypy.request.json['trigger_id']
+@__interactionLog.route('/Interaction/<int:interactionId>/Log', methods=['POST'])
+def __interactionLogPost(interactionId):
+    if 'button_id' in request.json:
+        triggerId = request.json['button_id']
     else:
-        raise abort(400, "Invalid JSON, missing 'trigger_id'")
+        raise abort(400, "Invalid JSON, missing 'button_id'")
 
     if interactionId not in __interactionManagers:
-        raise abort(400, "Cannot update an inactive interaction.")
+        interaction = db_session.query(Model.Interaction).get(interactionId)
+        if interaction.endTime == None:
+            __processInteraction(interactionId=interactionId)
+        else:
+            raise abort(400, "Cannot update an inactive interaction.")
 
     exists = db_session.query(Model.Trigger).filter(Model.Trigger.id == triggerId).count() > 0
     if not exists:
         raise abort(404, "Invalid trigger id: %s" % triggerId)
 
-    log = __interactionManagers[interactionId].doTrigger(triggerId)
+    log = __interactionManagers[interactionId].doTrigger(triggerId, True)
 
     ret = {
            'id': log.id,

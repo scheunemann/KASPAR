@@ -20,9 +20,7 @@ define(function(require) {
 			if (result != undefined && result.length > 0) {
 				$scope.interaction = result[0];
 				$scope.operator_id = $scope.interaction.operator_id;
-				if($scope.interaction.users.length > 0) {
-					$scope.user_id = $scope.interaction.users[0].id;
-				}
+				$scope.user_id = $scope.interaction.user_id;
 			}
 		});
 
@@ -32,7 +30,7 @@ define(function(require) {
 			$scope.interaction = new Interaction({
 				startTime : new Date(),
 				user_id : $scope.user_id,
-				robot : $scope.robot,
+				robot_id : $scope.robot.id,
 				operator_id : $scope.operator_id,
 			});
 

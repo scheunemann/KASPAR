@@ -11,15 +11,18 @@ define(function(require) {
 			template : template,
 			restrict : 'E',
 			scope : {
-				connected : "=",
 				robot : "=",
+				showConnect : "=?"
 			},
 			controller : function($scope) {
+				if ($scope.showConnect == undefined) {
+					$scope.showConnect = false;
+				}
+				
 				var settings = Setting.query({
 					'key' : 'robot'
 				});
 				$scope.robots = Robot.query();
-				$scope.connected = false;
 
 				$q.all($scope.robots.$promise, settings.$promise).then(function() {
 					if (settings.length > 0) {
@@ -32,11 +35,11 @@ define(function(require) {
 						}
 					}
 				});
-				
+
 				$scope.$watch('robot', function(robot) {
 					robotInterface.setRobot(robot);
 				});
-				
+
 				$scope.$watch('connected', function(connected) {
 					robotInterface.setConnected(connected);
 				});
