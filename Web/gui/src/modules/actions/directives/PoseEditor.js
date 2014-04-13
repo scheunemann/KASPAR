@@ -6,7 +6,7 @@ define(function(require) {
 	require('actions/models');
 	require('robots/directives');
 
-	var PoseEditor = function(JointPosition, RobotInterface) {
+	var PoseEditor = function(JointPosition, RobotInterface, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -14,11 +14,12 @@ define(function(require) {
 				pose : "=action",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.advancedopen = true;
 				$scope.basicopen = false;
 			}
 		};
 	};
 
-	return [ 'JointPosition', 'RobotInterface', PoseEditor ];
+	return [ 'JointPosition', 'RobotInterface', 'language', PoseEditor ];
 });

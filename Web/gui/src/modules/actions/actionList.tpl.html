@@ -1,11 +1,11 @@
 <div class="input-group">
-	<span class="input-group-addon inputLabel">Action</span>
+	<span class="input-group-addon inputLabel">{{language['action.label']}}</span>
 	<select
 		class="selectpicker form-control"
 		saveable
 		name="action"
 		ng-model="sensor.action_id"
 		ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-		<option value="">--Select Action--</option>
+		<option value="">{{language['action.select.prompt']}}</option>
 	</select>
 </div>

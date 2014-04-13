@@ -3,7 +3,7 @@
 define(function(require) {
 	var angular = require('angular');
 
-	var TriggerEditor = function($compile) {
+	var TriggerEditor = function($compile, language) {
 		return {
 			restrict : 'E',
 			scope : {
@@ -24,6 +24,7 @@ define(function(require) {
 				});
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.$watch('trigger', function(trigger) {
 					if (trigger != undefined) {
 						$scope.trigger = trigger.getConcreteClassInstance();
@@ -33,5 +34,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$compile', TriggerEditor ];
+	return [ '$compile', 'language', TriggerEditor ];
 });

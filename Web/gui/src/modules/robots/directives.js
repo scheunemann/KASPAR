@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var languageServices = require('common/i18n/languageServices');
 	var displayServices = require('common/services/displayServices');
 	var interfaceServices = require('robots/services/interfaceServices');
 	var filters = require('common/filters');
@@ -15,6 +16,7 @@ define(function(require) {
 	var moduleName = 'kasparGUI.robots.directives';
 	var dependancies = [
 		         			displayServices,
+		        			languageServices,
 		         			interfaceServices,
 		        			filters,
 		        			commonModels,

@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./groupEditor.tpl.html');
 
-	var GroupEditor = function() {
+	var GroupEditor = function(language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -13,6 +13,7 @@ define(function(require) {
 				actions : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.addActions = function(actions) {
 					if ($scope.group.actions === undefined) {
 						$scope.group.actions = [];
@@ -36,5 +37,5 @@ define(function(require) {
 		};
 	};
 
-	return GroupEditor;
+	return ['language', GroupEditor];
 });

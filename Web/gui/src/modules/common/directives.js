@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var languageServices = require('common/i18n/languageServices');
 	var displayServices = require('common/services/displayServices');
 	var filters = require('common/filters');
 	var KeyBinding = require('./directives/KeyBinding');
@@ -13,6 +14,7 @@ define(function(require) {
 	var moduleName = 'kasparGUI.common.directives';
 	var dependancies = [
 		         			displayServices,
+		        			languageServices,
 		        			filters,
 	                     ];
 	

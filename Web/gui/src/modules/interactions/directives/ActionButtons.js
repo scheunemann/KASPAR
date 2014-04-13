@@ -6,7 +6,7 @@ define(function(require) {
 	require('actions/models');
 	var template = require('text!./actionButtons.tpl.html');
 
-	var ActionButtons = function($q, UserAction, hotkeyFormatter) {
+	var ActionButtons = function($q, UserAction, hotkeyFormatter, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -20,9 +20,10 @@ define(function(require) {
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 			},
 		};
 	};
 
-	return [ '$q', 'UserAction', 'hotkeyFormatter', ActionButtons ];
+	return [ '$q', 'UserAction', 'hotkeyFormatter', 'language', ActionButtons ];
 });

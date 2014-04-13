@@ -1,71 +1,67 @@
 <div>
-	<div class="col-md-12 col-lg-12">
-		<div id="operatorsList">
-			<div class="input-group">
-				<span class="input-group-addon inputLabel">Operator</span>
-				<select
-					class="selectpicker form-control"
-					ng-model="selectedOperator"
-					ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
-					<option value="">--Select Operator--</option>
-				</select>
-				<span class="input-group-btn">
-					<button
-						class="btn btn-default"
-						type="button"
-						ng-click="newOperator()">New</button>
-					<button
-						class="btn btn-default"
-						type="button"
-						ng-click="deleteOperator(selectedOperator)">Delete</button>
+	<div id="operatorsList">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['operator.label']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedOperator"
+				ng-options="operator.fullname for operator in operators | orderBy:'fullname'">
+				<option value="">{{language['operator.select.prompt']}}</option>
+			</select>
+			<span class="input-group-btn">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="newOperator()">{{language['operator.new']}}</button>
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="deleteOperator(selectedOperator)">{{language['operator.delete']}}</button>
+			</span>
+		</div>
+	</div>
+	<form
+		ng-show="selectedOperator"
+		name="operatorsForm"
+		model="selectedOperator">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['operator.name']}}</span>
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Full Name"
+				saveable
+				required
+				name="fullname"
+				ng-model="selectedOperator.fullname">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['operator.users']}}</span>
+			<div
+				class="list-group form-control listForm"
+				ng-blur="saveOperator()"
+				ng-class="{ 'has-success': usersSaved, 'has-warning': operatorsForm.$dirty && !userSaved }">
+				<span
+					class="list-group-item"
+					ng-repeat="user in users">
+					<span class="input-group">
+						<span class="input-group-addon">
+							<input
+								type="checkbox"
+								ng-disabled="!selectedOperator"
+								ng-checked="(selectedOperator.users | filter:{id:user.id}:true).length == 1"
+								ng-click="toggleOperatorUser(selectedOperator, user)">
+						</span>
+						<input
+							type="text"
+							class="form-control"
+							ng-click="toggleOperatorUser(selectedOperator, user)"
+							value="{{user.fullname}}"
+							ng-disabled="true">
+					</span>
 				</span>
 			</div>
 		</div>
-		<form
-			ng-show="selectedOperator"
-			name="operatorsForm"
-			model="selectedOperator">
-			<div class="input-group">
-				<span class="input-group-addon inputLabel">Name</span>
-				<input
-					type="text"
-					class="form-control"
-					placeholder="Full Name"
-					saveable
-					required
-					name="fullname"
-					ng-model="selectedOperator.fullname">
-			</div>
-			<div class="input-group">
-				<span class="input-group-addon inputLabel">Common Users</span>
-				<div
-					class="list-group form-control listForm"
-					ng-blur="saveOperator()"
-					ng-class="{ 'has-success': usersSaved, 'has-warning': operatorsForm.$dirty && !userSaved }">
-					<span
-						class="list-group-item"
-						ng-repeat="user in users">
-						<span class="input-group">
-							<span class="input-group-addon">
-								<input
-									type="checkbox"
-									ng-disabled="!selectedOperator"
-									ng-checked="(selectedOperator.users | filter:{id:user.id}:true).length == 1"
-									ng-click="toggleOperatorUser(selectedOperator, user)">
-							</span>
-							<input
-								type="text"
-								class="form-control"
-								ng-click="toggleOperatorUser(selectedOperator, user)"
-								value="{{user.fullname}}"
-								ng-disabled="true">
-						</span>
-					</span>
-				</div>
-			</div>
-		</form>
-	</div>
+	</form>
 </div>
-<div
-	class="col-md-12 col-lg-12"
-	ui-view></div>
+<div ui-view></div>

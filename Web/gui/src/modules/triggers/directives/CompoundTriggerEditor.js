@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./compoundTriggerEditor.tpl.html');
 
-	var CompoundTriggerEditor = function() {
+	var CompoundTriggerEditor = function(language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -16,6 +16,7 @@ define(function(require) {
 			link : function(scope, iElement, iAttrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.addTriggers = function(triggers) {
 					if ($scope.compound.triggers === undefined) {
 						$scope.compound.triggers = [];
@@ -59,5 +60,5 @@ define(function(require) {
 		};
 	};
 
-	return CompoundTriggerEditor;
+	return ['language', CompoundTriggerEditor];
 });

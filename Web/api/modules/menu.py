@@ -9,33 +9,33 @@ blueprints = [
 
 __links = [
                 {
-                 'title': 'Admin',
+                 'title': 'navbar.admin.label',
                  'links': [
-                            ('Operators', 'admin.operator'),
-                            ('Users', 'admin.user'),
-                            ('Robots', 'admin.robot'),
-                            ('Settings', 'admin.setting'),
+                            ('navbar.admin.operators', 'admin.operator'),
+                            ('navbar.admin.users', 'admin.user'),
+                            ('navbar.admin.robots', 'admin.robot'),
+                            ('navbar.admin.settings', 'admin.setting'),
                           ]},
                 {
-                 'title':'Action',
+                 'title':'navbar.action.label',
                  'links': [
-                            ('Create/Edit', 'action.edit'),
-                            ('Test', 'action.test'),
-                            ('Import', 'action.import'),
+                            ('navbar.action.edit', 'action.edit'),
+                            ('navbar.action.test', 'action.test'),
+                            ('navbar.action.import', 'action.import'),
                           ]},
                 {
-                 'title':'Trigger',
+                 'title':'navbar.trigger.label',
                  'links': [
-                            ('Create/Edit', 'trigger.edit'),
-                            ('Test', 'trigger.test'),
-                            ('Import', 'trigger.import'),
+                            ('navbar.trigger.edit', 'trigger.edit'),
+                            ('navbar.trigger.test', 'trigger.test'),
+                            ('navbar.trigger.import', 'trigger.import'),
                           ]},
                 {
-                 'title':'Interactions',
+                 'title':'navbar.interaction.label',
                  'links': [
-                            ('View History', 'interaction.view'),
-                            ('Begin New', 'interaction.begin'),
-                            ('Manage History', 'interaction.manage'),
+                            ('navbar.interaction.view', 'interaction.view'),
+                            ('navbar.interaction.begin', 'interaction.begin'),
+                            ('navbar.interaction.manage', 'interaction.manage'),
                           ]},
             ]
 

@@ -2,7 +2,7 @@
 	name="sequenceForm"
 	model="sequence">
 	<div class="col-lg-12 input-group">
-		<span class="input-group-addon inputLabel">Name</span>
+		<span class="input-group-addon inputLabel">{{language['action.sequence.name']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -15,7 +15,7 @@
 	<div class="row">
 		<div class="col-lg-5">
 			<div class="panel panel-default">
-				<div class="panel-heading">All Behaviours</div>
+				<div class="panel-heading">{{language['action.sequence.actions.list.label']}}</div>
 				<div class="input-group fill">
 					<select
 						class="selectpicker fill form-control"
@@ -34,7 +34,7 @@
 					class="btn btn-default col-lg-12"
 					ng-disabled="!toAdd || toAdd.length == 0"
 					type="button"
-					ng-click="addActions(toAdd);toAdd=[]">Add &rarr;</button>
+					ng-click="addActions(toAdd);toAdd=[]">{{language['action.sequence.actions.add']}} &rarr;</button>
 			</div>
 			<div class="row">
 				<button
@@ -42,7 +42,7 @@
 					ng-disabled="!toRemove || toRemove.length == 0"
 					type="button"
 					ng-click="removeActions(toRemove);toRemove=[]">&larr;
-					Remove</button>
+					{{language['action.sequence.actions.remove']}}</button>
 			</div>
 			<div class="row">
 				<button
@@ -50,7 +50,7 @@
 					ng-disabled="!toRemove || toRemove.length == 0"
 					type="button"
 					ng-click="moveActions(toRemove, -1);toRemove=[]">&uarr;
-					Move Up</button>
+					{{language['action.sequence.actions.moveUp']}}</button>
 			</div>
 			<div class="row">
 				<button
@@ -58,12 +58,12 @@
 					ng-disabled="!toRemove || toRemove.length == 0"
 					type="button"
 					ng-click="moveActions(toRemove, 1);toRemove=[]">&darr;
-					Move Down</button>
+					{{language['action.sequence.actions.moveDown']}}</button>
 			</div>
 		</div>
 		<div class="col-lg-5">
 			<div class="panel panel-default">
-				<div class="panel-heading">Sequence Behaviours</div>
+				<div class="panel-heading">{{action.sequence.actions.title}}</div>
 				<div class="input-group fill">
 					<select
 						class="selectpicker fill form-control"
@@ -79,6 +79,6 @@
 </form>
 <div class="row">
 	<div class="col-lg-12">
-		<small>All selected behaviours will attempt execute in order</small>
+		<small>{{language['action.sequence.help.short']}}</small>
 	</div>
 </div>

@@ -6,8 +6,8 @@
 			<button
 				type="button"
 				class="btn btn-primary"
-				ng-disabled="true">Connect</button>
-			Current
+				ng-disabled="true">{{language['trigger.sensor.connect']}}</button>
+			{{language['trigger.sensor.current']}}
 			<progressbar
 				class="progress-striped active"
 				max="sensor.value_type.maxValue - sensor.value_type.minValue"
@@ -15,7 +15,7 @@
 		</div>
 		<accordion close-others="true"> <accordion-group
 			is-open="basicopen"> <accordion-heading>
-		Basic <i
+		{{language['trigger.sensor.basic.label']}}<i
 			class="pull-right glyphicon"
 			ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
 		</accordion-heading>
@@ -25,23 +25,23 @@
 					type="button"
 					class="btn btn-primary"
 					ng-model="trigger.sensorValue"
-					btn-radio="'eval::on'">Active</button>
+					btn-radio="'eval::on'">{{language['trigger.sensor.basic.on']}}</button>
 				<button
 					type="button"
 					class="btn btn-primary"
 					ng-model="trigger.sensorValue"
-					btn-radio="'eval::off'">Inactive</button>
+					btn-radio="'eval::off'">{{language['trigger.sensor.basic.off']}}</button>
 			</div>
-			(As determined by sensor type)
+			<small>{{language['trigger.sensor.basic.help.short']}}</small>
 		</div>
 		</accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
-		Detailed <i
+		{{language['trigger.sensor.advanced.label']}} <i
 			class="pull-right glyphicon"
 			ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
 		</accordion-heading>
 		<div class="col-lg-12">
 			<div class="input-group">
-				<div class="input-group-addon inputLabel">Active when current value</div>
+				<div class="input-group-addon inputLabel">{{language['trigger.sensor.compare.label']}}</div>
 				<select
 					class="selectpicker form-control"
 					name="sensorCompare"
@@ -50,7 +50,7 @@
 					required
 					style="width: 25%"
 					ng-options="value.compare as (value.name + ' (' + value.compare + ')') for value in comparisons">
-					<option value="">--Select Value--</option>
+					<option value="">{{language['trigger.sensor.compare.select.prompt']}}</option>
 				</select> <input
 					name="sensorValue"
 					saveable

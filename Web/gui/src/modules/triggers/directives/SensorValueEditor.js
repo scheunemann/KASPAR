@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./sensorValueEditor.tpl.html');
 
-	var SensorValueEditor = function(Sensor, modelBuilder) {
+	var SensorValueEditor = function(Sensor, modelBuilder, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -34,6 +34,7 @@ define(function(require) {
 				} ]
 			},
 			controller : function($scope, $window) {
+				$scope.language = language.getText();
 				$scope.Math = $window.Math;
 				$scope.sensor = null;
 				$scope.$watch('sensor', function(sensor) {
@@ -57,5 +58,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'Sensor', 'modelBuilder', SensorValueEditor ];
+	return [ 'Sensor', 'modelBuilder', 'language', SensorValueEditor ];
 });

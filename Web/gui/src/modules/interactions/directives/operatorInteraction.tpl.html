@@ -6,8 +6,7 @@
 		<li><strong>Images from webcam(s)?</strong></li>
 	</ul>
 	<accordion close-others="true"> <accordion-group
-		is-open="isopen"> <accordion-heading>
-	User Buttons <i
+		is-open="isopen"> <accordion-heading>{{language['interaction.operator.view.buttons.label']}}<i
 		class="pull-right glyphicon"
 		ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
 	</accordion-heading>
@@ -17,12 +16,12 @@
 			class="btn btn-primary check"
 			ng-model="keyBind"
 			ng-click="setBinding(keyBind)"
-			btn-checkbox>Activate Binding</button>
+			btn-checkbox>{{language['interaction.operator.view.activateBindings']}}</button>
 		<button
 			type="button"
 			class="btn btn-primary check"
 			ng-model="showHotKeys"
-			btn-checkbox>Show HowKeys</button>
+			btn-checkbox>{{language['interaction.operator.view.showHotkeys']}}</button>
 	</div>
 	<hr />
 	<action-buttons

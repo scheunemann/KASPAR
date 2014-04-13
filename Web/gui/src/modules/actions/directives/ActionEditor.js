@@ -3,7 +3,7 @@
 define(function(require) {
 	var angular = require('angular');
 
-	var ActionEditor = function($compile) {
+	var ActionEditor = function($compile, language) {
 		return {
 			restrict : 'E',
 			scope : {
@@ -23,6 +23,7 @@ define(function(require) {
 				});
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.$watch('action', function(action) {
 					if (action != undefined) {
 						$scope.action = action.getConcreteClassInstance();
@@ -32,5 +33,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$compile', ActionEditor ];
+	return [ '$compile', 'language', ActionEditor ];
 });

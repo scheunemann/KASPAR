@@ -5,7 +5,8 @@ define(function(require) {
 	require('users/models');
 	require('operators/models');
 
-	var OperatorController = function($scope, Operator, User) {
+	var OperatorController = function($scope, Operator, User, language) {
+		$scope.language = language.getText();
 		$scope.operators = Operator.query(function(operators) {
 			$scope.selectedOperator = operators[0];
 		});
@@ -65,6 +66,6 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', 'Operator', 'User', OperatorController ];
+	return [ '$scope', 'Operator', 'User', 'language', OperatorController ];
 
 });

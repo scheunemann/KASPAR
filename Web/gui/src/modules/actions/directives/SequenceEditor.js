@@ -5,7 +5,7 @@ define(function(require) {
 	var template = require('text!./sequenceEditor.tpl.html');
 	require('actions/models');
 
-	var SequenceEditor = function(OrderedAction) {
+	var SequenceEditor = function(OrderedAction, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -14,6 +14,7 @@ define(function(require) {
 				actions : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.getName = function(actionId) {
 					if($scope.actions != undefined) {
 						for(var i = 0; i < $scope.actions.length; i++) {
@@ -107,5 +108,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'OrderedAction', SequenceEditor ];
+	return [ 'OrderedAction', 'language', SequenceEditor ];
 });

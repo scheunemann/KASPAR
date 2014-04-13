@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./soundEditor.tpl.html');
 
-	var SoundEditor = function() {
+	var SoundEditor = function(language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -12,9 +12,10 @@ define(function(require) {
 				sound : "=action",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 			},
 		};
 	}
 
-	return SoundEditor;
+	return ['language', SoundEditor];
 });

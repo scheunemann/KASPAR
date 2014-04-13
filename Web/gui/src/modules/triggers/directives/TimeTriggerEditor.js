@@ -5,7 +5,7 @@ define(function(require) {
 	require('triggers/models')
 	var template = require('text!./timeTriggerEditor.tpl.html');
 
-	var TimeTriggerEditor = function() {
+	var TimeTriggerEditor = function(language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,6 +17,7 @@ define(function(require) {
 			link : function(scope, iElement, iAttrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.addTriggers = function(triggers) {
 					if ($scope.time.triggers === undefined) {
 						$scope.time.triggers = [];
@@ -74,5 +75,5 @@ define(function(require) {
 		};
 	};
 
-	return TimeTriggerEditor;
+	return ['language', TimeTriggerEditor];
 });

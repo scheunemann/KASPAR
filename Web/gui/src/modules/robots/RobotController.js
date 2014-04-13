@@ -4,7 +4,8 @@ define(function(require) {
 	var angular = require('angular');
 	require('robots/models');
 
-	var RobotController = function($scope, Robot) {
+	var RobotController = function($scope, Robot, language) {
+		$scope.language = language.getText();
 		$scope.robots = Robot.query();
 
 		$scope.connected = false;
@@ -18,5 +19,5 @@ define(function(require) {
 		}
 	};
 
-	return [ '$scope', 'Robot', RobotController ];
+	return [ '$scope', 'Robot', 'language', RobotController ];
 });

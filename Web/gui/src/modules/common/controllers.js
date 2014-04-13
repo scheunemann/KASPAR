@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var languageServices = require('common/i18n/languageServices');
 	var uiRouter = require('angularUIRouter');
 	var commonModels = require('common/models');
 	var robotModels = require('robots/models');
@@ -11,6 +12,7 @@ define(function(require) {
 	var moduleName = 'kasparGUI.common.controllers';
 	var dependancies = [
 		          			uiRouter,
+		        			languageServices,
 		        			commonModels,
 		        			robotModels,
 	                     ];

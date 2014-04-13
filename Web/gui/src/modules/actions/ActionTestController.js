@@ -4,7 +4,8 @@ define(function(require) {
 	var angular = require('angular');
 	require('actions/models');
 
-	var ActionTestController = function($scope, $http, $q, $timeout, Action, ActionTest) {
+	var ActionTestController = function($scope, $http, $q, $timeout, Action, ActionTest, language) {
+		$scope.language = language.getText();
 		$scope.running = false;
 		$scope.actions = Action.query();
 		$scope.output = '';
@@ -31,5 +32,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionTest', ActionTestController ];
+	return [ '$scope', '$http', '$q', '$timeout', 'Action', 'ActionTest', 'language', ActionTestController ];
 });

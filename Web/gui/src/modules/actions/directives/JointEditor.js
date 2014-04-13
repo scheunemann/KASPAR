@@ -5,7 +5,7 @@ define(function(require) {
 	require('robots/services/interfaceServices');
 	var template = require('text!./jointEditor.tpl.html');
 
-	var JointEditor = function(robotInterface, JointPosition, ServoModel) {
+	var JointEditor = function(robotInterface, JointPosition, ServoModel, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,6 +17,7 @@ define(function(require) {
 				connected : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.$watch('servo.jointName', function(jointName) {
 					$scope.servoInt = robotInterface.getServo(jointName);
 				});
@@ -73,5 +74,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'robotInterface', 'JointPosition', 'ServoModel', JointEditor ];
+	return [ 'robotInterface', 'JointPosition', 'ServoModel', 'language', JointEditor ];
 });

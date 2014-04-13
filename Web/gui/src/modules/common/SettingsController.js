@@ -5,7 +5,7 @@ define(function(require) {
 	require('common/models');
 	require('robots/models');
 
-	var SettingsController = function($q, $scope, Setting, Robot) {
+	var SettingsController = function($q, $scope, Setting, Robot, language) {
 		$scope.robots = Robot.query();
 		$scope.settings = Setting.query();
 		
@@ -32,6 +32,6 @@ define(function(require) {
 		});
 	};
 
-	return [ '$q', '$scope', 'Setting', 'Robot', SettingsController ];
+	return [ '$q', '$scope', 'Setting', 'Robot', 'language', SettingsController ];
 
 });

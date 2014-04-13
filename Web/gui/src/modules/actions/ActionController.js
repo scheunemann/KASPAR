@@ -5,7 +5,8 @@ define(function(require) {
 	require('actions/models');
 	require('actions/directives');
 
-	var ActionController = function($scope, Action, ActionType) {
+	var ActionController = function($scope, Action, ActionType, language) {
+		$scope.language = language.getText();
 		$scope.action = '';
 		$scope.actions = Action.query();
 		$scope.types = ActionType.query();
@@ -58,5 +59,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', 'Action', 'ActionType', ActionController ];
+	return [ '$scope', 'Action', 'ActionType', 'language', ActionController ];
 });

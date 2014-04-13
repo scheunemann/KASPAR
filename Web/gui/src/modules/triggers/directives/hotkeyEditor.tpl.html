@@ -2,7 +2,7 @@
 	name="hotkeyEditor"
 	model="hotkey">
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">Keyboard Button</span>
+		<span class="input-group-addon inputLabel">{{language['trigger.button.hotkey.label']}}</span>
 		<input
 			type="text"
 			name="key"
@@ -15,7 +15,7 @@
 			<button
 				class="btn btn-default"
 				type="button"
-				ng-click="deleteKey()">Delete</button>
+				ng-click="deleteKey()">{{language['trigger.button.hotkey.delete']}}</button>
 		</span>
 	</div>
 </ng-form>

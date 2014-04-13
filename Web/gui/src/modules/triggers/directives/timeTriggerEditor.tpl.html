@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="input-group">
-				<span class="input-group-addon inputLabel">Name</span> <input
+				<span class="input-group-addon inputLabel">{{language['trigger.time.name']}}</span> <input
 					type="text"
 					class="form-control"
 					placeholder="Time Trigger Name"
@@ -15,24 +15,24 @@
 					ng-model="time.name">
 			</div>
 			<div class="input-group">
-				<span class="input-group-addon inputLabel">Action</span> <select
+				<span class="input-group-addon inputLabel">{{language['trigger.time.action']}}</span> <select
 					class="selectpicker form-control"
 					ng-model="time.action_id"
 					saveable
 					name="actionId"
 					ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-					<option value="">No Action</option>
+					<option value="">{{language['trigger.time.action.select.prompt']}}</option>
 				</select>
 			</div>		
 			<div class="input-group">
-				<span class="input-group-addon inputLabel">Trigger</span> <select
+				<span class="input-group-addon inputLabel">{{language['trigger.time.trigger']}}</span> <select
 					class="selectpicker form-control"
 					ng-model="time.trigger_id"
 					required
 					saveable
 					name="triggerId"
 					ng-options="trigger.id as trigger.name group by trigger.type for trigger in triggers | orderBy:'name'">
-					<option value="">--Select Trigger--</option>
+					<option value="">{{language['trigger.time.trigger.select.prompt']}}</option>
 				</select>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="input-group">
-				<div class="input-group-addon inputLabel">Time</div>
+				<div class="input-group-addon inputLabel">{{language['trigger.time.time']}}</div>
 				<span class="input-group-btn">
 					<button
 						type="button"
@@ -49,7 +49,7 @@
 						saveable
 						required
 						name="whileActive"
-						btn-radio="true">While Active</button>
+						btn-radio="true">{{language['trigger.time.time.while']}}</button>
 					<button
 						type="button"
 						class="btn btn-primary"
@@ -57,7 +57,7 @@
 						required
 						name="stayActive"
 						ng-model="time.mustStayActive"
-						btn-radio="false">Since Deactivated</button>
+						btn-radio="false">{{language['trigger.time.time.since']}}</button>
 				</span> <input
 					name="time"
 					type="range"
@@ -67,7 +67,7 @@
 					saveable
 					required
 					ng-model="time.time" />
-				<div class="input-group-addon">{{time.time}} seconds &#177;</div>
+				<div class="input-group-addon">{{time.time}} {{language['trigger.time.time.units']}} &#177;</div>
 				<input
 					name="variance"
 					type="range"
@@ -77,7 +77,7 @@
 					saveable
 					required
 					ng-model="time.variance" />
-				<div class="input-group-addon">{{time.variance}} seconds</div>
+				<div class="input-group-addon">{{time.variance}} {{language['trigger.time.time.units']}}</div>
 			</div>
 		</div>
 	</div>

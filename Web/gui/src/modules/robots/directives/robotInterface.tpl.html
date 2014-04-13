@@ -3,15 +3,15 @@
 	<div class="row">
 		<div class="col-lg-12 input-group">
 			<span class="input-group-addon inputLabel">
-				<span class="hidden-xs">Attached Robot</span>
-				<span class="visible-xs">Robot</span>
+				<span class="hidden-xs">{{language['robot.interface.robot']}}</span>
+				<span class="visible-xs">{{language['robot.interface.robot.short']}}</span>
 			</span>
 			<select
 				ng-disabled="connected || configured"
 				class="selectpicker form-control"
 				ng-model="robot"
 				ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:'name'">
-				<option value="">-- Select Robot --</option>
+				<option value="">{{language['robot.interface.robot.select.prompt']}}</option>
 			</select>
 			<span class="input-group-btn" ng-if="showConnect">
 				<button
@@ -19,12 +19,12 @@
 					type="button"
 					ng-disabled="!robot"
 					ng-hide="connected"
-					ng-click="connected = true">Connect</button>
+					ng-click="connected = true">{{language['robot.interface.connect']}}</button>
 				<button
 					class="btn btn-default"
 					type="button"
 					ng-show="connected"
-					ng-click="connected = false">Disconnect</button>
+					ng-click="connected = false">{{language['robot.interface.disconnect']}}</button>
 			</span>
 		</div>
 	</div>

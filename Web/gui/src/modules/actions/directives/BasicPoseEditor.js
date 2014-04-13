@@ -7,7 +7,7 @@ define(function(require) {
 	require('common/filters');
 	require('robots/directives');
 
-	var BasicPoseEditor = function(JointPosition) {
+	var BasicPoseEditor = function(JointPosition, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,10 +17,11 @@ define(function(require) {
 				connected : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 
 			},
 		};
 	};
 
-	return [ 'JointPosition', BasicPoseEditor ];
+	return [ 'JointPosition', 'language', BasicPoseEditor ];
 });

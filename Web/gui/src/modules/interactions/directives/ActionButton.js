@@ -6,7 +6,7 @@ define(function(require) {
 	require('actions/models');
 	var template = require('text!./actionButton.tpl.html');
 
-	var ActionButton = function($q, $timeout, InteractionLog, hotkeyFormatter) {
+	var ActionButton = function($q, $timeout, InteractionLog, hotkeyFormatter, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -19,6 +19,7 @@ define(function(require) {
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.active = false;
 				var keyBinds = null;
 
@@ -61,5 +62,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', '$timeout', 'InteractionLog', 'hotkeyFormatter', ActionButton ];
+	return [ '$q', '$timeout', 'InteractionLog', 'hotkeyFormatter', 'language', ActionButton ];
 });

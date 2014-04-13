@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./operatorInteraction.tpl.html')
 
-	var OperatorInteraction = function() {
+	var OperatorInteraction = function(language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -19,6 +19,7 @@ define(function(require) {
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.isopen = true;
 
 				$scope.setBinding = function(value) {
@@ -33,5 +34,5 @@ define(function(require) {
 		};
 	};
 
-	return OperatorInteraction;
+	return ['language', OperatorInteraction];
 });

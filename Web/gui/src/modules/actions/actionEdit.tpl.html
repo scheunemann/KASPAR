@@ -11,35 +11,35 @@
 	ng-cloak
 	id="actionsList">
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">Action</span>
+		<span class="input-group-addon inputLabel">{{language['action.label']}}</span>
 		<select
 			class="selectpicker form-control"
 			ng-model="action"
 			ng-disabled="actions.length == 0"
 			ng-options="action.name group by action.type for action in actions | orderBy:'name'">
-			<option value="">--Select Action--</option>
+			<option value="">{{language['action.select.prompt']}}</option>
 		</select>
 		<span class="input-group-btn">
 			<button
 				class="btn btn-default"
 				type="button"
-				ng-click="newAction()">New</button>
+				ng-click="newAction()">{{language['action.new']}}</button>
 			<button
 				class="btn btn-default"
 				type="button"
-				ng-click="deleteAction(action)">Delete</button>
+				ng-click="deleteAction(action)">{{language['action.delete']}}</button>
 		</span>
 	</div>
 	<hr />
 	<div ng-if="action">
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Type</span>
+			<span class="input-group-addon inputLabel">{{language['action.type.label']}}</span>
 			<select
 				ng-disabled="action.id"
 				class="selectpicker form-control"
 				ng-model="action.type"
 				ng-options="type.name as type.disp for type in types | orderBy:'type.disp'">
-				<option value="">--Select Type--</option>
+				<option value="">{{action.type.select.prompt}}</option>
 			</select>
 		</div>
 		<action-editor

@@ -4,7 +4,7 @@
 		name="robotForm"
 		model="robot">
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Name</span>
+			<span class="input-group-addon inputLabel">{{language['robot.name']}}</span>
 			<input
 				type="text"
 				name="name"
@@ -15,7 +15,7 @@
 				required>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Model</span>
+			<span class="input-group-addon inputLabel">{{language['robot.model']}}</span>
 			<select
 				ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
 				name="model"
@@ -24,11 +24,11 @@
 				ng-options="model.id as model.name for model in models | orderBy:'model.name'"
 				saveable
 				required>
-				<option value="">--Select Model--</option>
+				<option value="">{{language['robot.model.select.prompt']}}</option>
 			</select>
 		</div>
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Version</span>
+			<span class="input-group-addon inputLabel">{{language['robot.version']}}</span>
 			<input
 				type="text"
 				name="version"

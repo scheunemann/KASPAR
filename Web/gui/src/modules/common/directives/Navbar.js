@@ -6,16 +6,22 @@ define(function(require) {
 	var commonModels = require('common/models');
 	var template = require('text!./navbar.tpl.html');
 
-	var Navbar = function(Menu) {
+	var Navbar = function(Menu, language) {
 		return {
 			template : template,
 			restrict : 'E',
 			scope : {},
-			controller : function($scope) {
+			controller : function($scope, language) {
+				$scope.language = language.getText();
 				$scope.groups = Menu.query();
+				
+				$scope.getText = function(key) {
+					//Not sure why this doesn't work from the view
+					return $scope.language[key];
+				};
 			},
 		};
 	};
 
-	return [ 'Menu', Navbar ];
+	return [ 'Menu', 'language', Navbar ];
 });

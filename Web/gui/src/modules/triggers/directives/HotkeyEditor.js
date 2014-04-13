@@ -7,7 +7,7 @@ define(function(require) {
 	require('common/services/displayServices');
 	var template = require('text!./hotkeyEditor.tpl.html');
 
-	var HotkeyEditor = function(hotkeyFormatter) {
+	var HotkeyEditor = function(hotkeyFormatter, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -16,6 +16,7 @@ define(function(require) {
 				button : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.deleteKey = function() {
 					$scope.button.hotKeys.splice($scope.button.hotKeys.indexOf($scope.hotkey), 1);
 					if ($scope.hotkey.id != undefined) {
@@ -37,5 +38,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'hotkeyFormatter', HotkeyEditor ];
+	return [ 'hotkeyFormatter', 'language', HotkeyEditor ];
 });

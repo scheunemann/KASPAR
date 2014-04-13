@@ -7,7 +7,7 @@ define(function(require) {
 	require('common/filters');
 	require('robots/directives');
 
-	var AdvancedPoseEditor = function(JointPosition) {
+	var AdvancedPoseEditor = function(JointPosition, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -17,6 +17,7 @@ define(function(require) {
 				connected : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.$watch('pose.jointPositions', function(jointPositions) {
 					if (jointPositions != undefined) {
 						$scope.getGroups(jointPositions, $scope.robot);
@@ -150,5 +151,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'JointPosition', AdvancedPoseEditor ];
+	return [ 'JointPosition', 'language', AdvancedPoseEditor ];
 });

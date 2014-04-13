@@ -5,7 +5,7 @@ define(function(require) {
 	require('robots/models');
 	var template = require('text!./calibrateRobot.tpl.html');
 
-	var ViewRobot = function(ServoConfig, ServoGroup, Servo) {
+	var ViewRobot = function(ServoConfig, ServoGroup, Servo, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -13,6 +13,7 @@ define(function(require) {
 				robot : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.$watch('robot', function(robot) {
 					if(robot != undefined) {
 						$scope.servos = robot.servos;
@@ -22,5 +23,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'ServoConfig', 'ServoGroup', 'Servo', ViewRobot ];
+	return [ 'ServoConfig', 'ServoGroup', 'Servo', 'language', ViewRobot ];
 });

@@ -1,24 +1,24 @@
 <div
 	ng-cloak>
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">Robot</span>
+		<span class="input-group-addon inputLabel">{{language['robot.label']}}</span>
 		<select
 			class="selectpicker form-control"
 			ng-model="selected"
 			ng-options="(item.name + ' (' + item.model.name + ': ' + item.version + ')' ) for item in robots | orderBy:'name'">
-			<option value="">--Select Robot--</option>
+			<option value="">{{language['robot.select.prompt']}}</option>
 		</select>
 		<span class="input-group-btn">
 			<button
 				class="btn btn-default"
 				ng-disabled="true"
 				type="button"
-				ng-click="newObj()">New</button>
+				ng-click="newObj()">{{language['robot.new']}}</button>
 			<button
 				class="btn btn-default"
 				ng-disabled="true"
 				type="button"
-				ng-click="deleteObj(selected)">Delete</button>
+				ng-click="deleteObj(selected)">{{language['robot.delete']}}</button>
 		</span>
 	</div>
 	<hr />

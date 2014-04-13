@@ -6,7 +6,7 @@ define(function(require) {
 	require('robots/models');
 	var template = require('text!./robotInterface.tpl.html');
 
-	var RobotInterface = function($q, Robot, robotInterface, Setting) {
+	var RobotInterface = function($q, Robot, robotInterface, Setting, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -15,6 +15,7 @@ define(function(require) {
 				showConnect : "=?"
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				if ($scope.showConnect == undefined) {
 					$scope.showConnect = false;
 				}
@@ -47,5 +48,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$q', 'Robot', 'robotInterface', 'Setting', RobotInterface ];
+	return [ '$q', 'Robot', 'robotInterface', 'Setting', 'language', RobotInterface ];
 });

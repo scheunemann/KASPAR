@@ -1,22 +1,22 @@
 <div>
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">Operator</span>
+		<span class="input-group-addon inputLabel">{{language['interaction.operator.label']}}</span>
 		<select
 			class="selectpicker form-control"
 			ng-model="operator_id"
 			ng-disabled="interaction"
 			ng-options="operator.id as operator.fullname for operator in operators | orderBy:'fullname'">
-			<option value="">--Select Operator--</option>
+			<option value="">{{language['interaction.operator.select.prompt']}}</option>
 		</select>
 	</div>
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">User</span>
+		<span class="input-group-addon inputLabel">{{language['interaction.user.label']}}</span>
 		<select
 			class="selectpicker form-control"
 			ng-model="user_id"
 			ng-disabled="interaction"
 			ng-options="user.id as user.fullname group by getCategory(user, operator.users) for user in users | orderBy:'fullname'">
-			<option value="">--Select User--</option>
+			<option value="">{{language['interaction.user.select.prompt']}}</option>
 		</select>
 	</div>
 	<robot-interface robot="robot"></robot-interface>
@@ -27,12 +27,12 @@
 				type="button"
 				ng-disabled="!(user_id && operator_id && robot.id)"
 				ng-if="interaction == null"
-				ng-click="start()">Start</button>
+				ng-click="start()">{{language['interaction.start']}}</button>
 			<button
 				class="btn btn-default"
 				type="button"
 				ng-if="interaction != null"
-				ng-click="stop()">Stop</button>
+				ng-click="stop()">{{language['interaction.stop']}}</button>
 		</div>
 	</div>
 	<tabset ng-show="interaction != null"> <tab

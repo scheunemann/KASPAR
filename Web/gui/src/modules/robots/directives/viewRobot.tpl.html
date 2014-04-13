@@ -1,7 +1,6 @@
 
 <accordion close-others="true"> <accordion-group
-	is-open="configsOpen"> <accordion-heading>Servo
-Model Configs <i
+	is-open="configsOpen"> <accordion-heading>{{language['robot.view.servoModel.label']}}<i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': configsOpen, 'glyphicon-chevron-right': !configsOpen}"></i>
 </accordion-heading>
@@ -10,7 +9,7 @@ Model Configs <i
 	class="col-lg-6 col-sm-12">
 	<strong>{{item.model.name}}</strong>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Servo Model Id</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.id']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -19,7 +18,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Port</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.port']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -28,7 +27,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Port Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.portSpeed']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -37,7 +36,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Position Scale</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.scale']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -46,7 +45,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Position Offset</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.offset']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -55,16 +54,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Speed</span>
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Not Set"
-			ng-model="item.model.defaultSpeed"
-			ng-disabled="true">
-	</span>
-	<span class="input-group">
-		<span class="input-group-addon inputLabel">Min Position</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.min']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -73,7 +63,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Max Position</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.max']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -82,7 +72,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Position</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.default']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -91,7 +81,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Speed Scale</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.scale']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -100,7 +90,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Min Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.min']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -109,7 +99,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Max Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.max']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -118,7 +108,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.default']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -127,7 +117,7 @@ Model Configs <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Poseable</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.poseable']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -138,7 +128,7 @@ Model Configs <i
 	<span
 		class="input-group"
 		ng-if="item.extraData">
-		<span class="input-group-addon inputLabel">Other</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.otherSettings']}}</span>
 		<span class="list-group form-control">
 			<span
 				class="list-group-item"
@@ -156,8 +146,7 @@ Model Configs <i
 		</span>
 	</span>
 </div>
-</accordion-group> <accordion-group is-open="groupsOpen"> <accordion-heading>Servo
-Groups <i
+</accordion-group> <accordion-group is-open="groupsOpen"> <accordion-heading>{{language['robot.view.servoGroups.label']}} <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': groupsOpen, 'glyphicon-chevron-right': !groupsOpen}"></i>
 </accordion-heading>
@@ -168,7 +157,7 @@ Groups <i
 	<span
 		class="input-group"
 		ng-repeat="servo in item.servos">
-		<span class="input-group-addon inputLabel">Servo Name</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoGroups.servos']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -177,7 +166,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 </div>
-</accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>Servos
+</accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>{{robot.view.servos.label}}
 <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': servosOpen, 'glyphicon-chevron-right': !servosOpen}"></i>
@@ -187,7 +176,7 @@ Groups <i
 	class="col-lg-4 col-md-6 col-sm-12">
 	<strong>{{item.jointName}}</strong>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Servo Model Id</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.model.id']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -196,16 +185,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Speed</span>
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Inherit"
-			ng-model="item.defaultSpeed"
-			ng-disabled="true">
-	</span>
-	<span class="input-group">
-		<span class="input-group-addon inputLabel">Min Position</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.min']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -214,7 +194,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Max Position</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.max']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -223,7 +203,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Position</span>
+		<span class="input-group-addon inputLabel">{{langugage.robot.view.servos.position.default}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -232,7 +212,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Min Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.min']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -241,7 +221,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Max Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.max']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -250,7 +230,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Default Speed</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.default']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -259,7 +239,7 @@ Groups <i
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">Poseable</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.poseable']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -270,7 +250,7 @@ Groups <i
 	<span
 		class="input-group"
 		ng-if="item.extraData">
-		<span class="input-group-addon inputLabel">Other</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.other']}}</span>
 		<span class="list-group form-control">
 			<span
 				class="list-group-item"

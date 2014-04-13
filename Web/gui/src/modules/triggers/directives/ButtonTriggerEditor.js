@@ -5,7 +5,7 @@ define(function(require) {
 	require('triggers/models');
 	var template = require('text!./buttonTriggerEditor.tpl.html');
 
-	var ButtonTriggerEditor = function(ButtonHotkey) {
+	var ButtonTriggerEditor = function(ButtonHotkey, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -15,6 +15,7 @@ define(function(require) {
 				triggers : "=",
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.addButton = function() {
 					if ($scope.button.hotKeys == undefined) {
 						$scope.button.hotKeys = [];
@@ -28,5 +29,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'ButtonHotkey', ButtonTriggerEditor ];
+	return [ 'ButtonHotkey', 'language', ButtonTriggerEditor ];
 });

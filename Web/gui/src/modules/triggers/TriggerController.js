@@ -6,7 +6,8 @@ define(function(require) {
 	require('triggers/models');
 	require('robots/models');
 
-	var TriggerController = function($scope, Action, Trigger, TriggerType, Robot) {
+	var TriggerController = function($scope, Action, Trigger, TriggerType, Robot, language) {
+		$scope.language = language.getText();
 		$scope.trigger = null;
 		$scope.triggers = Trigger.query();
 		$scope.actions = Action.query();
@@ -49,5 +50,5 @@ define(function(require) {
 		};
 	};
 
-	return [ '$scope', 'Action', 'Trigger', 'TriggerType', 'Robot', TriggerController ];
+	return [ '$scope', 'Action', 'Trigger', 'TriggerType', 'Robot', 'language', TriggerController ];
 });

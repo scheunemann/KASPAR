@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var languageServices = require('common/i18n/languageServices');
 	var operatorModels = require('operators/models');
 	var userModels = require('users/models');
 	var triggerModels = require('triggers/models');
@@ -12,6 +13,7 @@ define(function(require) {
 	var moduleName = 'kasparGUI.interactions.controllers';
 	var dependancies = [
 		        			operatorModels,
+		        			languageServices,
 		        			userModels,
 		        			triggerModels,
 		        			interactionModels,

@@ -5,7 +5,7 @@ define(function(require) {
 	require('robots/models');
 	var template = require('text!./sensorTriggerEditor.tpl.html');
 
-	var SensorTriggerEditor = function(Sensor, Trigger) {
+	var SensorTriggerEditor = function(Sensor, Trigger, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -16,6 +16,7 @@ define(function(require) {
 			link : function(scope, iElement, iAttrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.language = language.getText();
 				$scope.sensors = Sensor.query();
 
 				$scope.$watch('trigger.sensorName', function(sensorName) {
@@ -34,5 +35,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'Sensor', 'Trigger', SensorTriggerEditor ];
+	return [ 'Sensor', 'Trigger', 'language', SensorTriggerEditor ];
 });

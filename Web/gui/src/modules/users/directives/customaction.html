@@ -1,16 +1,27 @@
-<div ng-controller="userController">
-	<div id="userList" class="btn-group">
+<div>
+	<div
+		id="userList"
+		class="btn-group">
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Action to Override</span> <select class="selectpicker form-control" ng-model="selectedOverride.overridden"
+			<span class="input-group-addon inputLabel">{{language['user.custom.action.override']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedOverride.overridden"
 				ng-options="action.name for action in getActions() | orderBy:'fullname'">
 			</select>
-		</div> 
+		</div>
 		<div class="input-group">
-			<span class="input-group-addon inputLabel">Override Action</span> <select class="selectpicker form-control" ng-model="selectedOverride.override"
+			<span class="input-group-addon inputLabel">{{language['user.custom.action.redirect']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedOverride.override"
 				ng-options="action.name for action in getActions() | orderBy:'fullname'">
-			</select> 
+			</select>
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="newAction()">New</button>
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="newAction()">New</button>
 			</span>
 		</div>
 	</div>
