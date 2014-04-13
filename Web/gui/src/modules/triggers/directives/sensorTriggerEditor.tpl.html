@@ -3,7 +3,7 @@
 		name="sensorEditor"
 		model="trigger">
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">{{language['sensor.name']}}</span>
+		<span class="input-group-addon inputLabel">{{language['trigger.sensor.name']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -14,18 +14,18 @@
 			ng-model="trigger.name">
 	</div>
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">{{language['sensor.action']}}</span>
+		<span class="input-group-addon inputLabel">{{language['trigger.sensor.action']}}</span>
 		<select
 			class="selectpicker form-control"
 			saveable
 			name="action"
 			ng-model="trigger.action_id"
 			ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
-			<option value="">{{language['sensor.action.select.prompt']}}</option>
+			<option value="">{{language['trigger.sensor.action.select.prompt']}}</option>
 		</select>
 	</div>
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">{{language['sensor.sensor']}}</span>
+		<span class="input-group-addon inputLabel">{{language['trigger.sensor.sensor']}}</span>
 		<select
 			class="selectpicker form-control"
 			saveable
@@ -33,7 +33,7 @@
 			name="sensor"
 			ng-model="trigger.sensorName"
 			ng-options="sensor.name as sensor.name group by sensor.type for sensor in sensors | orderBy:'name'">
-			<option value="">{{language['sensor.select.prompt']}}</option>
+			<option value="">{{language['trigger.sensor.sensor.select.prompt']}}</option>
 		</select>
 	</div>
 	<sensor-value-editor

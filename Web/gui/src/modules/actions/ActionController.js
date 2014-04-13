@@ -7,9 +7,19 @@ define(function(require) {
 
 	var ActionController = function($scope, Action, ActionType, language) {
 		$scope.language = language.getText();
-		$scope.action = '';
 		$scope.actions = Action.query();
 		$scope.types = ActionType.query();
+
+		$scope.$watch('action', function(action) {
+			if (action != undefined) {
+				var abstractAction = $scope.action;
+				var concreteAction = $scope.action.getConcreteClassInstance();
+				concreteAction.$promise.then(function(){ 
+					$scope.actions[$scope.actions.indexOf(abstractAction)] = concreteAction;
+					$scope.action = concreteAction;
+				});
+			}
+		});
 
 		$scope.setFiles = function(element) {
 			$scope.$apply(function($scope) {

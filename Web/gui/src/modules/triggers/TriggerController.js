@@ -8,7 +8,6 @@ define(function(require) {
 
 	var TriggerController = function($scope, Action, Trigger, TriggerType, Robot, language) {
 		$scope.language = language.getText();
-		$scope.trigger = null;
 		$scope.triggers = Trigger.query();
 		$scope.actions = Action.query();
 		$scope.types = TriggerType.query();
@@ -19,7 +18,18 @@ define(function(require) {
 				$scope.files = element.files;
 			});
 		};
-
+		
+		$scope.$watch('trigger', function(action) {
+			if (action != undefined) {
+				var abstractTrigger = $scope.trigger;
+				var concreteTrigger = $scope.trigger.getConcreteClassInstance();
+				concreteTrigger.$promise.then(function(){ 
+					$scope.triggers[$scope.triggers.indexOf(abstractTrigger)] = concreteTrigger;
+					$scope.trigger = concreteTrigger;
+				});
+			}
+		});
+		
 		$scope.newTrigger = function() {
 			$scope.trigger = new Trigger();
 			$scope.triggers.push($scope.trigger);

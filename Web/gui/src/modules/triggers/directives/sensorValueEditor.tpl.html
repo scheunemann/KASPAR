@@ -1,7 +1,7 @@
 <div>
 	<div ng-show="sensor">
-		<div ng-if="sensor.value_type.type=='DiscreteValueType'">TODO: Show
-			discrete values</div>
+		<div ng-if="sensor.value_type.type=='DiscreteValueType'">TODO:
+			Show discrete values</div>
 		<div ng-if="sensor.value_type.type=='ContinuousValueType'">
 			<button
 				type="button"
@@ -41,7 +41,7 @@
 		</accordion-heading>
 		<div class="col-lg-12">
 			<div class="input-group">
-				<div class="input-group-addon inputLabel">{{language['trigger.sensor.compare.label']}}</div>
+				<div class="input-group-addon inputLabel">{{language['trigger.sensor.advanced.compare.label']}}</div>
 				<select
 					class="selectpicker form-control"
 					name="sensorCompare"
@@ -50,7 +50,7 @@
 					required
 					style="width: 25%"
 					ng-options="value.compare as (value.name + ' (' + value.compare + ')') for value in comparisons">
-					<option value="">{{language['trigger.sensor.compare.select.prompt']}}</option>
+					<option value="">{{language['trigger.sensor.advanced.compare.select.prompt']}}</option>
 				</select> <input
 					name="sensorValue"
 					saveable

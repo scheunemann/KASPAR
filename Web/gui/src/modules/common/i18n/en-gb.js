@@ -45,7 +45,7 @@ define(function(require) {
 	            'common.setting.robot.select.prompt': '--Select Robot--',
 	            'interaction.operator.label': 'Operator',
 	            'interaction.operator.select.prompt': '--Select Operator--',
-	            'interaction.user.lable': 'User',
+	            'interaction.user.label': 'User',
 	            'interaction.user.select.prompt': '--Select User--',
 	            'interaction.start': 'Start',
 	            'interaction.stop': 'Stop',

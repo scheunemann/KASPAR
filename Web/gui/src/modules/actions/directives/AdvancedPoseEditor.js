@@ -31,14 +31,16 @@ define(function(require) {
 							$scope.joints.push(servos[i].jointName);
 						}
 
-						$scope.getGroups($scope.pose.jointPositions, $scope.robot);
+						if ($scope.pose != undefined) {
+							$scope.getGroups($scope.pose.jointPositions, $scope.robot);
+						}
 					}
 				});
 
 				var processGroup = function(servoGroup, positions) {
 					var joints = [];
 					var ids = [];
-					for (var servoIndex in servoGroup.servos) {
+					for ( var servoIndex in servoGroup.servos) {
 						var servo = servoGroup.servos[servoIndex];
 						var posId = null;
 						for ( var posIndex in positions) {

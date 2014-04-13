@@ -7,28 +7,38 @@ define(function(require) {
 		return {
 			restrict : 'E',
 			scope : {
-				type : "=",
 				action : "=",
 				actions : "=",
 			},
 			link : function(scope, iElement, iAttrs, controller) {
-				scope.$watch('type', function(newType) {
+				var childScope;
+				var lastSet;
+				scope.$watch('action.type', function(newType) {
 					if (newType != "" && newType != undefined) {
-						iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
-						$compile(iElement.contents())(scope);
+						if (newType != lastSet) {
+							lastSet = newType;
+							if (childScope) {
+								childScope.$destroy();
+							}
+
+							childScope = scope.$new();
+							iElement.html('<' + newType + '-editor action="action" actions="actions"></' + newType + '-editor>');
+							$compile(iElement.contents())(childScope);
+						}
 					} else {
 						iElement.html('');
+						if (childScope) {
+							childScope.$destroy();
+							childScope = null;
+						}
+
+						childScope = scope.$new();
 						$compile(iElement.contents())(scope);
 					}
 				});
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-				$scope.$watch('action', function(action) {
-					if (action != undefined) {
-						$scope.action = action.getConcreteClassInstance();
-					}
-				});
 			}
 		};
 	};
