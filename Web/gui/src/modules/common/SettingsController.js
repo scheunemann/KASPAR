@@ -6,6 +6,7 @@ define(function(require) {
 	require('robots/models');
 
 	var SettingsController = function($q, $scope, Setting, Robot, language) {
+		$scope.language = language.getText();
 		$scope.robots = Robot.query();
 		$scope.settings = Setting.query();
 		
