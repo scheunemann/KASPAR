@@ -26,7 +26,7 @@ def __processInteraction(result=None, interactionId=None):
 models = [
           {
             'class': Model.Interaction,
-            'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteraction, ], 'PUT': [__processInteraction, ]}}
+            'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteraction, ], 'PUT_SINGLE': [__processInteraction, ]}}
           },
          ]
 
