@@ -19,12 +19,12 @@
 					type="button"
 					ng-disabled="!robot"
 					ng-hide="connected"
-					ng-click="connected = true">{{language['robot.interface.connect']}}</button>
+					ng-click="setConnected(true)">{{language['robot.interface.connect']}}</button>
 				<button
 					class="btn btn-default"
 					type="button"
 					ng-show="connected"
-					ng-click="connected = false">{{language['robot.interface.disconnect']}}</button>
+					ng-click="setConnected(false)">{{language['robot.interface.disconnect']}}</button>
 			</span>
 		</div>
 	</div>

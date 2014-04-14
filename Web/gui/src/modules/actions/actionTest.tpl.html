@@ -13,13 +13,13 @@
 				class="btn btn-default"
 				type="button"
 				ng-if="!actionTest.active"
-				ng-disable="action==''"
+				ng-disabled="!action"
 				ng-click="startAction(action)">{{language['action.test']}}</button>
 			<button
 				class="btn btn-default"
 				type="button"
 				ng-if="actionTest.active"
-				ng-disable="action==''"
+				ng-disabled="!action"
 				ng-click="stopAction(action)">{{language['action.stop']}}</button>
 		</span>
 	</div>

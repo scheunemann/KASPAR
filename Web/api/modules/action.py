@@ -2,6 +2,7 @@ import datetime
 from flask import Blueprint, jsonify, abort, request, redirect
 from Robot.legacy import ActionImporter
 from ActionRunner import ActionRunner
+from Web.api.database import db_session
 import Model
 
 
@@ -34,9 +35,9 @@ __actionTypes = [
 
 
 @__types.route('/ActionType', methods=['GET'])
-@__types.route('/ActionType/<int:id_>', methods=['GET'])
-def typesGet(id_=None):
-    if id_:
+@__types.route('/ActionType/<int:id>', methods=['GET'])
+def typesGet(id=None):
+    if id:
         ret = [a for a in __actionTypes if a['id'] == id_]
         if ret == None:
             abort(404)
@@ -63,11 +64,11 @@ def importPost():
 __testRunners = {}
 
 
-@__test.route('/Action/Test/<int:oid>?<timestamp>', methods=['GET'])
-def testGet(self, oid=None, timestamp=None):
-    if oid in __testRunners:
-        active = __testRunners[oid].isAlive()
-        output = __testRunners[oid].output
+@__test.route('/Action/<int:id>/Test', methods=['GET'])
+def testGet(id=None, timestamp=None):
+    if id in __testRunners:
+        active = __testRunners[id].isAlive()
+        output = __testRunners[id].output
     else:
         active = False
         output = []
@@ -80,35 +81,35 @@ def testGet(self, oid=None, timestamp=None):
     output.sort(key=lambda (ts, val): ts)
 
     ret = {
-           'id': oid,
+           'id': id,
            'output': output,
            'active': active,
            'timestamp': datetime.datetime.utcnow(),
            }
 
-    return ret
+    return jsonify(ret)
 
 
-@__test.route('/Action/Test/<int:oid>', methods=['POST'])
-def testPost(self, oid):
-    if oid in __testRunners and __testRunners[oid].isAlive():
-        handle = __testRunners[oid]
+@__test.route('/Action/<int:id>/Test', methods=['POST'])
+def testPost(id):
+    if id in __testRunners and __testRunners[id].isAlive():
+        handle = __testRunners[id]
         handle.stop()
     else:
-        action = db_session.query(Model.Action).get(oid)
-        # TODO: Robot selection
-        robot = db_session.query(Model.Robot).filter(Model.Robot.name == 'Kaspar_1C - #2').first()
+        action = db_session.query(Model.Action).get(id)
+        robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
+        robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
         handle = ActionRunner(robot).executeAsync(action)
-        __testRunners[oid] = handle
+        __testRunners[id] = handle
 
     active = handle.isAlive()
     output = handle.output
 
     ret = {
-           'id': oid,
+           'id': id,
            'output': [(o[0].isoformat(), o[1]) for o in output],
            'active': active,
            'timestamp': datetime.datetime.utcnow().isoformat(),
     }
 
-    return ret
+    return jsonify(ret)

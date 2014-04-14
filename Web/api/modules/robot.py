@@ -81,9 +81,9 @@ def __robotInterfaceGet(robotId):
         timestamps = []
         timestamps.extend([s['timestamp'] for s in servos.itervalues()])
         timestamps.extend([s['timestamp'] for s in sensors.itervalues()])
-        ret['timestamp'] = max(timestamps)
+        ret['timestamp'] = max(timestamps).isoformat()
     else:
-        ret['timestamp'] = timestamp
+        ret['timestamp'] = timestamp.isoformat()
 
     return jsonify(ret)
 
@@ -92,10 +92,10 @@ def __robotInterfaceGet(robotId):
 def __robotInterfacePost(robotId):
     try:
         data = request.json
-        for servo in data.get('servos', []):
-            if servo.get('id', None) == None:
+        for servoData in data.get('servos', []):
+            if servoData.get('id', None) == None:
                 continue
-            servo = db_session.query(Model.Servo).get(servo['id'])
+            servo = db_session.query(Model.Servo).get(servoData['id'])
             interface = ServoInterface.getServoInterface(servo)
             if interface == None:
                 # TODO: Error handling
@@ -103,14 +103,15 @@ def __robotInterfacePost(robotId):
                 # raise cherrypy.NotFound()
             else:
                 try:
-                    if servo.get('position', None) != None:
-                        interface.setPosition(int(servo['position']), 100)
-                    if servo.get('poseable', None) != None:
-                        interface.setPositioning(bool(servo['poseable']))
-                except Exception:
+                    if servoData.get('position', None) != None:
+                        interface.setPosition(int(servoData['position']), 100)
+                    if servoData.get('poseable', None) != None:
+                        interface.setPositioning(bool(servoData['poseable']))
+                except Exception as e:
+                    import traceback
+                    print traceback.format_exc()
                     # TODO: Error handling
                     continue
-                    # raise cherrypy.HTTPError(message=e.message)
     except Exception as e:
         print e
 

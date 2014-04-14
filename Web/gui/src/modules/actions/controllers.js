@@ -16,7 +16,7 @@ define(function(require) {
 
 	var module = angular.module(moduleName, dependancies)
 		.controller('actionController', ActionController)
-		.controller('actionTestController', ActionController);
+		.controller('actionTestController', ActionTestController);
 
 	return moduleName;
 });

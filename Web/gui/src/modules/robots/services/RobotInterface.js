@@ -22,7 +22,6 @@ define(function(require) {
 				return;
 			}
 
-			return;
 			var servos = [];
 			for ( var servoName in components.servos) {
 				servos.push({

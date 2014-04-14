@@ -10,17 +10,11 @@ define(function(require) {
 		$scope.actions = Action.query();
 		$scope.output = '';
 
-		$scope.$watch('action', function(action) {
-			if (action != undefined) {
-				$scope.actionTest = new ActionTest({
-					'id' : action.id
-				});
-			}
-		});
-
 		$scope.startAction = function(action) {
 			$scope.output += 'Start action ' + action.name + '\n';
-			$scope.actionTest.$save(getOutput());
+			ActionTest.save({
+				id : $scope.action.id
+			}).$promise.then(getOutput());
 		};
 
 		var getOutput = function() {

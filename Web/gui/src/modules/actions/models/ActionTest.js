@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var ActionTest = function(modelBuilder) {
-		var _service = modelBuilder.getModel('ActionTest');
+		var _service = modelBuilder.getModel('ActionTest', {}, {}, 'Action/:id/Test');
 		
 		return _service;
 	};

@@ -53,14 +53,14 @@
 <hr />
 <robot-interface
 	robot="robot"
-	showConnect="true"></robot-interface>
+	show-connect="true"></robot-interface>
 <hr />
 <accordion close-others="true"> <accordion-group
 	is-open="basicopen"> <accordion-heading>
 Basic <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
-</accordion-heading> <basic-pose-editor pose="pose" connected="connected" robot="robot"></basic-pose-editor></accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
+</accordion-heading> <basic-pose-editor pose="pose" robot="robot"></basic-pose-editor></accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
 Detailed <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
