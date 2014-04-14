@@ -38,7 +38,7 @@ __actionTypes = [
 @__types.route('/ActionType/<int:id>', methods=['GET'])
 def typesGet(id=None):
     if id:
-        ret = [a for a in __actionTypes if a['id'] == id_]
+        ret = [a for a in __actionTypes if a['id'] == id]
         if ret == None:
             abort(404)
         else:
