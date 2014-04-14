@@ -134,8 +134,8 @@
 			<CENTER>180</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>60</MIN>
-					<MAX>-180</MAX>
+					<MIN>-180</MIN>
+					<MAX>60</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
@@ -144,8 +144,8 @@
 			<CENTER>250</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>45</MIN>
-					<MAX>-90</MAX>
+					<MIN>-90</MIN>
+					<MAX>45</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
@@ -154,8 +154,8 @@
 			<CENTER>80</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>145</MIN>
-					<MAX>-30</MAX>
+					<MIN>-30</MIN>
+					<MAX>145</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
@@ -171,11 +171,11 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>ARM_L_5</NAME>
-			<CENTER>275</CENTER>
+			<CENTER>185</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-50</MIN>
-					<MAX>-235</MAX>
+					<MIN>-90</MIN>
+					<MAX>45</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
@@ -224,14 +224,14 @@
 			<CENTER>100</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>50</MIN>
-					<MAX>235</MAX>
+					<MIN>-45</MIN>
+					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HERKULEX" id="5">
 			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>480</CENTER>
+			<CENTER>0</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-17</MIN>
@@ -244,7 +244,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="6">
 			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>158</CENTER>
+			<CENTER>-10</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-14</MIN>
@@ -266,7 +266,7 @@
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="1">
-			<NAME>EYE_R_PAN</NAME>
+			<NAME>EYE_R_LR</NAME>
 			<CENTER>18</CENTER>
 			<LIMITS>
 				<POS>
