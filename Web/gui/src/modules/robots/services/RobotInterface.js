@@ -14,47 +14,58 @@ define(function(require) {
 			timestamp : null,
 		};
 
-		var sendChanges = function(newValue) {
+		var sendChanges = function(newValue, oldValue) {
 			if (robotId == null || !connected) { return; }
 
 			if (saving) {
-				delayedSave = components;
+				delayedSave = newValue;
 				return;
 			}
 
 			var servos = [];
-			for ( var servoName in components.servos) {
-				servos.push({
-					id : components.servos[servoName].id,
-					position : components.servos[servoName].position,
-					poseable : components.servos[servoName].poseable,
-					jointName : servoName,
+			for ( var servoName in newValue.servos) {
+				var servo = newValue[servoName];
+				var oldServo = oldValue[servoName];
+				if (oldServo === undefined || servo.position != oldServo.position || servo.poseable != oldServo.poseable) {
+					servos.push({
+						id : servo.id,
+						position : servo.position,
+						poseable : servo.poseable,
+						jointName : servoName,
+					})
+				}
+			}
+
+			if (servos.length > 0) {
+				var packet = {
+					servos : servos,
+				}
+
+				saving = true;
+				var save = RobotInterface.save({
+					id : robotId
+				}, packet);
+				save.$promise.then(function() {
+					saving = false;
+					if (delayedSave != null) {
+						var ds = delayedSave;
+						delayedSave = null;
+						sendChanges(ds);
+					}
 				});
-			}
-
-			var packet = {
-				servos : servos,
-			}
-
-			saving = true;
-			var save = RobotInterface.save({
-				id : robotId
-			}, packet);
-			save.$promise.then(function() {
-				saving = false;
+			} else {
 				if (delayedSave != null) {
 					var ds = delayedSave;
 					delayedSave = null;
 					sendChanges(ds);
 				}
-			});
+
+			}
 		};
 
 		var updateStatus = function(lastUpdateTime) {
-			if(!connected) {
-				return;
-			}
-			
+			if (!connected) { return; }
+
 			var status = lastUpdateTime == undefined ? RobotInterface.get({
 				id : robotId
 			}) : RobotInterface.get({
@@ -73,8 +84,8 @@ define(function(require) {
 					};
 				}
 
-				components.servos[servo.jointName].position = servo.position;
-				components.servos[servo.jointName].poseable = servo.poseable;
+				components.servos[servo.jointName].actual.position = servo.position;
+				components.servos[servo.jointName].actual.poseable = servo.poseable;
 			}
 
 			for (var i = 0; i < dataPackage.sensors.length; i++) {
@@ -85,7 +96,7 @@ define(function(require) {
 					};
 				}
 
-				components.sensors[sensor.name].value = sensor.value;
+				components.sensors[sensor.name].actual.value = sensor.value;
 			}
 
 			$rootScope.$$phase || $rootScope.$digest();

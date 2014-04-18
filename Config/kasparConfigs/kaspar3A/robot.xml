@@ -85,6 +85,11 @@
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
+			<HERKULEX_BATTERY>
+				<PORT>/dev/bodyServos</PORT>
+				<SPEED>115200</SPEED>
+				<ONSTATE>&gt;25</ONSTATE>
+			</HERKULEX_BATTERY>
 		</ROBOT>
 	</SENSORCONFIGS>
 
@@ -400,6 +405,9 @@
 
 	<SENSORLIST>
 		<ROBOT>
+			<SENSOR type="HERKULEX_BATTERY" datatype="continuous" id="1">
+				<NAME>BATTERY</NAME>
+			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="0">
 				<NAME>FSR_FOOT_R</NAME>
 				<LIMITS>
@@ -409,7 +417,7 @@
 				</LIMITS>
 				<ONSTATE>
 					<COMPARISON>&gt;</COMPARISON>
-					<VALUE>10</VALUE>
+					<VALUE>20</VALUE>
 				</ONSTATE>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
@@ -419,10 +427,6 @@
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
-				<ONSTATE>
-					<COMPARISON>&gt;</COMPARISON>
-					<VALUE>10</VALUE>
-				</ONSTATE>
 			</SENSOR>
 		</ROBOT>
 	</SENSORLIST>

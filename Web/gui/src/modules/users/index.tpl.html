@@ -77,16 +77,15 @@
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon inputLabel">{{language['user.speedModifier']}}</span>
-			<input
-				type="range"
-				class="form-control"
-				min="1"
-				max="300"
-				placeholder="100"
+			<slider
 				name="speed"
-				ng-disabled="true"
 				saveable
-				ng-model="selectedUser.speedmodifier">
+				class="form-control"
+				floor="1"
+				ceiling="300"
+				ng-disabled="true"
+				ng-model="selectedUser.speedmodifier"
+				step="1"> </slider>
 			<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
 		</div>
 	</form>

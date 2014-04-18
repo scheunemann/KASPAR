@@ -18,6 +18,38 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
+
+				var checkPositions = function() {
+					if($scope.jointPosition != undefined) {
+						if($scope.jointPosition.position === undefined || $scope.jointPosition.position == null) {
+							if($scope.servo != undefined && $scope.servo != null &&
+								$scope.servo.defaultPosition != undefined && $scope.servo.defaultPosition != null) {
+								$scope.jointPosition.position = $scope.servo.defaultPosition;	
+							} else if($scope.servoModel != undefined && $scope.servoModel != null && 
+									$scope.servoModel.defaultPosition != undefined && $scope.servoModel.defaultPosition != null) {
+								$scope.jointPosition.position = $scope.servoModel.defaultPosition;
+							} else {
+								$scope.jointPosition.position = 0;
+							}
+						}
+						
+						if($scope.jointPosition.speed === undefined || $scope.jointPosition.speed == null) {
+							if($scope.servo != undefined && $scope.servo != null &&
+								$scope.servo.defaultSpeed != undefined && $scope.servo.defaultSpeed != null) {
+								$scope.jointPosition.speed = $scope.servo.defaultSpeed;	
+							} else if($scope.servoModel != undefined && $scope.servoModel != null && 
+									$scope.servoModel.defaultPosition != undefined && $scope.servoModel.defaultSpeed != null) {
+								$scope.jointPosition.speed = $scope.servoModel.defaultSpeed;
+							} else {
+								$scope.jointPosition.speed = 100;
+							}
+						}
+					}
+				}
+				
+				$scope.$watch('servo', checkPositions);
+				$scope.$watch('jointPosition', checkPositions);
+				
 				$scope.$watch('servo.jointName', function(jointName) {
 					$scope.servoInt = robotInterface.getServo(jointName);
 				});
@@ -36,7 +68,7 @@ define(function(require) {
 
 				$scope.$watch('servo.model_id', function(modelId) {
 					if (modelId != undefined) {
-						$scope.servoModel = new ServoModel({
+						$scope.servoModel = ServoModel.get({
 							id : modelId,
 						});
 					}
@@ -58,12 +90,8 @@ define(function(require) {
 
 				$scope.writeToServo = function() {
 					if ($scope.jointPosition != undefined && $scope.servoInt != undefined) {
-						$scope.servoInt.speed = $scope.coalesce($scope.jointPosition.speed, $scope.coalesce($scope.servo, $scope.servoModel, {
-							defaultSpeed : 100
-						}).defaultSpeed);
-						$scope.servoInt.position = $scope.coalesce($scope.jointPosition.position, $scope.coalesce($scope.servo, $scope.servoModel, {
-							defaultPosition : 0
-						}).defaultPosition);
+						$scope.servoInt.speed = $scope.jointPosition.speed;
+						$scope.servoInt.position = $scope.jointPosition.position;
 					}
 				};
 

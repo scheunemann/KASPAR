@@ -19,17 +19,15 @@
 					<span class="hidden-xs">{{language['action.pose.speedModifier']}}</span>
 					<span class="visible-xs">{{language['action.pose.speedModifier.short']}}</span>
 				</span>
-				<input
-					type="range"
-					class="form-control"
-					min="1"
-					max="300"
-					value="{{pose.speedModifier}}"
+				<slider
 					name="speedModifier"
 					saveable
-					ng-model="pose.speedModifier">
-				<span class="input-group-addon">{{pose.speedModifier ||
-					100}}%</span>
+					class="form-control"
+					floor="1"
+					ceiling="300"
+					ng-model="pose.speedModifier"
+					step="1"> </slider>
+				<span class="input-group-addon">{{pose.speedModifier}}%</span>
 			</div>
 			<div class="input-group">
 				<span class="input-group-addon inputLabel">
@@ -60,7 +58,10 @@
 Basic <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
-</accordion-heading> <basic-pose-editor pose="pose" robot="robot"></basic-pose-editor></accordion-group> <accordion-group is-open="advancedopen"> <accordion-heading>
+</accordion-heading> <basic-pose-editor
+	pose="pose"
+	robot="robot"></basic-pose-editor></accordion-group> <accordion-group
+	is-open="advancedopen"> <accordion-heading>
 Detailed <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>

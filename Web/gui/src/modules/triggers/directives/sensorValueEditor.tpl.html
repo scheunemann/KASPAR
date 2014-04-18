@@ -51,18 +51,18 @@
 					style="width: 25%"
 					ng-options="value.compare as (value.name + ' (' + value.compare + ')') for value in comparisons">
 					<option value="">{{language['trigger.sensor.advanced.compare.select.prompt']}}</option>
-				</select> <input
+				</select>
+				<slider
 					name="sensorValue"
 					saveable
-					type="range"
-					class="form-control"
-					style="width: 75%"
-					value="{{trigger.sensorValue}}"
-					min="{{sensor.value_type.minValue}}"
-					max="{{sensor.value_type.maxValue}}"
-					step="{{math.pow(10, -1 * sensor.value_type.precision)}}"
 					required
-					ng-model="trigger.sensorValue" />
+					style="width: 75%"
+					class="form-control"
+					floor="{{sensor.value_type.minValue}}"
+					ceiling="{{sensor.value_type.maxValue}}"
+					step="{{math.pow(10, -1 * sensor.value_type.precision)}}"
+					ng-model="trigger.sensorValue"
+					step="1"> </slider>
 				<div
 					ng-if="sensor.value_type.type=='ContinuousValueType'"
 					class="input-group-addon">{{trigger.sensorValue}}</div>

@@ -2,6 +2,8 @@ require.config({
 	baseUrl : "/",
 	paths : {
 		angular : 'bower_components/angular/angular.min',
+		angularSlider: 'bower_components/angular-slider-venturocket/build/angular-slider',
+		angularTouch: 'bower_components/angular-touch/angular-touch.min',
 		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
 		angularResource : 'bower_components/angular-resource/angular-resource.min',
 		angularRoute : 'bower_components/angular-route/angular-route.min',
@@ -38,6 +40,12 @@ require.config({
 				return 'ui.router';
 			},
 			deps : [ 'angular' ]
+		},
+		'angularSlider' : {
+			init : function() {
+				return 'vr.directives.slider';
+			},
+			deps : [ 'angular', 'angularTouch' ]
 		},
 		'mousetrap' : {
 			exports : 'mousetrap'

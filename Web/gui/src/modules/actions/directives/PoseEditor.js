@@ -17,6 +17,12 @@ define(function(require) {
 				$scope.language = language.getText();
 				$scope.advancedopen = true;
 				$scope.basicopen = false;
+				
+				$scope.$watch('pose', function(pose) {
+					if(pose != undefined && pose.speedModifier === undefined) {
+						pose.speedModifier = 100;
+					}
+				})
 			}
 		};
 	};
