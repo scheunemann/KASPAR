@@ -29,28 +29,30 @@
 					ng-click="removeJoint()">{{language['action.pose.joint.delete']}}</button>
 			</span>
 		</div>
-		<div class="input-group">
+		<div
+			class="input-group">
 			<span class="input-group-addon inputLabel">{{language['action.pose.joint.position']}}</span>
-			<slider
+			<div ui-slider
 				name="jointposition"
 				saveable
 				class="form-control"
-				floor="{{coalesce(servo.minPosition, servoModel.minPosition, -180)}}"
-				ceiling="{{coalesce(servo.maxPosition, servoModel.maxPosition, 180)}}"
+				min="{{coalesce(servo.minPosition, servoModel.minPosition, -180)}}"
+				max="{{coalesce(servo.maxPosition, servoModel.maxPosition, 180)}}"
 				ng-model="jointPosition.position"
-				step="1"> </slider>
+				step="1"> </div>
 			<span class="input-group-addon">{{jointPosition.position}}&deg;</span>
 		</div>
-		<div class="input-group noselect">
+		<div
+			class="input-group noselect">
 			<span class="input-group-addon inputLabel">{{language['action.pose.joint.speed']}}</span>
-			<slider
- 				name="jointspeed"
+			<div ui-slider
+				name="jointspeed"
 				saveable
 				class="form-control"
 				ng-model="jointPosition.speed"
-				floor="{{coalesce(servo.minSpeed, servoModel.minSpeed, 1)}}"
-				ceiling="{{coalesce(servo.maxSpeed, servoModel.maxSpeed, 300)}}"
-				step="1"> </slider>
+				min="{{coalesce(servo.minSpeed, servoModel.minSpeed, 1)}}"
+				max="{{coalesce(servo.maxSpeed, servoModel.maxSpeed, 300)}}"
+				step="1"> </div>
 			<span class="input-group-addon">{{jointPosition.speed}}%</span>
 		</div>
 		</ng-form>

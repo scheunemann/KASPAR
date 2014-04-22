@@ -1,7 +1,56 @@
 @media ( min-width : 768px) {
 	body {
 		padding-top: 93px;
-		padding-bottom: 37px;
+		padding-bottom: 43px;
+	}
+	footer {
+		height: 40px;
+		margin-top: 3px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.battery .icon {
+		padding: 0px;
+		display: inline-block;
+		height: 14px;
+		margin-top: 10px;
+		border-color: #ddd;
+		border-style: solid;
+		border-right-style: none;
+		border-left-width: 3px;
+		border-top-width: 3px;
+		border-bottom-width: 3px;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+	}
+
+	.battery .meter{
+		display: inline-block;
+		margin-bottom: 0px;
+		padding: 0px;
+		border-color: #ddd;
+		border-top-color: #ddd;
+		border-bottom-color: #ddd;
+		border-left-color: #ddd;
+		border-right-color: #ddd;
+		border: 3px solid;
+		border-radius: 3px;
+		height: 34px;
+	}
+
+	.battery .meter div {
+		height: 100%;
+		width: 100%;
+		display: inline-block;
+		vertical-align: middle;
+		padding-top: 4px;
+	}
+	
+	.battery .meter div span{
+		height: 100%;
+		width: 100%;
+		text-align: center;
 	}
 }
 
@@ -21,7 +70,7 @@ body {
 
 .maxHeight {
 	margin-top: 0px;
-	margin-bottom: 7px;
+	margin-bottom: 0px;
 }
 
 @media ( max-width : 767px ) {
@@ -35,8 +84,6 @@ body {
 	.maxHeight {
 		height: 100%;
 		max-height: 100%;
-		margin-bottom: 0;
-		margin-top: 0;
 	}
 }
 
@@ -173,7 +220,7 @@ body {
 	padding-left: 12px;
 }
 
-.list-group.form-control .list-group-item{
+.list-group.form-control .list-group-item {
 	padding: 1px;
 }
 
@@ -187,15 +234,15 @@ body {
 	padding-bottom: 10px;
 }
 
-.actionButton span{
+.actionButton span {
 	height: 100%;
 }
 
-.actionButton .button{
+.actionButton .button {
 	width: 70%;
 }
 
-.actionButton .button > button, .actionButton .hotkey {
+.actionButton .button>button,.actionButton .hotkey {
 	padding: 18px 28px;
 	width: 100%;
 	font-size: 22px;
@@ -204,4 +251,13 @@ body {
 .actionButton .hotkey {
 	text-align: center;
 	white-space: nowrap;
+}
+
+.progress-bar-unknown {
+	color: #696969;
+	background-color: #dddddd;
+	background-image: -webkit-linear-gradient(top, #bbbbbb 0%, #dddddd 100%);
+	background-image:         linear-gradient(to bottom, #bbbbbb 0%, #dddddd 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffdddddd', GradientType=0);
+	background-repeat: repeat-x;
 }

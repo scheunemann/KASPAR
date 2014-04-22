@@ -7,7 +7,7 @@
 				<span class="visible-xs">{{language['robot.interface.robot.short']}}</span>
 			</span>
 			<select
-				ng-disabled="connected || configured"
+				ng-disabled="connected || configured || !robots"
 				class="selectpicker form-control"
 				ng-model="robot"
 				ng-options="(item.name + ' (' + item.version + ')' ) for item in robots | orderBy:'name'">

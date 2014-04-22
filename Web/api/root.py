@@ -59,3 +59,4 @@ def internal_error(exception):
     import traceback
     print exception
     print traceback.format_exc()
+    raise exception

@@ -96,7 +96,7 @@
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
 			<NAME>TORSO</NAME>
-			<CENTER>171</CENTER>
+			<CENTER>485</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-27</MIN>
@@ -106,7 +106,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="2">
 			<NAME>HEAD_ROT</NAME>
-			<CENTER>169</CENTER>
+			<CENTER>475</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-51</MIN>
@@ -116,7 +116,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_VERT</NAME>
-			<CENTER>180</CENTER>
+			<CENTER>915</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -126,117 +126,17 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="4">
 			<NAME>HEAD_TLT</NAME>
-			<CENTER>180</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
 					<MAX>30</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="16">
-			<NAME>ARM_L_1</NAME>
-			<CENTER>180</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-180</MIN>
-					<MAX>60</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="17">
-			<NAME>ARM_L_2</NAME>
-			<CENTER>250</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-90</MIN>
-					<MAX>45</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="18">
-			<NAME>ARM_L_3</NAME>
-			<CENTER>80</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-30</MIN>
-					<MAX>145</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="19">
-			<NAME>ARM_L_4</NAME>
-			<CENTER>180</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-80</MIN>
-					<MAX>70</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="20">
-			<NAME>ARM_L_5</NAME>
-			<CENTER>185</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-90</MIN>
-					<MAX>45</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="32">
-			<NAME>ARM_R_1</NAME>
-			<CENTER>180</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-60</MIN>
-					<MAX>180</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="33">
-			<NAME>ARM_R_2</NAME>
-			<CENTER>95</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-45</MIN>
-					<MAX>90</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="34">
-			<NAME>ARM_R_3</NAME>
-			<CENTER>280</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-145</MIN>
-					<MAX>30</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="35">
-			<NAME>ARM_R_4</NAME>
-			<CENTER>198</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>80</MIN>
-					<MAX>-70</MAX>
-				</POS>
-			</LIMITS>
-		</SERVO>
-		<SERVO type="HERKULEX" id="36">
-			<NAME>ARM_R_5</NAME>
-			<CENTER>100</CENTER>
-			<LIMITS>
-				<POS>
-					<MIN>-45</MIN>
-					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HERKULEX" id="5">
 			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>0</CENTER>
+			<CENTER>460</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-17</MIN>
@@ -249,7 +149,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="6">
 			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>-10</CENTER>
+			<CENTER>480</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-14</MIN>
@@ -259,6 +159,106 @@
 			<DEFAULT>
 				<SPEED>50</SPEED>
 			</DEFAULT>
+		</SERVO>
+		<SERVO type="HERKULEX" id="16">
+			<NAME>ARM_L_1</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>60</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="17">
+			<NAME>ARM_L_2</NAME>
+			<CENTER>445</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-280</MIN>
+					<MAX>10</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="18">
+			<NAME>ARM_L_3</NAME>
+			<CENTER>225</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-30</MIN>
+					<MAX>145</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="19">
+			<NAME>ARM_L_4</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-90</MIN>
+					<MAX>10</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="20">
+			<NAME>ARM_L_5</NAME>
+			<CENTER>525</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-90</MIN>
+					<MAX>45</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="32">
+			<NAME>ARM_R_1</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-60</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="33">
+			<NAME>ARM_R_2</NAME>
+			<CENTER>530</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-10</MIN>
+					<MAX>280</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="34">
+			<NAME>ARM_R_3</NAME>
+			<CENTER>790</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-145</MIN>
+					<MAX>30</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="35">
+			<NAME>ARM_R_4</NAME>
+			<CENTER>565</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>80</MIN>
+					<MAX>-70</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HERKULEX" id="36">
+			<NAME>ARM_R_5</NAME>
+			<CENTER>560</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-45</MIN>
+					<MAX>90</MAX>
+				</POS>
+			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="0">
 			<NAME>EYE_R_LID</NAME>
@@ -407,21 +407,94 @@
 		<ROBOT>
 			<SENSOR type="HERKULEX_BATTERY" datatype="continuous" id="1">
 				<NAME>BATTERY</NAME>
+				<LIMITS>
+					<MAX>100</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="0">
+				<NAME>FSR_HAND_PALM_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
+				<NAME>FSR_HAND_BACK_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="3">
+				<NAME>FSR_FOOT_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="4">
+				<NAME>FSR_LEG_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="6">
+				<NAME>FSR_HAND_PALM_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="7">
+				<NAME>FSR_HAND_BACK_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="9">
 				<NAME>FSR_FOOT_R</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
-				<ONSTATE>
-					<COMPARISON>&gt;</COMPARISON>
-					<VALUE>20</VALUE>
-				</ONSTATE>
 			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
-				<NAME>FSR_FOOT_L</NAME>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="10">
+				<NAME>FSR_REG_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="12">
+				<NAME>FSR_TUMMY</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="13">
+				<NAME>FSR_CHEST_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="15">
+				<NAME>FSR_CHEST_L</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>

@@ -157,7 +157,7 @@
 	<span
 		class="input-group"
 		ng-repeat="servo in item.servos">
-		<span class="input-group-addon inputLabel">{{language['robot.view.servoGroups.servos']}}</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoGroups.servoName']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -166,7 +166,7 @@
 			ng-disabled="true">
 	</span>
 </div>
-</accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>{{robot.view.servos.label}}
+</accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>{{language['robot.view.servos.label']}}
 <i
 	class="pull-right glyphicon"
 	ng-class="{'glyphicon-chevron-down': servosOpen, 'glyphicon-chevron-right': !servosOpen}"></i>
@@ -203,7 +203,7 @@
 			ng-disabled="true">
 	</span>
 	<span class="input-group">
-		<span class="input-group-addon inputLabel">{{langugage.robot.view.servos.position.default}}</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.default']}}</span>
 		<input
 			type="text"
 			class="form-control"
@@ -250,7 +250,7 @@
 	<span
 		class="input-group"
 		ng-if="item.extraData">
-		<span class="input-group-addon inputLabel">{{language['robot.view.servos.other']}}</span>
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.otherSettings']}}</span>
 		<span class="list-group form-control">
 			<span
 				class="list-group-item"

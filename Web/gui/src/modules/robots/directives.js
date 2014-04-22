@@ -9,6 +9,7 @@ define(function(require) {
 	var commonModels = require('common/models');
 	var robotModels = require('robots/models');
 	var RobotEditor = require('./directives/RobotEditor');
+	var BatteryLevel = require('./directives/BatteryLevel');
 	var RobotInterface = require('./directives/RobotInterface');
 	var CalibrateRobot = require('./directives/CalibrateRobot');
 	var ViewRobot = require('./directives/ViewRobot');
@@ -25,6 +26,7 @@ define(function(require) {
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('robotEditor', RobotEditor)
+		.directive('batteryLevel', BatteryLevel)
 		.directive('robotInterface', RobotInterface)
 		.directive('calibrateRobot', CalibrateRobot)
 		.directive('viewRobot', ViewRobot);

@@ -4,6 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	require('common/models');
 	require('robots/models');
+	require('robots/services/interfaceServices');
 	var template = require('text!./robotInterface.tpl.html');
 
 	var RobotInterface = function($q, Robot, robotInterface, Setting, language) {
@@ -47,6 +48,8 @@ define(function(require) {
 					} else {
 						robotInterface.setConnected(false);
 					}
+					
+					$scope.connected = state;
 				}
 			}
 		};

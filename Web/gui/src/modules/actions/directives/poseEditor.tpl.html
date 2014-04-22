@@ -19,14 +19,14 @@
 					<span class="hidden-xs">{{language['action.pose.speedModifier']}}</span>
 					<span class="visible-xs">{{language['action.pose.speedModifier.short']}}</span>
 				</span>
-				<slider
+				<div ui-slider
 					name="speedModifier"
 					saveable
 					class="form-control"
-					floor="1"
-					ceiling="300"
+					min="1"
+					max="300"
 					ng-model="pose.speedModifier"
-					step="1"> </slider>
+					step="1"> </div>
 				<span class="input-group-addon">{{pose.speedModifier}}%</span>
 			</div>
 			<div class="input-group">

@@ -1,6 +1,6 @@
 import os
 import re
-from flask import Flask
+from flask import Flask, abort
 from flask.helpers import send_file
 _curDir = os.path.dirname(os.path.realpath(__file__))
 
@@ -33,4 +33,7 @@ def default(page):
     _, ext = os.path.splitext(page)
     mimetype = types.get(ext, None)
 
-    return send_file(path, mimetype)
+    try:
+        return send_file(path, mimetype)
+    except IOError:
+        abort(404)

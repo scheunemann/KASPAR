@@ -52,9 +52,9 @@ define(function(require) {
 					}
 				}
 
-				element.on('blur', function() {
+				element[0].addEventListener('blur', function() {
 					callUpdate();
-				});
+				}, true);
 
 				element.on('keyup', function($event) {
 					var code = $event.which || $event.keyCode; // Not-IE ||

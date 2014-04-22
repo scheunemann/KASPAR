@@ -1,6 +1,27 @@
 'use strict';
 
 define(function(require) {
+	var Sensor = function() {
+		return {
+			id : null,
+			name : null,
+			value : null,
+		}
+	};
+
+	var Servo = function() {
+		return {
+			id : null,
+			actual : {
+				position : null,
+				poseable : null
+			},
+			poseable : null,
+			position : null,
+			jointName : null,
+		}
+	};
+
 	var RobotInterface = function($q, $timeout, $rootScope, RobotInterface) {
 		var self = this;
 		var connected = false;
@@ -23,10 +44,10 @@ define(function(require) {
 			}
 
 			var servos = [];
-			for ( var servoName in newValue.servos) {
+			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				var oldServo = oldValue[servoName];
-				if (oldServo === undefined || servo.position != oldServo.position || servo.poseable != oldServo.poseable) {
+				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position
+						|| servo.poseable != oldValue[servoName].poseable) {
 					servos.push({
 						id : servo.id,
 						position : servo.position,
@@ -78,25 +99,25 @@ define(function(require) {
 		var processUpdate = function(dataPackage) {
 			for (var i = 0; i < dataPackage.servos.length; i++) {
 				var servo = dataPackage.servos[i];
-				if (components.servos[servo.jointName] == undefined || components.servos[servo.jointName].id != servo.id) {
-					components.servos[servo.jointName] = {
-						id : servo.id,
-					};
+				if (components.servos[servo.jointName] == undefined) {
+					components.servos[servo.jointName] = new Servo();
+					components.servos[servo.jointName].jointName = servo.jointName;
 				}
 
+				components.servos[servo.jointName].id = servo.id;
 				components.servos[servo.jointName].actual.position = servo.position;
 				components.servos[servo.jointName].actual.poseable = servo.poseable;
 			}
 
 			for (var i = 0; i < dataPackage.sensors.length; i++) {
 				var sensor = dataPackage.sensors[i];
-				if (components.sensors[sensor.name] == undefined || components.sensors[sensor.name].id != sensor.id) {
-					components.sensors[sensor.name] = {
-						id : sensor.id,
-					};
+				if (components.sensors[sensor.name] == undefined) {
+					components.sensors[sensor.name] = new Sensor();
+					components.sensors[sensor.name].name = sensor.name;
 				}
 
-				components.sensors[sensor.name].actual.value = sensor.value;
+				components.sensors[sensor.name].id = sensor.id;
+				components.sensors[sensor.name].value = sensor.value;
 			}
 
 			$rootScope.$$phase || $rootScope.$digest();
@@ -129,12 +150,23 @@ define(function(require) {
 			}
 		};
 
+		this.getSensor = function(sensorName) {
+			if (sensorName === undefined) { return null; }
+
+			if (components.sensors[sensorName] === undefined) {
+				components.sensors[sensorName] = new Sensor();
+				components.sensors[sensorName].name = sensorName;
+			}
+
+			return components.sensors[sensorName];
+		}
+
 		this.getServo = function(componentName) {
 			if (componentName === undefined) { return null; }
 
 			if (components.servos[componentName] == undefined) {
-				components.servos[componentName] = new function() {
-				};
+				components.servos[componentName] = new Servo();
+				components.servos[componentName].jointName = componentName;
 			}
 
 			return components.servos[componentName];

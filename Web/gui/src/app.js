@@ -13,6 +13,7 @@ define(function(require) {
 	var trigger = require('categories/trigger');
 	var commonControllers = require('common/controllers');
 	var commonDirectives = require('common/directives');
+	var robotsDirectives = require('robots/directives');
 	var actionDirectives = require('actions/directives');
 	
 	var moduleName = 'kasparGUI';
@@ -20,7 +21,8 @@ define(function(require) {
 	                     angularRouter, 
 	                     angularBootstrap, 
 	                     commonControllers, 
-	                     commonDirectives, 
+	                     commonDirectives,
+	                     robotsDirectives,
 	                     action, 
 	                     admin, 
 	                     interaction, 

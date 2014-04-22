@@ -20,10 +20,13 @@
 	href="/img/smallIcon.png">
 <link
 	rel="stylesheet"
-	href="/lib/bootstrap/css/bootstrap.min.css" />
+	href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
 <link
 	rel="stylesheet"
-	href="/lib/bootstrap/css/bootstrap-theme.min.css">
+	href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<link
+	rel="stylesheet"
+	href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 <link
 	rel="stylesheet"
 	href="/css/slider.css" />
@@ -85,10 +88,17 @@
 		</small>
 	</footer>
 	<footer class="navbar-fixed-bottom text-center hidden-print hidden-xs">
-		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
-				and Technology Research Institute</a> <br />University of Hertfordshire
-			Hatfield, Hertfordshire, AL10 9AB, UK
-		</small>
+		<div class="row">
+			<div class="col-lg-11">
+				<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
+						and Technology Research Institute</a> <br />University of
+					Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK
+				</small>
+			</div>
+			<div class="pull-right col-lg-1">
+				<battery-level class="fill"></battery-level>
+			</div>
+		</div>
 	</footer>
 </body>
 </html>

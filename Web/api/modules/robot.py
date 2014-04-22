@@ -104,7 +104,7 @@ def __robotInterfacePost(robotId):
             else:
                 try:
                     if servoData.get('position', None) != None:
-                        interface.setPosition(int(servoData['position']), 100)
+                        interface.setPosition(float(servoData['position']), 100)
                     if servoData.get('poseable', None) != None:
                         interface.setPositioning(bool(servoData['poseable']))
                 except Exception as e:
@@ -120,8 +120,12 @@ def __robotInterfacePost(robotId):
 
 @__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['GET'])
 def __servoInterfaceGet(servoId, position=None):
-    servo = db_session.query(Model.Servo).get(servoId)
-    interface = ServoInterface.getServoInterface(servo)
+    if servoId not in __servoInterfaces:
+        servo = db_session.query(Model.Servo).get(servoId)
+        interface = ServoInterface.getServoInterface(servo)
+        __servoInterfaces[servo.id] = interface
+
+    interface = __servoInterfaces.get(servoId, None)
     if interface == None:
         raise abort(404)
 
@@ -138,12 +142,12 @@ def __servoInterfaceGet(servoId, position=None):
 @__servoInterface.route('/Servo/<int:servoId>/Interface', methods=['POST'])
 def __servoInterfacePost(servoId):
     data = request.json
-    try:
+    if servoId not in __servoInterfaces:
         servo = db_session.query(Model.Servo).get(servoId)
         interface = ServoInterface.getServoInterface(servo)
-    except Exception as e:
-        abort(500, "Error connecting to servos: %s" % e.message)
+        __servoInterfaces[servo.id] = interface
 
+    interface = __servoInterfaces.get(servoId, None)
     if interface == None:
         abort(404)
     else:
@@ -162,66 +166,63 @@ def __servoInterfacePost(servoId):
 
 
 def __getSensorValues(robotId):
-    robot = db_session.query(Model.Robot).get(robotId)
-    if robot == None:
+    if robotId == None:
         return None
     else:
         if robotId not in __sensorValues:
             __sensorValues[robotId] = {'timestamp': None, 'sensors': {}}
+            robot = db_session.query(Model.Robot).get(robotId)
+            for sensor in robot.sensors:
+                if sensor.id not in __sensorValues[robotId]['sensors']:
+                    __sensorValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None, 'name': sensor.name}
+                if sensor.id not in __sensorInterfaces:
+                    sensor = db_session.query(Model.Sensor).get(sensor.id)
+                    interface = SensorInterface.getSensorInterface(sensor)
+                    __sensorInterfaces[sensor.id] = interface
 
-        for sensor in robot.sensors:
-            if sensor.id not in __sensorValues[robotId]['sensors']:
-                __sensorValues[robotId]['sensors'][sensor.id] = {'value': None, 'timestamp': None, 'name': sensor.name}
-
-            if sensor.id not in __sensorInterfaces:
-                sensor = db_session.query(Model.Sensor).get(sensor.id)
-                interface = SensorInterface.getSensorInterface(sensor)
-                __sensorInterfaces[sensor.id] = interface
-            else:
-                interface = __sensorInterfaces[sensor.id]
+        for sensorId, sensor in __sensorValues[robotId]['sensors'].iteritems():
+            interface = __sensorInterfaces.get(sensorId, None)
 
             if interface == None:
                 continue
 
             curValue = interface.getCurrentValue()
-            if __sensorValues[robotId]['sensors'][sensor.id]['value'] != curValue:
-                __sensorValues[robotId]['sensors'][sensor.id]['value'] = curValue
-                __sensorValues[robotId]['sensors'][sensor.id]['timestamp'] = datetime.datetime.utcnow()
+            if sensor['value'] != curValue:
+                sensor['value'] = curValue
+                sensor['timestamp'] = datetime.datetime.utcnow()
 
     return __sensorValues[robotId]['sensors'].copy()
 
 
 def __getServoValues(robotId):
-    robot = db_session.query(Model.Robot).get(robotId)
-    if robot == None:
+    if robotId == None:
         return None
     else:
         if robotId not in __servoValues:
             __servoValues[robotId] = {'timestamp': None, 'servos': {}}
-
-        for servo in robot.servos:
-            if servo.id not in __servoValues[robotId]['servos']:
+            robot = db_session.query(Model.Robot).get(robotId)
+            for servo in robot.servos:
                 __servoValues[robotId]['servos'][servo.id] = {'position': None, 'poseable': None, 'timestamp': None, 'jointName': servo.jointName}
+                if servo.id not in __servoInterfaces:
+                    servo = db_session.query(Model.Servo).get(servo.id)
+                    interface = ServoInterface.getServoInterface(servo)
+                    __servoInterfaces[servo.id] = interface
 
-            if servo.id not in __servoInterfaces:
-                servo = db_session.query(Model.Servo).get(servo.id)
-                interface = ServoInterface.getServoInterface(servo)
-                __servoInterfaces[servo.id] = interface
-            else:
-                interface = __servoInterfaces[servo.id]
+        for servoId, servo in __servoValues[robotId]['servos'].iteritems():
+            interface = __servoInterfaces.get(servoId, None)
 
             if interface == None:
                 continue
 
             currentPos = interface.getPosition()
-            if __servoValues[robotId]['servos'][servo.id]['position'] != currentPos:
-                __servoValues[robotId]['servos'][servo.id]['position'] = currentPos
-                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.utcnow()
+            if servo['position'] != currentPos:
+                servo['position'] = currentPos
+                servo['timestamp'] = datetime.datetime.utcnow()
 
             curPoseable = interface.getPositioning()
-            if __servoValues[robotId]['servos'][servo.id]['poseable'] != curPoseable:
-                __servoValues[robotId]['servos'][servo.id]['poseable'] = curPoseable
-                __servoValues[robotId]['servos'][servo.id]['timestamp'] = datetime.datetime.utcnow()
+            if servo['poseable'] != curPoseable:
+                servo['poseable'] = curPoseable
+                servo['timestamp'] = datetime.datetime.utcnow()
 
     return __servoValues[robotId]['servos'].copy()
 
