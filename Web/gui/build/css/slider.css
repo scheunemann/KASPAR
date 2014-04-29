@@ -1,0 +1,7 @@
+.ui-slider {
+	cursor: pointer;
+}
+.ui-slider-horizontal .ui-slider-handle {
+	top: 0.6em;
+	cursor: inherit;
+}

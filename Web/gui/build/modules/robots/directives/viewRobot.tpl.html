@@ -1,0 +1,271 @@
+
+<accordion close-others="true"> <accordion-group
+	is-open="configsOpen"> <accordion-heading>{{language['robot.view.servoModel.label']}}<i
+	class="pull-right glyphicon"
+	ng-class="{'glyphicon-chevron-down': configsOpen, 'glyphicon-chevron-right': !configsOpen}"></i>
+</accordion-heading>
+<div
+	ng-repeat="item in servoConfigs"
+	class="col-lg-6 col-sm-12">
+	<strong>{{item.model.name}}</strong>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.id']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.id"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.port']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.port"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.portSpeed']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.portSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.scale']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.positionScale"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.offset']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.positionOffset"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.min']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.minPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.max']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.maxPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.position.default']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.defaultPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.scale']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.speedScale"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.min']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.minSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.max']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.maxSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.speed.default']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.defaultSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.poseable']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model.poseable"
+			ng-disabled="true">
+	</span>
+	<span
+		class="input-group"
+		ng-if="item.extraData">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoModel.otherSettings']}}</span>
+		<span class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="(key, value) in item.extraData">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">{{key}}</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="value"
+						ng-disabled="true">
+				</span>
+			</span>
+		</span>
+	</span>
+</div>
+</accordion-group> <accordion-group is-open="groupsOpen"> <accordion-heading>{{language['robot.view.servoGroups.label']}} <i
+	class="pull-right glyphicon"
+	ng-class="{'glyphicon-chevron-down': groupsOpen, 'glyphicon-chevron-right': !groupsOpen}"></i>
+</accordion-heading>
+<div
+	ng-repeat="item in servoGroups"
+	class="col-lg-4 col-md-6 col-sm-12">
+	<strong>{{item.name}}</strong>
+	<span
+		class="input-group"
+		ng-repeat="servo in item.servos">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servoGroups.servoName']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="servo.jointName"
+			ng-disabled="true">
+	</span>
+</div>
+</accordion-group> <accordion-group is-open="servosOpen"> <accordion-heading>{{language['robot.view.servos.label']}}
+<i
+	class="pull-right glyphicon"
+	ng-class="{'glyphicon-chevron-down': servosOpen, 'glyphicon-chevron-right': !servosOpen}"></i>
+</accordion-heading>
+<div
+	ng-repeat="item in servos"
+	class="col-lg-4 col-md-6 col-sm-12">
+	<strong>{{item.jointName}}</strong>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.model.id']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Not Set"
+			ng-model="item.model_id"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.min']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.minPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.max']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.maxPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.position.default']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.defaultPosition"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.min']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.minSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.max']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.maxSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.speed.default']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.defaultSpeed"
+			ng-disabled="true">
+	</span>
+	<span class="input-group">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.poseable']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Inherit"
+			ng-model="item.poseable"
+			ng-disabled="true">
+	</span>
+	<span
+		class="input-group"
+		ng-if="item.extraData">
+		<span class="input-group-addon inputLabel">{{language['robot.view.servos.otherSettings']}}</span>
+		<span class="list-group form-control">
+			<span
+				class="list-group-item"
+				ng-repeat="(key, value) in item.extraData">
+				<span class="input-group">
+					<span class="input-group-addon inputLabel">{{key}}</span>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Not Set"
+						ng-model="value"
+						ng-disabled="true">
+				</span>
+			</span>
+		</span>
+	</span>
+</div>
+</accordion-group> </accordion>

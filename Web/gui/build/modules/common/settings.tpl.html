@@ -1,0 +1,12 @@
+<div
+	ng-cloak>
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">{{language['common.setting.robot.label']}}</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="robotSetting.value"
+			ng-options="robot.name as (robot.name + ' (' + robot.model.name + ': ' + robot.version + ')' ) for robot in robots | orderBy:'name'">
+			<option value="">{{language['common.setting.robot.select.prompt']}}</option>
+		</select>
+	</div>
+</div>

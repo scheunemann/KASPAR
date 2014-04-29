@@ -1,0 +1,40 @@
+<div
+	id="triggersList">
+	<div class="input-group">
+		<span class="input-group-addon inputLabel">{{language['trigger.label']}}</span>
+		<select
+			class="selectpicker form-control"
+			ng-model="trigger"
+			ng-disabled="triggers.length == 0"
+			ng-options="item.name group by item.type for item in triggers | orderBy:'name'">
+			<option value="">{{language['trigger.select.prompt']}}</option>
+		</select>
+		<span class="input-group-btn">
+			<button
+				class="btn btn-default"
+				type="button"
+				ng-click="newTrigger()">{{language['trigger.new']}}</button>
+			<button
+				ng-disabled="!trigger"
+				class="btn btn-default"
+				type="button"
+				ng-click="deleteTrigger(trigger)">{{language['trigger.delete']}}</button>
+		</span>
+	</div>
+	<div ng-show="trigger">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['trigger.type.label']}}</span>
+			<select
+				ng-disabled="trigger.id"
+				class="selectpicker form-control"
+				ng-model="trigger.type"
+				ng-options="type.name as type.disp for type in types | orderBy:'type.disp'">
+				<option value="">{{language['trigger.type.select.prompt']}}</option>
+			</select>
+		</div>
+		<trigger-editor
+			trigger="trigger"
+			actions="actions"
+			triggers="triggers"></trigger-editor>
+	</div>
+</div>

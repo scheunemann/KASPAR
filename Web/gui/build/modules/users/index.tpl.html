@@ -1,0 +1,93 @@
+<div>
+	<div id="userList">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['user.label']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedUser"
+				ng-options="user.fullname for user in users | orderBy:'fullname'">
+				<option value="">{{language['user.select.prompt']}}</option>
+			</select>
+			<span class="input-group-btn">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="newObj(User, users)">{{language['user.new']}}</button>
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="deleteObj(item, users)">{{language['user.delete']}}</button>
+			</span>
+		</div>
+	</div>
+	<form
+		ng-show="selectedUser"
+		name="userForm"
+		model="selectedUser">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['user.name']}}</span>
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Full Name"
+				name="fullname"
+				required
+				ng-model="selectedUser.fullname"
+				saveable>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['user.custom.action.label']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedAction"
+				ng-options="action.name for action in selectedUser.actions | orderBy:'name'">
+			</select>
+			<span class="input-group-btn">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-disabled="true"
+					ng-click="newAction()">{{language['user.custom.action.new']}}</button>
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-disabled="true"
+					ng-click="deleteAction(selectedAction)">{{language['user.custom.action.delete']}}</button>
+			</span>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['user.custom.trigger.label']}}</span>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedTrigger"
+				ng-options="trigger.name for trigger in selectedUser.triggers | orderBy:'name'">
+			</select>
+			<span class="input-group-btn">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="newTrigger()"
+					ng-disabled="true">{{language['user.custom.trigger.new']}}</button>
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-disabled="true"
+					ng-click="deleteTrigger(selectedTrigger)">{{language['user.custom.trigger.delete']}}</button>
+			</span>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['user.speedModifier']}}</span>
+			<div ui-slider
+				name="speed"
+				saveable
+				class="form-control"
+				min="1"
+				max="300"
+				ng-disabled="true"
+				ng-model="selectedUser.speedmodifier"
+				step="1"> </div>
+			<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
+		</div>
+	</form>
+</div>
+<div ui-view></div>

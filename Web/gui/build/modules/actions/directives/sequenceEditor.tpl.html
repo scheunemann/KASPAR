@@ -1,0 +1,84 @@
+<form
+	name="sequenceForm"
+	model="sequence">
+	<div class="col-lg-12 input-group">
+		<span class="input-group-addon inputLabel">{{language['action.sequence.name']}}</span>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Sequence Name"
+			required
+			saveable
+			name="name"
+			ng-model="sequence.name">
+	</div>
+	<div class="row">
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{language['action.sequence.actions.list.label']}}</div>
+				<div class="input-group fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toAdd"
+						ng-options="action.name for action in actions | except:sequence | orderBy:'name'">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2">
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toAdd || toAdd.length == 0"
+					type="button"
+					ng-click="addActions(toAdd);toAdd=[]">{{language['action.sequence.actions.add']}} &rarr;</button>
+			</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toRemove || toRemove.length == 0"
+					type="button"
+					ng-click="removeActions(toRemove);toRemove=[]">&larr;
+					{{language['action.sequence.actions.remove']}}</button>
+			</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toRemove || toRemove.length == 0"
+					type="button"
+					ng-click="moveActions(toRemove, -1);toRemove=[]">&uarr;
+					{{language['action.sequence.actions.moveUp']}}</button>
+			</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toRemove || toRemove.length == 0"
+					type="button"
+					ng-click="moveActions(toRemove, 1);toRemove=[]">&darr;
+					{{language['action.sequence.actions.moveDown']}}</button>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{action.sequence.actions.title}}</div>
+				<div class="input-group fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toRemove"
+						ng-options="((action.order + 1) + '. ' + getName(action.action_id)) for action in sequence.ordered_actions | orderBy:'order'">
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="row">
+	<div class="col-lg-12">
+		<small>{{language['action.sequence.help.short']}}</small>
+	</div>
+</div>

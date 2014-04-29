@@ -1,0 +1,36 @@
+<div>
+	<form
+		name="soundForm"
+		model="sound">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['action.sound.name']}}</span>
+			<input
+				name="name"
+				type="text"
+				class="form-control"
+				placeholder="Sound Name"
+				required
+				ng-model="sound.name">
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">{{language['action.sound.selectFile']}}</span>
+			<input
+				class="form-control"
+				type="file"
+				onchange="angular.element(this).scope().setFiles(this)" />
+			<span class="input-group-btn">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="uploadFile(file)">{{language['action.sound.upload']}}</button>
+			</span>
+		</div>
+	</form>
+	<div>
+		<strong>TODO:</strong>
+		<ul>
+			<li>Show if current sound set</li>
+			<li>Play current sound</li>
+		</ul>
+	</div>
+</div>

@@ -1,16 +1,15 @@
 require.config({
 	baseUrl : "/",
 	paths : {
-		angular : 'bower_components/angular/angular.min',
-		jquery : 'bower_components/jquery/jquery.min',
-		jqueryUI : 'bower_components/jquery-ui/ui/minified/jquery-ui.min',
+		angular : 'bower_components/angular/angular',
+		jquery : 'bower_components/jquery/jquery',
+		jqueryUI : 'bower_components/jquery-ui/ui/jquery-ui',
 		angularSlider : 'bower_components/angular-ui-slider/src/slider',
-		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
-		angularResource : 'bower_components/angular-resource/angular-resource.min',
-		angularRoute : 'bower_components/angular-route/angular-route.min',
-		angularUIRouter : 'bower_components/angular-ui-router/release/angular-ui-router.min',
-		mousetrap : 'bower_components/mousetrap/mousetrap.min',
-		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
+		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls',
+		angularResource : 'bower_components/angular-resource/angular-resource',
+		angularUIRouter : 'bower_components/angular-ui-router/release/angular-ui-router',
+		mousetrap : 'bower_components/mousetrap/mousetrap',
+		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause',
 		text : 'bower_components/requirejs-text/text',
 		categories : 'categories',
 	},
@@ -30,12 +29,6 @@ require.config({
 				return 'ngResource';
 			},
 			deps : [ 'angular', ],
-		},
-		'angularRouter' : {
-			init : function() {
-				return 'angularRouter';
-			},
-			deps : [ 'angular' ],
 		},
 		'angularUIRouter' : {
 			init : function() {

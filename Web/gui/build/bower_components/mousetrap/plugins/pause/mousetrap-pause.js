@@ -1,0 +1,2 @@
+Mousetrap=function(Mousetrap){var self=Mousetrap,_originalStopCallback=self.stopCallback,enabled=!0;return self.stopCallback=function(e,element,combo){return enabled?_originalStopCallback(e,element,combo):!0},self.pause=function(){enabled=!1},self.unpause=function(){enabled=!0},self}(Mousetrap);
+//# sourceMappingURL=mousetrap-pause.js.map

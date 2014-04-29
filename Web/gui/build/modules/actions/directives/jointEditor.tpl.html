@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ng-form
+			name="jointForm"
+			ng-class="{'has-info': !jointPosition.id && jointForm.$pristine}"
+			model="jointPosition">
+		<div class="input-group">
+			<span class="input-group-addon inputLabel">
+				<span class="hidden-xs">{{language['action.pose.joint.name']}}</span>
+				<span class="visible-xs">{{language['action.pose.joint.name.short']}}</span>
+			</span>
+			<select
+				name="jointname"
+				class="selectpicker form-control"
+				ng-options="name for name in (jointNames || [jointPosition.jointName]) | orderBy:'toString()'"
+				ng-model="jointPosition.jointName"
+				ng-disabled="jointForm.jointname.$pristine && jointForm.jointname.$valid"
+				required
+				notEmpty
+				saveable>
+				<option value="">{{language['action.pose.joint.select.prompt']}}</option>
+			</select>
+			<span
+				class="input-group-btn"
+				ng-if="jointPosition.id">
+				<button
+					class="btn btn-default"
+					type="button"
+					ng-click="removeJoint()">{{language['action.pose.joint.delete']}}</button>
+			</span>
+		</div>
+		<div
+			class="input-group">
+			<span class="input-group-addon inputLabel">{{language['action.pose.joint.position']}}</span>
+			<div ui-slider
+				name="jointposition"
+				saveable
+				class="form-control"
+				min="{{coalesce(servo.minPosition, servoModel.minPosition, -180)}}"
+				max="{{coalesce(servo.maxPosition, servoModel.maxPosition, 180)}}"
+				ng-model="jointPosition.position"
+				step="1"> </div>
+			<span class="input-group-addon">{{jointPosition.position}}&deg;</span>
+		</div>
+		<div
+			class="input-group noselect">
+			<span class="input-group-addon inputLabel">{{language['action.pose.joint.speed']}}</span>
+			<div ui-slider
+				name="jointspeed"
+				saveable
+				class="form-control"
+				ng-model="jointPosition.speed"
+				min="{{coalesce(servo.minSpeed, servoModel.minSpeed, 1)}}"
+				max="{{coalesce(servo.maxSpeed, servoModel.maxSpeed, 300)}}"
+				step="1"> </div>
+			<span class="input-group-addon">{{jointPosition.speed}}%</span>
+		</div>
+		</ng-form>
+	</div>
+</div>

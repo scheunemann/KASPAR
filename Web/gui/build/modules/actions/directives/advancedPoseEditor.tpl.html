@@ -1,0 +1,19 @@
+
+<div
+	class="panel panel-default"
+	ng-repeat="group in groups | orderBy:'name'">
+	<div class="panel-heading">
+		<h4 class="panel-title">{{group.name}}</h4>
+	</div>
+	<div class="panel-body">
+		<div
+			class="col-lg-4 col-md-6 col-sm-12 col-xs-12 jointEditor"
+			ng-repeat="jointPosition in group.rows | orderBy:'jointName'">
+			<joint-editor
+				joint-names="joints"
+				joint-position="jointPosition"
+				servo-position="getPosition(jointPosition.jointName, servoPositions)"
+				servo="getServo(jointPosition.jointName, robot.servos)"></joint-editor>
+		</div>
+	</div>
+</div>
