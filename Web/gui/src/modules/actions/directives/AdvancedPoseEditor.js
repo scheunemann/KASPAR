@@ -19,21 +19,18 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.language = language.getText();
 				$scope.$watch('pose.jointPositions', function(jointPositions) {
-					if (jointPositions != undefined) {
-						$scope.getGroups(jointPositions, $scope.robot);
-					}
+					$scope.getGroups(jointPositions, $scope.robot);
 				});
 
 				$scope.$watch('robot.servos', function(servos) {
-					if (servos != undefined) {
-						$scope.joints = [];
-						for (var i = 0; i < servos.length; i++) {
-							$scope.joints.push(servos[i].jointName);
-						}
+					servos = servos || [];
+					$scope.joints = [];
+					for (var i = 0; i < servos.length; i++) {
+						$scope.joints.push(servos[i].jointName);
+					}
 
-						if ($scope.pose != undefined) {
-							$scope.getGroups($scope.pose.jointPositions, $scope.robot);
-						}
+					if ($scope.pose != undefined) {
+						$scope.getGroups($scope.pose.jointPositions, $scope.robot);
 					}
 				});
 
@@ -75,50 +72,49 @@ define(function(require) {
 				};
 
 				$scope.getGroups = function(jointPositions, robot) {
-					if (jointPositions != undefined) {
-						var posCopy = [];
-						for ( var index in jointPositions) {
-							posCopy.push(jointPositions[index]);
-						}
+					jointPositions = jointPositions || [];
+					var posCopy = [];
+					for ( var index in jointPositions) {
+						posCopy.push(jointPositions[index]);
+					}
 
-						var groups = [];
-						if (robot == undefined) {
-							$scope.groups = [ {
-								'name' : 'Pose Joints',
-								'rows' : posCopy
-							} ];
-						} else {
-							robot.getProperty('servoGroups').$promise.then(function(servoGroups) {
-								var res = []
-								for (var index = 0; index < servoGroups.length; index++) {
-									res.push(processGroup(servoGroups[index], posCopy));
-								}
+					var groups = [];
+					if (robot == undefined) {
+						$scope.groups = [ {
+							'name' : 'Pose Joints',
+							'rows' : posCopy
+						} ];
+					} else {
+						robot.getProperty('servoGroups').$promise.then(function(servoGroups) {
+							var res = []
+							for (var index = 0; index < servoGroups.length; index++) {
+								res.push(processGroup(servoGroups[index], posCopy));
+							}
 
-								var groups = [];
-								for (var index = 0; index < res.length; index++) {
-									if (res[index] != null) {
-										groups.push(res[index][1]);
-										for (var idIdx = 0; idIdx < res[index][0].length; idIdx++) {
-											for (var posIdx = 0; posIdx < posCopy.length; posIdx++) {
-												if (posCopy[posIdx].id == res[index][0][idIdx]) {
-													var elm = posCopy.splice(posIdx, 1);
-													break;
-												}
+							var groups = [];
+							for (var index = 0; index < res.length; index++) {
+								if (res[index] != null) {
+									groups.push(res[index][1]);
+									for (var idIdx = 0; idIdx < res[index][0].length; idIdx++) {
+										for (var posIdx = 0; posIdx < posCopy.length; posIdx++) {
+											if (posCopy[posIdx].id == res[index][0][idIdx]) {
+												var elm = posCopy.splice(posIdx, 1);
+												break;
 											}
 										}
 									}
 								}
+							}
 
-								if (posCopy.length > 0) {
-									groups.push({
-										'name' : 'No Group',
-										'rows' : posCopy
-									});
-								}
+							if (posCopy.length > 0) {
+								groups.push({
+									'name' : 'No Group',
+									'rows' : posCopy
+								});
+							}
 
-								$scope.groups = groups;
-							});
-						}
+							$scope.groups = groups;
+						});
 					}
 				};
 

@@ -14,7 +14,7 @@ define(function(require) {
 				var childScope;
 				var lastSet;
 				scope.$watch('action.type', function(newType) {
-					if (newType != "" && newType != undefined) {
+					if (newType != "" && newType != "Action" && newType != undefined) {
 						if (newType != lastSet) {
 							lastSet = newType;
 							if (childScope) {

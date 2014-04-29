@@ -14,7 +14,7 @@ define(function(require) {
 			if (action != undefined) {
 				var abstractAction = $scope.action;
 				var concreteAction = $scope.action.getConcreteClassInstance();
-				concreteAction.$promise.then(function(){ 
+				concreteAction.$promise.then(function() {
 					$scope.actions[$scope.actions.indexOf(abstractAction)] = concreteAction;
 					$scope.action = concreteAction;
 				});
@@ -28,7 +28,9 @@ define(function(require) {
 		};
 
 		$scope.newAction = function() {
-			$scope.action = new Action();
+			$scope.action = new Action({
+				type : 'Action'
+			});
 			$scope.actions.push($scope.action);
 		};
 

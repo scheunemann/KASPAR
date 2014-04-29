@@ -31,7 +31,7 @@ define(function(require) {
 			return newResponse;
 		}
 
-		this.$get = [ '$resource', function($resource) {
+		this.$get = [ '$resource', '$q', '$rootScope', function($resource, $q, $rootScope) {
 			var root = this;
 			var getModel = function(model, params, methods, url) {
 				if (url === undefined) {
@@ -63,6 +63,12 @@ define(function(require) {
 				}
 
 				methods = angular.extend(defaultMethods, methods);
+				for ( var name in methods) {
+					if (methods[name].hasOwnProperty('url')) {
+						methods[name].url = root.basePath + methods[name].url;
+					}
+				}
+
 				params = angular.extend(defaultParams, params);
 				var resource = $resource(url, params, methods);
 
@@ -72,12 +78,22 @@ define(function(require) {
 				}
 
 				resource.prototype.getConcreteClassInstance = function() {
-					if (this.$concreteResolved || this.type == undefined) { return this; }
+					if (this.$concreteResolved) { return this; }
+					if (this.id == undefined || this.type == undefined) {
+						if (this.$promise != undefined) {
+							return this;
+						} else {
+							var def = $q.defer();
+							this.$promise = def.promise;
+							def.resolve(this);
+							return this;
+						}
+					}
 
 					var concreteModel = getModel(this.type);
-					var concreteInstance = this.id != undefined ? concreteModel.get({
+					var concreteInstance = concreteModel.get({
 						id : this.id
-					}) : new _service();
+					});
 
 					concreteInstance.$promise.then(function(res) {
 						res.$concreteResolved = true;

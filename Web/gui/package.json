@@ -1,6 +1,6 @@
 {
   "name": "kaspar-gui",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Web based interface for KASPAR robot",
   "main": "main.js",
   "scripts": {
