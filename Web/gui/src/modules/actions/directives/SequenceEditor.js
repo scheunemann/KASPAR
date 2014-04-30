@@ -16,17 +16,15 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.language = language.getText();
 				$scope.getName = function(actionId) {
-					if($scope.actions != undefined) {
-						for(var i = 0; i < $scope.actions.length; i++) {
-							if($scope.actions[i].id == actionId) {
-								return $scope.actions[i].name;
-							}
+					if ($scope.actions != undefined) {
+						for (var i = 0; i < $scope.actions.length; i++) {
+							if ($scope.actions[i].id == actionId) { return $scope.actions[i].name; }
 						}
 					}
-					
+
 					return "Unknown action";
 				}
-				
+
 				$scope.moveActions = function(oactions, change) {
 					// Change == 1
 					// oactions.length = 3
@@ -92,11 +90,11 @@ define(function(require) {
 						oa.order = $scope.sequence.ordered_actions.length;
 						oa.sequence_id = $scope.sequence.id;
 						oa.action_id = actions[i].id;
-						oa.$save();
-						$scope.sequence.ordered_actions.push(oa);
+						oa.$save().then(function() {
+							$scope.sequence.ordered_actions.push(oa);
+							$scope.saveAll();
+						});
 					}
-
-					$scope.saveAll();
 				};
 
 				$scope.removeActions = function(oactions) {
