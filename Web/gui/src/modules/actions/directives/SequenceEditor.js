@@ -5,7 +5,7 @@ define(function(require) {
 	var template = require('text!./sequenceEditor.tpl.html');
 	require('actions/models');
 
-	var SequenceEditor = function(OrderedAction, language) {
+	var SequenceEditor = function(SequenceOrder, language) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -88,10 +88,12 @@ define(function(require) {
 					}
 
 					for (var i = 0; i < actions.length; i++) {
-						var oa = new OrderedAction();
-						oa.order = oactions.length;
-						oa.action = actions[i];
-						$scope.sequence.ordered_actions[i].push(oa);
+						var oa = new SequenceOrder();
+						oa.order = $scope.sequence.ordered_actions.length;
+						oa.sequence_id = $scope.sequence.id;
+						oa.action_id = actions[i].id;
+						oa.$save();
+						$scope.sequence.ordered_actions.push(oa);
 					}
 
 					$scope.saveAll();
@@ -99,7 +101,8 @@ define(function(require) {
 
 				$scope.removeActions = function(oactions) {
 					for (var i = 0; i < oactions.length; i++) {
-						$scope.sequence.ordered_actions.splice($scope.sequence.ordered_actions.indexOf(oactions[i]), 1);
+						var action = $scope.sequence.ordered_actions.splice($scope.sequence.ordered_actions.indexOf(oactions[i]), 1);
+						action.$delete();
 					}
 
 					$scope.saveAll();
@@ -108,5 +111,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'OrderedAction', 'language', SequenceEditor ];
+	return [ 'SequenceOrder', 'language', SequenceEditor ];
 });

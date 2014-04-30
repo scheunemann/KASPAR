@@ -31,7 +31,6 @@
 				<select
 					class="selectpicker form-control"
 					ng-model="time.trigger_id"
-					required
 					saveable
 					name="triggerId"
 					ng-options="trigger.id as trigger.name group by trigger.type for trigger in triggers | orderBy:'name'">
@@ -62,7 +61,8 @@
 						ng-model="time.mustStayActive"
 						btn-radio="false">{{language['trigger.time.time.since']}}</button>
 				</span>
-				<div ui-slider
+				<div
+					ui-slider
 					name="time"
 					saveable
 					required
@@ -70,7 +70,7 @@
 					min="0"
 					max="300"
 					ng-model="time.time"
-					step="1"> </div>
+					step="1"></div>
 				<div class="input-group-addon">{{time.time}}
 					{{language['trigger.time.time.units']}} &#177;</div>
 				<div
@@ -80,9 +80,9 @@
 					required
 					class="form-control"
 					min="0"
-					max="time.time"
+					max="{{time.time}}"
 					ng-model="time.variance"
-					step="1"> </div>
+					step="1"></div>
 				<div class="input-group-addon">{{time.variance}}
 					{{language['trigger.time.time.units']}}</div>
 			</div>

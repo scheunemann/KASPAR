@@ -55,8 +55,8 @@ class InteractionManager(object):
         #TODO: This needs to filter by triggers that the robot supports (sensors, and user overrides)
         return ds.query(Model.Trigger).all()
 
-    def _triggerActivated(self, trigger_id, value):
-        self.doTrigger(trigger_id, value)
+    def _triggerActivated(self, source, triggerActivatedArg):
+        self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value)
 
     def doTrigger(self, trigger_id, value):
         ds = StorageFactory.getNewSession()

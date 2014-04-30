@@ -25,7 +25,7 @@
 		</VIRTUAL>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>/dev/bodyServos</PORT>
+			<PORT>COM22</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -52,7 +52,7 @@
 		</HERKULEX>
 
 		<HS82MG>
-			<PORT>/dev/headServos</PORT>
+			<PORT>COM23</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>90</POS>
@@ -81,12 +81,12 @@
 	<SENSORCONFIGS>
 		<ROBOT>
 			<FSR_MiniMaestro>
-				<PORT>/dev/bodySensors</PORT>
+				<PORT>COM22</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
 			<HERKULEX_BATTERY>
-				<PORT>/dev/bodyServos</PORT>
+				<PORT>COM22</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;25</ONSTATE>
 			</HERKULEX_BATTERY>
@@ -260,63 +260,63 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="0">
+		<SERVO type="HS82MG" id="2">
 			<NAME>EYE_R_LID</NAME>
-			<CENTER>0</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-144</MIN>
-					<MAX>0</MAX>
+					<MIN>0</MIN>
+					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="1">
 			<NAME>EYE_R_LR</NAME>
-			<CENTER>18</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-72</MIN>
-					<MAX>72</MAX>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="2">
+		<SERVO type="HS82MG" id="0">
 			<NAME>EYEBALL_R_UD</NAME>
-			<CENTER>72</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-104</MIN>
-					<MAX>104</MAX>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="3">
 			<NAME>EYE_L_LR</NAME>
-			<CENTER>234</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-104</MIN>
-					<MAX>104</MAX>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="4">
 			<NAME>EYE_L_LID</NAME>
-			<CENTER>234</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-104</MIN>
-					<MAX>104</MAX>
+					<MIN>-90</MIN>
+					<MAX>0</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
 		<SERVO type="HS82MG" id="5">
 			<NAME>EYEBALL_L_UD</NAME>
-			<CENTER>234</CENTER>
+			<CENTER>1500</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-104</MIN>
-					<MAX>104</MAX>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
@@ -325,7 +325,7 @@
 			<EXTRADATA>
 				<MASTER>EYE_R_UD</MASTER>
 				<SLAVE>EYE_L_UD</SLAVE>
-				<RATIO>1</RATIO>
+				<RATIO>-1</RATIO>
 				<ABSOLUTE>True</ABSOLUTE>
 			</EXTRADATA>
 		</SERVO>
@@ -362,7 +362,7 @@
 				<MASTER>EYE_L_LID</MASTER>
 				<SLAVE>EYE_R_LID</SLAVE>
 				<ABSOLUTE>True</ABSOLUTE>
-				<RATIO>1</RATIO>
+				<RATIO>-1</RATIO>
 			</EXTRADATA>
 		</SERVO>
 	</SERVOLIST>

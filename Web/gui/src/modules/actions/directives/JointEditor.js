@@ -57,9 +57,9 @@ define(function(require) {
 				$scope.removeJoint = function() {
 					var promise;
 					if ($scope.jointPosition.$delete === undefined) {
-						promise = JointPosition.delete({id: $scope.jointPosition.id}).$promise;
+						promise = JointPosition.delete({id: $scope.jointPosition.id});
 					} else {
-						promise = $scope.jointPosition.$delete().$promise;
+						promise = $scope.jointPosition.$delete();
 					}
 					promise.then(function() {
 						delete $scope.jointPosition.id;

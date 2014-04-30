@@ -7,7 +7,7 @@ define(function(require) {
 	var ActionTest = require('./models/ActionTest');
 	var ActionType = require('./models/ActionType');
 	var JointPosition = require('./models/JointPosition');
-	var OrderedAction = require('./models/SequenceOrder');
+	var SequenceOrder = require('./models/SequenceOrder');
 
 	var moduleName = 'kasparGUI.actions.models';
 	var dependancies = [ 
@@ -19,7 +19,7 @@ define(function(require) {
 		.factory('ActionTest', ActionTest)
 		.factory('ActionType', ActionType)
 		.factory('JointPosition', JointPosition)
-		.factory('OrderedAction', OrderedAction);
+		.factory('SequenceOrder', SequenceOrder);
 
 	return moduleName;
 });

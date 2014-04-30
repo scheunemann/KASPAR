@@ -48,22 +48,22 @@ def _flushAndFillTestData():
     print "Done."
 
     session = StorageFactory.getNewSession()
-    for sound in [a for a in actions if a.type == 'Sound']:
-        session.add(sound)
+#     for sound in [a for a in actions if a.type == 'Sound']:
+#         session.add(sound)
 
     setting = Setting(key='robot', value='Kaspar Prototype A')
     session.add(setting)
 
-    interaction = Interaction()
-    interaction.startTime = datetime.datetime.utcnow()
-    interaction.endTime = datetime.datetime.utcnow()
-    interaction.operator = operators[0]
-    interaction.user = users[3]
-    session.add(interaction)
+#     interaction = Interaction()
+#     interaction.startTime = datetime.datetime.utcnow()
+#     interaction.endTime = datetime.datetime.utcnow()
+#     interaction.operator = operators[0]
+#     interaction.user = users[3]
+#     session.add(interaction)
 
-    session.add_all(robots)
-    session.add_all(actions)
-    session.add_all(triggers)
+    session.add_all([r for r in robots if r.name == setting.value])
+#     session.add_all(actions)
+#     session.add_all(triggers)
     session.add_all(operators)
     session.add_all(users)
     session.commit()
