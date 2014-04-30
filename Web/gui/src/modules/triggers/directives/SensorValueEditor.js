@@ -39,7 +39,7 @@ define(function(require) {
 				$scope.advancedopen = true;
 				$scope.$watch('trigger.sensorValue', function(value) {
 					if (value != undefined && value != null) {
-						$scope.basicopen = value.indexOf('eval::') == 0;
+						$scope.basicopen = value.indexOf != undefined && value.indexOf('eval::') == 0;
 						$scope.advancedopen = !$scope.basicopen;
 					}
 				});
