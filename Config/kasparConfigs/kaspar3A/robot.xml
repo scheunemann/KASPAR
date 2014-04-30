@@ -25,7 +25,7 @@
 		</VIRTUAL>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>COM22</PORT>
+			<PORT>/dev/ttyACM3</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -52,7 +52,7 @@
 		</HERKULEX>
 
 		<HS82MG>
-			<PORT>COM23</PORT>
+			<PORT>/dev/ttyACM0</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>90</POS>
@@ -81,12 +81,12 @@
 	<SENSORCONFIGS>
 		<ROBOT>
 			<FSR_MiniMaestro>
-				<PORT>COM22</PORT>
+				<PORT>/dev/ttyACM2</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
 			<HERKULEX_BATTERY>
-				<PORT>COM22</PORT>
+				<PORT>/dev/ttyACM3</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;25</ONSTATE>
 			</HERKULEX_BATTERY>
