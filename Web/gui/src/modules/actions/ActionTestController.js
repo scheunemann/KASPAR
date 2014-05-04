@@ -19,7 +19,7 @@ define(function(require) {
 
 		var getOutput = function() {
 			$scope.output += 'TODO: live update of running actions\n';
-		}
+		};
 
 		$scope.stopAction = function(action) {
 			$scope.output += 'TODO: Stop action ' + action.name + '\n';

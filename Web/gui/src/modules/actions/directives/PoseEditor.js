@@ -19,10 +19,10 @@ define(function(require) {
 				$scope.basicopen = false;
 				
 				$scope.$watch('pose', function(pose) {
-					if(pose != undefined && pose.speedModifier === undefined) {
+					if(pose !== undefined && pose.speedModifier === undefined) {
 						pose.speedModifier = 100;
 					}
-				})
+				});
 			}
 		};
 	};

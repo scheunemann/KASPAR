@@ -6,7 +6,7 @@ define(function(require) {
 			id : null,
 			name : null,
 			value : null,
-		}
+		};
 	};
 
 	var Servo = function() {
@@ -19,7 +19,7 @@ define(function(require) {
 			poseable : null,
 			position : null,
 			jointName : null,
-		}
+		};
 	};
 
 	var RobotInterface = function($q, $timeout, $rootScope, RobotInterface) {
@@ -36,7 +36,7 @@ define(function(require) {
 		};
 
 		var sendChanges = function(newValue, oldValue) {
-			if (robotId == null || !connected) { return; }
+			if (robotId === null || !connected) { return; }
 
 			if (saving) {
 				delayedSave = newValue;
@@ -46,21 +46,20 @@ define(function(require) {
 			var servos = [];
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position
-						|| servo.poseable != oldValue[servoName].poseable) {
+				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position || servo.poseable != oldValue[servoName].poseable) {
 					servos.push({
 						id : servo.id,
 						position : servo.position,
 						poseable : servo.poseable,
 						jointName : servoName,
-					})
+					});
 				}
 			}
 
 			if (servos.length > 0) {
 				var packet = {
 					servos : servos,
-				}
+				};
 
 				saving = true;
 				var save = RobotInterface.save({
@@ -68,14 +67,14 @@ define(function(require) {
 				}, packet);
 				save.$promise.then(function() {
 					saving = false;
-					if (delayedSave != null) {
+					if (delayedSave !== null) {
 						var ds = delayedSave;
 						delayedSave = null;
 						sendChanges(ds);
 					}
 				});
 			} else {
-				if (delayedSave != null) {
+				if (delayedSave !== null) {
 					var ds = delayedSave;
 					delayedSave = null;
 					sendChanges(ds);
@@ -87,7 +86,7 @@ define(function(require) {
 		var updateStatus = function(lastUpdateTime) {
 			if (!connected) { return; }
 
-			var status = lastUpdateTime == undefined ? RobotInterface.get({
+			var status = lastUpdateTime === undefined ? RobotInterface.get({
 				id : robotId
 			}) : RobotInterface.get({
 				id : robotId,
@@ -97,9 +96,9 @@ define(function(require) {
 		};
 
 		var processUpdate = function(dataPackage) {
-			for (var i = 0; i < dataPackage.servos.length; i++) {
-				var servo = dataPackage.servos[i];
-				if (components.servos[servo.jointName] == undefined) {
+			for (var servoIndex = 0; servoIndex < dataPackage.servos.length; servoIndex++) {
+				var servo = dataPackage.servos[servoIndex];
+				if (components.servos[servo.jointName] === undefined) {
 					components.servos[servo.jointName] = new Servo();
 					components.servos[servo.jointName].jointName = servo.jointName;
 				}
@@ -109,9 +108,9 @@ define(function(require) {
 				components.servos[servo.jointName].actual.poseable = servo.poseable;
 			}
 
-			for (var i = 0; i < dataPackage.sensors.length; i++) {
-				var sensor = dataPackage.sensors[i];
-				if (components.sensors[sensor.name] == undefined) {
+			for (var sensorIndex = 0; sensorIndex < dataPackage.sensors.length; sensorIndex++) {
+				var sensor = dataPackage.sensors[sensorIndex];
+				if (components.sensors[sensor.name] === undefined) {
 					components.sensors[sensor.name] = new Sensor();
 					components.sensors[sensor.name].name = sensor.name;
 				}
@@ -120,16 +119,18 @@ define(function(require) {
 				components.sensors[sensor.name].value = sensor.value;
 			}
 
-			$rootScope.$$phase || $rootScope.$digest();
+			if (!$rootScope.$$phase) {
+				$rootScope.$digest();
+			}
 			return dataPackage.timestamp;
-		}
+		};
 
 		$rootScope.$watch(function() {
 			return components.servos;
 		}, sendChanges, true);
 
 		this.setRobot = function(robot) {
-			if (robot == undefined || robot == null && robotId != null) {
+			if (robot === undefined || robot === null && robotId !== null) {
 				this.setConnected(false);
 				robotId = null;
 				return;
@@ -159,18 +160,18 @@ define(function(require) {
 			}
 
 			return components.sensors[sensorName];
-		}
+		};
 
 		this.getServo = function(componentName) {
 			if (componentName === undefined) { return null; }
 
-			if (components.servos[componentName] == undefined) {
+			if (components.servos[componentName] === undefined) {
 				components.servos[componentName] = new Servo();
 				components.servos[componentName].jointName = componentName;
 			}
 
 			return components.servos[componentName];
-		}
+		};
 	};
 
 	return [ '$q', '$timeout', '$rootScope', 'RobotInterface', RobotInterface ];

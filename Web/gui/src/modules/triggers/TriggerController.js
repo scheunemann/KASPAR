@@ -6,7 +6,7 @@ define(function(require) {
 	require('triggers/models');
 	require('robots/models');
 
-	var TriggerController = function($scope, Action, Trigger, TriggerType, Robot, language) {
+	var TriggerController = function($scope, $http, Action, Trigger, TriggerType, Robot, language) {
 		$scope.language = language.getText();
 		$scope.triggers = Trigger.query();
 		$scope.actions = Action.query();
@@ -20,7 +20,7 @@ define(function(require) {
 		};
 		
 		$scope.$watch('trigger', function(action) {
-			if (action != undefined) {
+			if (action !== undefined) {
 				var abstractTrigger = $scope.trigger;
 				var concreteTrigger = $scope.trigger.getConcreteClassInstance();
 				concreteTrigger.$promise.then(function(){ 
@@ -39,8 +39,16 @@ define(function(require) {
 			$scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
 			$scope.trigger = $scope.triggers[0];
 			trigger.$delete();
-		}
+		};
 
+		var errorFunc = function(status) {
+			console.log("Error sending file:" + status);
+		};
+		
+		var successFunc = function(data, status, headers, config) {
+			$scope.newobjs.push(data);
+		};
+		
 		$scope.importFiles = function(files) {
 			for (var i = 0; i < files.length; i++) {
 				var fd = new FormData();
@@ -51,14 +59,10 @@ define(function(require) {
 						'Content-Type' : undefined
 					},
 					transformRequest : angular.identity
-				}).success(function(data, status, headers, config) {
-					$scope.newobjs.push(data);
-				}).error(function() {
-					console.log("Error sending file:" + status);
-				});
+				}).success(successFunc).error(errorFunc);
 			}
 		};
 	};
 
-	return [ '$scope', 'Action', 'Trigger', 'TriggerType', 'Robot', 'language', TriggerController ];
+	return [ '$scope', '$http', 'Action', 'Trigger', 'TriggerType', 'Robot', 'language', TriggerController ];
 });

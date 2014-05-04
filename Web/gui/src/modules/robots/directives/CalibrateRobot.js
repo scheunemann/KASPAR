@@ -15,7 +15,7 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.language = language.getText();
 				$scope.$watch('robot', function(robot) {
-					if(robot != undefined) {
+					if(robot !== undefined) {
 						$scope.servos = robot.servos;
 					}
 				});

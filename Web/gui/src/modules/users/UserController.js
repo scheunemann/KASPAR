@@ -11,7 +11,7 @@ define(function(require) {
 		$scope.users = User.query();
 		
 		$scope.$watch('selectedUser', function(user) {
-			if(user != undefined && user.speedmodifier === undefined) {
+			if(user !== undefined && user.speedmodifier === undefined) {
 				user.speedmodifier = 100;
 			}
 		});

@@ -9,15 +9,15 @@ define(function(require) {
 			require : 'ngModel',
 			link : function(scope, element, attrs, controller) {
 				controller.$parsers.unshift(function(value) {
-					if (value == undefined || value == "") {
-						ctrl.$setValidity('notEmpty', false);
+					if (value === undefined || value === "") {
+						controller.$setValidity('notEmpty', false);
 						return undefined;
 					} else {
-						ctrl.$setValidity('notEmpty', true);
+						controller.$setValidity('notEmpty', true);
 					}
 				});
 			}
-		}
+		};
 	};
 
 	return NotEmpty;

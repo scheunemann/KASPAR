@@ -18,7 +18,7 @@ define(function(require) {
 			endTime : null
 		});
 		activeInteractions.$promise.then(function(result) {
-			if (result != undefined && result.length > 0) {
+			if (result !== undefined && result.length > 0) {
 				$scope.interaction = result[0];
 				$scope.operator_id = $scope.interaction.operator_id;
 				$scope.user_id = $scope.interaction.user_id;
@@ -46,7 +46,7 @@ define(function(require) {
 		};
 
 		$scope.getCategory = function(user, userList) {
-			if (userList == undefined || user == undefined) { return; }
+			if (userList === undefined || user === undefined) { return; }
 			for (var i = 0; i < userList.length; i++) {
 				if (userList[i].id == user.id) { return "Common"; }
 			}

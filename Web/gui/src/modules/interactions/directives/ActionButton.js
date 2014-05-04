@@ -4,6 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	require('common/services/displayServices');
 	require('actions/models');
+	var Mousetrap = require('mousetrap');
 	var template = require('text!./actionButton.tpl.html');
 
 	var ActionButton = function($q, $timeout, InteractionLog, hotkeyFormatter, language) {
@@ -24,14 +25,14 @@ define(function(require) {
 				var keyBinds = null;
 
 				$scope.$watch('button', function(newValue, oldValue) {
-					if (newValue != undefined) {
+					if (newValue !== undefined) {
 						var kb = [];
 						for (var i = 0; i < $scope.button.hotKeys.length; i++) {
 							kb.push($scope.button.hotKeys[i].keyString);
 						}
 
 						$scope.keyDisplay = kb.join(' | ');
-						if (keyBinds != null) {
+						if (keyBinds !== null) {
 							Mousetrap.unbind(keyBinds);
 						}
 
@@ -57,7 +58,7 @@ define(function(require) {
 						'button_id' : buttonId,
 						'interaction_id' : $scope.interaction.id
 					});
-				}
+				};
 			}
 		};
 	};

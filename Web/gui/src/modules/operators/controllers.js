@@ -9,10 +9,10 @@ define(function(require) {
 	
 	var moduleName = 'kasparGUI.operators.controllers';
 	var dependancies = [ 
-		        			userModels,
-		        			languageServices,
-		        			operatorModels,
-	                     ];
+						userModels,
+						languageServices,
+						operatorModels,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.controller('operatorController', OperatorController);

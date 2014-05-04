@@ -29,7 +29,7 @@ define(function(require) {
 						$scope.joints.push(servos[i].jointName);
 					}
 
-					if ($scope.pose != undefined) {
+					if ($scope.pose !== undefined) {
 						$scope.getGroups($scope.pose.jointPositions, $scope.robot);
 					}
 				});
@@ -48,7 +48,7 @@ define(function(require) {
 							}
 						}
 
-						if (posId == null) {
+						if (posId === null) {
 							joints.push(new JointPosition({
 								'position' : servo.defaultPosition,
 								'speed' : servo.defaultSpeed,
@@ -79,25 +79,25 @@ define(function(require) {
 					}
 
 					var groups = [];
-					if (robot == undefined) {
+					if (robot === undefined) {
 						$scope.groups = [ {
 							'name' : 'Pose Joints',
 							'rows' : posCopy
 						} ];
 					} else {
 						robot.getProperty('servoGroups').$promise.then(function(servoGroups) {
-							var res = []
-							for (var index = 0; index < servoGroups.length; index++) {
-								res.push(processGroup(servoGroups[index], posCopy));
+							var res = [];
+							for (var servoGroupIndex = 0; servoGroupIndex < servoGroups.length; servoGroupIndex++) {
+								res.push(processGroup(servoGroups[servoGroupIndex], posCopy));
 							}
 
 							var groups = [];
-							for (var index = 0; index < res.length; index++) {
-								if (res[index] != null) {
-									groups.push(res[index][1]);
-									for (var idIdx = 0; idIdx < res[index][0].length; idIdx++) {
+							for (var resultIndex = 0; resultIndex < res.length; resultIndex++) {
+								if (res[resultIndex] !== null) {
+									groups.push(res[resultIndex][1]);
+									for (var idIdx = 0; idIdx < res[resultIndex][0].length; idIdx++) {
 										for (var posIdx = 0; posIdx < posCopy.length; posIdx++) {
-											if (posCopy[posIdx].id == res[index][0][idIdx]) {
+											if (posCopy[posIdx].id == res[resultIndex][0][idIdx]) {
 												var elm = posCopy.splice(posIdx, 1);
 												break;
 											}
@@ -119,7 +119,7 @@ define(function(require) {
 				};
 
 				$scope.getServo = function(jointName, servos) {
-					if (servos != undefined) {
+					if (servos !== undefined) {
 						var servo = null;
 						for (var i = 0; i < servos.length; i++) {
 							if (servos[i].jointName == jointName) {
@@ -130,10 +130,10 @@ define(function(require) {
 
 						return servo;
 					}
-				}
+				};
 
 				$scope.getPosition = function(jointName, positions) {
-					if (positions != undefined) {
+					if (positions !== undefined) {
 						var position = null;
 						for (var i = 0; i < positions.length; i++) {
 							if (positions[i].jointName == jointName) {

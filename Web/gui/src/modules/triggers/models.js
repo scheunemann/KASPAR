@@ -9,9 +9,9 @@ define(function(require) {
 	var TriggerType = require('./models/TriggerType');
 
 	var moduleName = 'kasparGUI.triggers.models';
-	var dependancies = [ 
-	                     angularResource, 
-	                   ];
+	var dependancies = [
+						angularResource
+					];
 
 	var module = angular.module(moduleName, dependancies)
 		.factory('ButtonHotkey', ButtonHotkey)

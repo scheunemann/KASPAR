@@ -8,10 +8,10 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.triggers';
 	var dependancies = [ 
-							controllers,
-							directives,
-							models
-	                     ];
+						controllers,
+						directives,
+						models
+					];
 
 	var module = angular.module(moduleName, dependancies);
 	return moduleName;

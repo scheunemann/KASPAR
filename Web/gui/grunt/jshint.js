@@ -5,6 +5,8 @@ module.exports = {
 			globalstrict: true,
 			globals: {
 				'define': false,
+				'FormData': false,
+				'console': false,
 			}
 		}
 	},

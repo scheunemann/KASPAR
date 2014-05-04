@@ -11,11 +11,11 @@ define(function(require) {
 	
 	var moduleName = 'kasparGUI.common.controllers';
 	var dependancies = [
-		          			uiRouter,
-		        			languageServices,
-		        			commonModels,
-		        			robotModels,
-	                     ];
+						uiRouter,
+						languageServices,
+						commonModels,
+						robotModels,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.controller('commonController', CommonController)

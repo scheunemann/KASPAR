@@ -20,24 +20,28 @@ require.config({
 		},
 		'angularBoostrap' : {
 			init : function() {
+				'use strict';
 				return 'ui.bootstrap';
 			},
 			deps : [ 'text', 'angular' ],
 		},
 		'angularResource' : {
 			init : function() {
+				'use strict';
 				return 'ngResource';
 			},
 			deps : [ 'angular', ],
 		},
 		'angularUIRouter' : {
 			init : function() {
+				'use strict';
 				return 'ui.router';
 			},
 			deps : [ 'angular' ]
 		},
 		'angularSlider' : {
 			init : function() {
+				'use strict';
 				return 'ui.slider';
 			},
 			deps : [ 'angular', 'jquery', 'jqueryUI' ]
@@ -46,7 +50,7 @@ require.config({
 			deps : [ 'jquery', ]
 		},
 		'mousetrap' : {
-			exports : 'mousetrap'
+			exports : 'Mousetrap'
 		},
 		'mousetrapPause' : [ 'mousetrap' ],
 	},

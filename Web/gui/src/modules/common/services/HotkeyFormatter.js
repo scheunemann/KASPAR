@@ -5,26 +5,26 @@ define(function(require) {
 	var HotkeyFormatter = function() {
 		this.getDisplayFromEvent = function(keyEvent) {
 			var code = keyEvent.which || keyEvent.keyCode; // Not-IE || IE
-			var modifiers = ""
+			var modifiers = "";
 			if (keyEvent.altKey) {
-				modifiers += "alt+"
+				modifiers += "alt+";
 			}
 
 			if (keyEvent.ctrlKey) {
-				modifiers += "ctrl+"
+				modifiers += "ctrl+";
 			}
 
 			if (keyEvent.shiftKey) {
-				modifiers += "shift+"
+				modifiers += "shift+";
 			}
 
 			var disp = this.getCharDisplay(code);
-			if (disp != "" || modifiers != "") {
+			if (disp !== "" || modifiers !== "") {
 				return modifiers + disp;
 			} else {
 				return "";
 			}
-		}
+		};
 
 		this.getCharDisplay = function(charCode) {
 			// http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
@@ -158,7 +158,7 @@ define(function(require) {
 			else
 				char = String.fromCharCode(charCode);
 			return char;
-		}
+		};
 	};
 
 	return HotkeyFormatter;

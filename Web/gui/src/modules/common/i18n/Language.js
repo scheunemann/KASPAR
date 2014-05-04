@@ -8,11 +8,11 @@ define(function(require) {
 
 		this.setLanguage = function(language) {
 			this.language = language;
-		}
+		};
 		
 		this.getText = function() {
 			return enGB;
-		}
+		};
 	};
 
 	return Language;

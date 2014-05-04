@@ -13,10 +13,10 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.common.directives';
 	var dependancies = [
-		         			displayServices,
-		        			languageServices,
-		        			filters,
-	                     ];
+						displayServices,
+						languageServices,
+						filters,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('keybinding', KeyBinding)

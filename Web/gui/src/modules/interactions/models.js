@@ -8,8 +8,8 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.interactions.models';
 	var dependancies = [
-	                   	angularResource, 
-	                  ];
+						angularResource, 
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.factory('Interaction', Interaction)

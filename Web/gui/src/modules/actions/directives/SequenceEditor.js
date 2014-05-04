@@ -16,14 +16,14 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.language = language.getText();
 				$scope.getName = function(actionId) {
-					if ($scope.actions != undefined) {
+					if ($scope.actions !== undefined) {
 						for (var i = 0; i < $scope.actions.length; i++) {
 							if ($scope.actions[i].id == actionId) { return $scope.actions[i].name; }
 						}
 					}
 
 					return "Unknown action";
-				}
+				};
 
 				$scope.moveActions = function(oactions, change) {
 					// Change == 1
@@ -33,7 +33,7 @@ define(function(require) {
 					// order += change
 					// if exists(ordered_actions.order)
 					// ordered_actions.order -= change
-					if (oactions != undefined && oactions.length > 0) {
+					if (oactions !== undefined && oactions.length > 0) {
 						for (var i = 0; i < oactions.length; i++) {
 							oactions[i].order += change;
 							if (oactions[i].order < 0) {
@@ -51,7 +51,7 @@ define(function(require) {
 
 						$scope.saveAll();
 					}
-				}
+				};
 
 				$scope.saveAll = function() {
 					// Collapse gaps and fix duplicates
@@ -63,14 +63,14 @@ define(function(require) {
 							var right = $scope.sequence.ordered_actions[j];
 							if (left != right) {
 								if (left.order == right.order) {
-									right.order += 1
+									right.order += 1;
 								} else if (left.order - 1 == right.order) {
 									next = true;
 								}
 							}
 						}
 
-						if (next || left.order == 0) {
+						if (next || left.order === 0) {
 							i++;
 						} else {
 							left.order -= 1;
@@ -78,22 +78,24 @@ define(function(require) {
 					}
 
 					$scope.sequence.$save();
-				}
+				};
 
 				$scope.addActions = function(actions) {
 					if ($scope.sequence.ordered_actions === undefined) {
-						$scope.sequence.ordered_actions = []
+						$scope.sequence.ordered_actions = [];
 					}
 
+					var successFunc = function(result) {
+						$scope.sequence.ordered_actions.push(result);
+						$scope.saveAll();
+					};
+					
 					for (var i = 0; i < actions.length; i++) {
 						var oa = new SequenceOrder();
 						oa.order = $scope.sequence.ordered_actions.length;
 						oa.sequence_id = $scope.sequence.id;
 						oa.action_id = actions[i].id;
-						oa.$save().then(function() {
-							$scope.sequence.ordered_actions.push(oa);
-							$scope.saveAll();
-						});
+						oa.$save().then(successFunc);
 					}
 				};
 

@@ -40,7 +40,7 @@ define(function(require) {
 						parentElement.addClass('has-success');
 						$timeout(function() {
 							parentElement.removeClass('has-success');
-						}, 2000)
+						}, 2000);
 						updateCalled = false;
 					}
 				});
@@ -50,7 +50,7 @@ define(function(require) {
 						saveCtrl.updateObj(modelCtrl);
 						updateCalled = true;
 					}
-				}
+				};
 
 				element[0].addEventListener('blur', function() {
 					callUpdate();
@@ -64,7 +64,7 @@ define(function(require) {
 					}
 				});
 			}
-		}
+		};
 	};
 
 	return [ '$compile', '$timeout', Saveable ];

@@ -17,7 +17,7 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-				if ($scope.showConnect == undefined) {
+				if ($scope.showConnect === undefined) {
 					$scope.showConnect = false;
 				}
 				
@@ -50,7 +50,7 @@ define(function(require) {
 					}
 					
 					$scope.connected = state;
-				}
+				};
 			}
 		};
 	};

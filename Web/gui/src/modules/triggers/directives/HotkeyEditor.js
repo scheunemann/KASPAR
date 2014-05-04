@@ -19,16 +19,16 @@ define(function(require) {
 				$scope.language = language.getText();
 				$scope.deleteKey = function() {
 					$scope.button.hotKeys.splice($scope.button.hotKeys.indexOf($scope.hotkey), 1);
-					if ($scope.hotkey.id != undefined) {
+					if ($scope.hotkey.id !== undefined) {
 						$scope.hotkey.$delete();
 					}
-				}
+				};
 
 				$scope.updateKey = function($event, hotKey) {
 					var code = $event.which || $event.keyCode; // Not-IE ||
 																// IE
 					var key = hotkeyFormatter.getDisplayFromEvent($event);
-					if (key != "") {
+					if (key !== "") {
 						hotKey.keyString = key;
 						$scope.hotkeyEditor.key.$dirty = true;
 						$event.preventDefault();

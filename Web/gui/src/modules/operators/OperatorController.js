@@ -28,7 +28,7 @@ define(function(require) {
 					});
 				}
 			}
-		}
+		};
 
 		$scope.newOperator = function() {
 			var newOp = new Operator({
@@ -47,7 +47,7 @@ define(function(require) {
 		};
 
 		$scope.toggleOperatorUser = function(operator, user) {
-			if (operator == undefined || operator.users == undefined) { return; }
+			if (operator === undefined || operator.users === undefined) { return; }
 
 			var found = false;
 			for (var i = 0; i < operator.users.length; i++) {

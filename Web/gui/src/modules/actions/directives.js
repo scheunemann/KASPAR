@@ -19,13 +19,13 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.actions.directives';
 	var dependancies = [ 
-	                     displayServices,
-	                     angularSlider,
-	                     interfaceServices,
-	                     filters, 
-	                     actionModels,
-	                     robotDirectives,
-	                   ];
+						displayServices,
+						angularSlider,
+						interfaceServices,
+						filters, 
+						actionModels,
+						robotDirectives,
+						];
 
 	var module = angular.module(moduleName, dependancies)
 		.directive('actionEditor', ActionEditor)

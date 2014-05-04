@@ -13,11 +13,11 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.interactions.directives';
 	var dependancies = [
-		         			displayServices,
-		        			languageServices,
-		        			filters,
-		        			interactionModels,
-	                     ];
+						displayServices,
+						languageServices,
+						filters,
+						interactionModels,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('actionButton', ActionButton)

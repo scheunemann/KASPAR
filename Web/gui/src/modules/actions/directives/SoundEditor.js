@@ -15,7 +15,7 @@ define(function(require) {
 				$scope.language = language.getText();
 			},
 		};
-	}
+	};
 
 	return ['language', SoundEditor];
 });

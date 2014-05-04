@@ -10,9 +10,10 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.actions';
 	var dependancies = [ 
-	                     actionModels, 
-	                     actionDirectives,
-	                     languageServices ];
+						actionModels, 
+						actionDirectives,
+						languageServices
+						];
 
 	var module = angular.module(moduleName, dependancies)
 		.controller('actionController', ActionController)

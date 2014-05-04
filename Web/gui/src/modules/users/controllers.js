@@ -9,15 +9,14 @@ define(function(require) {
 	var UserController = require('./UserController');
 
 	var moduleName = 'kasparGUI.users.controllers';
-	var dependancies = [ 
-		        			actionModels, 
-		        			languageServices,
-		        			triggerModels, 
-		        			userModels, 
-                         ];
+	var dependancies = [
+						actionModels, 
+						languageServices, 
+						triggerModels, 
+						userModels, 
+					];
 
-	var module = angular.module(moduleName, dependancies)
-		.controller('userController', UserController);
+	var module = angular.module(moduleName, dependancies).controller('userController', UserController);
 
 	return moduleName;
 });

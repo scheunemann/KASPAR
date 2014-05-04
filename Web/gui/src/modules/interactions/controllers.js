@@ -12,13 +12,13 @@ define(function(require) {
 	
 	var moduleName = 'kasparGUI.interactions.controllers';
 	var dependancies = [
-		        			operatorModels,
-		        			languageServices,
-		        			userModels,
-		        			triggerModels,
-		        			interactionModels,
-	                    	interactionDirectives,
-	                     ];
+						operatorModels,
+						languageServices,
+						userModels,
+						triggerModels,
+						interactionModels,
+						interactionDirectives,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.controller('interactionController', InteractionController);
