@@ -9,7 +9,6 @@
 		padding-left: 10px;
 		padding-right: 10px;
 	}
-
 	.battery .icon {
 		padding: 0px;
 		display: inline-block;
@@ -24,8 +23,7 @@
 		border-top-left-radius: 3px;
 		border-bottom-left-radius: 3px;
 	}
-
-	.battery .meter{
+	.battery .meter {
 		display: inline-block;
 		margin-bottom: 0px;
 		padding: 0px;
@@ -38,7 +36,6 @@
 		border-radius: 3px;
 		height: 34px;
 	}
-
 	.battery .meter div {
 		height: 100%;
 		width: 100%;
@@ -46,8 +43,7 @@
 		vertical-align: middle;
 		padding-top: 4px;
 	}
-	
-	.battery .meter div span{
+	.battery .meter div span {
 		height: 100%;
 		width: 100%;
 		text-align: center;
@@ -71,6 +67,10 @@ body {
 .maxHeight {
 	margin-top: 0px;
 	margin-bottom: 0px;
+}
+
+.logWindow {
+	height: 300px;
 }
 
 @media ( max-width : 767px ) {
@@ -199,18 +199,105 @@ body {
 	background-color: green;
 }
 
-.input-group-btn>.btn:first-child:not (:last-child ):not (.dropdown-toggle
-	) {
-	border-bottom-right-radius: 0;
-	border-top-right-radius: 0;
-}
+.input-group-btn
+>
+.btn
 
-.input-group-btn>.btn:last-child:not (:first-child ),.input-group-btn>.dropdown-toggle:not
-	(:first-child ) {
-	border-bottom-left-radius: 0;
-	border-top-left-radius: 0;
-}
 
+:first-child
+
+
+:not
+
+ 
+
+(
+:last-child
+
+ 
+
+)
+:not
+
+ 
+
+(
+.dropdown-toggle
+
+
+	
+
+)
+{
+border-bottom-right-radius
+
+
+:
+
+ 
+
+0;
+border-top-right-radius
+
+
+:
+
+ 
+
+0;
+}
+.input-group-btn
+>
+.btn
+
+
+:last-child
+
+
+:not
+
+ 
+
+(
+:first-child
+
+ 
+
+),
+.input-group-btn
+>
+.dropdown-toggle
+
+
+:not
+
+
+	
+
+(
+:first-child
+
+ 
+
+)
+{
+border-bottom-left-radius
+
+
+:
+
+ 
+
+0;
+border-top-left-radius
+
+
+:
+
+ 
+
+0;
+}
 .input-group-btn:not (:first-child ):not (:last-child )>.btn {
 	border-radius: 0;
 }
@@ -257,7 +344,8 @@ body {
 	color: #696969;
 	background-color: #dddddd;
 	background-image: -webkit-linear-gradient(top, #bbbbbb 0%, #dddddd 100%);
-	background-image:         linear-gradient(to bottom, #bbbbbb 0%, #dddddd 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffdddddd', GradientType=0);
+	background-image: linear-gradient(to bottom, #bbbbbb 0%, #dddddd 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbbbbbb',
+		endColorstr='#ffdddddd', GradientType=0);
 	background-repeat: repeat-x;
 }

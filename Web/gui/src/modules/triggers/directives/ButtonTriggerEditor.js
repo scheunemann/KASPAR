@@ -12,7 +12,6 @@ define(function(require) {
 			scope : {
 				button : "=trigger",
 				actions : "=",
-				triggers : "=",
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();

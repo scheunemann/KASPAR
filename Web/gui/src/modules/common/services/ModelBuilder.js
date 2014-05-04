@@ -50,6 +50,7 @@ define(function(require) {
 					},
 					get : {
 						method : 'GET',
+						cache: true,
 					},
 					query : {
 						method : 'GET',
@@ -73,8 +74,13 @@ define(function(require) {
 				var resource = $resource(url, params, methods);
 
 				resource.prototype.getProperty = function(propName) {
-					var subUrl = root.basePath + model + '/' + this.id + '/' + propName;
-					return $resource(subUrl, {}, defaultMethods).query();
+					var key = '$__' + propName;
+					if(this[key] === undefined) {
+						var subUrl = root.basePath + model + '/' + this.id + '/' + propName;
+						this[key] = $resource(subUrl, {}, defaultMethods).query();
+					}
+					
+					return this[key];
 				}
 
 				resource.prototype.getConcreteClassInstance = function() {
