@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+	'use strict';
 
 	// measures the time each task takes
 	require('time-grunt')(grunt);

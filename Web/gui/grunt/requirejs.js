@@ -7,10 +7,11 @@ module.exports = {
 			optimize : 'uglify2',
 			generateSourceMaps : true,
 			preserveLicenseComments : false,
-			findNestedDependencies : false,
+			findNestedDependencies : true,
 			removeCombined : true,
+		    keepBuildDir: true,
 			inlineText : true,
-			fileExclusionRegExp : /^\.|\.md|bower.json|package.json/,
+			fileExclusionRegExp : /^\.|\.md|bower_components|bower.json|package.json/,
 			paths : {
 				angular : 'empty:',
 				jquery : 'empty:',
@@ -28,12 +29,9 @@ module.exports = {
 			},
 			modules : [ {
 				name : 'app',
-				override : {
-					findNestedDependencies : true,
-				},
 				exclude : [
-//							'angular',
-//							'jquery',
+							'angular',
+							'jquery',
 							'jqueryUI',
 							'angularSlider',
 							'angularBoostrap',
