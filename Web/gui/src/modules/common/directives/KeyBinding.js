@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	var Mousetrap = require('mosetrap');
+	var Mousetrap = require('mousetrap');
 
 	var KeyBinding = function($timeout) {
 		return {

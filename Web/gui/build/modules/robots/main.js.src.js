@@ -8,10 +8,10 @@ define(['require','angular','./controllers','./directives','./models'],function(
 
 	var moduleName = 'kasparGUI.robots';
 	var dependancies = [ 
-							controllers,
-							directives,
-							models,					
-	                     ];
+						controllers,
+						directives,
+						models,					
+						];
 
 	var module = angular.module(moduleName, dependancies);
 	return moduleName;

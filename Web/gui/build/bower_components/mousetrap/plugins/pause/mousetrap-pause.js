@@ -1,2 +1,29 @@
-Mousetrap=function(Mousetrap){var self=Mousetrap,_originalStopCallback=self.stopCallback,enabled=!0;return self.stopCallback=function(e,element,combo){return enabled?_originalStopCallback(e,element,combo):!0},self.pause=function(){enabled=!1},self.unpause=function(){enabled=!0},self}(Mousetrap);
-//# sourceMappingURL=mousetrap-pause.js.map
+/**
+ * adds a pause and unpause method to Mousetrap
+ * this allows you to enable or disable keyboard shortcuts
+ * without having to reset Mousetrap and rebind everything
+ */
+/* global Mousetrap:true */
+Mousetrap = (function(Mousetrap) {
+    var self = Mousetrap,
+        _originalStopCallback = self.stopCallback,
+        enabled = true;
+
+    self.stopCallback = function(e, element, combo) {
+        if (!enabled) {
+            return true;
+        }
+
+        return _originalStopCallback(e, element, combo);
+    };
+
+    self.pause = function() {
+        enabled = false;
+    };
+
+    self.unpause = function() {
+        enabled = true;
+    };
+
+    return self;
+}) (Mousetrap);

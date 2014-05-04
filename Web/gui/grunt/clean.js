@@ -1,3 +1,3 @@
 module.exports = {
-	build : [ './dest' ]
+	dist : [ './build' ]
 }
