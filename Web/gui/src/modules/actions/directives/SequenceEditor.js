@@ -15,6 +15,13 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
+
+				$scope.$watch('sequence', function(sequence) {
+					if (sequence.ordered_actions === undefined) {
+						sequence.ordered_actions = [];
+					}
+				});
+
 				$scope.getName = function(actionId) {
 					if ($scope.actions !== undefined) {
 						for (var i = 0; i < $scope.actions.length; i++) {
@@ -28,7 +35,7 @@ define(function(require) {
 				$scope.moveActions = function(oactions, change) {
 					// Change == 1
 					// oactions.length = 3
-					// ordered_actions.lenght = 7
+					// ordered_actions.length = 7
 					// for action in oactions:
 					// order += change
 					// if exists(ordered_actions.order)
@@ -81,15 +88,11 @@ define(function(require) {
 				};
 
 				$scope.addActions = function(actions) {
-					if ($scope.sequence.ordered_actions === undefined) {
-						$scope.sequence.ordered_actions = [];
-					}
-
 					var successFunc = function(result) {
 						$scope.sequence.ordered_actions.push(result);
 						$scope.saveAll();
 					};
-					
+
 					for (var i = 0; i < actions.length; i++) {
 						var oa = new SequenceOrder();
 						oa.order = $scope.sequence.ordered_actions.length;
