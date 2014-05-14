@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import os
 import sys
 import logging
@@ -7,7 +7,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 
 from Config.config import webConfig, configureLogging
 from werkzeug.wsgi import DispatcherMiddleware
-from werkzeug.serving import run_simple
+# from werkzeug.serving import run_simple
+# We use websockets inside the robotinterface, this doesn't work with the werkzeug server
+from flask.ext.socketio import SocketIO
 siteRoot = None
 
 
@@ -32,10 +34,11 @@ def runSite():
     if siteRoot == None:
         raise Exception("Site not configured, run configureSite() first")
 
+    siteRoot = SocketIO(siteRoot)
     host = webConfig.get('server.socket_host', 'localhost')
     port = webConfig.get('server.socket_port', 5000)
     # start the server, use_reloader=False allows debugging in the IDE
-    run_simple(host, port, siteRoot, threaded=True, use_reloader=False)
+    siteRoot.run(host, port, siteRoot, threaded=True, use_reloader=False)
 
 if __name__ == '__main__':
     configureSite()

@@ -1,11 +1,13 @@
 from flask.ext.restless import APIManager
 from flask.ext.restless.views import get_relations
 from flask import Flask
+from flask.ext.socketio import SocketIO
 from modules import blueprints, models
 from database import db_session
 from Model import Base
 
 root = Flask(__name__, static_folder=None)
+SocketIO(root)
 manager = APIManager(root, session=db_session)
 
 
