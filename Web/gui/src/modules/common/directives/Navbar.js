@@ -14,11 +14,6 @@ define(function(require) {
 			controller : function($scope, language) {
 				$scope.language = language.getText();
 				$scope.groups = Menu.query();
-				
-				$scope.getText = function(key) {
-					//Not sure why this doesn't work from the view
-					return $scope.language[key];
-				};
 			},
 		};
 	};

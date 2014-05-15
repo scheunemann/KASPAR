@@ -11,7 +11,8 @@
     "angular-bootstrap": "~0.10.0",
     "mousetrap": "~1.4.6",
     "jquery": "~1.10.2",
-    "requirejs-text": "~2.0.10"
+    "requirejs-text": "~2.0.10",
+    "socket.io-client": "~0.9.16"
   },
   "private": true,
   "dependencies": {},

@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	var RobotInterface = require('./RobotInterface'); 
+	var RobotInterface = require('./RobotInterfaceIO'); 
 
 	var moduleName = 'kasparGUI.robot.interfaceServices';
 	var dependancies = [];

@@ -1,7 +1,7 @@
 'use strict';
 
 define(function(require) {
-	var io = require('socket.io');
+	var io = require('socketio');
 
 	var Sensor = function() {
 		return {
@@ -24,8 +24,10 @@ define(function(require) {
 		}
 	};
 
-	var RobotInterface = function(socketFactory, $rootScope, modelBuilder) {
-		var robotSocket = io.connect(modelBuilder.basePath + 'Robot/Interface');
+	var RobotInterface = function($rootScope, modelBuilder) {
+		var robotSocket = io.connect('/Robot/Interface', {
+			resource : 'api/socket.io'
+		});
 		var self = this;
 		var connected = false;
 		var robotId = null;
@@ -40,7 +42,9 @@ define(function(require) {
 			robotSocket.on(eventName, function() {
 				var args = arguments;
 				$rootScope.$apply(function() {
-					callback.apply(socket, args);
+					var json = args[0];
+					var obj = angular.fromJson(json);
+					callback.apply(robotSocket, [obj]);
 				});
 			});
 		};
@@ -50,23 +54,22 @@ define(function(require) {
 				var args = arguments;
 				$rootScope.$apply(function() {
 					if (callback) {
-						callback.apply(socket, args);
+						var json = args[0];
+						var obj = angular.fromJson(json);
+						callback.apply(robotSocket, [obj]);
 					}
 				});
 			});
 		};
 
 		var sendChanges = function(newValue, oldValue) {
-			if (robotId == null || !connected) {
-				return;
-			}
+			if (robotId == null || !connected) { return; }
 
 			var servos = [];
 			// Watcher is on the top level array, filter to only changed servos
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				if (oldValue === undefined || oldValue[servoName] === undefined
-						|| servo.position != oldValue[servoName].position
+				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position
 						|| servo.poseable != oldValue[servoName].poseable) {
 					servos.push({
 						id : servo.id,
@@ -85,43 +88,39 @@ define(function(require) {
 			}
 		};
 
-		on(
-				'getData',
-				function(dataPackage) {
-					if (!connected) {
-						return;
-					}
+		on('getData', function(dataPackage) {
+			if (!connected) { return; }
 
-					for ( var i = 0; i < dataPackage.servos.length; i++) {
-						var servo = dataPackage.servos[i];
-						if (components.servos[servo.jointName] == undefined) {
-							components.servos[servo.jointName] = new Servo();
-							components.servos[servo.jointName].jointName = servo.jointName;
-						}
+			for (var i = 0; i < dataPackage.servos.length; i++) {
+				var servo = dataPackage.servos[i];
+				if (components.servos[servo.jointName] == undefined) {
+					components.servos[servo.jointName] = new Servo();
+					components.servos[servo.jointName].jointName = servo.jointName;
+				}
 
-						components.servos[servo.jointName].id = servo.id;
-						components.servos[servo.jointName].actual.position = servo.position;
-						components.servos[servo.jointName].actual.poseable = servo.poseable;
-					}
+				components.servos[servo.jointName].id = servo.id;
+				components.servos[servo.jointName].actual.position = servo.position;
+				components.servos[servo.jointName].actual.poseable = servo.poseable;
+			}
 
-					for ( var i = 0; i < dataPackage.sensors.length; i++) {
-						var sensor = dataPackage.sensors[i];
-						if (components.sensors[sensor.name] == undefined) {
-							components.sensors[sensor.name] = new Sensor();
-							components.sensors[sensor.name].name = sensor.name;
-						}
+			for (var i = 0; i < dataPackage.sensors.length; i++) {
+				var sensor = dataPackage.sensors[i];
+				if (components.sensors[sensor.name] == undefined) {
+					components.sensors[sensor.name] = new Sensor();
+					components.sensors[sensor.name].name = sensor.name;
+				}
 
-						components.sensors[sensor.name].id = sensor.id;
-						components.sensors[sensor.name].value = sensor.value;
-					}
-				});
+				components.sensors[sensor.name].id = sensor.id;
+				components.sensors[sensor.name].value = sensor.value;
+			}
+		});
 
 		$rootScope.$watch(function() {
 			return components.servos;
 		}, sendChanges, true);
 
 		this.setRobot = function(robot) {
-			if (robot == null && robotId != null) {
+			if (robot === undefined || robot == null && robotId != null) {
 				this.setConnected(false);
 				robotId = null;
 				return;
@@ -146,9 +145,7 @@ define(function(require) {
 		};
 
 		this.getSensor = function(sensorName) {
-			if (sensorName === undefined) {
-				return null;
-			}
+			if (sensorName === undefined) { return null; }
 
 			if (components.sensors[sensorName] === undefined) {
 				components.sensors[sensorName] = new Sensor();
@@ -159,9 +156,7 @@ define(function(require) {
 		}
 
 		this.getServo = function(componentName) {
-			if (componentName === undefined) {
-				return null;
-			}
+			if (componentName === undefined) { return null; }
 
 			if (components.servos[componentName] == undefined) {
 				components.servos[componentName] = new Servo();
@@ -172,5 +167,5 @@ define(function(require) {
 		}
 	};
 
-	return [ 'socketFactory', '$rootScope', 'modelBuilder', RobotInterface ];
+	return [ '$rootScope', 'modelBuilder', RobotInterface ];
 });

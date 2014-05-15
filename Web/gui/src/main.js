@@ -11,6 +11,7 @@ require.config({
 		mousetrap : 'bower_components/mousetrap/mousetrap',
 		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause',
 		text : 'bower_components/requirejs-text/text',
+		socketio: 'bower_components/socket.io-client/dist/socket.io',
 		categories : 'categories',
 	},
 	shim : {
@@ -48,6 +49,9 @@ require.config({
 		},
 		'jqueryUI' : {
 			deps : [ 'jquery', ]
+		},
+		'socketio': {
+			exports: 'io'
 		},
 		'mousetrap' : {
 			exports : 'Mousetrap'

@@ -53,15 +53,14 @@
 					<option value="">{{language['trigger.sensor.advanced.compare.select.prompt']}}</option>
 				</select>
 				<div
-					ui-slider
+					guislider
 					name="sensorValue"
 					saveable
 					required
 					style="width: 75%"
-					class="form-control"
-					min="{{sensor.value_type.minValue}}"
-					max="{{sensor.value_type.maxValue}}"
-					step="{{math.pow(10, -1 * sensor.value_type.precision)}}"
+					floor="sensor.value_type.minValue"
+					ceiling="sensor.value_type.maxValue"
+					step="math.pow(10, -1 * sensor.value_type.precision)"
 					ng-model="trigger.sensorValue"></div>
 				<div
 					ng-if="sensor.value_type.type=='ContinuousValueType'"

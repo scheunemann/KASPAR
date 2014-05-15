@@ -36,3 +36,15 @@ blueprints.extend(trigger.blueprints)
 import user
 models.extend(user.models)
 blueprints.extend(user.blueprints)
+
+
+def init_app(app):
+    # Settings for eclipse ide debugger
+    from gevent import monkey
+    def noop(*args, **kwargs):
+        return
+    monkey.patch_time = noop
+    monkey.patch_thread = noop
+
+    import robotInterface
+    robotInterface.init_app(app)

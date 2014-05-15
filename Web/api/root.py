@@ -1,14 +1,30 @@
 from flask.ext.restless import APIManager
 from flask.ext.restless.views import get_relations
 from flask import Flask
-from flask.ext.socketio import SocketIO
-from modules import blueprints, models
+from modules import blueprints, models, init_app as moduleInit
 from database import db_session
 from Model import Base
 
 root = Flask(__name__, static_folder=None)
-SocketIO(root)
-manager = APIManager(root, session=db_session)
+manager = APIManager()
+
+
+def init_app(app):
+    moduleInit(app)
+
+    manager.init_app(app, session=db_session)
+    for opts in models:
+        opts.setdefault('kwargs', {})
+        opts['kwargs'].setdefault('methods', ['GET', 'PUT', 'POST', 'DELETE'])
+        opts['kwargs'].setdefault('results_per_page', None)
+        opts['kwargs'].setdefault('url_prefix', '')
+        opts['kwargs'].setdefault('max_results_per_page', None)
+        opts['kwargs'].setdefault('include_methods', get_includes(opts['class']))
+        opts['kwargs'].setdefault('preprocessors', {'PATCH_SINGLE': [__delink], 'POST': [__delink]})
+        manager.create_api(opts['class'], **opts['kwargs'])
+
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
 
 
 def __delink(data, **kwargs):
@@ -23,32 +39,20 @@ def __delink(data, **kwargs):
         __delink(value)
 
 
-def __link(instance):
-    name = type(instance).__name__
-    link = "%s/%s" % (name, instance.id)
-    return {'model': name, 'href': link}
-
-Base._link = __link
-
-
 def get_includes(class_):
     includes = ['_link', ]
     for item in frozenset(get_relations(class_)):
         includes.append(item + '._link')
     return includes
 
-for opts in models:
-    opts.setdefault('kwargs', {})
-    opts['kwargs'].setdefault('methods', ['GET', 'PUT', 'POST', 'DELETE'])
-    opts['kwargs'].setdefault('results_per_page', None)
-    opts['kwargs'].setdefault('url_prefix', '')
-    opts['kwargs'].setdefault('max_results_per_page', None)
-    opts['kwargs'].setdefault('include_methods', get_includes(opts['class']))
-    opts['kwargs'].setdefault('preprocessors', {'PATCH_SINGLE': [__delink], 'POST': [__delink]})
-    manager.create_api(opts['class'], **opts['kwargs'])
 
-for blueprint in blueprints:
-    root.register_blueprint(blueprint)
+def __link(instance):
+    name = type(instance).__name__
+    link = "%s/%s" % (name, instance.id)
+    return {'model': name, 'href': link}
+
+Base._link = __link
+init_app(root)
 
 
 @root.teardown_appcontext

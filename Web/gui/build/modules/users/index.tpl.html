@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<form
-		ng-show="selectedUser"
+		ng-if="selectedUser"
 		name="userForm"
 		model="selectedUser">
 		<div class="input-group">
@@ -77,15 +77,14 @@
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon inputLabel">{{language['user.speedModifier']}}</span>
-			<div ui-slider
+			<div
+				guislider
 				name="speed"
 				saveable
-				class="form-control"
-				min="1"
-				max="300"
+				floor="1"
+				ceiling="300"
 				ng-disabled="true"
-				ng-model="selectedUser.speedmodifier"
-				step="1"> </div>
+				ng-model="selectedUser.speedmodifier"></div>
 			<span class="input-group-addon">{{selectedUser.speedmodifier}}%</span>
 		</div>
 	</form>

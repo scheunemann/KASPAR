@@ -89,7 +89,7 @@ define(function(require) {
 				};
 
 				$scope.writeToServo = function() {
-					if ($scope.jointPosition !== undefined && $scope.servoInt !== undefined) {
+					if ($scope.jointPosition && $scope.servoInt) {
 						$scope.servoInt.speed = $scope.jointPosition.speed;
 						$scope.servoInt.position = $scope.jointPosition.position;
 					}

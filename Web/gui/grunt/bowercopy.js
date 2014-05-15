@@ -1,10 +1,7 @@
 module.exports = {
-	options : {
-		clean : true,
-		srcPrefix : './bower_components'
-	},
-	src : {
+	libs : {
 		options : {
+			srcPrefix : './bower_components',
 			destPrefix : './build/bower_components'
 		},
 		files : {
@@ -23,6 +20,8 @@ module.exports = {
 			"mousetrap/plugins/pause/mousetrap-pause.js" : "mousetrap/plugins/pause/mousetrap-pause.js",
 			"requirejs/require.js" : "requirejs/require.js",
 			"requirejs-text/text.js" : "requirejs-text/text.js",
+			"socket.io-client/dist/socket.io.js" : "socket.io-client/dist/socket.io.js",
+			"socket.io-client/dist/WebSocketMain.swf" : "socket.io-client/dist/WebSocketMain.swf",
 		}
 	},
 }
