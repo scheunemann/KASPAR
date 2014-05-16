@@ -24,11 +24,13 @@ define(function(require) {
 		}
 	};
 
-	var RobotInterface = function($rootScope, modelBuilder) {
+	var RobotInterface = function($rootScope) {
 		var robotSocket = io.connect('/Robot/Interface', {
 			resource : 'api/socket.io'
 		});
 		var self = this;
+		var saving = false;
+		var delayedSave = null;
 		var connected = false;
 		var robotId = null;
 		var components = {
@@ -81,9 +83,26 @@ define(function(require) {
 			}
 
 			if (servos.length > 0) {
-				emit('setData', {
+				// Prevents flooding the server (which ends up queueing the requests)
+				save({
 					id : robotId,
 					servos : servos,
+				});
+			}
+		};
+		
+		var save = function(data) {
+			if(saving) {
+				delayedSave = data;
+			} else {
+				saving = true;
+				emit('setData', data, function() {
+					saving = false;
+					if(delayedSave != null) {
+						var next = delayedSave;
+						delayedSave = null;
+						save(next);
+					}
 				});
 			}
 		};
@@ -167,5 +186,5 @@ define(function(require) {
 		}
 	};
 
-	return [ '$rootScope', 'modelBuilder', RobotInterface ];
+	return [ '$rootScope', RobotInterface ];
 });
