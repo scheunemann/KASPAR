@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.3.0-build.2692+sha.7f5e0f0
+ * @license AngularJS v1.3.0-build.2703+sha.52cae5b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2692+sha.7f5e0f0/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2703+sha.52cae5b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1512,9 +1512,9 @@ function bindJQuery() {
   var originalCleanData;
   // bind to jQuery if present;
   jQuery = window.jQuery;
-
-  // reset to jQuery or default to us.
-  if (jQuery) {
+  // Use jQuery if it exists with proper functionality, otherwise default to us.
+  // Angular 1.2+ requires jQuery 1.7.1+ for on()/off() support.
+  if (jQuery && jQuery.fn.on) {
     jqLite = jQuery;
     extend(jQuery.fn, {
       scope: JQLitePrototype.scope,
@@ -2037,7 +2037,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.2692+sha.7f5e0f0',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.2703+sha.52cae5b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -14978,8 +14978,8 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
       fractionSize = Math.min(Math.max(pattern.minFrac, fractionLen), pattern.maxFrac);
     }
 
-    var pow = Math.pow(10, fractionSize);
-    number = Math.round(number * pow) / pow;
+    var pow = Math.pow(10, fractionSize + 1);
+    number = Math.floor(number * pow + 5) / pow;
     var fraction = ('' + number).split(DECIMAL_SEP);
     var whole = fraction[0];
     fraction = fraction[1] || '';
@@ -19616,16 +19616,16 @@ var ngCloakDirective = ngDirective({
             {type:'email', value:'john.smith@example.org'} ];
 
           $scope.greet = function() {
-           alert(this.name);
+           alert($scope.name);
           };
 
           $scope.addContact = function() {
-           this.contacts.push({type:'email', value:'yourname@example.org'});
+           $scope.contacts.push({type:'email', value:'yourname@example.org'});
           };
 
           $scope.removeContact = function(contactToRemove) {
-           var index = this.contacts.indexOf(contactToRemove);
-           this.contacts.splice(index, 1);
+           var index = $scope.contacts.indexOf(contactToRemove);
+           $scope.contacts.splice(index, 1);
           };
 
           $scope.clearContact = function(contact) {

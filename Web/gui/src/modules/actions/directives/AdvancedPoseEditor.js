@@ -15,9 +15,14 @@ define(function(require) {
 				pose : "=",
 				robot : "=",
 				connected : "=",
+				advanced: "=?",
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
+				if($scope.advanced === undefined) {
+					$scope.advanced = !($scope.connected || false);
+				}
+				
 				$scope.$watch('pose.jointPositions', function(jointPositions) {
 					$scope.getGroups(jointPositions, $scope.robot);
 				});
@@ -64,7 +69,8 @@ define(function(require) {
 					if (joints.length > 0) {
 						result = [ ids, {
 							'name' : servoGroup.name,
-							'rows' : joints
+							'rows' : joints,
+							'poseable': false,
 						} ];
 					}
 
@@ -79,12 +85,7 @@ define(function(require) {
 					}
 
 					var groups = [];
-					if (robot === undefined) {
-						$scope.groups = [ {
-							'name' : 'Pose Joints',
-							'rows' : posCopy
-						} ];
-					} else {
+					if (robot) {
 						robot.getProperty('servoGroups').$promise.then(function(servoGroups) {
 							var res = [];
 							for (var servoGroupIndex = 0; servoGroupIndex < servoGroups.length; servoGroupIndex++) {
@@ -109,12 +110,19 @@ define(function(require) {
 							if (posCopy.length > 0) {
 								groups.push({
 									'name' : 'No Group',
-									'rows' : posCopy
+									'rows' : posCopy,
+									'poseable': false,
 								});
 							}
 
 							$scope.groups = groups;
 						});
+					} else {
+						$scope.groups = [ {
+							'name' : 'Pose Joints',
+							'rows' : posCopy,
+							'poseable': false,
+						} ];
 					}
 				};
 

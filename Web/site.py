@@ -29,7 +29,7 @@ def configureSite():
     apiRoot.server = server
 
     # Configure logging
-    configureLogging()
+    configureLogging(logging.DEBUG)
 
     # Disable connection for debugging without a robot
     from Robot.ServoInterface import ServoInterface

@@ -15,6 +15,8 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
+				$scope.connected = false;
+				$scope.advanced = !$scope.connected;
 				$scope.advancedopen = true;
 				$scope.basicopen = false;
 				

@@ -30,7 +30,7 @@ def init_app(app):
 
 
 def sendMessage(robotId, msg):
-    args = (dumps(msg), )
+    args = (dumps(msg),)
     kwargs = {'namespace': __NAMESPACE, 'room': robotId}
     if request:
         emit(__SERVERMSG, *args, **kwargs)
@@ -82,8 +82,8 @@ def configure(data):
     if connect:
         robot = _getRobot(robotId)
         msg = _getRobotPacket(robotId, robot)
-        sendMessage(robotId, msg)
         join_room(robotId)
+        sendMessage(robotId, msg)
     else:
         leave_room(robotId)
 
@@ -106,6 +106,7 @@ def _loop_internal():
                 _updateStatus(robot)
                 msg = _getRobotPacket(robotId, robot, lastMsg)
                 if msg['sensors'] or msg['servos']:
+                    log.debug('Sending robot state')
                     sendMessage(robotId, msg)
 
         time.sleep(0.01)
