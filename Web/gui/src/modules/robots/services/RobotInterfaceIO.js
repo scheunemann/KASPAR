@@ -1,6 +1,7 @@
 'use strict';
 
 define(function(require) {
+	var angular = require('angular');
 	var io = require('socketio');
 
 	var Sensor = function() {
@@ -8,7 +9,7 @@ define(function(require) {
 			id : null,
 			name : null,
 			value : null,
-		}
+		};
 	};
 
 	var Servo = function() {
@@ -21,14 +22,16 @@ define(function(require) {
 			poseable : null,
 			position : null,
 			jointName : null,
-		}
+		};
 	};
 
-	var RobotInterface = function($rootScope, modelBuilder) {
+	var RobotInterface = function($rootScope) {
 		var robotSocket = io.connect('/Robot/Interface', {
 			resource : 'api/socket.io'
 		});
 		var self = this;
+		var saving = false;
+		var delayedSave = null;
 		var connected = false;
 		var robotId = null;
 		var components = {
@@ -63,37 +66,54 @@ define(function(require) {
 		};
 
 		var sendChanges = function(newValue, oldValue) {
-			if (robotId == null || !connected) { return; }
+			if (robotId === null || !connected) { return; }
 
 			var servos = [];
 			// Watcher is on the top level array, filter to only changed servos
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position
-						|| servo.poseable != oldValue[servoName].poseable) {
+				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position || servo.poseable != oldValue[servoName].poseable) {
 					servos.push({
 						id : servo.id,
 						position : servo.position,
 						poseable : servo.poseable,
 						jointName : servoName,
-					})
+					});
 				}
 			}
 
 			if (servos.length > 0) {
-				emit('setData', {
+				// Prevents flooding the server (which ends up queueing the requests)
+				save({
 					id : robotId,
 					servos : servos,
+				});
+			}
+		};
+		
+		var save = function(data) {
+			if(saving) {
+				delayedSave = data;
+			} else {
+				saving = true;
+				emit('setData', data, function() {
+					saving = false;
+					if(delayedSave !== null) {
+						var next = delayedSave;
+						delayedSave = null;
+						save(next);
+					}
 				});
 			}
 		};
 
 		on('getData', function(dataPackage) {
 			if (!connected) { return; }
+			console.log(dataPackage);
 
-			for (var i = 0; i < dataPackage.servos.length; i++) {
-				var servo = dataPackage.servos[i];
-				if (components.servos[servo.jointName] == undefined) {
+			for (var servoIndex = 0; servoIndex < dataPackage.servos.length; servoIndex++) {
+				var servo = dataPackage.servos[servoIndex];
+				if (components.servos[servo.jointName] === undefined) {
 					components.servos[servo.jointName] = new Servo();
 					components.servos[servo.jointName].jointName = servo.jointName;
 				}
@@ -103,9 +123,9 @@ define(function(require) {
 				components.servos[servo.jointName].actual.poseable = servo.poseable;
 			}
 
-			for (var i = 0; i < dataPackage.sensors.length; i++) {
-				var sensor = dataPackage.sensors[i];
-				if (components.sensors[sensor.name] == undefined) {
+			for (var sensorIndex = 0; sensorIndex < dataPackage.sensors.length; sensorIndex++) {
+				var sensor = dataPackage.sensors[sensorIndex];
+				if (components.sensors[sensor.name] === undefined) {
 					components.sensors[sensor.name] = new Sensor();
 					components.sensors[sensor.name].name = sensor.name;
 				}
@@ -120,7 +140,7 @@ define(function(require) {
 		}, sendChanges, true);
 
 		this.setRobot = function(robot) {
-			if (robot === undefined || robot == null && robotId != null) {
+			if (robot === undefined || robot === null && robotId !== null) {
 				this.setConnected(false);
 				robotId = null;
 				return;
@@ -143,6 +163,10 @@ define(function(require) {
 				});
 			}
 		};
+		
+		this.getConnected = function() {
+			return connected;
+		};
 
 		this.getSensor = function(sensorName) {
 			if (sensorName === undefined) { return null; }
@@ -153,19 +177,19 @@ define(function(require) {
 			}
 
 			return components.sensors[sensorName];
-		}
+		};
 
 		this.getServo = function(componentName) {
 			if (componentName === undefined) { return null; }
 
-			if (components.servos[componentName] == undefined) {
+			if (components.servos[componentName] === undefined) {
 				components.servos[componentName] = new Servo();
 				components.servos[componentName].jointName = componentName;
 			}
 
 			return components.servos[componentName];
-		}
+		};
 	};
 
-	return [ '$rootScope', 'modelBuilder', RobotInterface ];
+	return [ '$rootScope', RobotInterface ];
 });

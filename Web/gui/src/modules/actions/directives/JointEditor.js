@@ -15,12 +15,23 @@ define(function(require) {
 				servo : "=",
 				servoPositions : "=",
 				connected : "=",
+				groupPoseable: "=?poseable",
+				advanced: "=?",
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-
+				if ($scope.advanced === undefined) {
+					$scope.advanced = !($scope.connected || false);
+				}
+				
+				//One way binding
+				$scope.poseable = false;
+				$scope.$watch('groupPoseable', function(value) {
+					$scope.poseable = value;
+				});
+				
 				var checkPositions = function() {
-					if($scope.jointPosition !== undefined) {
+					if($scope.jointPosition) {
 						if($scope.jointPosition.position === undefined || $scope.jointPosition.position === null) {
 							if($scope.servo !== undefined && $scope.servo !== null &&
 								$scope.servo.defaultPosition !== undefined && $scope.servo.defaultPosition !== null) {
@@ -88,16 +99,22 @@ define(function(require) {
 					return null;
 				};
 
-				$scope.writeToServo = function() {
-					if ($scope.jointPosition && $scope.servoInt) {
+				var writeToServo = function() {
+					if ($scope.jointPosition && $scope.servoInt && $scope.advanced) {
 						$scope.servoInt.speed = $scope.jointPosition.speed;
 						$scope.servoInt.position = $scope.jointPosition.position;
+						$scope.servoInt.poseable = $scope.poseable;
 					}
 				};
 
-				$scope.$watch('jointPosition.position', function() {
-					$scope.writeToServo();
+				$scope.$watch('servoInt.actual.position', function(value) {
+					if(!$scope.advanced && $scope.jointPosition) {
+						$scope.jointPosition.position = value;
+					}
 				});
+								
+				$scope.$watch('jointPosition.position', writeToServo);
+				$scope.$watch('poseable', writeToServo);
 			},
 		};
 	};

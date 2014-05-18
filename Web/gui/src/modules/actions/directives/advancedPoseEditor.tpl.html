@@ -1,9 +1,14 @@
-
 <div
 	class="panel panel-default"
 	ng-repeat="group in groups | orderBy:'name'">
-	<div class="panel-heading">
-		<h4 class="panel-title">{{group.name}}</h4>
+	<div class="panel-heading clearfix">
+		<h4 class="panel-title pull-left">{{group.name}}</h4>
+		<button
+			ng-hide="advanced"
+			type="button"
+			class="btn btn-primary btn-panel check pull-right"
+			ng-model="group.poseable"
+			btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
 	</div>
 	<div class="panel-body">
 		<div
@@ -12,6 +17,8 @@
 			<joint-editor
 				joint-names="joints"
 				joint-position="jointPosition"
+				poseable="group.poseable"
+				advanced="advanced"
 				servo-position="getPosition(jointPosition.jointName, servoPositions)"
 				servo="getServo(jointPosition.jointName, robot.servos)"></joint-editor>
 		</div>

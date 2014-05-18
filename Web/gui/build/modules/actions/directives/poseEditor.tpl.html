@@ -50,21 +50,40 @@
 <hr />
 <robot-interface
 	robot="robot"
+	connected="connected"
 	show-connect="true"></robot-interface>
 <hr />
-<accordion close-others="true"> <accordion-group
-	is-open="basicopen"> <accordion-heading>
-Basic <i
-	class="pull-right glyphicon"
-	ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i>
-</accordion-heading> <basic-pose-editor
-	pose="pose"
-	robot="robot"></basic-pose-editor></accordion-group> <accordion-group
-	is-open="advancedopen"> <accordion-heading>
-Detailed <i
-	class="pull-right glyphicon"
-	ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i>
-</accordion-heading> <advanced-pose-editor
+<div class="input-group" ng-show="connected">
+	<div class="input-group-addon">{{language['action.pose.type.prompt']}}</div>
+	<div class="btn-group">
+		<button
+			type="button"
+			class="btn btn-primary check"
+			ng-model="advanced"
+			btn-radio="false">{{language['action.pose.basic.label']}}</button>
+		<button
+			type="button"
+			class="btn btn-primary check"
+			ng-model="advanced"
+			btn-radio="true">{{language['action.pose.advanced.label']}}</button>
+	</div>
+</div>
+<!-- <accordion close-others="true"> <accordion-group -->
+<!-- 	is-open="basicopen"> <accordion-heading> -->
+<!-- action.pose.basic <i -->
+<!-- 	class="pull-right glyphicon" -->
+<!-- 	ng-class="{'glyphicon-chevron-down': basicopen, 'glyphicon-chevron-right': !basicopen}"></i> -->
+<!-- </accordion-heading> <basic-pose-editor -->
+<!-- 	pose="pose" -->
+<!-- 	robot="robot"></basic-pose-editor></accordion-group> <accordion-group -->
+<!-- 	is-open="advancedopen"> <accordion-heading> -->
+<!-- action.pose.advanced <i -->
+<!-- 	class="pull-right glyphicon" -->
+<!-- 	ng-class="{'glyphicon-chevron-down': advancedopen, 'glyphicon-chevron-right': !advancedopen}"></i> -->
+<!-- </accordion-heading> -->
+<advanced-pose-editor
 	pose="pose"
 	connected="connected"
-	robot="robot"></advanced-pose-editor> </accordion-group> </accordion>
+	advanced="advanced"
+	robot="robot"></advanced-pose-editor>
+<!-- 	 </accordion-group> </accordion> -->
