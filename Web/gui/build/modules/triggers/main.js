@@ -1,18 +1,2 @@
-'use strict';
-
-define(function(require) {
-	var angular = require('angular');
-	var controllers = require('./controllers');
-	var directives = require('./directives');
-	var models = require('./models');
-
-	var moduleName = 'kasparGUI.triggers';
-	var dependancies = [ 
-						controllers,
-						directives,
-						models
-					];
-
-	var module = angular.module(moduleName, dependancies);
-	return moduleName;
-});
+define(["require","angular","./controllers","./directives","./models"],function(require){{var angular=require("angular"),controllers=require("./controllers"),directives=require("./directives"),models=require("./models"),moduleName="kasparGUI.triggers",dependancies=[controllers,directives,models];angular.module(moduleName,dependancies)}return moduleName});
+//# sourceMappingURL=main.js.map
