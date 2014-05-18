@@ -37,7 +37,7 @@ class ConsoleHandler(logging.StreamHandler):
 
 def configureLogging(level=logging.NOTSET):
     root_logger = logging.getLogger()
-    root_logger.setLevel(0)
+    root_logger.setLevel(2)
     logging.addLevelName(1, 'VERBOSE')
     if not [h for h in root_logger.handlers if isinstance(h, ConsoleHandler)]:
         # No stream handler found, add one

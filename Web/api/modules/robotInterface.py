@@ -42,7 +42,7 @@ def sendMessage(robotId, msg):
 def receiveMessage(data):
     # data = {u'servos': [{u'position': u'0', u'jointName': u'EYES_UD', u'id': None, u'poseable': None}, ], u'id': 1}
     try:
-        robotId = data.get('robotId', None)
+        robotId = data.get('id', None)
         if robotId == None:
             # TODO: error handling
             log.warning('No robotId received in packet')
@@ -50,10 +50,14 @@ def receiveMessage(data):
         robot = _getRobot(robotId)
         for servoData in data.get('servos', []):
             servoId = servoData.get('id', None)
-            if servoId == None:
-                log.warning('No servoId received in packet')
-                # TODO: Error handling
-                continue
+            if servoId == None and servoData.get('jointName', None):
+                matches = [k for k, v in robot['servos'].iteritems() if v['jointName'] == servoData['jointName']]
+                if not matches:
+                    # TODO: Error handling
+                    log.warning('No servoId received in packet')
+                    continue
+                else:
+                    servoId = matches[0]
 
             servo = robot['servos'].get(servoId, None)
             if servo == None:
@@ -64,7 +68,7 @@ def receiveMessage(data):
                 try:
                     interface = servo['interface']
                     if 'position' in servoData:
-                        interface.setPosition(servoData.get('position', None), servoData.get('speed', None))
+                        interface.setPosition(servoData.get('position', None), servoData.get('speed', 100))
                     if 'poseable' in servoData:
                         interface.setPositioning(servoData.get('poseable', False))
                 except Exception as e:
@@ -126,7 +130,7 @@ def _getRobotPacket(robotId, robot, timefilter=None):
                  'value': servo['value'],
                  'poseable': servo['poseable'],
                  'timestamp': servo['timestamp'],
-                 'name': servo['name'],
+                 'jointName': servo['jointName'],
                  })
 
     for sensorId, sensor in robot['sensors'].iteritems():
@@ -155,7 +159,7 @@ def _getRobot(robotId):
                                             'value': None,
                                             'poseable': None,
                                             'timestamp': None,
-                                            'name': servo.jointName,
+                                            'jointName': servo.jointName,
                                             'interface': ServoInterface.getServoInterface(servo)
                                            }
 
