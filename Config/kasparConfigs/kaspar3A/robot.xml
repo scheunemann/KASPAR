@@ -136,7 +136,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="5">
 			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>460</CENTER>
+			<CENTER>600</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-17</MIN>
@@ -149,11 +149,11 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="6">
 			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>480</CENTER>
+			<CENTER>450</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-14</MIN>
-					<MAX>10</MAX>
+					<MIN>-15</MIN>
+					<MAX>15</MAX>
 				</POS>
 			</LIMITS>
 			<DEFAULT>
@@ -262,7 +262,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="2">
 			<NAME>EYE_R_LID</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1600</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>0</MIN>
@@ -272,7 +272,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="1">
 			<NAME>EYE_R_LR</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1450</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-36</MIN>
@@ -282,7 +282,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="0">
 			<NAME>EYEBALL_R_UD</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1575</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-36</MIN>
@@ -292,7 +292,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="3">
 			<NAME>EYE_L_LR</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1450</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-36</MIN>
@@ -302,7 +302,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="4">
 			<NAME>EYE_L_LID</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1350</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-90</MIN>
@@ -312,7 +312,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="5">
 			<NAME>EYEBALL_L_UD</NAME>
-			<CENTER>1500</CENTER>
+			<CENTER>1325</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-36</MIN>
