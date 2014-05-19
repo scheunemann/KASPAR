@@ -86,11 +86,11 @@
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
-			<HERKULEX_BATTERY>
+			<HERKULEX_LiFe_BATTERY>
 				<PORT>/dev/ttyACM3</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;25</ONSTATE>
-			</HERKULEX_BATTERY>
+			</HERKULEX_LiFe_BATTERY>
 		</ROBOT>
 	</SENSORCONFIGS>
 
@@ -406,7 +406,7 @@
 
 	<SENSORLIST>
 		<ROBOT>
-			<SENSOR type="HERKULEX_BATTERY" datatype="continuous" id="1">
+			<SENSOR type="HERKULEX_LiFe_BATTERY" datatype="continuous" id="1">
 				<NAME>BATTERY</NAME>
 				<LIMITS>
 					<MAX>100</MAX>
