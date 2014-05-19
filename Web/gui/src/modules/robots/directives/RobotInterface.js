@@ -13,11 +13,16 @@ define(function(require) {
 			restrict : 'E',
 			scope : {
 				robot : "=",
+				connected: "=?",
 				showConnect : "=?"
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-				if ($scope.showConnect == undefined) {
+				if ($scope.connected === undefined) {
+					$scope.connected = false;
+				}
+				
+				if ($scope.showConnect === undefined) {
 					$scope.showConnect = false;
 				}
 				
@@ -26,20 +31,23 @@ define(function(require) {
 				});
 				$scope.robots = Robot.query();
 
-				$q.all($scope.robots.$promise, settings.$promise).then(function() {
-					if (settings.length > 0) {
-						for (var i = 0; i < $scope.robots.length; i++) {
-							if ($scope.robots[i].name == settings[0].value) {
-								$scope.robot = $scope.robots[i];
-								$scope.configured = true;
-								break;
+				$scope.robots.$promise.then(function() {
+					settings.$promise.then(function() {
+						if (settings.length > 0) {
+							for (var i = 0; i < $scope.robots.length; i++) {
+								if ($scope.robots[i].name == settings[0].value) {
+									$scope.robot = $scope.robots[i];
+									$scope.configured = true;
+									break;
+								}
 							}
 						}
-					}
+					});
 				});
 
 				$scope.$watch('robot', function(robot) {
 					robotInterface.setRobot(robot);
+					$scope.connected = robotInterface.getConnected();
 				});
 
 				$scope.setConnected = function(state) {
@@ -50,7 +58,7 @@ define(function(require) {
 					}
 					
 					$scope.connected = state;
-				}
+				};
 			}
 		};
 	};

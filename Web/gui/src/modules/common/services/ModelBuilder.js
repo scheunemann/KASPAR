@@ -1,7 +1,7 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular')
+	var angular = require('angular');
 	require('angularResource');
 
 	var ModelBuilder = function() {
@@ -13,23 +13,21 @@ define(function(require) {
 			}
 
 			this.basePath = path;
-		}
+		};
 
 		this.transformResponse = function(data, headersGetter) {
 			data = angular.fromJson(data);
 			var headers = headersGetter();
 			var newResponse = data.objects;
-			for (var i = 0; i < newResponse.length; i++) {
-			}
 
 			newResponse.paging = {
 				num_results : data.num_results,
 				page : data.page,
 				total_pages : data.total_pages
-			}
+			};
 
 			return newResponse;
-		}
+		};
 
 		this.$get = [ '$resource', '$q', '$rootScope', function($resource, $q, $rootScope) {
 			var root = this;
@@ -50,6 +48,7 @@ define(function(require) {
 					},
 					get : {
 						method : 'GET',
+						cache: true,
 					},
 					query : {
 						method : 'GET',
@@ -60,7 +59,7 @@ define(function(require) {
 
 				var defaultParams = {
 					id : '@id',
-				}
+				};
 
 				methods = angular.extend(defaultMethods, methods);
 				for ( var name in methods) {
@@ -73,14 +72,19 @@ define(function(require) {
 				var resource = $resource(url, params, methods);
 
 				resource.prototype.getProperty = function(propName) {
-					var subUrl = root.basePath + model + '/' + this.id + '/' + propName;
-					return $resource(subUrl, {}, defaultMethods).query();
-				}
+					var key = '$__' + propName;
+					if(this[key] === undefined) {
+						var subUrl = root.basePath + model + '/' + this.id + '/' + propName;
+						this[key] = $resource(subUrl, {}, defaultMethods).query();
+					}
+					
+					return this[key];
+				};
 
 				resource.prototype.getConcreteClassInstance = function() {
 					if (this.$concreteResolved) { return this; }
-					if (this.id == undefined || this.type == undefined) {
-						if (this.$promise != undefined) {
+					if (this.id === undefined || this.type === undefined) {
+						if (this.$promise !== undefined) {
 							return this;
 						} else {
 							var def = $q.defer();
@@ -112,13 +116,13 @@ define(function(require) {
 
 				resource.queryBase = resource.query;
 				resource.query = function(params) {
-					if (params != undefined) {
-						var q = {}
+					if (params !== undefined) {
+						var q = {};
 						q.filters = [];
 						for ( var key in params) {
 							q.filters.push({
 								name : key,
-								op : params[key] == null ? 'is_null' : '==',
+								op : params[key] === null ? 'is_null' : '==',
 								val : params[key],
 							});
 						}

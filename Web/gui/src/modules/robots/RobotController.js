@@ -12,11 +12,11 @@ define(function(require) {
 
 		$scope.connect = function(robot) {
 			$scope.connected = true;
-		}
+		};
 
 		$scope.disconnect = function(robot) {
 			$scope.connected = false;
-		}
+		};
 	};
 
 	return [ '$scope', 'Robot', 'language', RobotController ];

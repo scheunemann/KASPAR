@@ -17,12 +17,12 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.triggers.directives';
 	var dependancies = [
-		         			displayServices,
-		        			languageServices,
-		        			filters,
-		        			robotModels,
-		        			triggerModels,
-	                     ];
+						displayServices,
+						languageServices,
+						filters,
+						robotModels,
+						triggerModels,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('buttontriggerEditor', ButtonTriggerEditor)

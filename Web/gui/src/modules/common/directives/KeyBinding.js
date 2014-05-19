@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var Mousetrap = require('mousetrap');
 
 	var KeyBinding = function($timeout) {
 		return {
@@ -10,17 +11,17 @@ define(function(require) {
 				invoke : '&'
 			},
 			link : function(scope, element, attrs, controller) {
-				if (attr.button) {
-					Mousetrap.bind(attr.on, function() {
+				if (attrs.button) {
+					Mousetrap.bind(attrs.on, function() {
 						scope.invoke();
-						var elem = angular.element(el).parent().find(attr.button)
+						var elem = angular.element(element).parent().find(attrs.button);
 						if (elem) {
 							elem.addClass('active');
 							$timeout(elem.removeClass('active'), 2000);
 						}
 					});
 				} else {
-					Mousetrap.bind(attr.on, scope.invoke);
+					Mousetrap.bind(attrs.on, scope.invoke);
 				}
 			},
 			controller : function($scope) {

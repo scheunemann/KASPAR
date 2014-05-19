@@ -5,13 +5,13 @@ define(function(require) {
 	require('actions/models');
 	require('actions/directives');
 
-	var ActionController = function($scope, Action, ActionType, language) {
+	var ActionController = function($scope, $http, Action, ActionType, language) {
 		$scope.language = language.getText();
 		$scope.actions = Action.query();
 		$scope.types = ActionType.query();
 
 		$scope.$watch('action', function(action) {
-			if (action != undefined) {
+			if (action !== undefined) {
 				var abstractAction = $scope.action;
 				var concreteAction = $scope.action.getConcreteClassInstance();
 				concreteAction.$promise.then(function() {
@@ -37,7 +37,7 @@ define(function(require) {
 		$scope.deleteAction = function(action) {
 			$scope.actions.splice($scope.actions.indexOf(action), 1);
 			$scope.action = $scope.actions[0];
-		}
+		};
 
 		$scope.uploadSound = function(file) {
 			var fd = new FormData();
@@ -52,7 +52,16 @@ define(function(require) {
 			});
 		};
 
+		var errorFunc = function(status) {
+			console.log("Error sending file:" + status);
+		};
+
+		var successFunc = function(data, status, headers, config) {
+			$scope.newobjs.push(data);
+		};
+
 		$scope.importFiles = function(files) {
+
 			for (var i = 0; i < files.length; i++) {
 				var fd = new FormData();
 				fd.append("data", files[i]);
@@ -62,14 +71,10 @@ define(function(require) {
 						'Content-Type' : undefined
 					},
 					transformRequest : angular.identity
-				}).success(function(data, status, headers, config) {
-					$scope.newobjs.push(data);
-				}).error(function() {
-					console.log("Error sending file:" + status);
-				});
+				}).success(successFunc).error(errorFunc);
 			}
 		};
 	};
 
-	return [ '$scope', 'Action', 'ActionType', 'language', ActionController ];
+	return [ '$scope', '$http', 'Action', 'ActionType', 'language', ActionController ];
 });

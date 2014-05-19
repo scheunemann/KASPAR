@@ -15,14 +15,16 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
+				$scope.connected = false;
+				$scope.advanced = !$scope.connected;
 				$scope.advancedopen = true;
 				$scope.basicopen = false;
 				
 				$scope.$watch('pose', function(pose) {
-					if(pose != undefined && pose.speedModifier === undefined) {
+					if(pose !== undefined && pose.speedModifier === undefined) {
 						pose.speedModifier = 100;
 					}
-				})
+				});
 			}
 		};
 	};

@@ -11,6 +11,7 @@ require.config({
 		mousetrap : 'bower_components/mousetrap/mousetrap',
 		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause',
 		text : 'bower_components/requirejs-text/text',
+		socketio: 'bower_components/socket.io-client/dist/socket.io',
 		categories : 'categories',
 	},
 	shim : {
@@ -20,24 +21,28 @@ require.config({
 		},
 		'angularBoostrap' : {
 			init : function() {
+				'use strict';
 				return 'ui.bootstrap';
 			},
 			deps : [ 'text', 'angular' ],
 		},
 		'angularResource' : {
 			init : function() {
+				'use strict';
 				return 'ngResource';
 			},
 			deps : [ 'angular', ],
 		},
 		'angularUIRouter' : {
 			init : function() {
+				'use strict';
 				return 'ui.router';
 			},
 			deps : [ 'angular' ]
 		},
 		'angularSlider' : {
 			init : function() {
+				'use strict';
 				return 'ui.slider';
 			},
 			deps : [ 'angular', 'jquery', 'jqueryUI' ]
@@ -45,8 +50,11 @@ require.config({
 		'jqueryUI' : {
 			deps : [ 'jquery', ]
 		},
+		'socketio': {
+			exports: 'io'
+		},
 		'mousetrap' : {
-			exports : 'mousetrap'
+			exports : 'Mousetrap'
 		},
 		'mousetrapPause' : [ 'mousetrap' ],
 	},

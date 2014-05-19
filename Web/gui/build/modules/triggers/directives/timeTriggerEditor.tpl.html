@@ -1,4 +1,3 @@
-<hr />
 <form
 	name="timeTriggerForm"
 	model="time">
@@ -62,27 +61,23 @@
 						btn-radio="false">{{language['trigger.time.time.since']}}</button>
 				</span>
 				<div
-					ui-slider
+					guislider
 					name="time"
 					saveable
 					required
-					class="form-control"
-					min="0"
-					max="300"
-					ng-model="time.time"
-					step="1"></div>
+					floor="0"
+					ceiling="300"
+					ng-model="time.time"></div>
 				<div class="input-group-addon">{{time.time}}
 					{{language['trigger.time.time.units']}} &#177;</div>
 				<div
-					ui-slider
+					guislider
 					name="variance"
 					saveable
 					required
-					class="form-control"
-					min="0"
-					max="{{time.time}}"
-					ng-model="time.variance"
-					step="1"></div>
+					floor="0"
+					ceiling="time.time"
+					ng-model="time.variance"></div>
 				<div class="input-group-addon">{{time.variance}}
 					{{language['trigger.time.time.units']}}</div>
 			</div>

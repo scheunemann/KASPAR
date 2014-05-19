@@ -2,7 +2,8 @@
 
 define(function(require) {
 	var angular = require('angular');
-	var template = require('text!./operatorInteraction.tpl.html')
+	var template = require('text!./operatorInteraction.tpl.html');
+	var Mousetrap = require('mousetrap');
 
 	var OperatorInteraction = function(language) {
 		return {

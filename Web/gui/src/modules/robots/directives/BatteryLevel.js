@@ -13,7 +13,7 @@ define(function(require) {
 			controller : function($scope) {
 				$scope.battery = robotInterface.getSensor('BATTERY');
 				$scope.$watch('battery.value', function(value) {
-					if (value == null || value < 0) {
+					if (value === null || value < 0) {
 						$scope.type = 'unknown';
 					} else if (value > 25) {
 						$scope.type = 'success';

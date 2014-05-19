@@ -10,17 +10,19 @@ define(function(require) {
 	var Navbar = require('./directives/Navbar');
 	var NotEmpty = require('./directives/NotEmpty');
 	var Saveable = require('./directives/Saveable');
+	var Slider = require('./directives/Slider');
 
 	var moduleName = 'kasparGUI.common.directives';
 	var dependancies = [
-		         			displayServices,
-		        			languageServices,
-		        			filters,
-	                     ];
+						displayServices,
+						languageServices,
+						filters,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('keybinding', KeyBinding)
 		.directive('model', Model)
+		.directive('guislider', Slider)
 		.directive('navbar', Navbar)
 		.directive('notEmpty', NotEmpty)
 		.directive('saveable', Saveable);

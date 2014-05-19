@@ -11,11 +11,11 @@ define(function(require) {
 				objList = [ objList ];
 			}
 
-			if (inputList != undefined) {
+			if (inputList !== undefined) {
 				for (var i = 0; i < inputList.length; i++) {
 					var eq = false;
 					for (var j = 0; j < objList.length; j++) {
-						if (property == '') {
+						if (property === '') {
 							eq = objList[j] == inputList[i];
 						} else {
 							eq = objList[j][property] == inputList[i][property];

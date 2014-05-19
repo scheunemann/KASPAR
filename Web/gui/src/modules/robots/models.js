@@ -18,9 +18,9 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.robots.models';
 	var dependancies = [
-	                   	angularResource,
-	                  ];
-	
+						angularResource,
+						];
+
 	var module = angular.module(moduleName, dependancies)
 		.factory('Robot', Robot)
 		.factory('RobotInterface', RobotInterface)

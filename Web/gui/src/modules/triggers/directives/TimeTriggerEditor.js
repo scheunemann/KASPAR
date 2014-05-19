@@ -2,7 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
-	require('triggers/models')
+	require('triggers/models');
 	var template = require('text!./timeTriggerEditor.tpl.html');
 
 	var TimeTriggerEditor = function(language) {
@@ -44,7 +44,7 @@ define(function(require) {
 					}
 
 					if (selfIndex >= 0) {
-						$scope.time.triggers.splice(selfIndex, 1)
+						$scope.time.triggers.splice(selfIndex, 1);
 						$scope.time.selfRef = true;
 						$scope.time.$save(function() {
 							selfIndex = -1;
@@ -61,7 +61,7 @@ define(function(require) {
 					} else {
 						$scope.time.$save();
 					}
-				}
+				};
 
 				$scope.removeTriggers = function(triggers) {
 					for (var i = 0; i < triggers.length; i++) {

@@ -10,11 +10,11 @@ define(function(require) {
 	
 	var moduleName = 'kasparGUI.triggers.controllers';
 	var dependancies = [
-	                       	actionModels,
-		        			languageServices,
-		        			triggerModels,
-		        			triggerDirectives,
-		        		];
+						actionModels,
+						languageServices,
+						triggerModels,
+						triggerDirectives,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.controller('triggerController', TriggerController);

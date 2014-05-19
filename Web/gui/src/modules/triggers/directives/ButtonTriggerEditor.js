@@ -12,19 +12,18 @@ define(function(require) {
 			scope : {
 				button : "=trigger",
 				actions : "=",
-				triggers : "=",
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
 				$scope.addButton = function() {
-					if ($scope.button.hotKeys == undefined) {
+					if ($scope.button.hotKeys === undefined) {
 						$scope.button.hotKeys = [];
 					}
 
 					$scope.button.hotKeys.push(new ButtonHotkey({
 						'trigger_id' : $scope.button.id
 					}));
-				}
+				};
 			},
 		};
 	};

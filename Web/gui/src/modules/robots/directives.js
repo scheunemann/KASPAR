@@ -16,13 +16,13 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.robots.directives';
 	var dependancies = [
-		         			displayServices,
-		        			languageServices,
-		         			interfaceServices,
-		        			filters,
-		        			commonModels,
-		        			robotModels,
-	                     ];
+						displayServices,
+						languageServices,
+						interfaceServices,
+						filters,
+						commonModels,
+						robotModels,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.directive('robotEditor', RobotEditor)

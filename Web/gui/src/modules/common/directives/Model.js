@@ -19,40 +19,40 @@ define(function(require) {
 				this.updateObj = function(modelCtrl) {
 					if ($scope.formCtrl.$valid) {
 						if ($scope.model.$save === undefined) {
-							if ($scope.model._link != undefined) {
+							if ($scope.model._link !== undefined) {
 								var Model = modelBuilder.getModel($scope.model._link.model);
 								$scope.model = new Model($scope.model);
 							} else {
-								//TODO: Error handling
+								// TODO: Error handling
 								return;
 							}
 						}
-						
+
 						$scope.model.$save().then(function() {
 							modelCtrl.$setPristine();
 						});
 					}
 				};
 
-				this.newObj = function(type) {
-					var newO = new type();
-					if (list != undefined) {
-						list.push(newO);
-					}
+				this.newObj = function(Type) {
+					var newO = new Type();
+					// if (list !== undefined) {
+					// list.push(newO);
+					// }
 					return newO;
 				};
 
-				this.deleteObj = function() {
+				this.deleteObj = function(item) {
 					return item.$delete(function() {
-						var select = null;
-						if (list != undefined) {
-							list.splice(list.indexOf(item), 1);
-							if (list.length > 0) {
-								select = list[0];
-							}
-						}
+						// var select = null;
+						// if (list !== undefined) {
+						// list.splice(list.indexOf(item), 1);
+						// if (list.length > 0) {
+						// select = list[0];
+						// }
+						// }
 
-						return select;
+						// return select;
 					});
 				};
 			}

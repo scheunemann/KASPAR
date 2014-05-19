@@ -12,11 +12,11 @@ define(function(require) {
 			for (var i = 0; i < inputList.length; i++) {
 				for (var j = 0; j < objList.length; j++) {
 					var eq = false;
-					if (objProp == '' && inputProp == '') {
+					if (objProp === '' && inputProp === '') {
 						eq = objList[j] == inputList[i];
-					} else if (objProp == '' && inputProp != '') {
-						eq = objList[j] == inputList[i][inputProp];
-					} else if (objProp != '' && inputProp == '') {
+					} else if (objProp === '' && inputProp !== '') {
+						eq = objList[j] === inputList[i][inputProp];
+					} else if (objProp !== '' && inputProp === '') {
 						eq = objList[j][objProp] == inputList[i];
 					} else {
 						eq = objList[j][objProp] == inputList[i][inputProp];

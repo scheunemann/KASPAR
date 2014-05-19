@@ -23,7 +23,7 @@ define(function(require) {
 //			console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
 //			console.log(unfoundState, fromState, fromParams);
 //		});
-	}
+	};
 
 	return [ '$scope', '$rootScope', CommonController ];
 });

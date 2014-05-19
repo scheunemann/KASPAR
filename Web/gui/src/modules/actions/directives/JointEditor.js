@@ -15,37 +15,48 @@ define(function(require) {
 				servo : "=",
 				servoPositions : "=",
 				connected : "=",
+				groupPoseable: "=?poseable",
+				advanced: "=?",
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-
+				if ($scope.advanced === undefined) {
+					$scope.advanced = !($scope.connected || false);
+				}
+				
+				//One way binding
+				$scope.poseable = false;
+				$scope.$watch('groupPoseable', function(value) {
+					$scope.poseable = value;
+				});
+				
 				var checkPositions = function() {
-					if($scope.jointPosition != undefined) {
-						if($scope.jointPosition.position === undefined || $scope.jointPosition.position == null) {
-							if($scope.servo != undefined && $scope.servo != null &&
-								$scope.servo.defaultPosition != undefined && $scope.servo.defaultPosition != null) {
+					if($scope.jointPosition) {
+						if($scope.jointPosition.position === undefined || $scope.jointPosition.position === null) {
+							if($scope.servo !== undefined && $scope.servo !== null &&
+								$scope.servo.defaultPosition !== undefined && $scope.servo.defaultPosition !== null) {
 								$scope.jointPosition.position = $scope.servo.defaultPosition;	
-							} else if($scope.servoModel != undefined && $scope.servoModel != null && 
-									$scope.servoModel.defaultPosition != undefined && $scope.servoModel.defaultPosition != null) {
+							} else if($scope.servoModel !== undefined && $scope.servoModel !== null && 
+									$scope.servoModel.defaultPosition !== undefined && $scope.servoModel.defaultPosition !== null) {
 								$scope.jointPosition.position = $scope.servoModel.defaultPosition;
 							} else {
 								$scope.jointPosition.position = 0;
 							}
 						}
 						
-						if($scope.jointPosition.speed === undefined || $scope.jointPosition.speed == null) {
-							if($scope.servo != undefined && $scope.servo != null &&
-								$scope.servo.defaultSpeed != undefined && $scope.servo.defaultSpeed != null) {
+						if($scope.jointPosition.speed === undefined || $scope.jointPosition.speed === null) {
+							if($scope.servo !== undefined && $scope.servo !== null &&
+								$scope.servo.defaultSpeed !== undefined && $scope.servo.defaultSpeed !== null) {
 								$scope.jointPosition.speed = $scope.servo.defaultSpeed;	
-							} else if($scope.servoModel != undefined && $scope.servoModel != null && 
-									$scope.servoModel.defaultPosition != undefined && $scope.servoModel.defaultSpeed != null) {
+							} else if($scope.servoModel !== undefined && $scope.servoModel !== null && 
+									$scope.servoModel.defaultPosition !== undefined && $scope.servoModel.defaultSpeed !== null) {
 								$scope.jointPosition.speed = $scope.servoModel.defaultSpeed;
 							} else {
 								$scope.jointPosition.speed = 100;
 							}
 						}
 					}
-				}
+				};
 				
 				$scope.$watch('servo', checkPositions);
 				$scope.$watch('jointPosition', checkPositions);
@@ -67,7 +78,7 @@ define(function(require) {
 				};
 
 				$scope.$watch('servo.model_id', function(modelId) {
-					if (modelId != undefined) {
+					if (modelId !== undefined) {
 						$scope.servoModel = ServoModel.get({
 							id : modelId,
 						});
@@ -82,22 +93,28 @@ define(function(require) {
 
 				$scope.coalesce = function() {
 					for (var i = 0; i < arguments.length; i++) {
-						if (arguments[i] != undefined && arguments[i] != null) { return arguments[i]; }
+						if (arguments[i] !== undefined && arguments[i] !== null) { return arguments[i]; }
 					}
 
 					return null;
-				}
+				};
 
-				$scope.writeToServo = function() {
-					if ($scope.jointPosition != undefined && $scope.servoInt != undefined) {
+				var writeToServo = function() {
+					if ($scope.jointPosition && $scope.servoInt && $scope.advanced) {
 						$scope.servoInt.speed = $scope.jointPosition.speed;
 						$scope.servoInt.position = $scope.jointPosition.position;
+						$scope.servoInt.poseable = $scope.poseable;
 					}
 				};
 
-				$scope.$watch('jointPosition.position', function() {
-					$scope.writeToServo();
+				$scope.$watch('servoInt.actual.position', function(value) {
+					if(!$scope.advanced && $scope.jointPosition) {
+						$scope.jointPosition.position = value;
+					}
 				});
+								
+				$scope.$watch('jointPosition.position', writeToServo);
+				$scope.$watch('poseable', writeToServo);
 			},
 		};
 	};

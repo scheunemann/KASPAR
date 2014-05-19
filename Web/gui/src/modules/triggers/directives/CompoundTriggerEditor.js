@@ -46,7 +46,7 @@ define(function(require) {
 					$scope.compound.time = 0;
 					$scope.compound.variance = 0;
 					$scope.compound.$save();
-				}
+				};
 
 				$scope.removeTriggers = function(triggers) {
 					for (var i = 0; i < triggers.length; i++) {

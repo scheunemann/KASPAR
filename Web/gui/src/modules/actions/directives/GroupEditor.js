@@ -14,11 +14,14 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-				$scope.addActions = function(actions) {
-					if ($scope.group.actions === undefined) {
-						$scope.group.actions = [];
-					}
 
+				$scope.$watch('group', function(group) {
+					if (group !== undefined && group.actions === undefined) {
+						group.actions = [];
+					}
+				});
+
+				$scope.addActions = function(actions) {
 					for (var i = 0; i < actions.length; i++) {
 						$scope.group.actions.push(actions[i]);
 					}
@@ -37,5 +40,5 @@ define(function(require) {
 		};
 	};
 
-	return ['language', GroupEditor];
+	return [ 'language', GroupEditor ];
 });

@@ -7,8 +7,8 @@ define(function(require) {
 
 	var moduleName = 'kasparGUI.operators.models';
 	var dependancies = [
-	                   	angularResource,
-	                  ];
+						angularResource,
+						];
 	
 	var module = angular.module(moduleName, dependancies)
 		.factory('Operator', Operator);

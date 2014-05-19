@@ -9,9 +9,7 @@ define(function(require) {
 	var UserAction = require('./models/UserAction');
 
 	var moduleName = 'kasparGUI.users.models';
-	var dependancies = [ 
-	                     angularResource, 
-	                   ];
+	var dependancies = [ angularResource, ];
 
 	var module = angular.module(moduleName, dependancies)
 		.factory('CustomAction', CustomAction)
