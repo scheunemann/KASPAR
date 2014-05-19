@@ -37,6 +37,7 @@ define(function(require) {
 				$scope.sensor = null;
 				$scope.basicopen = false;
 				$scope.advancedopen = true;
+                                $scope.step = 1;
 				$scope.$watch('trigger.sensorValue', function(value) {
 					if (value !== undefined && value !== null) {
 						$scope.basicopen = value.indexOf !== undefined && value.indexOf('eval::') === 0;
@@ -44,22 +45,26 @@ define(function(require) {
 					}
 				});
 				$scope.$watch('sensor', function(sensor) {
-					if (sensor !== undefined && sensor.id !== undefined) {
-						if (sensor._link === undefined) {
+					if (sensor !== undefined && sensor !== null &&sensor.id !== undefined) {
+						if ($scope.sensor.$promise === undefined) {
 							$scope.sensor = Sensor.get({
 								id : sensor.id
 							});
+						}
 							$scope.sensor.$promise.then(function(sensor) {
 								if ($scope.sensor !== undefined) {
 									$scope.sensor = $scope.sensor.getConcreteClassInstance();
+									$scope.sensor.$promise.then(function() {
+										$scope.step = $scope.Math.pow(10, -1 * $scope.sensor.value_type.precision);
+									});
 								}
 							});
-						} else {
-							var Model = modelBuilder.getModel(sensor._link.model);
-							$scope.model = Model.get({
-								id : $scope.model
-							});
-						}
+						//} else {
+						//	var Model = modelBuilder.getModel(sensor._link.model);
+						//	$scope.model = Model.get({
+						//		id : $scope.model
+						//	});
+						//}
 					}
 				});
 			}

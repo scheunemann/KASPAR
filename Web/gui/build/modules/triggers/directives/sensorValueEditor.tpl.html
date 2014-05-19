@@ -60,14 +60,16 @@
 					style="width: 75%"
 					floor="sensor.value_type.minValue"
 					ceiling="sensor.value_type.maxValue"
-					step="math.pow(10, -1 * sensor.value_type.precision)"
+					step="step"
 					ng-model="trigger.sensorValue"></div>
 				<div
+					class="input-group-addon">{{trigger.sensorValue}}</div>
+				<!--div
 					ng-if="sensor.value_type.type=='ContinuousValueType'"
 					class="input-group-addon">{{trigger.sensorValue}}</div>
 				<div
 					ng-if="sensor.value_type.type=='DiscreteValueType'"
-					class="input-group-addon">TODO: Discrete Values</div>
+					class="input-group-addon">TODO: Discrete Values</div-->
 			</div>
 		</div>
 		</accordion-group> </accordion>
