@@ -114,7 +114,12 @@ define(function(require) {
 				});
 								
 				$scope.$watch('jointPosition.position', writeToServo);
-				$scope.$watch('poseable', writeToServo);
+				$scope.$watch('poseable', function(poseable) {
+					if($scope.servoInt) {
+						$scope.servoInt.position = $scope.servoInt.actual.position;
+						$scope.servoInt.poseable = poseable;
+					}
+				});
 			},
 		};
 	};

@@ -66,6 +66,7 @@ def receiveMessage(data):
                 continue
             else:
                 try:
+                    print servoData
                     interface = servo['interface']
                     if 'position' in servoData:
                         interface.setPosition(servoData.get('position', None), servoData.get('speed', 100))

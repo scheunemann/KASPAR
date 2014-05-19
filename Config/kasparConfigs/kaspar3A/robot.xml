@@ -117,7 +117,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_VERT</NAME>
-			<CENTER>915</CENTER>
+			<CENTER>450</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -173,7 +173,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="17">
 			<NAME>ARM_L_2</NAME>
-			<CENTER>445</CENTER>
+			<CENTER>610</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-280</MIN>
@@ -183,7 +183,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="18">
 			<NAME>ARM_L_3</NAME>
-			<CENTER>225</CENTER>
+			<CENTER>256</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
@@ -213,7 +213,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="32">
 			<NAME>ARM_R_1</NAME>
-			<CENTER>512</CENTER>
+			<CENTER>886</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-60</MIN>
@@ -223,7 +223,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="33">
 			<NAME>ARM_R_2</NAME>
-			<CENTER>530</CENTER>
+			<CENTER>440</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-10</MIN>
@@ -243,7 +243,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="35">
 			<NAME>ARM_R_4</NAME>
-			<CENTER>565</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>80</MIN>
@@ -253,7 +253,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="36">
 			<NAME>ARM_R_5</NAME>
-			<CENTER>560</CENTER>
+			<CENTER>280</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-45</MIN>

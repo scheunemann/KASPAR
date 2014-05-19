@@ -119,7 +119,7 @@ define(function(require) {
 				}
 
 				components.servos[servo.jointName].id = servo.id;
-				components.servos[servo.jointName].actual.position = servo.position;
+				components.servos[servo.jointName].actual.position = servo.value;
 				components.servos[servo.jointName].actual.poseable = servo.poseable;
 			}
 
