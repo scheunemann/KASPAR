@@ -32,10 +32,10 @@ def configureSite():
     configureLogging(logging.DEBUG)
 
     # Disable connection for debugging without a robot
-    from Robot.ServoInterface import ServoInterface
-    from Processor.SensorInterface import SensorInterface
-    ServoInterface.disconnected = True
-    SensorInterface.disconnected = True
+    #from Robot.ServoInterface import ServoInterface
+    #from Processor.SensorInterface import SensorInterface
+    #ServoInterface.disconnected = True
+    #SensorInterface.disconnected = True
 
 
 def runSite():
