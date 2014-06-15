@@ -21,12 +21,6 @@ define(function(require) {
 			}
 		});
 
-		$scope.setFiles = function(element) {
-			$scope.$apply(function($scope) {
-				$scope.files = element.files;
-			});
-		};
-
 		$scope.newAction = function() {
 			$scope.action = new Action({
 				type : 'Action'
@@ -37,19 +31,6 @@ define(function(require) {
 		$scope.deleteAction = function(action) {
 			$scope.actions.splice($scope.actions.indexOf(action), 1);
 			$scope.action = $scope.actions[0];
-		};
-
-		$scope.uploadSound = function(file) {
-			var fd = new FormData();
-			fd.append("data", file);
-			var obj = $http.post('/api/SoundAction/upload', fd, {
-				header : {
-					'Content-Type' : undefined
-				},
-				transformRequest : angular.identity
-			}).success(function(data, status, headers, config) {
-				$scope.fileId = data;
-			});
 		};
 
 		var errorFunc = function(status) {

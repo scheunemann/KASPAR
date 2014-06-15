@@ -271,6 +271,10 @@ body {
 	background-repeat: repeat-x;
 }
 
+.spring {
+	width: 100%;
+}
+
 .btn-panel {
 	border-radius: 0px;
 	border-top-right-radius: 3px;

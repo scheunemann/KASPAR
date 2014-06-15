@@ -20,10 +20,12 @@ models = [
 __types = Blueprint('action.type', __name__)
 __test = Blueprint('action.test', __name__)
 __importer = Blueprint('action.import', __name__)
+__soundData = Blueprint('sound.data', __name__)
 blueprints = [
                   __types,
                   __test,
                   __importer,
+                  __soundData,
               ]
 
 __actionTypes = [
@@ -32,6 +34,19 @@ __actionTypes = [
     {'id': 3, 'name': 'GroupAction', 'disp': 'Group', 'desc': 'parallel actions'},
     {'id': 4, 'name': 'SequenceAction', 'disp': 'Sequence', 'desc': 'action series'},
 ]
+
+
+@__soundData.route('/SoundData', methods=['POST'])
+def postSoundData():
+    if 'sound' in request.files:
+        soundFile = request.files['sound']
+        uuid = Model.SoundAction.saveData(soundFile.read())
+        if uuid:
+            ret = {'uuid': uuid}
+            return jsonify(ret)
+        else:
+            abort(500, msg='Error occured while saving')
+    abort(400, msg='No sound file attached')
 
 
 @__types.route('/ActionType', methods=['GET'])

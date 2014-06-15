@@ -9,6 +9,7 @@ define(function(require) {
 	var Model = require('./directives/Model');
 	var Navbar = require('./directives/Navbar');
 	var NotEmpty = require('./directives/NotEmpty');
+	var FileModel = require('./directives/FileModel');
 	var Saveable = require('./directives/Saveable');
 	var Slider = require('./directives/Slider');
 
@@ -25,6 +26,7 @@ define(function(require) {
 		.directive('guislider', Slider)
 		.directive('navbar', Navbar)
 		.directive('notEmpty', NotEmpty)
+		.directive('fileModel', FileModel)
 		.directive('saveable', Saveable);
 
 	return moduleName;

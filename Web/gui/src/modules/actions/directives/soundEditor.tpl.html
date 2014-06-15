@@ -10,26 +10,42 @@
 				class="form-control"
 				placeholder="Sound Name"
 				required
+				saveable
 				ng-model="sound.name">
 		</div>
-		<div class="input-group">
+		<div
+			class="input-group"
+			ng-hide="sound.uuid">
 			<span class="input-group-addon inputLabel">{{language['action.sound.selectFile']}}</span>
 			<input
 				class="form-control"
+				ng-diabled="sound.uuid"
 				type="file"
-				onchange="angular.element(this).scope().setFiles(this)" />
+				name="soundFile"
+				accept="audio/x-wav,audio/wav,application/ogg"
+				file-model="soundFile" />
 			<span class="input-group-btn">
 				<button
 					class="btn btn-default"
 					type="button"
-					ng-click="uploadFile(file)">{{language['action.sound.upload']}}</button>
+					ng-disabled="sound.uuid"
+					ng-click="uploadSound(soundFile)">{{language['action.sound.upload']}}</button>
 			</span>
+		</div>
+		<div
+			class="input-group"
+			ng-show="sound.uuid">
+			<span class="input-group-addon inputLabel">{{language['action.sound.selectedFile']}}</span>
+			<input
+				type="text"
+				ng-disabled="true"
+				class="form-control"
+				ng-model="sound.uuid" />
 		</div>
 	</form>
 	<div>
 		<strong>TODO:</strong>
 		<ul>
-			<li>Show if current sound set</li>
 			<li>Play current sound</li>
 		</ul>
 	</div>

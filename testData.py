@@ -44,15 +44,10 @@ def _flushAndFillTestData():
     baseDir = os.path.dirname(os.path.realpath(__file__))
     configDir = os.path.join(baseDir, 'Config/kasparConfigs')
     print "Loading configs..."
-    actions = {}
-    triggers = {}
-    robots = []
-    (robots, actions, triggers) = importer.loadDirectory(actions, triggers, robots, configDir + '/kaspar3A')
+    (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir + '/kaspar3A')
     print "Done."
 
     session = StorageFactory.getNewSession()
-    for sound in [a for a in actions if a.type == 'Sound']:
-        session.add(sound)
 
     setting = Setting(key='robot', value=robots[0].name)
     session.add(setting)
