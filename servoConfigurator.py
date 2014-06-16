@@ -24,7 +24,7 @@ def chooseRobot(robots):
 		while selection == None:
 			print "Available Robots:"
 			for i in range(0, len(robots)):
-				print "  %s - %s" % (i + 1, robots[i].name)
+				print "%s - %s" % (str(i + 1).rjust(4), robots[i].name)
 			raw_sel = raw_input('Select Robot: ')
 			try:
 				selection = int(raw_sel)
@@ -45,14 +45,14 @@ def clearScreen():
 	else:
 		print chr(27) + "[2J"
 	
-def selectServo(robot):
+def selectJoint(robot):
 	servos = sorted(robot.servos, key=lambda s: s.jointName)
 	selection = None
 	while selection == None:
 		print "Joints:"
 		for i in range(0, len(servos)):
-			print "  %s - %s" % (i + 1, servos[i].jointName)
-		print "  %s - Exit" % (i + 2)
+			print "%s - %s" % (str(i + 1).rjust(4), servos[i].jointName)
+		print "ctrl+c - Exit"
 		raw_sel = raw_input('Select Joint: ')
 		try:
 			selection = int(raw_sel)
@@ -67,8 +67,6 @@ def selectServo(robot):
 				clearScreen()
 			else:
 				break
-	if selection - 1 == len(servos):
-		return None
 	servo = servos[selection - 1]
 	return servo
 	
@@ -76,11 +74,13 @@ def configureServo(servo):
 	newId = int(servo.extraData['externalId'])
 	servoInt = ServoInterface(servo)
 	print "Scanning for servos..."
-	ids = herkulex.performIDScan()
-	print "Found %s servos, ids %s" % (len(ids), ids)
-	if len(ids) == 0:
-		print "No Servos detected"
-		return
+	ids = []
+	while not ids:
+		ids = herkulex.performIDScan()
+		print "Found %s servos, ids %s" % (len(ids), ids)
+		if not ids:
+			raw_input("No Servos detected, check cables and press enter to rescan")
+
 	if len(ids) > 1:
 		while True:
 			try:
@@ -91,62 +91,79 @@ def configureServo(servo):
 				break
 	else:
 		oldId = ids[0]
+	
 	while True:
 		try:
-			raw_input('Press Enter to configure servo %s or ctrl+c to change selection or rescan servos' % oldId)
+			input = raw_input('Press Enter to configure servo %s or ctrl+c to change selection or rescan servos. ' % oldId)
+			autoloop = input == 'l'
 			clearScreen()
-			print "Configuring servoID %s" % oldId
+			print "Configuring servoID %s as joint %s" % (oldId, servo.jointName)
 			setMaxVoltage(oldId, 15)
 			minPos = int(servoInt._scaleToRealPos(servoInt._minPos)) - 20
 			minPos = max(minPos, 0)
 			maxPos = int(servoInt._scaleToRealPos(servoInt._maxPos)) + 20
 			maxPos = min(maxPos, 1023)
 			setRange(oldId, minPos, maxPos)
-			setId(oldId, newId)
-			reboot(newId)
-			center(newId)
-			if abs(herkulex.getPosition(newId) - 512) < 5:
+			reboot(oldId)
+			center(oldId)
+			if isConfigured(oldId):
+				setId(oldId, newId)
 				success(newId)
 				print "Success"
 			else:
-				print "Servo not centred, may not be configured properly!"
+				print "Servo not configured properly!"
 		except KeyboardInterrupt:
 			break
+
+			
+def isConfigured(sid):
+	posCorrect = abs(herkulex.getPosition(sid) - 512) < 5
+	voltCorrect = abs(herkulex.getVoltage(sid) - 12) < 0.5
+	errors = herkulex.error_text(sid)
+	if errors:
+		print "Errors: %s" % errors
+	return posCorrect & voltCorrect & (not errors)
 
 def setId(id, newId):
 	print "Changing ID from %s to %s" % (id, newId)
 	herkulex.set_ID(id, newId)
+	time.sleep(0.25)
 
 def setMaxVoltage(id, maxVoltage):
 	EEPVOLT = 13
 	print "Setting max voltage = %s " % maxVoltage
 	volt = int(maxVoltage / 0.074)
 	herkulex.writeRegistryEEP(id, EEPVOLT, volt)
+	time.sleep(0.25)
 
 def setRange(id, min, max):
 	EEPMIN = 26
 	EEPMAX = 28
 	print "Setting range = [%s, %s]" % (min, max)
 	herkulex.writeRegistryEEP(id, EEPMIN, min)
+	time.sleep(0.25)
 	herkulex.writeRegistryEEP(id, EEPMAX, max)
+	time.sleep(0.25)
 
 def reboot(id):
 	herkulex.reboot(id)
-	time.sleep(0.25)
+	time.sleep(0.5)
 	
 def center(id):
 	print "Centring servo"
+	herkulex.torqueON(id)
+	time.sleep(0.1)
 	herkulex.moveOne(id, 512, 500)
-	pass
-
-def success(id):
+	time.sleep(0.5)
+	
+def success(sid):
+	print "Stats - ID: %s, Position: %s, Voltage: %s" % (sid, herkulex.getPosition(sid), herkulex.getVoltage(sid))
 	for i in range(0, 3):
-		herkulex.setLed(id, HerkuleX.LED_GREEN)
+		herkulex.setLed(sid, HerkuleX.LED_GREEN)
 		time.sleep(0.2)
-		herkulex.setLed(id, HerkuleX.LED_BLUE)
+		herkulex.setLed(sid, HerkuleX.LED_BLUE)
 		time.sleep(0.2)
-	herkulex.setLed(id, 0)
-	print "Stats - ID: %s, Position: %s, Voltage: %s" % (id, herkulex.getPosition(id), herkulex.getVoltage(id))
+	herkulex.setLed(sid, 0)
 	
 if __name__ == '__main__':
 	clearScreen()
@@ -154,9 +171,7 @@ if __name__ == '__main__':
 	while True:
 		try:
 			clearScreen()
-			servo = selectServo(robot)
-			if servo == None:
-				break
-			configureServo(servo)
+			joint = selectJoint(robot)
+			configureServo(joint)
 		except KeyboardInterrupt:
-			pass
+			break
