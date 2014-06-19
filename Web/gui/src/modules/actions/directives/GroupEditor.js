@@ -23,7 +23,11 @@ define(function(require) {
 
 				$scope.addActions = function(actions) {
 					for (var i = 0; i < actions.length; i++) {
-						$scope.group.actions.push(actions[i]);
+						$scope.group.actions.push({name:actions[i].name, id:actions[i].id});
+					}
+
+					for(var j = 0; j < $scope.group.actions.length; j++) {
+						$scope.group.actions[j].speedModifier = undefined;
 					}
 
 					$scope.group.$save();

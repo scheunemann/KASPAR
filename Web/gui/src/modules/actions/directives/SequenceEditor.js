@@ -84,6 +84,12 @@ define(function(require) {
 						}
 					}
 
+					// Clean objects
+					for (var j = 0; j < $scope.sequence.ordered_actions.length; j++) {
+						$scope.sequence.ordered_actions[j].action = undefined;
+						$scope.sequence.ordered_actions[j].sequence = undefined;
+					}
+
 					$scope.sequence.$save();
 				};
 
@@ -98,7 +104,9 @@ define(function(require) {
 						oa.order = $scope.sequence.ordered_actions.length;
 						oa.sequence_id = $scope.sequence.id;
 						oa.action_id = actions[i].id;
-						oa.$save().then(successFunc);
+						$scope.sequence.ordered_actions.push(oa);
+						$scope.saveAll();
+						//oa.$save().then(successFunc);
 					}
 				};
 

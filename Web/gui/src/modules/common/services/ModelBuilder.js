@@ -53,7 +53,7 @@ define(function(require) {
 					query : {
 						method : 'GET',
 						isArray : true,
-						cache: true,
+						cache: false,
 						transformResponse : root.transformResponse,
 					},
 				};

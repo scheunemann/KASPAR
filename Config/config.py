@@ -12,12 +12,17 @@ webConfig = {
 }
 
 dbConfig = {
-        'type': 'MySql',
-        'host': 'localhost',
-        'user': 'kaspar',
-        'pass': 'kaspar',
-        'db': 'kaspar',
+         'type': 'Sqlite',
+         'file': '/home/pi/git/KASPAR/kaspar.db'
 }
+
+#dbConfig = {
+#        'type': 'MySql',
+#        'host': 'localhost',
+#        'user': 'kaspar',
+#        'pass': 'kaspar',
+#        'db': 'kaspar',
+#}
 
 
 class ConsoleHandler(logging.StreamHandler):

@@ -25,7 +25,7 @@
 		</VIRTUAL>
 		<!-- Connection Settings -->
 		<HERKULEX>
-			<PORT>/dev/ttyACM3</PORT>
+			<PORT>/dev/bodyServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>0</POS>
@@ -52,7 +52,7 @@
 		</HERKULEX>
 
 		<HS82MG>
-			<PORT>/dev/ttyACM0</PORT>
+			<PORT>/dev/headServos</PORT>
 			<SPEED>115200</SPEED>
 			<DEFAULT>
 				<POS>90</POS>
@@ -82,12 +82,12 @@
 	<SENSORCONFIGS>
 		<ROBOT>
 			<FSR_MiniMaestro>
-				<PORT>/dev/ttyACM2</PORT>
+				<PORT>/dev/bodySensors</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;10</ONSTATE>
 			</FSR_MiniMaestro>
 			<HERKULEX_LiFe_BATTERY>
-				<PORT>/dev/ttyACM3</PORT>
+				<PORT>/dev/bodyServos</PORT>
 				<SPEED>115200</SPEED>
 				<ONSTATE>&gt;25</ONSTATE>
 			</HERKULEX_LiFe_BATTERY>
@@ -97,7 +97,7 @@
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
 			<NAME>TORSO</NAME>
-			<CENTER>485</CENTER>
+			<CENTER>525</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-27</MIN>
@@ -203,7 +203,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>ARM_L_5</NAME>
-			<CENTER>525</CENTER>
+			<CENTER>460</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-90</MIN>
@@ -246,8 +246,8 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>80</MIN>
-					<MAX>-70</MAX>
+					<MIN>-70</MIN>
+					<MAX>80</MAX>
 				</POS>
 			</LIMITS>
 		</SERVO>
