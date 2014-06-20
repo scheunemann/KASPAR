@@ -96,7 +96,7 @@
 
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
-			<NAME>TORSO</NAME>
+			<NAME>TORSO_YAW</NAME>
 			<CENTER>525</CENTER>
 			<LIMITS>
 				<POS>
