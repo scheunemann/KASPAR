@@ -59,16 +59,12 @@ def addLink(sysPath, symPath):
             os.unlink(fullPath)
         except Exception as e:
             syslog.syslog(syslog.LOG_ERR, 'Unable to remove old link %s, aborting.' % fullPath)
-            log.write('Unable to remove old link %s, aborting.\n' % fullPath)
             return
-
     try:
         os.symlink(sysPath, fullPath)
         syslog.syslog('%s => %s Created' % (sysPath, fullPath))
-        log.write('%s => %s Created\n' % (sysPath, fullPath))
     except Exception as e:
         syslog.syslog(syslog.LOG_ERR, '%s => %s Could not be Created. Reason= %s' % (sysPath, fullPath, e))
-        log.write('%s => %s Could not be Created. Reason= %s\n' % (sysPath, fullPath, e))
 
 def handlePath(sysPath, symPath):
     if os.environ.get('ACTION', 'add') == 'add':
@@ -87,15 +83,13 @@ if __name__ == '__main__':
         #find a way to determine the symlink and remove the dead one
         syslog.syslog('MiniMaestro removed!!')
         exit()
-    log = open('/home/pi/git/KASPAR/Config/log.log', 'w')
     if len(sys.argv) > 1:
         portName = sys.argv[1]
     else:
         portName = os.environ.get('DEVNAME', None)
-    log.write('Started: %s\n' % portName)
     syslog.syslog('Started: %s' % portName)
-    log.write('EnvVars: \n')
-    log.writelines(['    %s: %s\n' % (k, v) for (k, v) in os.environ.iteritems()])
+    #log.write('EnvVars: \n')
+    #log.writelines(['    %s: %s\n' % (k, v) for (k, v) in os.environ.iteritems()])
     if portName:
         port = getPort()
         if port == TTLFLAG:
@@ -107,7 +101,6 @@ if __name__ == '__main__':
         else:
             ttlPort = '%s%s' % (portName[:-1], int(portName[-1]) + 1)
             cmdPort = portName
-        log.write('CMDPort: %s\n' % cmdPort)
         loc = getLocation(cmdPort)
         if loc != None:
             ttlPath = CONFIG.get(loc | TTLFLAG, None)
@@ -116,17 +109,10 @@ if __name__ == '__main__':
                 handlePath(ttlPort, ttlPath)
             else:
                 syslog.syslog(syslog.LOG_ERR, 'Unable to determine sympath for %s.  loc: %s' % (ttlPort, loc))
-                log.write('Unable to determine sympath for %s.  loc: %s\n' % (ttlPort, loc))
             if cmdPath:
                 handlePath(cmdPort, cmdPath)
             else:
                 syslog.syslog(syslog.LOG_ERR, 'Unable to determine sympath for %s.  loc: %s' % (cmdPort, loc))
-                log.write('Unable to determine sympath for %s.  loc: %s\n' % (cmdPort, loc))
-
         else:
             syslog.syslog(syslog.LOG_ERR, 'Unable to determine location for %s.  loc: %s' % (portName, loc))
-            log.write('Unable to determine lcoation for %s.  loc: %s\n' % (portName, loc))
-    else:
-        log.write('Err: no port specified\n')
 
-    log.close()
