@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import sys
 import syslog
+syslog.openlog(facility=syslog.LOG_LOCAL7)
+
 import os
 
 
