@@ -261,7 +261,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="2">
+		<SERVO type="HS82MG" id="8">
 			<NAME>EYE_R_LID</NAME>
 			<CENTER>1600</CENTER>
 			<LIMITS>
@@ -271,7 +271,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="1">
+		<SERVO type="HS82MG" id="6">
 			<NAME>EYE_R_YAW</NAME>
 			<CENTER>1450</CENTER>
 			<LIMITS>
@@ -281,7 +281,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="0">
+		<SERVO type="HS82MG" id="7">
 			<NAME>EYEBALL_R_PITCH</NAME>
 			<CENTER>1575</CENTER>
 			<LIMITS>
@@ -291,7 +291,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="3">
+		<SERVO type="HS82MG" id="9">
 			<NAME>EYE_L_YAW</NAME>
 			<CENTER>1450</CENTER>
 			<LIMITS>
@@ -301,7 +301,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="4">
+		<SERVO type="HS82MG" id="11">
 			<NAME>EYE_L_LID</NAME>
 			<CENTER>1350</CENTER>
 			<LIMITS>
@@ -311,7 +311,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="5">
+		<SERVO type="HS82MG" id="10">
 			<NAME>EYEBALL_L_PITCH</NAME>
 			<CENTER>1325</CENTER>
 			<LIMITS>
