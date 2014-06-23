@@ -2,7 +2,7 @@
 
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../robotActionController')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
 
 import platform
 isWin = platform.system() == 'Windows'
@@ -10,7 +10,7 @@ isWin = platform.system() == 'Windows'
 import time
 
 baseDir = os.path.dirname(os.path.realpath(__file__))
-configDir = os.path.join(baseDir, '../KASPAR/Config/kasparConfigs')
+configDir = os.path.join(baseDir, './kasparConfigs')
 print "Loading robot configs from %s" % configDir
 from Robot import importer
 (robots, _, _) = importer.loadAllDirectories(configDir)
@@ -18,7 +18,7 @@ from Robot import importer
 from Data import Model
 from Robot.ServoInterface.servoInterface import ServoInterface
 from Robot.ServoInterface.herkulex import HerkuleX
-herkulex = HerkuleX('COM23', 115200)
+herkulex = HerkuleX('COM25', 115200)
 
 def chooseRobot(robots):
 	if len(robots) > 1:
@@ -100,15 +100,21 @@ def configureServo(servo):
 			autoloop = input == 'l'
 			clearScreen()
 			print "Configuring servoID %s as joint %s" % (oldId, servo.jointName)
-			setMaxVoltage(oldId, 15)
+			herkulex.clearError(oldId)
+                        time.sleep(0.1)
+			setMaxVoltage(oldId, 14)
 			minPos = int(servoInt._scaleToRealPos(servoInt._minPos)) - 20
 			minPos = max(minPos, 0)
 			maxPos = int(servoInt._scaleToRealPos(servoInt._maxPos)) + 20
 			maxPos = min(maxPos, 1023)
+                        defPos = int(servoInt._scaleToRealPos(servoInt._defaultPos))
+                        defPos = min(maxPos, defPos)
+                        defPos = max(minPos, defPos)
 			setRange(oldId, minPos, maxPos)
 			reboot(oldId)
-			center(oldId)
-			if isConfigured(oldId):
+			center(oldId, defPos)
+                	print "Stats - Position: %s, Voltage: %s, Errors: %s" % (herkulex.getPosition(oldId), herkulex.getVoltage(oldId), herkulex.error_text(oldId))
+			if isConfigured(oldId, defPos):
 				setId(oldId, newId)
 				success(newId)
 				print "Success"
@@ -118,15 +124,26 @@ def configureServo(servo):
 			break
 
 			
-def isConfigured(sid):
-	posCorrect = abs(herkulex.getPosition(sid) - 512) < 5
-	voltCorrect = abs(herkulex.getVoltage(sid) - 12) < 0.5
+def isConfigured(sid, defaultPos):
+        pos = herkulex.getPosition(sid)
+        time.sleep(0.1)
+        volt = herkulex.getVoltage(sid)
+        time.sleep(0.1)
+	posCorrect = abs(pos - defaultPos) < 5
+	voltCorrect = abs(volt - 12) < 0.5
 	errors = herkulex.error_text(sid)
+        time.sleep(0.1)
 	if errors:
 		print "Errors: %s" % errors
+	if not posCorrect:
+                print "Got unexpected position!  Got: %s, Expected: %s" % (pos, defaultPos)
+        if not voltCorrect:
+                print "Got unexpected voltage!  Got: %s, Expected: %s" % (volt, 12)
 	return posCorrect & voltCorrect & (not errors)
 
 def setId(id, newId):
+        if id == newId:
+                return
 	print "Changing ID from %s to %s" % (id, newId)
 	herkulex.set_ID(id, newId)
 	time.sleep(0.25)
@@ -151,21 +168,25 @@ def reboot(id):
 	herkulex.reboot(id)
 	time.sleep(0.5)
 	
-def center(id):
+def center(id, defaultPos):
 	print "Centring servo"
 	herkulex.torqueON(id)
 	time.sleep(0.1)
-	herkulex.moveOne(id, 512, 500)
-	time.sleep(0.5)
+	herkulex.moveOne(id, defaultPos, 500)
+	time.sleep(0.75)
 	
 def success(sid):
-	print "Stats - ID: %s, Position: %s, Voltage: %s" % (sid, herkulex.getPosition(sid), herkulex.getVoltage(sid))
+        herkulex.clearError(sid)
+        time.sleep(0.1)
 	for i in range(0, 3):
 		herkulex.setLed(sid, HerkuleX.LED_GREEN)
-		time.sleep(0.2)
+		time.sleep(0.3)
 		herkulex.setLed(sid, HerkuleX.LED_BLUE)
-		time.sleep(0.2)
-	herkulex.setLed(sid, 0)
+		time.sleep(0.3)
+	herkulex.setLed(sid, 0x00)
+	time.sleep(0.1)
+	herkulex.clearError(sid)
+	time.sleep(0.1)
 	
 if __name__ == '__main__':
 	clearScreen()
