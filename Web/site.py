@@ -16,8 +16,13 @@ server = None
 
 
 def configureSite():
+    # Configure logging
+    configureLogging(logging.DEBUG)
+
+    from gui.root import _subDir as guiDir, root as guiRoot
+    logging.getLogger(__name__).info('Gui using source from %s directory' % guiDir)
+
     from api.root import root as apiRoot
-    from gui.root import root as guiRoot
     global siteRoot
     siteRoot = DispatcherMiddleware(guiRoot, {'/api': apiRoot})
 
@@ -27,9 +32,6 @@ def configureSite():
     server = SocketIOServer((host, port), siteRoot, resource='api/socket.io')
 
     apiRoot.server = server
-
-    # Configure logging
-    configureLogging(logging.DEBUG)
 
     # Disable connection for debugging without a robot
     #from Robot.ServoInterface import ServoInterface
@@ -50,7 +52,10 @@ def runSite():
             server.serve_forever()
         run_with_reloader(run_server)
     else:
-        server.serve_forever()
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            return
 
 if __name__ == '__main__':
     configureSite()

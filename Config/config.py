@@ -1,4 +1,5 @@
 import logging
+import platform
 import sys
 
 webConfig = {
@@ -51,4 +52,18 @@ def configureLogging(level=logging.NOTSET):
         formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
         streamHandler.setFormatter(formatter)
         root_logger.addHandler(streamHandler)
+    if platform.system() == 'Linux':
+        from logging.handlers import SysLogHandler as LogHandler
+        kwargs = {'facility': LogHandler.LOG_LOCAL6, 'address': '/dev/log'}
+    elif platform.system() == 'Windows':
+        from logging.handlers import NTEventLogHandler as LogHandler
+        kwargs = {'appname': 'KasparGUI'}
+    if not [h for h in root_logger.handlers if isinstance(h, LogHandler)]:
+        logHandler = LogHandler(**kwargs)
+        logHandler.setLevel(0)
+        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        logHandler.setFormatter(formatter)
+        root_logger.addHandler(logHandler)
+    root_logger.info('Logging Configured')
+    
 

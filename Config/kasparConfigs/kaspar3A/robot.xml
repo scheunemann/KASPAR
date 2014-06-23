@@ -96,8 +96,8 @@
 
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
-			<NAME>TORSO</NAME>
-			<CENTER>525</CENTER>
+			<NAME>TORSO_YAW</NAME>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-27</MIN>
@@ -107,7 +107,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="2">
 			<NAME>HEAD_YAW</NAME>
-			<CENTER>475</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-51</MIN>
@@ -117,7 +117,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_PITCH</NAME>
-			<CENTER>450</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -173,7 +173,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="17">
 			<NAME>L_SHOULDER_PITCH</NAME>
-			<CENTER>610</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-280</MIN>
@@ -183,7 +183,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="18">
 			<NAME>L_SHOULDER_ROLL_LOWER</NAME>
-			<CENTER>256</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
@@ -203,7 +203,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>L_WRIST_ROLL</NAME>
-			<CENTER>460</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-90</MIN>
@@ -213,7 +213,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="32">
 			<NAME>R_SHOULDER_ROLL_UPPER</NAME>
-			<CENTER>886</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-60</MIN>
@@ -223,7 +223,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="33">
 			<NAME>R_SHOULDER_PITCH</NAME>
-			<CENTER>440</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-10</MIN>
@@ -233,7 +233,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="34">
 			<NAME>R_SHOULDER_ROLL_LOWER</NAME>
-			<CENTER>790</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-145</MIN>
@@ -253,7 +253,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="36">
 			<NAME>R_WRIST_ROLL</NAME>
-			<CENTER>280</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-45</MIN>
@@ -261,7 +261,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="2">
+		<SERVO type="HS82MG" id="8">
 			<NAME>EYE_R_LID</NAME>
 			<CENTER>1600</CENTER>
 			<LIMITS>
@@ -271,7 +271,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="1">
+		<SERVO type="HS82MG" id="6">
 			<NAME>EYE_R_YAW</NAME>
 			<CENTER>1450</CENTER>
 			<LIMITS>
@@ -281,7 +281,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="0">
+		<SERVO type="HS82MG" id="7">
 			<NAME>EYEBALL_R_PITCH</NAME>
 			<CENTER>1575</CENTER>
 			<LIMITS>
@@ -291,7 +291,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="3">
+		<SERVO type="HS82MG" id="9">
 			<NAME>EYE_L_YAW</NAME>
 			<CENTER>1450</CENTER>
 			<LIMITS>
@@ -301,7 +301,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="4">
+		<SERVO type="HS82MG" id="11">
 			<NAME>EYE_L_LID</NAME>
 			<CENTER>1350</CENTER>
 			<LIMITS>
@@ -311,7 +311,7 @@
 				</POS>
 			</LIMITS>
 		</SERVO>
-		<SERVO type="HS82MG" id="5">
+		<SERVO type="HS82MG" id="10">
 			<NAME>EYEBALL_L_PITCH</NAME>
 			<CENTER>1325</CENTER>
 			<LIMITS>
