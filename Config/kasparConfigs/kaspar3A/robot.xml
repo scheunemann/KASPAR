@@ -97,7 +97,7 @@
 	<SERVOLIST>
 		<SERVO type="HERKULEX" id="1">
 			<NAME>TORSO_YAW</NAME>
-			<CENTER>525</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-27</MIN>
@@ -107,7 +107,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="2">
 			<NAME>HEAD_YAW</NAME>
-			<CENTER>475</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-51</MIN>
@@ -117,7 +117,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_PITCH</NAME>
-			<CENTER>450</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-25</MIN>
@@ -173,7 +173,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="17">
 			<NAME>L_SHOULDER_PITCH</NAME>
-			<CENTER>610</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-280</MIN>
@@ -183,7 +183,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="18">
 			<NAME>L_SHOULDER_ROLL_LOWER</NAME>
-			<CENTER>256</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-30</MIN>
@@ -203,7 +203,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>L_WRIST_ROLL</NAME>
-			<CENTER>460</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-90</MIN>
@@ -213,7 +213,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="32">
 			<NAME>R_SHOULDER_ROLL_UPPER</NAME>
-			<CENTER>886</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-60</MIN>
@@ -223,7 +223,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="33">
 			<NAME>R_SHOULDER_PITCH</NAME>
-			<CENTER>440</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-10</MIN>
@@ -233,7 +233,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="34">
 			<NAME>R_SHOULDER_ROLL_LOWER</NAME>
-			<CENTER>790</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-145</MIN>
@@ -253,7 +253,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="36">
 			<NAME>R_WRIST_ROLL</NAME>
-			<CENTER>280</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-45</MIN>
