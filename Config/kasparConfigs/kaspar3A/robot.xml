@@ -323,6 +323,12 @@
 		</SERVO>
 		<SERVO type="VIRTUAL">
 			<NAME>EYES_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
 			<EXTRADATA>
 				<MASTER>EYE_R_PITCH</MASTER>
 				<SLAVE>EYE_L_PITCH</SLAVE>
@@ -332,6 +338,12 @@
 		</SERVO>
 		<SERVO type="VIRTUAL">
 			<NAME>EYES_YAW</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
 			<EXTRADATA>
 				<MASTER>EYE_R_YAW</MASTER>
 				<SLAVE>EYE_L_YAW</SLAVE>
@@ -341,6 +353,12 @@
 		</SERVO>
 		<SERVO type="VIRTUAL">
 			<NAME>EYE_R_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
 			<EXTRADATA>
 				<MASTER>EYEBALL_R_PITCH</MASTER>
 				<SLAVE>EYE_R_LID</SLAVE>
@@ -350,6 +368,12 @@
 		</SERVO>
 		<SERVO type="VIRTUAL">
 			<NAME>EYE_L_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
 			<EXTRADATA>
 				<MASTER>EYEBALL_L_PITCH</MASTER>
 				<SLAVE>EYE_L_LID</SLAVE>
@@ -359,9 +383,15 @@
 		</SERVO>
 		<SERVO type="VIRTUAL">
 			<NAME>EYELIDS</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>90</MAX>
+				</POS>
+			</LIMITS>
 			<EXTRADATA>
-				<MASTER>EYE_L_LID</MASTER>
-				<SLAVE>EYE_R_LID</SLAVE>
+				<MASTER>EYE_R_LID</MASTER>
+				<SLAVE>EYE_L_LID</SLAVE>
 				<ABSOLUTE>True</ABSOLUTE>
 				<RATIO>-1</RATIO>
 			</EXTRADATA>

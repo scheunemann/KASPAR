@@ -13,7 +13,7 @@ baseDir = os.path.dirname(os.path.realpath(__file__))
 configDir = os.path.join(baseDir, './kasparConfigs')
 print "Loading robot configs from %s" % configDir
 from Robot import importer
-(robots, _, _) = importer.loadAllDirectories(configDir)
+(robots, _, _) = importer.loadAllDirectories(configDir, loadActions=False, loadTriggers=False)
 
 from Data import Model
 from Robot.ServoInterface.servoInterface import ServoInterface
