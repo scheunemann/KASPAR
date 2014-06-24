@@ -445,7 +445,7 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="0">
-				<NAME>FSR_HAND_PALM_L</NAME>
+				<NAME>FSR_ARM_R</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
@@ -453,7 +453,15 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
-				<NAME>FSR_HAND_BACK_L</NAME>
+				<NAME>FSR_HAND_R_BACK</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="2">
+				<NAME>FSR_HAND_R_FRONT</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
@@ -461,7 +469,7 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="3">
-				<NAME>FSR_FOOT_L</NAME>
+				<NAME>FSR_ARM_L</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
@@ -469,7 +477,15 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="4">
-				<NAME>FSR_LEG_L</NAME>
+				<NAME>FSR_HAND_L_BACK</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="5">
+				<NAME>FSR_HAND_L_FRONT</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
@@ -477,23 +493,15 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="6">
-				<NAME>FSR_HAND_PALM_R</NAME>
+				<NAME>FSR_CHEST</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
 			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="7">
-				<NAME>FSR_HAND_BACK_R</NAME>
-				<LIMITS>
-					<MAX>256</MAX>
-					<MIN>0</MIN>
-					<PRECISION>0</PRECISION>
-				</LIMITS>
-			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="9">
-				<NAME>FSR_FOOT_R</NAME>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="8">
+				<NAME>FSR_LEG_L</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
@@ -501,31 +509,23 @@
 				</LIMITS>
 			</SENSOR>
 			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="10">
-				<NAME>FSR_REG_R</NAME>
+				<NAME>FSR_FOOT_L</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
 			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="12">
-				<NAME>FSR_TUMMY</NAME>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="9">
+				<NAME>FSR_LEG_R</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
 					<PRECISION>0</PRECISION>
 				</LIMITS>
 			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="13">
-				<NAME>FSR_CHEST_R</NAME>
-				<LIMITS>
-					<MAX>256</MAX>
-					<MIN>0</MIN>
-					<PRECISION>0</PRECISION>
-				</LIMITS>
-			</SENSOR>
-			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="15">
-				<NAME>FSR_CHEST_L</NAME>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="11">
+				<NAME>FSR_FOOT_R</NAME>
 				<LIMITS>
 					<MAX>256</MAX>
 					<MIN>0</MIN>
