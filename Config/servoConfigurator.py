@@ -28,8 +28,13 @@ VOLTAGE_VARIANCE = 2
 POSITION_VARIANCE = 10
 POSITION_PADDING = 20
 
+DEAD_ZONE = 1
+SATURATOR_OFFSET = 48
+SATURATOR_SLOPE = 256
+
 def chooseRobot(robots):
 	if len(robots) > 1:
+		robots = sorted(robots, key=lambda r: r.name)
 		selection = None
 		while selection == None:
 			print "Available Robots:"
@@ -113,7 +118,7 @@ def configureServo(servo):
 			input = raw_input('Press Enter to configure servo %s or ctrl+c to change selection or rescan servos. ' % oldId)
 			clearScreen()
 			print "Configuring servoID %s as joint %s" % (oldId, servo.jointName)
-			if doConfigure(oldId, servoInt):
+			if doConfigure(oldId, servo, servoInt):
 				setId(oldId, newId)
 				success(newId)
 				print "Success"
@@ -133,7 +138,7 @@ def reconfigure(servos):
 		if not servo.model.name == "HERKULEX":
 			continue
 		servoInt = ServoInterface(servo)
-		if doConfigure(sid, servoInt):
+		if doConfigure(sid, servo, servoInt):
 			success(sid)
 			print "Success"
 		else:
@@ -142,7 +147,7 @@ def reconfigure(servos):
 	print "            Done"
         raw_input("   Press ENTER to contine")
 
-def doConfigure(servoId, servoInt):
+def doConfigure(servoId, servo, servoInt):
 	herkulex.clearError(servoId)
 	time.sleep(0.1)
 	setMaxVoltage(servoId, 14)
@@ -154,11 +159,25 @@ def doConfigure(servoId, servoInt):
         defPos = min(maxPos, defPos)
         defPos = max(minPos, defPos)
 	setRange(servoId, minPos, maxPos)
+        setCompliance(servoId, servo)
 	reboot(servoId)
 	center(servoId, defPos)
         print "Stats - Position: %s, Voltage: %s, Errors: %s" % (herkulex.getPosition(servoId), herkulex.getVoltage(servoId), herkulex.error_text(servoId))
 	return isConfigured(servoId, defPos)
-			
+
+def setCompliance(sid, servo):
+	MIN_STRENGTH = 1
+	MAX_STRENGTH = 10
+	MIN_OFFSET = 0x01 #0x00 = disabled
+	MAX_OFFSET = 0xFE #0xFE = hardware max
+	MIN_SLOPE = 0x01 #0x00 = disabled
+	MAX_SLOPE = 0xFF #0x7FFF = hardware max
+	strength = float(servo.extraData.get('STRENGTH', 10)) / 10
+	print "Setting virtual spring to strength %s%%" % (strength * 100)
+	herkulex.writeRegistryEEP(sid, 0x10, DEAD_ZONE)
+	herkulex.writeRegistryEEP(sid, 0x11, int(MAX_OFFSET * strength))
+	herkulex.writeRegistryEEP(sid, 0x12, int(MAX_SLOPE * strength))
+
 def isConfigured(sid, defaultPos):
         pos = herkulex.getPosition(sid)
         time.sleep(0.1)

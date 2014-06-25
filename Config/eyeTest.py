@@ -83,7 +83,7 @@ def selectJoint(robot):
 
 def center(servo):
 	servoInt = ServoInterface.getServoInterface(servo)
-	servoInt.setPosition(servo.defaultPosition, servo.defaultSpeed)
+	servoInt.setPosition(servo.defaultPosition or 0, servo.defaultSpeed or 100)
 	
 if __name__ == '__main__':
 	clearScreen()
