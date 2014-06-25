@@ -40,11 +40,13 @@ blueprints.extend(user.blueprints)
 
 def init_app(app):
     # Settings for eclipse ide debugger
-    from gevent import monkey
-    def noop(*args, **kwargs):
-        return
-    monkey.patch_time = noop
-    monkey.patch_thread = noop
+    import platform
+    if platform.system() == 'Windows':
+        from gevent import monkey
+        def noop(*args, **kwargs):
+            return
+        monkey.patch_time = noop
+        monkey.patch_thread = noop
 
     import robotInterface
     robotInterface.init_app(app)

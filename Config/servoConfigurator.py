@@ -32,6 +32,8 @@ DEAD_ZONE = 1
 SATURATOR_OFFSET = 48
 SATURATOR_SLOPE = 256
 
+DELAY = 0.125
+
 def chooseRobot(robots):
 	if len(robots) > 1:
 		robots = sorted(robots, key=lambda r: r.name)
@@ -44,9 +46,8 @@ def chooseRobot(robots):
 			try:
 				selection = int(raw_sel)
 			except ValueError:
-				print "Invalid Selection"
-				time.sleep(1)
 				clearScreen()
+				print "Invalid Selection"
 			else:
 				break
 		robot = robots[selection - 1]
@@ -149,7 +150,7 @@ def reconfigure(servos):
 
 def doConfigure(servoId, servo, servoInt):
 	herkulex.clearError(servoId)
-	time.sleep(0.1)
+	time.sleep(DELAY)
 	setMaxVoltage(servoId, 14)
 	minPos = int(servoInt._scaleToRealPos(servoInt._minPos)) - POSITION_PADDING
 	minPos = max(minPos, 0)
@@ -169,24 +170,23 @@ def setCompliance(sid, servo):
 	MIN_STRENGTH = 1
 	MAX_STRENGTH = 10
 	MIN_OFFSET = 0x01 #0x00 = disabled
-	MAX_OFFSET = 0xFE #0xFE = hardware max
-	MIN_SLOPE = 0x01 #0x00 = disabled
-	MAX_SLOPE = 0xFF #0x7FFF = hardware max
+	MAX_OFFSET = 0x5F #0xFE = hardware max
+	MIN_SLOPE = 0x4FF #0x00 = disabled
+	MAX_SLOPE = 0x7FF #0x7FFF = hardware max
 	strength = float(servo.extraData.get('STRENGTH', 10)) / 10
+	offset = int(MAX_OFFSET * strength)
+	slope = int(((MAX_SLOPE - MIN_SLOPE) * strength) + MIN_SLOPE)
 	print "Setting virtual spring to strength %s%%" % (strength * 100)
 	herkulex.writeRegistryEEP(sid, 0x10, DEAD_ZONE)
-	herkulex.writeRegistryEEP(sid, 0x11, int(MAX_OFFSET * strength))
-	herkulex.writeRegistryEEP(sid, 0x12, int(MAX_SLOPE * strength))
+	herkulex.writeRegistryEEP(sid, 0x11, offset)
+	herkulex.writeRegistryEEP(sid, 0x12, slope)
 
 def isConfigured(sid, defaultPos):
         pos = herkulex.getPosition(sid)
-        time.sleep(0.1)
         volt = herkulex.getVoltage(sid)
-        time.sleep(0.1)
 	posCorrect = abs(pos - defaultPos) < POSITION_VARIANCE
 	voltCorrect = abs(volt - VOLTAGE_INPUT) < VOLTAGE_VARIANCE
 	errors = herkulex.error_text(sid)
-        time.sleep(0.1)
 	if errors:
 		print "Errors: %s" % errors
 	if not posCorrect:
@@ -200,23 +200,28 @@ def setId(id, newId):
                 return
 	print "Changing ID from %s to %s" % (id, newId)
 	herkulex.set_ID(id, newId)
-	time.sleep(0.25)
+	time.sleep(DELAY)
 
 def setMaxVoltage(id, maxVoltage):
 	EEPVOLT = 13
 	print "Setting max voltage = %s " % maxVoltage
 	volt = int(maxVoltage / 0.074)
 	herkulex.writeRegistryEEP(id, EEPVOLT, volt)
-	time.sleep(0.25)
+	time.sleep(DELAY)
 
 def setRange(id, min, max):
 	EEPMIN = 26
 	EEPMAX = 28
 	print "Setting range = [%s, %s]" % (min, max)
+        #reset range first (servos reject min > max or max < min
+	herkulex.writeRegistryEEP(id, EEPMIN, 0x0015)
+	time.sleep(DELAY)
+	herkulex.writeRegistryEEP(id, EEPMAX, 0x03EA)
+	time.sleep(DELAY)
 	herkulex.writeRegistryEEP(id, EEPMIN, min)
-	time.sleep(0.25)
+	time.sleep(DELAY)
 	herkulex.writeRegistryEEP(id, EEPMAX, max)
-	time.sleep(0.25)
+	time.sleep(DELAY)
 
 def reboot(id):
 	herkulex.reboot(id)
@@ -225,18 +230,18 @@ def reboot(id):
 def center(id, defaultPos):
 	print "Centring servo"
 	herkulex.torqueON(id)
-	time.sleep(0.1)
+	time.sleep(DELAY)
 	herkulex.moveOne(id, defaultPos, 500)
-	time.sleep(0.75)
+	time.sleep(1)
 	
 def success(sid):
         herkulex.clearError(sid)
-        time.sleep(0.1)
+        time.sleep(DELAY)
 	for i in range(0, 3):
 		herkulex.setLed(sid, HerkuleX.LED_GREEN)
-		time.sleep(0.3)
+		time.sleep(0.1)
 		herkulex.setLed(sid, HerkuleX.LED_BLUE)
-		time.sleep(0.3)
+		time.sleep(0.1)
 	herkulex.setLed(sid, 0x00)
 	time.sleep(0.1)
 	herkulex.clearError(sid)

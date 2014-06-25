@@ -22,11 +22,13 @@ __CLIENTMSG = 'setData'
 
 import logging
 log = logging.getLogger(__name__)
-
+loop = None
 
 def init_app(app):
     socketio.init_app(app)
-    app.before_first_request_funcs.append(_start_loop)
+    #app.before_first_request_funcs.append(_start_loop)
+    if loop == None:
+        _start_loop()
 
 
 def sendMessage(robotId, msg):
@@ -66,18 +68,21 @@ def receiveMessage(data):
                 continue
             else:
                 try:
-                    print servoData
+                    log.debug(servoData)
                     interface = servo['interface']
-                    if 'position' in servoData:
-                        interface.setPosition(servoData.get('position', None), servoData.get('speed', 100))
-                    if 'poseable' in servoData:
-                        interface.setPositioning(servoData.get('poseable', False))
+                    position = servoData.get('position', None)
+                    poseable = servoData.get('poseable', None)
+                    if position != None:
+                        interface.setPosition(position, servoData.get('speed', 100))
+                    if poseable != None:
+                        interface.setPositioning(poseable)
                 except Exception as e:
                     # TODO: Error handling
+                    log.error(e, exc_info=True)
                     continue
     except Exception as e:
         # TODO: Error handling
-        print e
+        log.error(e, exc_info=True)
 
 
 @socketio.on('configure', namespace='/Robot/Interface')
@@ -94,25 +99,33 @@ def configure(data):
 
 
 def _start_loop():
-    log.debug("Spawning internal loop")
-    t = Thread(target=_loop_internal)
-    t.start()
+    log = logging.getLogger(__name__)
+    log.debug("Spawning robot state polling loop")
+    loop = Thread(target=_loop_internal, args=(log, ))
+    loop.daemon = True
+    loop.start()
 
 
-def _loop_internal():
+def _loop_internal(log):
     lastMsgs = {}
     while True:
-        with __robotLock:
-            robots = __robots.iteritems()
-        for robotId, robot in robots:
-            if len(socketio.rooms.get(__NAMESPACE, {}).get(robotId, [])):
-                lastMsg = lastMsgs.get(robotId, None)
-                lastMsgs[robotId] = datetime.datetime.utcnow()
-                _updateStatus(robot)
-                msg = _getRobotPacket(robotId, robot, lastMsg)
-                if msg['sensors'] or msg['servos']:
-                    log.debug('Sending robot state')
-                    sendMessage(robotId, msg)
+        try:
+            with __robotLock:
+                robots = __robots.iteritems()
+            for robotId, robot in robots:
+                log.debug('Checking for listeners')
+                if len(socketio.rooms.get(__NAMESPACE, {}).get(robotId, [])):
+                    lastMsg = lastMsgs.get(robotId, None)
+                    lastMsgs[robotId] = datetime.datetime.utcnow()
+                    _updateStatus(robot, log)
+                    msg = _getRobotPacket(robotId, robot, lastMsg)
+                    if msg['sensors'] or msg['servos']:
+                        log.debug('Sending robot state')
+                        sendMessage(robotId, msg)
+                else:
+                    log.debug('No listeners found')
+        except Exception as e:
+            log.warning('Error occurred!', exc_info=True)
 
         time.sleep(0.01)
 
@@ -178,17 +191,27 @@ def _getRobot(robotId):
     return __robots.get(robotId, None)
 
 
-def _updateStatus(robot):
+def _updateStatus(robot, log):
     for sensor in robot['sensors'].itervalues():
-        newVal = sensor['interface'].getCurrentValue()
+        try:
+            newVal = sensor['interface'].getCurrentValue()
+        except Exception as e:
+            log.error('Unable to get sensor value', exc_info=True)
+            continue
+
         if newVal != sensor['value']:
             sensor['value'] = newVal
             sensor['timestamp'] = datetime.datetime.utcnow()
             robot['lastUpdate'] = sensor['timestamp']
 
     for servo in robot['servos'].itervalues():
-        newVal = servo['interface'].getPosition()
-        newPos = servo['interface'].getPositioning()
+        try:
+            newVal = servo['interface'].getPosition()
+            newPos = servo['interface'].getPositioning()
+        except Exception as e:
+            log.error('Unable to get servo position', exc_info=True)
+            continue
+
         if newVal != servo['value'] or newPos != servo['poseable']:
             servo['value'] = newVal
             servo['poseable'] = newPos

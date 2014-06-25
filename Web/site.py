@@ -45,6 +45,8 @@ def runSite():
     if server == None:
         raise Exception("Site not configured, run configureSite() first")
 
+    logging.getLogger(__name__).info('Spawning web server, ready for connections')
+
     # start the server, use_reloader=False allows debugging in the IDE
     if webConfig.get('server.use_reloader', False):
         def run_server():
