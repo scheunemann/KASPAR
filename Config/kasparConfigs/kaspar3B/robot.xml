@@ -149,7 +149,7 @@
 		</SERVO>
 		<SERVO type="HERKULEX" id="5">
 			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>512</CENTER>
+			<CENTER>600</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>-8</MIN>
@@ -160,15 +160,15 @@
 				<SPEED>50</SPEED>
 			</DEFAULT>
 			<EXTRADATA>
-				<STRENGTH>3</STRENGTH>
+				<STRENGTH>6</STRENGTH>
 			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="6">
 			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>512</CENTER>
+			<CENTER>475</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-30</MIN>
+					<MIN>-40</MIN>
 					<MAX>0</MAX>
 				</POS>
 			</LIMITS>
@@ -176,7 +176,7 @@
 				<SPEED>50</SPEED>
 			</DEFAULT>
 			<EXTRADATA>
-				<STRENGTH>3</STRENGTH>
+				<STRENGTH>5</STRENGTH>
 			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="16">
@@ -311,7 +311,7 @@
 		</SERVO>
 		<SERVO type="HS82MG" id="8">
 			<NAME>EYE_R_LID</NAME>
-			<CENTER>1550</CENTER>
+			<CENTER>1625</CENTER>
 			<LIMITS>
 				<POS>
 					<MIN>0</MIN>

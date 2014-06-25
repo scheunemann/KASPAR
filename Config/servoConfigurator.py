@@ -96,13 +96,26 @@ def selectJoint(robot):
 def configureServo(servo):
 	newId = int(servo.extraData['externalId'])
 	servoInt = ServoInterface(servo)
-	print "Scanning for servos..."
 	ids = []
-	while not ids:
-		ids = herkulex.performIDScan()
-		print "Found %s servos, ids %s" % (len(ids), ids)
-		if not ids:
-			raw_input("No Servos detected, check cables and press enter to rescan")
+	while True:
+		input = raw_input('Enter servoId to configure (default: %s), or 0 to scan: ' % newId)
+		if input == '':
+			ids = [newId, ]
+			break
+		elif input != 0:
+			try: 
+				ids = [int(input), ]
+				break
+			except ValueError:
+				print "Invalid id..."
+		else:
+			while not ids:
+				print "Scanning for servos..."
+				ids = herkulex.performIDScan()
+				print "Found %s servos, ids %s" % (len(ids), ids)
+				if not ids:
+					raw_input("No Servos detected, check cables and press enter to rescan")
+			break
 
 	if len(ids) > 1:
 		while True:
