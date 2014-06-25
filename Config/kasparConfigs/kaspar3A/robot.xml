@@ -104,6 +104,9 @@
 					<MAX>27</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="2">
 			<NAME>HEAD_YAW</NAME>
@@ -114,6 +117,9 @@
 					<MAX>51</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>5</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="3">
 			<NAME>HEAD_PITCH</NAME>
@@ -124,6 +130,9 @@
 					<MAX>24</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>9</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="4">
 			<NAME>HEAD_ROLL</NAME>
@@ -134,32 +143,41 @@
 					<MAX>30</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7.5</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="5">
 			<NAME>MOUTH_OPEN</NAME>
-			<CENTER>600</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-17</MIN>
-					<MAX>17</MAX>
+					<MIN>-8</MIN>
+					<MAX>26</MAX>
 				</POS>
 			</LIMITS>
 			<DEFAULT>
 				<SPEED>50</SPEED>
 			</DEFAULT>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="6">
 			<NAME>MOUTH_SMILE</NAME>
-			<CENTER>450</CENTER>
+			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-15</MIN>
-					<MAX>15</MAX>
+					<MIN>-30</MIN>
+					<MAX>0</MAX>
 				</POS>
 			</LIMITS>
 			<DEFAULT>
 				<SPEED>50</SPEED>
 			</DEFAULT>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="16">
 			<NAME>L_SHOULDER_ROLL_UPPER</NAME>
@@ -170,6 +188,9 @@
 					<MAX>60</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="17">
 			<NAME>L_SHOULDER_PITCH</NAME>
@@ -180,6 +201,9 @@
 					<MAX>10</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="18">
 			<NAME>L_SHOULDER_ROLL_LOWER</NAME>
@@ -190,6 +214,9 @@
 					<MAX>145</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>6</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="19">
 			<NAME>L_ELBOW</NAME>
@@ -200,6 +227,9 @@
 					<MAX>10</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>4</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="20">
 			<NAME>L_WRIST_ROLL</NAME>
@@ -210,6 +240,9 @@
 					<MAX>45</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="32">
 			<NAME>R_SHOULDER_ROLL_UPPER</NAME>
@@ -220,6 +253,9 @@
 					<MAX>180</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="33">
 			<NAME>R_SHOULDER_PITCH</NAME>
@@ -230,6 +266,9 @@
 					<MAX>280</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="34">
 			<NAME>R_SHOULDER_ROLL_LOWER</NAME>
@@ -240,6 +279,9 @@
 					<MAX>30</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>6</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="35">
 			<NAME>R_ELBOW</NAME>
@@ -250,6 +292,9 @@
 					<MAX>80</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>4</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HERKULEX" id="36">
 			<NAME>R_WRIST_ROLL</NAME>
@@ -260,6 +305,9 @@
 					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
 		</SERVO>
 		<SERVO type="HS82MG" id="8">
 			<NAME>EYE_R_LID</NAME>
@@ -386,7 +434,7 @@
 			<LIMITS>
 				<POS>
 					<MIN>0</MIN>
-					<MAX>90</MAX>
+					<MAX>60</MAX>
 				</POS>
 			</LIMITS>
 			<EXTRADATA>
