@@ -73,7 +73,7 @@ def receiveMessage(data):
                     position = servoData.get('position', None)
                     poseable = servoData.get('poseable', None)
                     if position != None:
-                        interface.setPosition(position, servoData.get('speed', 100))
+                        interface.setPosition(float(position), servoData.get('speed', 100))
                     if poseable != None:
                         interface.setPositioning(poseable)
                 except Exception as e:
@@ -113,17 +113,15 @@ def _loop_internal(log):
             with __robotLock:
                 robots = __robots.iteritems()
             for robotId, robot in robots:
-                log.debug('Checking for listeners')
-                if len(socketio.rooms.get(__NAMESPACE, {}).get(robotId, [])):
+                numListeners = len(socketio.rooms.get(__NAMESPACE, {}).get(robotId, []))
+                if numListeners:
                     lastMsg = lastMsgs.get(robotId, None)
                     lastMsgs[robotId] = datetime.datetime.utcnow()
                     _updateStatus(robot, log)
                     msg = _getRobotPacket(robotId, robot, lastMsg)
                     if msg['sensors'] or msg['servos']:
-                        log.debug('Sending robot state')
+                        log.debug('Sending robot state to %s listeners' % numListeners)
                         sendMessage(robotId, msg)
-                else:
-                    log.debug('No listeners found')
         except Exception as e:
             log.warning('Error occurred!', exc_info=True)
 
