@@ -102,7 +102,7 @@ def configureServo(servo):
 		if input == '':
 			ids = [newId, ]
 			break
-		elif input != 0:
+		elif input != '0':
 			try: 
 				ids = [int(input), ]
 				break
