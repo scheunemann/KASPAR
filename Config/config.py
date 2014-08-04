@@ -2,11 +2,12 @@ import logging
 import platform
 import sys
 
+
 webConfig = {
         'server.socket_host': '0.0.0.0',
         'server.socket_port': 1065,
         'server.thread_pool': 10,
-        'server.thread_pool_max':-1,
+        'server.thread_pool_max': -1,
         'JSON_AS_ASCII': False,
         'DEBUG': True,
 #         'environment': 'production'
@@ -14,16 +15,16 @@ webConfig = {
 
 dbConfig = {
          'type': 'Sqlite',
-         'file': '/home/pi/git/KASPAR/kaspar.db'
+         'file': ('/home/pi/git/KASPAR/kaspar.db' if platform.system() == 'Linux' else 'D:\Code\Robots\KASPAR\kaspar.db')
 }
 
-#dbConfig = {
+# dbConfig = {
 #        'type': 'MySql',
 #        'host': 'localhost',
 #        'user': 'kaspar',
 #        'pass': 'kaspar',
 #        'db': 'kaspar',
-#}
+# }
 
 
 class ConsoleHandler(logging.StreamHandler):
@@ -59,11 +60,14 @@ def configureLogging(level=logging.NOTSET):
         from logging.handlers import NTEventLogHandler as LogHandler
         kwargs = {'appname': 'KasparGUI'}
     if not [h for h in root_logger.handlers if isinstance(h, LogHandler)]:
-        logHandler = LogHandler(**kwargs)
-        logHandler.setLevel(0)
-        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
-        logHandler.setFormatter(formatter)
-        root_logger.addHandler(logHandler)
+        try:
+            logHandler = LogHandler(**kwargs)
+            logHandler.setLevel(0)
+            formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+            logHandler.setFormatter(formatter)
+            root_logger.addHandler(logHandler)
+        except:
+            pass
     root_logger.info('Logging Configured')
-    
+
 

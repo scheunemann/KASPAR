@@ -69,7 +69,7 @@ def _flushAndFillTestData(robotDir):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-	print "Subdir not specified"
-	exit()
+        print "Subdir not specified"
+        exit()
     else:
         _flushAndFillTestData(sys.argv[1])

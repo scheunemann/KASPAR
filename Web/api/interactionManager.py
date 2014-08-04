@@ -2,20 +2,21 @@ import Model
 from Data.storage import StorageFactory
 from Processor import TriggerProcessor
 from ActionRunner import ActionRunner
+from Robot import Robot
 from threading import RLock
 import datetime
 
 
 class InteractionManager(object):
-
     def __init__(self, interactionId):
         self._interactionId = interactionId
         ds = StorageFactory.getNewSession()
         interaction = ds.query(Model.Interaction).get(interactionId)
-        triggers = self._getTriggers(ds, interaction.robot, interaction.user)
-        self._triggerProcessor = TriggerProcessor(triggers, interaction.robot, datetime.timedelta(seconds=0.01))
+        robot = Robot.getRunnableRobot(interaction.robot)
+        triggers = self._getTriggers(ds, robot, interaction.user)
+        self._triggerProcessor = TriggerProcessor(triggers, robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
-        self._actionRunner = ActionRunner(interaction.robot)
+        self._actionRunner = ActionRunner(robot)
         self._handles = {}
         self._handleLock = RLock()
 
@@ -49,24 +50,24 @@ class InteractionManager(object):
             iLog.logs.append(log)
         ds.commit()
         with self._handleLock:
-            self._handles.pop(handle.actionId, None)
+            self._handles.pop(handle.action.id, None)
 
     def _getTriggers(self, ds, user, robot):
         #TODO: This needs to filter by triggers that the robot supports (sensors, and user overrides)
         return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, source, triggerActivatedArg):
-        self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value)
+        self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, triggerActivatedArg.action)
 
-    def doTrigger(self, trigger_id, value):
+    def doTrigger(self, triggerId, value, action):
         ds = StorageFactory.getNewSession()
         log = Model.InteractionLog()
         log.interaction_id = self._interactionId
-        log.trigger_id = trigger_id
+        log.trigger_id = triggerId
         log.trigger_value = value
         ds.add(log)
         ds.commit()
-        action = ds.query(Model.Action).join(Model.Trigger).filter(Model.Trigger.id == trigger_id).first()
+
         if action:
             with self._handleLock:
                 if action.id in self._handles:

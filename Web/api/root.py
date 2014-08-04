@@ -60,10 +60,10 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-@root.errorhandler(500)
-def internal_error(exception):
-    import traceback
-    print exception
-    print traceback.format_exc()
-    raise exception
+# @root.errorhandler(500)
+# def internal_error(exception):
+#     import traceback
+#     print exception
+#     print traceback.format_exc()
+#     raise exception
 
