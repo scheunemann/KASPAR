@@ -36,7 +36,14 @@ define(function(require) {
 							Mousetrap.unbind(keyBinds);
 						}
 
-						keyBinds = kb;
+						keyBinds = [];
+						for (var i = 0; i < kb.length; i++) {
+							var key = kb[i];
+							keyBinds.push(key);
+							if(key.toLowerCase() != key) {
+								keyBinds.push(key.toLowerCase());
+							}							
+						}
 
 						Mousetrap.bind(keyBinds, function() {
 							$scope.active = true;

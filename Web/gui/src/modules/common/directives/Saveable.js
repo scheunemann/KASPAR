@@ -31,7 +31,7 @@ define(function(require) {
 						}
 					}
 				});
-
+				
 				scope.$watch(name + '.$pristine', function(value) {
 					if (!value) {
 						parentElement.removeClass('has-success');
@@ -42,6 +42,10 @@ define(function(require) {
 							parentElement.removeClass('has-success');
 						}, 2000);
 						updateCalled = false;
+					} else {
+						parentElement.removeClass('has-success');
+						parentElement.removeClass('has-warning');
+						parentElement.removeClass('has-error');
 					}
 				});
 

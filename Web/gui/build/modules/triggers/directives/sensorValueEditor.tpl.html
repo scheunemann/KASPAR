@@ -47,7 +47,7 @@
 					name="sensorCompare"
 					ng-model="trigger.comparison"
 					saveable
-					required
+					ng-required="trigger.sensorValue.substring(0,4) != 'eval'"
 					style="width: 25%"
 					ng-options="value.compare as (value.name + ' (' + value.compare + ')') for value in comparisons">
 					<option value="">{{language['trigger.sensor.advanced.compare.select.prompt']}}</option>

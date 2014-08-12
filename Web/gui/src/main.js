@@ -1,17 +1,17 @@
 require.config({
 	baseUrl : "/",
 	paths : {
-		angular : 'bower_components/angular/angular',
-		jquery : 'bower_components/jquery/jquery',
-		jqueryUI : 'bower_components/jquery-ui/ui/jquery-ui',
+		angular : 'bower_components/angular/angular.min',
+		jquery : 'bower_components/jquery/jquery.min',
+		jqueryUI : 'bower_components/jquery-ui/ui/minified/jquery-ui.min',
 		angularSlider : 'bower_components/angular-ui-slider/src/slider',
-		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls',
-		angularResource : 'bower_components/angular-resource/angular-resource',
-		angularUIRouter : 'bower_components/angular-ui-router/release/angular-ui-router',
-		mousetrap : 'bower_components/mousetrap/mousetrap',
-		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause',
+		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
+		angularResource : 'bower_components/angular-resource/angular-resource.min',
+		angularUIRouter : 'bower_components/angular-ui-router/release/angular-ui-router.min',
+		mousetrap : 'bower_components/mousetrap/mousetrap.min',
+		mousetrapPause : 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
 		text : 'bower_components/requirejs-text/text',
-		socketio: 'bower_components/socket.io-client/dist/socket.io',
+		socketio: 'bower_components/socket.io-client/dist/socket.io.min',
 		categories : 'categories',
 	},
 	shim : {
@@ -49,9 +49,6 @@ require.config({
 		},
 		'jqueryUI' : {
 			deps : [ 'jquery', ]
-		},
-		'socketio': {
-			exports: 'io'
 		},
 		'mousetrap' : {
 			exports : 'Mousetrap'

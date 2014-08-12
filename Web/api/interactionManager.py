@@ -53,13 +53,13 @@ class InteractionManager(object):
             self._handles.pop(handle.action.id, None)
 
     def _getTriggers(self, ds, user, robot):
-        #TODO: This needs to filter by triggers that the robot supports (sensors, and user overrides)
+        # TODO: This needs to filter by triggers that the robot supports (sensors, and user overrides)
         return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, source, triggerActivatedArg):
         self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, triggerActivatedArg.action)
 
-    def doTrigger(self, triggerId, value, action):
+    def doTrigger(self, triggerId, value, action=None):
         ds = StorageFactory.getNewSession()
         log = Model.InteractionLog()
         log.interaction_id = self._interactionId
@@ -67,8 +67,11 @@ class InteractionManager(object):
         log.trigger_value = value
         ds.add(log)
         ds.commit()
+        if action == None:
+            action = ds.query(Model.Action).join(Model.Trigger).filter(Model.Trigger.id == triggerId).first()
 
         if action:
+            action = ActionRunner.getRunable(action)
             with self._handleLock:
                 if action.id in self._handles:
                     self._handles[action.id].stop()

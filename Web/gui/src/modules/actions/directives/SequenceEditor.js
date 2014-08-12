@@ -112,8 +112,7 @@ define(function(require) {
 
 				$scope.removeActions = function(oactions) {
 					for (var i = 0; i < oactions.length; i++) {
-						var action = $scope.sequence.ordered_actions.splice($scope.sequence.ordered_actions.indexOf(oactions[i]), 1);
-						action.$delete();
+						$scope.sequence.ordered_actions.splice($scope.sequence.ordered_actions.indexOf(oactions[i]), 1);
 					}
 
 					$scope.saveAll();

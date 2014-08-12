@@ -23,25 +23,14 @@ module.exports = {
 				angularUIRouter : 'empty:',
 				mousetrap : 'empty:',
 				mousetrapPause : 'empty:',
+				socketio: 'empty:',
 			},
 			uglify2 : {
 				mangle : false,
 			},
 			modules : [ {
 				name : 'app',
-				exclude : [
-							'angular',
-							'jquery',
-							'jqueryUI',
-							'angularSlider',
-							'angularBoostrap',
-							'angularResource',
-							'angularRoute',
-							'angularUIRouter',
-							'mousetrap',
-							'mousetrapPause',
-							'text'
-							],
+
 			} ],
 			wrap : {
 				start : "(function() {",

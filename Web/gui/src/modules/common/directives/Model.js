@@ -29,7 +29,7 @@ define(function(require) {
 						}
 
 						$scope.model.$save().then(function() {
-							modelCtrl.$setPristine();
+							$scope.formCtrl.$setPristine();
 						});
 					}
 				};

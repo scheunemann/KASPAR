@@ -28,7 +28,9 @@ define(function(require) {
 						$scope.compound.triggers.push(triggers[i]);
 					}
 
-					$scope.compound.$save();
+					if ($scope.compountTriggerForm.$valid) {
+						$scope.compound.$save();
+					}
 				};
 
 				$scope.removeTriggers = function(triggers) {
@@ -36,7 +38,9 @@ define(function(require) {
 						$scope.compound.triggers.splice($scope.compound.triggers.indexOf(triggers[i]), 1);
 					}
 
-					$scope.compound.$save();
+					if ($scope.compountTriggerForm.$valid) {
+						$scope.compound.$save();
+					}
 				};
 			},
 		};
