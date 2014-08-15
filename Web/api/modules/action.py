@@ -111,14 +111,14 @@ def testPost(aid):
     if aid in __testRunners and __testRunners[aid].isAlive():
         handle = __testRunners[aid]
         handle.stop()
-    else:
-        action = db_session.query(Model.Action).get(aid)
-        robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
-        robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
-        r = Robot.getRunnableRobot(robot)
-        a = ActionRunner.getRunable(action)
-        handle = ActionRunner(r).executeAsync(a)
-        __testRunners[aid] = handle
+        handle.join(1)
+    action = db_session.query(Model.Action).get(aid)
+    robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
+    robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
+    r = Robot.getRunnableRobot(robot)
+    a = ActionRunner.getRunable(action)
+    handle = ActionRunner(r).executeAsync(a)
+    __testRunners[aid] = handle
 
     active = handle.isAlive()
     output = handle.output
