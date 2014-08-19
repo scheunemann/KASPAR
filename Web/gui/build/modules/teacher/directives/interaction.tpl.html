@@ -1,0 +1,12 @@
+<begin-interaction
+	ng-hide="interaction"
+	teacher="teacher"
+	user="user"
+	games="selectedGames"
+	interaction="interaction"></begin-interaction>
+<active-interaction
+	ng-show="interaction && !interaction.totalTime"
+	interaction="interaction"></active-interaction>
+<end-interaction
+	ng-show="interaction && interaction.totalTime"
+	interaction="interaction"></end-interaction>

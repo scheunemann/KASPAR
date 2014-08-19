@@ -1,0 +1,2 @@
+define(["require","angular"],function(require){{var angular=require("angular"),moduleName="kasparGUI.teacher.models",dependancies=[];angular.module(moduleName,dependancies)}return moduleName});
+//# sourceMappingURL=models.js.map

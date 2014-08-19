@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-lg-2">
+		<div>
+			<div>Child</div>
+			<select
+				class="selectpicker form-control"
+				ng-model="selectedUser"
+				ng-disabled="users.length <= 1"
+				ng-options="user.name for user in users| orderBy:'name'">
+				<option value="">All</option>
+			</select>
+		</div>
+		<div>
+			<div>Interactions</div>
+			<div
+				ng-class="colors[interaction.score.total-1]"
+				ng-repeat="interaction in interactions | filter:userFilter | orderBy:'date'"
+				class="clickable"
+				ng-click="select(interaction)">{{interaction.date}}</div>
+		</div>
+	</div>
+	<div class="col-lg-10">
+		<detail-history
+			ng-show="selectedInteraction"
+			interaction="selectedInteraction"></detail-history>
+	</div>
+</div>

@@ -33,11 +33,13 @@ def configureSite():
 
     apiRoot.server = server
 
-    # Disable connection for debugging without a robot
-    #from Robot.ServoInterface import ServoInterface
-    #from Processor.SensorInterface import SensorInterface
-    #ServoInterface.disconnected = True
-    #SensorInterface.disconnected = True
+    import platform
+    if platform.system() == 'Windows':
+        # Disable connection for debugging without a robot
+        from Robot.ServoInterface import ServoInterface
+        from Processor.SensorInterface import SensorInterface
+        ServoInterface.disconnected = True
+        SensorInterface.disconnected = True
 
 
 def runSite():

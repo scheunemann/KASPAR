@@ -1,0 +1,73 @@
+
+<div class="container_history">
+	<div class="row">
+		<div class="col-lg-2">
+			<container-user user="interaction.user"></container-user>
+		</div>
+		<div class="col-lg-10">
+			<div>Date: {{interaction.date}}</div>
+			<div>Time: {{interaction.totalTime}}</div>
+		</div>
+	</div>
+	<div class="row">Games Played</div>
+	<div class="row">
+		<div
+			ng-repeat="game in interaction.games"
+			class="col-lg-2">
+			<container-game game='game'></container-game>
+		</div>
+	</div>
+	<div class="row">
+		Objectives Covered:
+		<container-objective
+			ng-repeat="objective in getObjectives()"
+			objective='objective'></container-objective>
+	</div>
+	<div class="row">
+		<div class="col-lg-3">
+			<div class="center">
+				<img
+					ng-src="/img/teacher/rating/{{images[interaction.score.child.engagement-1]}}"
+					alt="{{interaction.score.child.engagement}}" />
+			</div>
+			<div class="center">Child Engagement</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="center">
+				<img
+					ng-src="/img/teacher/rating/{{images[interaction.score.child.experience-1]}}"
+					alt="{{interaction.score.child.experience}}" />
+			</div>
+			<div class="center">Child Experience</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="center">
+				<img
+					ng-src="/img/teacher/rating/{{images[interaction.score.parent.experience-1]}}"
+					alt="{{interaction.score.parent.experience}}" />
+			</div>
+			<div class="center">Parent Experience</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="center">
+				<img
+					ng-src="/img/teacher/rating/{{images[interaction.score.total-1]}}"
+					alt="{{interaction.score.total}}" />
+			</div>
+			<div class="center">Average Score</div>
+		</div>
+	</div>
+	<div class="row">
+		<div
+			ng-repeat="note in interaction.notes"
+			class="col-lg-3">
+			<container-note note='note'></container-note>
+		</div>
+		<div class="col-lg-3">
+			<container-note
+				note="newNote"
+				class="clickable"
+				ng-click="addNote()"></container-note>
+		</div>
+	</div>
+</div>

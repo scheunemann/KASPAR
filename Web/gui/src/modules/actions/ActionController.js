@@ -11,7 +11,7 @@ define(function(require) {
 		$scope.types = ActionType.query();
 
 		$scope.$watch('action', function(action) {
-			if (action !== undefined) {
+			if (action !== undefined && action !== null) {
 				var abstractAction = $scope.action;
 				var concreteAction = $scope.action.getConcreteClassInstance();
 				concreteAction.$promise.then(function() {
@@ -31,6 +31,10 @@ define(function(require) {
 		$scope.deleteAction = function(action) {
 			$scope.actions.splice($scope.actions.indexOf(action), 1);
 			$scope.action = $scope.actions[0];
+		};
+
+		$scope.copyAction = function(action) {
+			alert('TODO');
 		};
 
 		var errorFunc = function(status) {

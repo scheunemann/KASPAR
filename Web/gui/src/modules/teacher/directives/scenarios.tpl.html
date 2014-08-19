@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-lg-7">
+		{{teacher.name}}'s Senarios:
+		<div class="row">
+			<div
+				ng-repeat="scenario in scenarios | filter:teacherScenarios"
+				class="col-lg-2">
+				<container-scenario
+					selected='scenario==selectedScenario'
+					ng-click="selectScenario(scenario)"
+					class="clickable"
+					highlight='shouldHighlight(scenario, selectedTag, selectedObjective)'
+					scenario='scenario'></container-scenario>
+			</div>
+		</div>
+		All Senarios:
+		<div class="row">
+			<div
+				ng-repeat="scenario in scenarios"
+				class="col-lg-2">
+				<container-scenario
+					ng-click="selectScenario(scenario)"
+					class="clickable"
+					selected='scenario==selectedScenario'
+					highlight='shouldHighlight(scenario, selectedTag, selectedObjective)'
+					scenario='scenario'></container-scenario>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-5">
+		<detail-scenario
+			scenario='selectedScenario'
+			selected-tag='selectedTag'
+			selected-objective='selectedObjective'
+			ng-show="selectedScenario"></detail-scenario>
+	</div>
+</div>
+<div
+	class="row"
+	ng-show="selectedTag || selectedObjective">
+	<div class="col-lg-12">
+		Filters:
+		<span ng-show="selectedTag">{{selectedTag.title}}</span>
+		,
+		<span ng-show="selectedObjective">{{selectedObjective.title}}</span>
+		<button
+			type="button"
+			ng-click="selectedTag=null;selectedObjective=null;">Clear</button>
+	</div>
+</div>

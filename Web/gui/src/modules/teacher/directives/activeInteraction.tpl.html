@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col-lg-2">
+		<div class="row">
+			<div class="col-lg-12">Games</div>
+		</div>
+		<div
+			class="row"
+			ng-repeat="game in interaction.games">
+			<div class="col-lg-12">
+				<container-game
+					game="game"
+					short="true"
+					class="clickable"
+					ng-class="{blue: game.started && !game.finished, green:game.started && game.finished}"
+					ng-click=changeGame(game)></container-game>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<button
+					type="button"
+					ng-click="endInteraction()"
+					class="btn btn-default">Done</button>
+			</div>
+		</div>
+	</div>
+	<div
+		class="col-lg-10"
+		ng-show="selectedGame">
+		<interaction-game game="selectedGame"></interaction-game>
+	</div>
+</div>

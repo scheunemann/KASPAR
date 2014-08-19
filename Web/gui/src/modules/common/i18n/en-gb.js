@@ -10,6 +10,7 @@ define(function(require) {
 		'action.import.upload' : 'Upload',
 		'action.new' : 'New',
 		'action.delete' : 'Delete',
+		'action.copy' : 'Copy',
 		'action.type.label' : 'Type',
 		'action.type.select.prompt' : '--Select Type--',
 		'action.sound.name' : 'Name',

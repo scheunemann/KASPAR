@@ -1,0 +1,11 @@
+<login
+	ng-hide="teacher"
+	teacher="teacher"></login>
+<user
+	ng-show="teacher && !user"
+	teacher="teacher"
+	user="user"></user>
+<home
+	ng-show="teacher && user"
+	teacher="teacher"
+	user="user"></home>

@@ -11,6 +11,7 @@ define(function(require) {
 	var admin = require('categories/admin');
 	var interaction = require('categories/interaction');
 	var trigger = require('categories/trigger');
+	var teacher = require('categories/teacher');
 	var commonControllers = require('common/controllers');
 	var commonDirectives = require('common/directives');
 	var robotsDirectives = require('robots/directives');
@@ -26,7 +27,7 @@ define(function(require) {
 						action, 
 						admin, 
 						interaction, 
-						trigger
+						trigger,
 						];
 	
 	var Routes = function($stateProvider, $urlRouterProvider, $locationProvider) {

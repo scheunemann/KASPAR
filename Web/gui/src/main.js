@@ -76,11 +76,14 @@ require.config({
 	}, {
 		name : 'users',
 		location : 'modules/users'
+	}, {
+		name : 'teacher',
+		location : 'modules/teacher',
 	} ],
 	priority : [ "angular" ]
 });
 
-require([ 'angular', 'app' ], function(angular, app) {
+require([ 'angular', 'fullapp' ], function(angular, app) {
 	'use strict';
 
 	angular.element(document).ready(function() {

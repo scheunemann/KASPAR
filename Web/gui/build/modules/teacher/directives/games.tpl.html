@@ -1,0 +1,36 @@
+<div class="row">
+	<div class="col-lg-7">
+		<div class="row">
+			<div
+				ng-repeat="game in games"
+				class="col-lg-2">
+				<container-game
+					ng-click="selectGame(game)"
+					class="clickable"
+					selected='game==selectedGame'
+					highlight='shouldHighlight(game, selectedTag, selectedObjective)'
+					game='game'></container-game>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-5">
+		<detail-game
+			game='selectedGame'
+			selected-tag='selectedTag'
+			selected-objective='selectedObjective'
+			ng-show="selectedGame"></detail-game>
+	</div>
+</div>
+<div
+	class="row"
+	ng-show="selectedTag || selectedObjective">
+	<div class="col-lg-12">
+		Filters:
+		<span ng-show="selectedTag">{{selectedTag.title}}</span>
+		,
+		<span ng-show="selectedObjective">{{selectedObjective.title}}</span>
+		<button
+			type="button"
+			ng-click="selectedTag=null;selectedObjective=null;">Clear</button>
+	</div>
+</div>

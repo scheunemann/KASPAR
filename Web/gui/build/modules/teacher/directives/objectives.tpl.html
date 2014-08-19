@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="col-lg-5">
+		<div class="row">
+			<div
+				ng-repeat="objective in objectives"
+				class="col-lg-2">
+				<container-objective
+					ng-click="selectObjective(objective)"
+					class="clickable"
+					ng-class="{highlight:objective.key==selectedObjective.key}"
+					objective='objective'></container-objective>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-7">
+		<div class="row">
+			<div
+				ng-repeat="item in items | filter:itemFilter"
+				class="col-lg-2">
+				<container-game game='item'></container-game>
+			</div>
+		</div>
+	</div>
+</div>

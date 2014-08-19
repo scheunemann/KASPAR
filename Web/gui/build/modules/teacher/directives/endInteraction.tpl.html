@@ -1,0 +1,100 @@
+
+<div class="row">
+	<div class="col-lg-2">
+		<container-user user="interaction.user"></container-user>
+	</div>
+	<div class="col-lg-7">
+		Games played
+		<div class="row">
+			<div
+				ng-repeat="game in interaction.games"
+				class="col-lg-3">
+				<container-game game='game'></container-game>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="row">Objectives covered</div>
+		<div
+			class="row"
+			ng-repeat="objective in getObjectives()">
+			<container-objective
+				class="col-lg-12"
+				objective='objective'></container-objective>
+		</div>
+	</div>
+	<div class="col-lg-1">
+		<button
+			type="button"
+			ng-click="finish()">Finished</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-1">Child Engagement</div>
+	<div
+		ng-repeat="image in images"
+		class="col-lg-2">
+		<img
+			ng-src="/img/teacher/rating/{{image}}"
+			ng-class="{green:interaction.score.child.engagement==$index+1}"
+			class="clickable"
+			alt="{{$index}}"
+			ng-click="interaction.score.child.engagement = $index+1" />
+	</div>
+	<div class="col-lg-1">
+		<button
+			type="button"
+			ng-click="addNote('Child Engagement')">Add Note</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-1">Child Experience</div>
+	<div
+		ng-repeat="image in images"
+		class="col-lg-2">
+		<img
+			ng-src="/img/teacher/rating/{{image}}"
+			ng-class="{green:interaction.score.child.experience==$index+1}"
+			class="clickable"
+			alt="{{$index}}"
+			ng-click="interaction.score.child.experience = $index+1" />
+	</div>
+	<div class="col-lg-1">
+		<button
+			type="button"
+			ng-click="addNote('Child Experience')">Add Note</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-1">Parent Experience</div>
+	<div
+		ng-repeat="image in images"
+		class="col-lg-2">
+		<img
+			ng-src="/img/teacher/rating/{{image}}"
+			ng-class="{green:interaction.score.parent.experience==$index+1}"
+			class="clickable"
+			alt="{{$index}}"
+			ng-click="interaction.score.parent.experience = $index+1" />
+	</div>
+	<div class="col-lg-1">
+		<button
+			type="button"
+			ng-click="addNote('Parent Experience')">Add Note</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">All Notes</div>
+</div>
+<div class="row">
+	<div
+		ng-repeat="note in notes"
+		class="col-lg-2">
+		<container-note note="note"></container-note>
+	</div>
+	<div class="col-lg-2">
+		<button
+			type="button"
+			ng-click="addNote()">Add Note</button>
+	</div>
+</div>

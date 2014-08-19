@@ -29,8 +29,9 @@ module.exports = {
 				mangle : false,
 			},
 			modules : [ {
-				name : 'app',
-
+				name : 'fullapp',
+			},{
+				name : 'simpleapp',
 			} ],
 			wrap : {
 				start : "(function() {",

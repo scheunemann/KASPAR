@@ -26,8 +26,14 @@
 				ng-click="newAction()">{{language['action.new']}}</button>
 			<button
 				class="btn btn-default"
+				ng-disabled="!action"
 				type="button"
 				ng-click="deleteAction(action)">{{language['action.delete']}}</button>
+			<button
+				class="btn btn-default"
+				ng-disabled="!action"
+				type="button"
+				ng-click="copyAction(action)">{{language['action.copy']}}</button>
 		</span>
 	</div>
 	<hr />

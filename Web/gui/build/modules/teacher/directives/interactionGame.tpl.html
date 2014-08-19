@@ -1,0 +1,18 @@
+<div class="row">
+	<div class="col-lg-8">{{game.desc_long}}</div>
+	<div class="col-lg-4">
+		<img ng-src="/img/teacher/game/{{game.fullsrc}}" />
+	</div>
+</div>
+<div class="row">
+	<button
+		type="button"
+		ng-click="start()"
+		ng-show="!game.started"
+		class="btn btn-default">Start</button>
+	<button
+		type="button"
+		ng-show="game.started && !game.finished"
+		ng-click="end()"
+		class="btn btn-default">Stop</button>
+</div>

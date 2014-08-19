@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="col-lg-12 center">Hello {{teacher.name}}, please
+		select the user you will be working with</div>
+</div>
+<div class="row">
+	<div
+		ng-repeat="user in users"
+		class="col-lg-1">
+		<container-user
+			user='user'
+			class="clickable"
+			ng-click="selectUser(user)"></container-user>
+	</div>
+	<div class="col-lg-1">
+		<container-user
+			user=newUser
+			class="clickable"
+			ng-click=addUser()></container-user>
+	</div>
+</div>

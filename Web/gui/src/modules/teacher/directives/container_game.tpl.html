@@ -1,0 +1,13 @@
+
+<div
+	class="container_game"
+	ng-class="{highlight:highlight && !selected, selected:selected}">
+	<div class="center">
+		<img ng-src="img/teacher/game/{{game.thumbsrc}}" />
+	</div>
+	<div class="name center">{{game.name}}</div>
+	<div ng-hide="short" class="numPlays">Times Played: {{game.plays}}</div>
+	<div ng-hide="short" class="desc_short">{{game.desc_short}}...</div>
+	<div ng-hide="short" class="totalTime">{{game.totTime}}</div>
+	<div ng-hide="short" class="lastPlayed">{{game.lastPlay}}</div>
+</div>
