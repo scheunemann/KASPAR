@@ -1,0 +1,16 @@
+3p3
+13
+relax,relax.pose,500
+MouthClose,MouthClose.pose,1000
+MouthOpen,MouthOpen.pose,2500
+Left Hand,Left Hand.pose,1500
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,2500
+Right Leg,Right Leg.pose,1000
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,500
+left head,left head.pose,1500
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,2000
+relax,relax.pose,0
+k.g33.wav

@@ -1,7 +1,7 @@
 import logging
 import platform
 import sys
-
+import os
 
 webConfig = {
         'server.socket_host': '0.0.0.0',
@@ -15,7 +15,7 @@ webConfig = {
 
 dbConfig = {
          'type': 'Sqlite',
-         'file': ('/home/pi/git/KASPAR/kaspar.db' if platform.system() == 'Linux' else 'D:\Code\Robots\KASPAR\kaspar.db')
+         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
 }
 
 # dbConfig = {

@@ -10,7 +10,7 @@ from Data.storage import StorageFactory
 from Robot import importer
 
 
-def _flushAndFillTestData(robotDir):
+def _flushAndFillTestData(configDir):
     StorageFactory.config['engine'].update(dbConfig)
     StorageFactory.config['debug'] = True
     StorageFactory.drop_keys(StorageFactory.getDefaultDataStore().engine)
@@ -41,10 +41,8 @@ def _flushAndFillTestData(robotDir):
 
     operators[0].users.extend(users[1:3])
 
-    baseDir = os.path.dirname(os.path.realpath(__file__))
-    configDir = os.path.join(baseDir, 'Config/kasparConfigs')
     print "Loading configs..."
-    (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir + '/' + robotDir)
+    (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
     print "Done."
 
     session = StorageFactory.getNewSession()
@@ -71,5 +69,12 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Subdir not specified"
         exit()
+		
+    baseDir = os.path.dirname(os.path.realpath(__file__))
+    configDir = os.path.join(baseDir, 'Config/kasparConfigs/' + sys.argv[1])
+
+    if not os.path.isdir(configDir):
+        print "Specified subdir does not exist: %s" % sys.argv[1]
+        exit()
     else:
-        _flushAndFillTestData(sys.argv[1])
+        _flushAndFillTestData(configDir)

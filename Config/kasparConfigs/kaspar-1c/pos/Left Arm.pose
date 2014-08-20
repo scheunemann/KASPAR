@@ -1,0 +1,19 @@
+Left Arm
+17
+HEAD_VERT,417,270,false
+ARM_L_3,509,100,false
+ARM_L_2,604,100,false
+ARM_R_4,490,100,false
+ARM_L_4,330,100,false
+TORSO,210,50,false
+ARM_R_3,486,100,false
+MOUTH_OPEN,524,70,false
+ARM_R_2,177,100,false
+EYES_LR,480,70,false
+ARM_L_1,619,100,false
+ARM_R_1,343,100,false
+EYES_UD,500,70,false
+MOUTH_SMILE,46,70,false
+HEAD_TLT,670,70,false
+EYELIDS,840,70,false
+HEAD_ROT,857,70,false
