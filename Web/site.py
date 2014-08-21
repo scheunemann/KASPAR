@@ -13,6 +13,7 @@ from werkzeug.serving import run_with_reloader
 from socketio.server import SocketIOServer
 siteRoot = None
 server = None
+import sys
 
 
 def configureSite():
@@ -34,8 +35,9 @@ def configureSite():
     apiRoot.server = server
 
     import platform
-    if platform.system() == 'Windows':
+    if platform.system() == 'Windows' and len(sys.argv) > 1 and sys.argv[1].lower() == 'debug':
         # Disable connection for debugging without a robot
+        logging.getLogger(__name__).warning('Site running in DEBUG mode, no commands will be sent to the robot')
         from Robot.ServoInterface import ServoInterface
         from Processor.SensorInterface import SensorInterface
         ServoInterface.disconnected = True
