@@ -22,7 +22,7 @@
 						multiple
 						ng-multiple="true"
 						ng-model="toAdd"
-						ng-options="action.name for action in actions | except:sequence | orderBy:'name'">
+						ng-options="action.name for action in actions | except:sequence | orderBy:'name' | groupBy:'type'">
 					</select>
 				</div>
 			</div>
