@@ -62,7 +62,7 @@ def _flushAndFillTestData(configDir, flush=True):
         interaction.user = users[3]
         session.add(interaction)
 
-    session.add_all([r for r in robots if r.name == setting.value])
+    session.add_all(robots)
     session.add_all(actions)
     session.add_all(triggers)
     session.add_all(users)
