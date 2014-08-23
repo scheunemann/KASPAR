@@ -7,6 +7,76 @@ define(function(require) {
 		this.getInteractions = function() {
 			return [ {
 				date : '13/4/2014',
+				time : '1:35pm',
+				totalTime : '30m',
+				score : {
+					'total' : 2,
+					'parent' : {
+						'experience' : 3,
+					},
+					'child' : {
+						'experience' : 1,
+						'engagement' : 1
+					}
+				},
+				games : [ {
+					name : 'Game 1',
+					plays : 10,
+					desc_short : 'This is a grea',
+					desc_long : 'This is a great game to play with children!',
+					totTime : '2h35m',
+					lastPlay : '15/4/2014',
+					thumbsrc : 'ability_thumb.png',
+					fullsrc : 'ability.png',
+					objectives : [ {
+						title : 'Turn Taking',
+						key : 'turntaking'
+					}, {
+						title : 'Interaction',
+						key : 'interaction'
+					} ],
+					tags : [ {
+						title : 'Slow',
+						key : 'slow'
+					}, {
+						title : 'Movement',
+						key : 'movement'
+					} ],
+				}, {
+					name : 'Game 3',
+					plays : 10,
+					desc_short : 'This is a grea',
+					desc_long : 'This is a great game to play with children!',
+					totTime : '2h35m',
+					lastPlay : '15/4/2014',
+					thumbsrc : 'music_thumb.png',
+					fullsrc : 'music.png',
+					objectives : [ {
+						title : 'Other',
+						key : 'other'
+					} ],
+					tags : [ {
+						title : 'Music',
+						key : 'music'
+					}, {
+						title : 'Game',
+						key : 'game'
+					} ],
+				}, ],
+				notes : [ {
+					title : 'A note',
+					text : 'This is the body of a note'
+				} ],
+				user : {
+					name : 'John Smith',
+					birthday : '5/7/2008',
+					gender : 'M',
+					thumbsrc : 'boy_thumb.png',
+					fullsrc : 'boy.png',
+				}
+			}, {
+				date : '13/4/2014',
+				time : '9:15pm',
 				totalTime : '30m',
 				score : {
 					'total' : 2,
@@ -76,6 +146,7 @@ define(function(require) {
 			}, {
 				date : '15/4/2014',
 				totalTime : '30m',
+				time : '1:35pm',
 				score : {
 					'total' : 3,
 					'parent' : {
@@ -124,6 +195,7 @@ define(function(require) {
 			}, {
 				date : '17/4/2014',
 				totalTime : '30m',
+				time : '1:35pm',
 				score : {
 					'total' : 5,
 					'parent' : {

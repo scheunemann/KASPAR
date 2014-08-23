@@ -25,8 +25,8 @@ define(function(require) {
 				
 				$scope.userFilter = function(element) {
 					if ($scope.selectedUser) {
-						if (element && element.child) {
-							return element.child.name == $scope.selectedUser.name;
+						if (element && element.user) {
+							return element.user.name == $scope.selectedUser.name;
 						} else {
 							return false;
 						}

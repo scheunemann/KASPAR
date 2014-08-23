@@ -1,30 +1,39 @@
 body {
 	background-color: #eeeeee;
 }
+
 .center {
 	text-align: center;
 }
+
 .highlight {
 	background-color: lime;
 }
+
 .red {
 	background-color: red;
 }
+
 .orange {
 	background-color: orange;
 }
+
 .yellow {
 	background-color: yellow;
 }
+
 .blue {
 	background-color: blue;
 }
+
 .green {
 	background-color: green;
 }
+
 .selected {
 	background-color: gray;
 }
+
 .container_user {
 	border-color: #ddd;
 	border-style: solid;
@@ -32,6 +41,7 @@ body {
 	border-radius: 3px;
 	padding: 3px;
 }
+
 .container_game {
 	border-color: #ddd;
 	border-style: solid;
@@ -39,6 +49,7 @@ body {
 	border-radius: 3px;
 	padding: 3px;
 }
+
 .container_scenario {
 	border-color: #ddd;
 	border-style: solid;
@@ -46,16 +57,20 @@ body {
 	border-radius: 3px;
 	padding: 3px;
 }
+
 .clickable {
 	cursor: pointer;
 }
+
 .clickable:hover {
 	background-color: #e8e8e8;
 }
+
 .splash {
 	font-size: 10em;
 	text-align: center;
 }
+
 .nav>li>a {
 	padding: 20px 25px;
 	font-size: 4em;

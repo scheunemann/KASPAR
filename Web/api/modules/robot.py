@@ -1,5 +1,6 @@
 import datetime
 import time
+import logging
 from flask import Blueprint, jsonify, abort, request
 from utils import DateUtil
 from Robot.ServoInterface import ServoInterface
@@ -107,13 +108,12 @@ def __robotInterfacePost(robotId):
                         interface.setPosition(float(servoData['position']), 100)
                     if servoData.get('poseable', None) != None:
                         interface.setPositioning(bool(servoData['poseable']))
-                except Exception as e:
-                    import traceback
-                    print traceback.format_exc()
+                except Exception:
+                    logging.getLogger().error("Error setting position.", exc_info=True)
                     # TODO: Error handling
                     continue
-    except Exception as e:
-        print e
+    except Exception:
+        logging.getLogger().error("Error setting position.", exc_info=True)
 
     return __robotInterfaceGet(robotId)
 

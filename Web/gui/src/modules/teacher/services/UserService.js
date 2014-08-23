@@ -9,26 +9,26 @@ define(function(require) {
 				name : 'John Smith',
 				birthday : '5/7/2008',
 				gender : 'M',
-				thumbsrc: 'boy_thumb.png',
-				fullsrc: 'boy.png',
+				thumbsrc: 'user_thumb.png',
+				fullsrc: 'user.png',
 			}, {
 				name : 'Jill Smith',
 				birthday : '5/7/2008',
 				gender : 'F',
-				thumbsrc: 'girl_thumb.png',
-				fullsrc: 'girl.png',
+				thumbsrc: 'user_thumb.png',
+				fullsrc: 'user.png',
 			}, {
 				name : 'Jane Smith',
 				birthday : '5/7/2008',
 				gender : 'F',
-				thumbsrc: 'girl_thumb.png',
-				fullsrc: 'girl.png',
+				thumbsrc: 'user_thumb.png',
+				fullsrc: 'user.png',
 			}, {
 				name : 'Jimmy Smith',
 				birthday : '5/7/2008',
 				gender : 'M',
-				thumbsrc: 'boy_thumb.png',
-				fullsrc: 'boy.png',
+				thumbsrc: 'user_thumb.png',
+				fullsrc: 'user.png',
 			} ];
 		}
 	};

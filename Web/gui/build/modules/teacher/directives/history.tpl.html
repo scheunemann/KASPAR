@@ -14,9 +14,9 @@
 			<div>Interactions</div>
 			<div
 				ng-class="colors[interaction.score.total-1]"
-				ng-repeat="interaction in interactions | filter:userFilter | orderBy:'date'"
+				ng-repeat="interaction in interactions | filter:userFilter | orderBy:'time' | orderBy:'date'"
 				class="clickable"
-				ng-click="select(interaction)">{{interaction.date}}</div>
+				ng-click="select(interaction)">{{interaction.date}} {{interaction.time}}</div>
 		</div>
 	</div>
 	<div class="col-lg-10">

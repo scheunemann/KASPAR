@@ -3,6 +3,7 @@ import sys
 import os
 import time
 
+
 def getConnection(port='/dev/bodyServos'):
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
     from Robot.ServoInterface.dynamixel import ServoController
@@ -11,6 +12,16 @@ def getConnection(port='/dev/bodyServos'):
     except Exception as e:
         print 'Err: %s' % e
     return None
+
+
+def loop(command, ids, *args):
+    output = []
+    for i in ids:
+        o = command(i, *args)
+        if o != None:
+            output.append(o)
+    return output
+
 
 def doScan(conn, ids):
     sIds = sorted(ids)
@@ -23,7 +34,8 @@ def doScan(conn, ids):
             time.sleep(0.25)
         except KeyboardInterrupt:
             break
-            
+
+ids = range(1, 18)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

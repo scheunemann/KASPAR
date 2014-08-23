@@ -5,9 +5,6 @@
 	</div>
 	<div>{{game.name}}</div>
 	<div>{{game.desc_long}}</div>
-	<div class="numPlays">Number of Plays: {{game.plays}}</div>
-	<div class="lastPlayed">Last Time Played: {{game.lastPlay}}</div>
-	<div class="totalTime">Total Playtime: {{game.totTime}}</div>
 	<div ng-show="game.objectives">
 		Objectives:
 		<span
@@ -16,6 +13,9 @@
 			class="clickable"
 			ng-click="toggleObjective(objective)">{{objective.title}}, </span>
 	</div>
+	<div class="numPlays">Number of Plays: {{game.plays}}</div>
+	<div class="totalTime">Total Playtime: {{game.totTime}}</div>
+	<div class="lastPlayed">Last Time Played: {{game.lastPlay}}</div>
 	<div ng-show="game.tags">
 		Tags:
 		<span
