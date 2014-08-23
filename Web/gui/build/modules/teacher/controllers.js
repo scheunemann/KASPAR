@@ -1,16 +1,2 @@
-'use strict';
-
-define(function(require) {
-	var angular = require('angular');
-	var languageServices = require('common/i18n/languageServices');
-	
-	var moduleName = 'kasparGUI.teacher.controllers';
-	var dependancies = [
-						languageServices,
-						];
-	
-	var module = angular.module(moduleName, dependancies)
-		;
-	
-	return moduleName;
-});	
+define(["require","angular","common/i18n/languageServices"],function(require){{var angular=require("angular"),languageServices=require("common/i18n/languageServices"),moduleName="kasparGUI.teacher.controllers",dependancies=[languageServices];angular.module(moduleName,dependancies)}return moduleName});
+//# sourceMappingURL=controllers.js.map
