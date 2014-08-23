@@ -22,7 +22,7 @@ def _flushData():
 def _loadConfigs(configDir):
     print "Loading configs..."
     (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
-    print "Done."
+    print "Saving data"
 
     session = StorageFactory.getNewSession()
     session.add_all(robots)
@@ -30,6 +30,7 @@ def _loadConfigs(configDir):
     session.add_all(triggers)
     session.commit()
     session.close()
+    print "Done."
 
 
 def _setRobot(robotName):
