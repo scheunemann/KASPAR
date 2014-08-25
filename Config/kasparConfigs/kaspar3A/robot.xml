@@ -63,8 +63,8 @@
 			<SCALING>
 				<!-- 360 / 2000 -->
 				<POS>0.18</POS>
-				<POS_OFFSET>1000</POS_OFFSET>
-				<SPEED>0.1</SPEED>
+				<POS_OFFSET>1500</POS_OFFSET>
+				<SPEED>10</SPEED>
 			</SCALING>
 			<LIMITS>
 				<SPEED>
