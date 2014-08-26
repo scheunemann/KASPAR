@@ -86,8 +86,8 @@ if __name__ == "__main__":
         print "Subdir not specified"
 #         exit()
         subDir = 'kaspar-1c'
-        flush = True
-        fill = True
+        flush = False
+        fill = False
     else:
         subDir = sys.argv[1]
 
