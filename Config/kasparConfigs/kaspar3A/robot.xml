@@ -64,7 +64,7 @@
 				<!-- 360 / 2000 -->
 				<POS>0.18</POS>
 				<POS_OFFSET>1500</POS_OFFSET>
-				<SPEED>10</SPEED>
+				<SPEED>1</SPEED>
 			</SCALING>
 			<LIMITS>
 				<SPEED>
@@ -168,7 +168,7 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-30</MIN>
+					<MIN>-40</MIN>
 					<MAX>0</MAX>
 				</POS>
 			</LIMITS>
@@ -197,8 +197,8 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-280</MIN>
-					<MAX>10</MAX>
+					<MIN>-110</MIN>
+					<MAX>45</MAX>
 				</POS>
 			</LIMITS>
 			<EXTRADATA>
@@ -223,8 +223,8 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-90</MIN>
-					<MAX>10</MAX>
+					<MIN>-10</MIN>
+					<MAX>90</MAX>
 				</POS>
 			</LIMITS>
 			<EXTRADATA>
@@ -262,8 +262,8 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-10</MIN>
-					<MAX>280</MAX>
+					<MIN>-45</MIN>
+					<MAX>110</MAX>
 				</POS>
 			</LIMITS>
 			<EXTRADATA>
@@ -288,8 +288,8 @@
 			<CENTER>512</CENTER>
 			<LIMITS>
 				<POS>
-					<MIN>-70</MIN>
-					<MAX>80</MAX>
+					<MIN>-90</MIN>
+					<MAX>10</MAX>
 				</POS>
 			</LIMITS>
 			<EXTRADATA>
