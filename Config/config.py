@@ -10,6 +10,7 @@ webConfig = {
         'server.thread_pool_max': -1,
         'JSON_AS_ASCII': False,
         'DEBUG': True,
+        'loglevel': logging.WARNING,
 #         'environment': 'production'
 }
 
@@ -63,7 +64,7 @@ def configureLogging(level=logging.NOTSET):
     if not [h for h in root_logger.handlers if isinstance(h, LogHandler)]:
         try:
             logHandler = LogHandler(**kwargs)
-            logHandler.setLevel(0)
+            logHandler.setLevel(level)
             formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
             logHandler.setFormatter(formatter)
             root_logger.addHandler(logHandler)

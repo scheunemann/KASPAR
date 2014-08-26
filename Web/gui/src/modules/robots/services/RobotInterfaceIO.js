@@ -15,7 +15,7 @@ define(function(require) {
 	var Servo = function() {
 		return {
 			id : null,
-			actual : {
+			$actual : {
 				position : null,
 				poseable : null
 			},
@@ -67,13 +67,11 @@ define(function(require) {
 		};
 
 		var sendChanges = function(newValue, oldValue) {
-			if (robotId === null || !connected) { return; }
-
 			var servos = [];
 			// Watcher is on the top level array, filter to only changed servos
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				if (oldValue === undefined || oldValue === null || oldValue[servoName] === undefined || 
+				if (true || oldValue === undefined || oldValue === null || oldValue[servoName] === undefined || 
 				    servo.position !== oldValue[servoName].position || servo.poseable !== oldValue[servoName].poseable) {
 					//console.log(servo);
 					servos.push({
@@ -84,6 +82,10 @@ define(function(require) {
 						jointName : servoName,
 					});
 				}
+			}
+
+			if (robotId === null || !connected) { 
+				return; 
 			}
 
                         //console.log(servos);
@@ -102,7 +104,7 @@ define(function(require) {
 				delayedSave = data;
 			} else {
                                 //console.log("Sending data: ");
-                                console.log(data);
+				//console.log(data);
 				saving = true;
 				emit('setData', data, function() {
 					saving = false;
@@ -127,8 +129,8 @@ define(function(require) {
 				}
 
 				components.servos[servo.jointName].id = servo.id;
-				components.servos[servo.jointName].actual.position = servo.value;
-				components.servos[servo.jointName].actual.poseable = servo.poseable;
+				components.servos[servo.jointName].$actual.position = servo.value;
+				components.servos[servo.jointName].$actual.poseable = servo.poseable;
 			}
 
 			for (var sensorIndex = 0; sensorIndex < dataPackage.sensors.length; sensorIndex++) {
@@ -190,8 +192,9 @@ define(function(require) {
 			if (componentName === undefined) { return null; }
 
 			if (components.servos[componentName] === undefined) {
-				components.servos[componentName] = new Servo();
-				components.servos[componentName].jointName = componentName;
+				var component = new Servo();
+				component.jointName = componentName;
+				components.servos[componentName] = component;
 			}
 
 			return components.servos[componentName];

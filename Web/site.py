@@ -18,7 +18,7 @@ import sys
 
 def configureSite():
     # Configure logging
-    configureLogging(logging.DEBUG)
+    configureLogging(webConfig.get('logleve', logging.DEBUG))
 
     from gui.root import _subDir as guiDir, root as guiRoot
     logging.getLogger(__name__).info('Gui using source from %s directory' % guiDir)

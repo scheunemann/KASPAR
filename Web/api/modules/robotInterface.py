@@ -77,11 +77,12 @@ def receiveMessage(data):
                     log.debug("Setting position using : %s" % (servoData, ))
                     position = servoData.get('position', None)
                     poseable = servoData.get('poseable', None)
-                    if position != None:
-                        #log.debug(interface)
+                    if position != None and interface.lastPosition != float(position):
                         interface.setPosition(float(position), servoData.get('speed', 100))
-                    if poseable != None:
+                        interface.lastPosition = float(position)
+                    if poseable != None and interface.lastPoseable != poseable:
                         interface.setPositioning(poseable)
+                        interface.lastPoseable = poseable
                 except Exception as e:
                     # TODO: Error handling
                     log.error(e, exc_info=True)
@@ -181,6 +182,8 @@ def _getRobot(robotId):
                                             'jointName': servo.jointName,
                                             'interface': ServoInterface.getServoInterface(servo)
                                            }
+                newRobot['servos'][servo.id]['interface'].lastPosition = None
+                newRobot['servos'][servo.id]['interface'].lastPoseable = None
 
             for sensor in robot.sensors:
                 newRobot['sensors'][sensor.id] = {

@@ -98,13 +98,12 @@ define(function(require) {
 					if (force || $scope.advanced) {
 						$scope.writeJoint($scope.jointPosition, $scope.servoInt);
 					}
-
 				};
 
 				$scope.writeJoint = function(jointPosition, servoInt) {
-					if (jointPosition && servoInt) {
+					if (jointPosition && servoInt && jointPosition.position != servoInt.position) {
 						$timeout(function() {
-							//console.log('updating servo position from joint. ' + jointPosition.jointName + ':' + jointPosition.position);
+							//console.log('updating servo position from joint. ' + jointPosition.jointName + ':' + servoInt.position + "->" + jointPosition.position);
 							servoInt.position = jointPosition.position;
 							servoInt.speed = jointPosition.speed;
 							servoInt.poseable = $scope.poseable;
@@ -112,7 +111,7 @@ define(function(require) {
 					}
 				};
 
-				$scope.$watch('servoInt.actual.position', function(value) {
+				$scope.$watch('servoInt.$actual.position', function(value) {
 					if (!$scope.advanced && $scope.jointPosition) {
 						console.log('updating joint position from servo' + $scope.servo.jointName);
 						$scope.jointPosition.position = value;
@@ -127,8 +126,9 @@ define(function(require) {
 				$scope.$watch('poseable', function(poseable) {
 					if ($scope.servoInt) {
 						if(poseable) {
-							//$scope.servoInt.position = $scope.servoInt.actual.position;
+							$scope.servoInt.position = $scope.servoInt.$actual.position;
 						}
+
 						$scope.servoInt.poseable = poseable;
 					}
 				});
