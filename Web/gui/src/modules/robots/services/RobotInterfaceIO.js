@@ -73,7 +73,8 @@ define(function(require) {
 			// Watcher is on the top level array, filter to only changed servos
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
-				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position || servo.poseable != oldValue[servoName].poseable) {
+				if (oldValue === undefined || oldValue === null || oldValue[servoName] === undefined || 
+				    servo.position !== oldValue[servoName].position || servo.poseable !== oldValue[servoName].poseable) {
 					//console.log(servo);
 					servos.push({
 						id : servo.id,

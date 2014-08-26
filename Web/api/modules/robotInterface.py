@@ -74,11 +74,10 @@ def receiveMessage(data):
             else:
                 try:
                     interface = servo['interface']
-                    log.debug(interface)
+                    log.debug("Setting position using : %s" % (servoData, ))
                     position = servoData.get('position', None)
                     poseable = servoData.get('poseable', None)
                     if position != None:
-	                log.debug("Setting position using : %s" % (servoData, ))
                         #log.debug(interface)
                         interface.setPosition(float(position), servoData.get('speed', 100))
                     if poseable != None:

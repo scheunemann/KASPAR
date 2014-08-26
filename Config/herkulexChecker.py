@@ -3,11 +3,11 @@ import sys
 import os
 import time
 
-def getConnection(port='/dev/bodyServos'):
+def getConnection(port='/dev/bodyServos', speed=115200):
     sys.path.append('/home/pi/git/robotActionController')        
     from Robot.ServoInterface.herkulex import HerkuleX
     try:
-        return HerkuleX(port, 115200)
+        return HerkuleX(port, speed)
     except Exception as e:
         print 'Err: %s' % e
     return None

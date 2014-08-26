@@ -126,7 +126,9 @@ define(function(require) {
 
 				$scope.$watch('poseable', function(poseable) {
 					if ($scope.servoInt) {
-						$scope.servoInt.position = $scope.servoInt.actual.position;
+						if(poseable) {
+							//$scope.servoInt.position = $scope.servoInt.actual.position;
+						}
 						$scope.servoInt.poseable = poseable;
 					}
 				});
