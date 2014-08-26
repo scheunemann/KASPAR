@@ -196,9 +196,9 @@ def setCompliance(sid, servo):
     offset = int(MAX_OFFSET * strength)
     slope = int(((MAX_SLOPE - MIN_SLOPE) * strength) + MIN_SLOPE)
     print "Setting virtual spring to strength %s%%" % (strength * 100)
-    herkulex.writeRegistryEEP(sid, 0x10, DEAD_ZONE)
-    herkulex.writeRegistryEEP(sid, 0x11, offset)
-    herkulex.writeRegistryEEP(sid, 0x12, slope)
+    herkulex.writeRegistryEEP(sid, 0x10, DEAD_ZONE, 1)
+    herkulex.writeRegistryEEP(sid, 0x11, offset, 1)
+    herkulex.writeRegistryEEP(sid, 0x12, slope, 2)
 
 
 def isConfigured(sid, defaultPos):
@@ -228,7 +228,7 @@ def setMaxVoltage(sid, maxVoltage):
     EEPVOLT = 13
     print "Setting max voltage = %s " % maxVoltage
     volt = int(maxVoltage / 0.074)
-    herkulex.writeRegistryEEP(sid, EEPVOLT, volt)
+    herkulex.writeRegistryEEP(sid, EEPVOLT, volt, 1)
     time.sleep(DELAY)
 
 
@@ -237,13 +237,13 @@ def setRange(sid, minVal, maxVal):
     EEPMAX = 28
     print "Setting range = [%s, %s]" % (minVal, maxVal)
         # reset range first (servos reject min > max or max < min
-    herkulex.writeRegistryEEP(id, EEPMIN, 0x0015)
+    herkulex.writeRegistryEEP(id, EEPMIN, 0x0015, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMAX, 0x03EA)
+    herkulex.writeRegistryEEP(id, EEPMAX, 0x03EA, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMIN, minVal)
+    herkulex.writeRegistryEEP(id, EEPMIN, minVal, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMAX, maxVal)
+    herkulex.writeRegistryEEP(id, EEPMAX, maxVal, 2)
     time.sleep(DELAY)
 
 
