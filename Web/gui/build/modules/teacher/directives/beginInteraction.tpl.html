@@ -1,21 +1,23 @@
 <div class="row">
-	<div class="col-lg-2">
+	<div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
 		<container-user user="user"></container-user>
 	</div>
-	<div class="col-lg-10">
-		<div class="row"><div class="col-lg-12">Selected Games</div></div>
+	<div class="col-lg-10 col-md-8 col-sm-8 col-xs-12">
 		<div class="row">
-			<div
-				ng-repeat="game in games"
-				class="col-lg-2">
-				<container-game game='game'></container-game>
+			<div class="col-lg-12">
+				<span class="title">Selected Games</span>
 			</div>
+		</div>
+		<div class="row">
+			<container-game
+				ng-repeat="game in games"
+				game='game'></container-game>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="col-lg-12">
-		Objectives to be covered:
+		<span class="title"> Objectives to be covered:</span>
 		<container-objective
 			ng-repeat="objective in getObjectives()"
 			objective='objective'></container-objective>
@@ -25,6 +27,7 @@
 	<div class="col-lg-12">
 		<button
 			type="button"
+			class="btn btn-default"
 			ng-click="start()">Start</button>
 	</div>
 </div>

@@ -17,7 +17,7 @@ define(function(require) {
 				$scope.users = userService.getUsers();
 				$scope.interactions = interactionService.getInteractions();
 				
-				$scope.colors = ['red', 'orange', 'yellow', 'blue', 'green'];
+				$scope.colors = ['bad', 'moderate_bad', 'neutral', 'moderate_good', 'good'];
 
 				$scope.select = function(interaction) {
 					$scope.selectedInteraction = interaction;

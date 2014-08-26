@@ -10,8 +10,6 @@ define(function(require) {
 			restrict : 'E',
 			scope : {
 				scenario : "=",
-				selected: "=",
-				highlight: "=",
 			},
 			link : function(scope, element, attrs, controller) {
 			},

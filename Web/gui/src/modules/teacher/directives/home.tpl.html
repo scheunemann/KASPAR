@@ -1,9 +1,23 @@
+<header
+	ui-sref="default"
+	class="navbar-fixed-top text-center header hidden-xs">
+	<span class="logo pull-left"></span>
+	<span class="strapline pull-right"></span>
+</header>
+<header
+	ui-sref="default"
+	class="text-center header visible-xs">
+	<span class="logo pull-left"></span>
+</header>
 <div class="row">
 	<div class="col-lg-12">
-		<tabset>
-			<tab heading="Interaction"><interaction teacher="teacher" user="user" selected-games="selectedGames"></interaction></tab>
-			<tab heading="My Portal"><portal teacher="teacher"></portal></tab>
-			<tab heading="History"><history teacher="teacher"></history></tab>
-		</tabset>
+		<tabset> <tab heading="Interaction">
+		<interaction
+			teacher="teacher"
+			user="user"
+			selected-games="selectedGames"></interaction></tab> <tab
+			heading="My Portal">
+		<portal teacher="teacher"></portal></tab> <tab heading="History">
+		<history teacher="teacher"></history></tab> </tabset>
 	</div>
 </div>

@@ -6,11 +6,20 @@
 	<div>{{scenario.name}}</div>
 	<div>Author: {{scenario.author.name}}</div>
 	<div>{{scenario.desc_long}}</div>
-	<div class="numPlays">Number of Plays: {{scenario.plays}}</div>
-	<div class="lastPlayed">Last Time Played: {{scenario.lastPlay}}</div>
-	<div class="totalTime">Total Playtime: {{scenario.totTime}}</div>
+	<div class="numPlays">
+		<span class="title">Number of Plays:</span>
+		{{scenario.plays}}
+	</div>
+	<div class="lastPlayed">
+		<span class="title">Last Time Played:</span>
+		{{scenario.lastPlay}}
+	</div>
+	<div class="totalTime">
+		<span class="title">Total Playtime:</span>
+		{{scenario.totTime}}
+	</div>
 	<div ng-show="scenario.objectives">
-		Objectives:
+		<span class="title"> Objectives:</span>
 		<span
 			ng-repeat="objective in scenario.objectives"
 			ng-class="{highlight:objective.key==selectedObjective.key}"
@@ -18,7 +27,7 @@
 			ng-click="toggleObjective(objective)">{{objective.title}}, </span>
 	</div>
 	<div ng-show="scenario.tags">
-		Tags:
+		<span class="title"> Tags:</span>
 		<span
 			ng-repeat="tag in scenario.tags"
 			ng-class="{highlight:tag.key==selectedTag.key}"

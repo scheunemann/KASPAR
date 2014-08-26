@@ -30,7 +30,7 @@ define(function(require) {
 				};
 
 				$scope.shouldHighlight = function(scenario, tag, objective) {
-					if (tag || objective) {
+					if ((tag || objective) && scenario != $scope.selectedScenario) {
 						var hasTag = tag === undefined || tag === null;
 						if (scenario.tags && tag) {
 							for (var i = 0; i < scenario.tags.length; i++) {

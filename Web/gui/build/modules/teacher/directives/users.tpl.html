@@ -3,18 +3,13 @@
 		select the user you will be working with</div>
 </div>
 <div class="row">
-	<div
+	<container-user
 		ng-repeat="user in users"
-		class="col-lg-2">
-		<container-user
-			user='user'
-			class="clickable"
-			ng-click="selectUser(user)"></container-user>
-	</div>
-	<div class="col-lg-2">
-		<container-user
-			user=newUser
-			class="clickable"
-			ng-click=addUser()></container-user>
-	</div>
+		user='user'
+		class="clickable"
+		ng-click="selectUser(user)"></container-user>
+	<container-user
+		user=newUser
+		class="clickable"
+		ng-click=addUser()></container-user>
 </div>

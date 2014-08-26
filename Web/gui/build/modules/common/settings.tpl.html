@@ -5,6 +5,7 @@
 		<select
 			class="selectpicker form-control"
 			ng-model="robotSetting.value"
+			ng-disabled="robots.length == 0"
 			ng-options="robot.name as (robot.name + ' (' + robot.model.name + ': ' + robot.version + ')' ) for robot in robots | orderBy:'name'">
 			<option value="">{{language['common.setting.robot.select.prompt']}}</option>
 		</select>
