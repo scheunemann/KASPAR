@@ -10,6 +10,9 @@ define(function(require) {
 			restrict : 'E',
 			scope : {
 				interaction : '=',
+				user : '=',
+				games: '=',
+				onFinished : '=?',
 			},
 			link : function(scope, element, attrs, controller) {
 			},
@@ -27,11 +30,14 @@ define(function(require) {
 						alert('Please finish current game first!');
 					} else {
 						$scope.interaction.totalTime = '30m';
-						var games = $scope.interaction.games.slice(0);
-						for (var i = 0; i < games.length; i++) {
-							if (!games[i].started) {
-								$scope.interaction.games.splice($scope.interaction.games.indexOf(games[i]), 1);
-							}
+//						var games = $scope.interaction.games.slice(0);
+//						for (var i = 0; i < games.length; i++) {
+//							if (!games[i].started) {
+//								$scope.interaction.games.splice($scope.interaction.games.indexOf(games[i]), 1);
+//							}
+//						}
+						if ($scope.onFinished) {
+							$scope.onFinished();
 						}
 					}
 				};

@@ -13,6 +13,8 @@ define(function(require) {
 				user : '=',
 				games : '=',
 				interaction : '=',
+				onFinished : '=?',
+				onCanceled : '=?',
 			},
 			link : function(scope, element, attrs, controller) {
 			},
@@ -41,6 +43,12 @@ define(function(require) {
 					return objectives;
 				};
 
+				$scope.back = function() {
+					if ($scope.onCanceled) {
+						$scope.onCanceled();
+					}
+				};
+
 				$scope.start = function() {
 					$scope.interaction = {
 						date : '13/4/2014',
@@ -55,10 +63,13 @@ define(function(require) {
 								'engagement' : 0
 							}
 						},
-						games : $scope.games.slice(0),
+						games : [],
 						notes : [],
 						user : $scope.user
 					};
+					if ($scope.onFinished) {
+						$scope.onFinished();
+					}
 				}
 			}
 		};

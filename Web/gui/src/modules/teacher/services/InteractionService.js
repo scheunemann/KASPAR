@@ -12,7 +12,7 @@ define(function(require) {
 				score : {
 					'total' : 1,
 					'parent' : {
-						'experience' : 2,
+						'experience' : 4,
 					},
 					'child' : {
 						'experience' : 1,
@@ -79,7 +79,7 @@ define(function(require) {
 				time : '9:15pm',
 				totalTime : '30m',
 				score : {
-					'total' : 2,
+					'total' : 1,
 					'parent' : {
 						'experience' : 3,
 					},
@@ -197,7 +197,7 @@ define(function(require) {
 				totalTime : '30m',
 				time : '1:35pm',
 				score : {
-					'total' : 4,
+					'total' : 3,
 					'parent' : {
 						'experience' : 5,
 					},
@@ -248,7 +248,7 @@ define(function(require) {
 				score : {
 					'total' : 5,
 					'parent' : {
-						'experience' : 4,
+						'experience' : 2,
 					},
 					'child' : {
 						'experience' : 5,

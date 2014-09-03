@@ -9,7 +9,9 @@ define(function(require) {
 			template : template,
 			restrict : 'E',
 			scope : {
-				interaction : '='
+				interaction : '=',
+				user: '=',
+				onFinished: '=?',
 			},
 			link : function(scope, element, attrs, controller) {
 			},
@@ -20,8 +22,10 @@ define(function(require) {
 				$scope.finish = function() {
 					if ($scope.interaction.score.child.experience && $scope.interaction.score.child.engagement && $scope.interaction.score.parent.experience) {
 						$scope.interaction.score.total = Math
-								.round(($scope.interaction.score.child.experience + $scope.interaction.score.child.engagement + $scope.interaction.score.parent.experience) / 3);
-						$scope.interaction = undefined;
+								.round(($scope.interaction.score.child.experience + $scope.interaction.score.child.engagement) / 2);
+						if($scope.onFinished) {
+							$scope.onFinished();
+						}
 					} else {
 						alert('Please report your experience by clicking on the images');
 					}

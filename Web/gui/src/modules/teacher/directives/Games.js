@@ -18,7 +18,19 @@ define(function(require) {
 				$scope.games = gameService.getGames();
 
 				$scope.selectGame = function(game) {
-					$scope.selectedGame = game;
+					if ($scope.selectedGame == game) {
+						$scope.selectedGame = undefined;
+					} else {
+						$scope.selectedGame = game;
+					}
+				};
+				
+				$scope.teacherGames = function(element) {
+					if (element && element.author && $scope.teacher) {
+						return element.author.name == $scope.teacher.name;
+					} else {
+						return false;
+					}
 				};
 
 				$scope.shouldHighlight = function(game, tag, objective) {

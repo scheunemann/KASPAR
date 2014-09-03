@@ -6,14 +6,13 @@ define(function(require) {
 	var dataProvider = require('teacher/services/dataProvider');
 	var ActiveInteraction = require('./directives/ActiveInteraction');
 	var BeginInteraction = require('./directives/BeginInteraction');
+	var SelectGames = require('./directives/SelectGames');
 	var Container_Game = require('./directives/Container_Game');
 	var Container_Note = require('./directives/Container_Note');
-	var Container_Scenario = require('./directives/Container_Scenario');
 	var Container_Objective = require('./directives/Container_Objective');
 	var Container_Tag = require('./directives/Container_Tag');
 	var Container_User = require('./directives/Container_User');
 	var Detail_Game = require('./directives/Detail_Game');
-	var Detail_Scenario = require('./directives/Detail_Scenario');
 	var Detail_History = require('./directives/Detail_History');
 	var EndInteraction = require('./directives/EndInteraction');
 	var Games = require('./directives/Games');
@@ -23,7 +22,6 @@ define(function(require) {
 	var Interaction = require('./directives/Interaction');
 	var Login = require('./directives/Login');
 	var Portal = require('./directives/Portal');
-	var Scenarios = require('./directives/Scenarios');
 	var Objectives = require('./directives/Objectives');
 	var Users = require('./directives/Users');
 
@@ -36,14 +34,13 @@ define(function(require) {
 	var module = angular.module(moduleName, dependancies)
 		.directive('activeInteraction', ActiveInteraction)
 		.directive('beginInteraction', BeginInteraction)
+		.directive('selectGames', SelectGames)
 		.directive('containerGame', Container_Game)
 		.directive('containerNote', Container_Note)
-		.directive('containerScenario', Container_Scenario)
 		.directive('containerObjective', Container_Objective)
 		.directive('containerTag', Container_Tag)
 		.directive('containerUser', Container_User)
 		.directive('detailGame', Detail_Game)
-		.directive('detailScenario', Detail_Scenario)
 		.directive('detailHistory', Detail_History)
 		.directive('endInteraction', EndInteraction)
 		.directive('games', Games)
@@ -53,7 +50,6 @@ define(function(require) {
 		.directive('interaction', Interaction)
 		.directive('login', Login)
 		.directive('portal', Portal)
-		.directive('scenarios', Scenarios)
 		.directive('objectives', Objectives)
 		.directive('user', Users);
 

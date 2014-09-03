@@ -14,6 +14,8 @@ define(function(require) {
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
+				$scope.username = 'Teacher';
+				
 				$scope.login = function() {
 					$scope.teacher = {
 						username : $scope.username,
