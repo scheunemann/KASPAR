@@ -107,7 +107,7 @@ def configureServo(servo):
             break
         elif entry != '0':
             try:
-                ids = [int(input), ]
+                ids = [int(entry), ]
                 break
             except ValueError:
                 print "Invalid id..."

@@ -98,6 +98,9 @@ if __name__ == "__main__":
             elif sys.argv[2].lower() == 'test':
                 flush = True
                 fill = True
+            elif sys.argv[2].lower() == 'data':
+                flush = False
+                fill = True
         else:
             flush = False
             fill = False
