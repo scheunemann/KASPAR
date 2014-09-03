@@ -16,6 +16,11 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.selectedGames = gameService.getGames();
+				
+				$scope.signOut = function() {
+					$scope.teacher = undefined;
+					$scope.user = undefined;
+				}
 			}
 		};
 	};

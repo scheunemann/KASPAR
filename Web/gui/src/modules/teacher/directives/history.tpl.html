@@ -1,7 +1,7 @@
 <div class="row">
-	<div class="col-lg-2">
+	<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
 		<div>
-			<div>Child</div>
+			<div><span class="title">Child</span></div>
 			<select
 				class="selectpicker form-control"
 				ng-model="selectedUser"
@@ -11,7 +11,7 @@
 			</select>
 		</div>
 		<div>
-			<div>Interactions</div>
+			<div><span class="title">Interactions</span></div>
 			<div
 				ng-class="colors[interaction.score.total-1]"
 				ng-repeat="interaction in interactions | filter:userFilter | orderBy:'time' | orderBy:'date'"
@@ -19,7 +19,7 @@
 				ng-click="select(interaction)">{{interaction.date}} {{interaction.time}}</div>
 		</div>
 	</div>
-	<div class="col-lg-10">
+	<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
 		<detail-history
 			ng-show="selectedInteraction"
 			interaction="selectedInteraction"></detail-history>

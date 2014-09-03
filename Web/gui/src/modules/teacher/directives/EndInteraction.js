@@ -9,18 +9,23 @@ define(function(require) {
 			template : template,
 			restrict : 'E',
 			scope : {
-				interaction : '='
+				interaction : '=',
+				user: '=',
+				onFinished: '=?',
 			},
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
-				$scope.images = [ '0.png', '1.png', '2.png', '3.png', '4.png' ];
+				$scope.images = [ 'bad.png', 'moderate_bad.png', 'neutral.png', 'moderate_good.png', 'good.png' ];
+				$scope.colors = ['bad', 'moderate_bad', 'neutral', 'moderate_good', 'good'];
 
 				$scope.finish = function() {
 					if ($scope.interaction.score.child.experience && $scope.interaction.score.child.engagement && $scope.interaction.score.parent.experience) {
 						$scope.interaction.score.total = Math
-								.round(($scope.interaction.score.child.experience + $scope.interaction.score.child.engagement + $scope.interaction.score.parent.experience) / 3);
-						$scope.interaction = undefined;
+								.round(($scope.interaction.score.child.experience + $scope.interaction.score.child.engagement) / 2);
+						if($scope.onFinished) {
+							$scope.onFinished();
+						}
 					} else {
 						alert('Please report your experience by clicking on the images');
 					}

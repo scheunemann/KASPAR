@@ -3,21 +3,21 @@
 	<div>
 		<img ng-src="img/teacher/game/{{game.fullsrc}}" />
 	</div>
-	<div>{{game.name}}</div>
+	<div class="title">{{game.name}}</div>
 	<div>{{game.desc_long}}</div>
 	<div ng-show="game.objectives">
-		Objectives:
+		<span class="title">Objectives:</span>
 		<span
 			ng-repeat="objective in game.objectives"
 			ng-class="{highlight:objective.key==selectedObjective.key}"
 			class="clickable"
 			ng-click="toggleObjective(objective)">{{objective.title}}, </span>
 	</div>
-	<div class="numPlays">Number of Plays: {{game.plays}}</div>
-	<div class="totalTime">Total Playtime: {{game.totTime}}</div>
-	<div class="lastPlayed">Last Time Played: {{game.lastPlay}}</div>
+	<div><span class="title">Number of Plays:</span> {{game.plays}}</div>
+	<div><span class="title">Total Playtime:</span> {{game.totTime}}</div>
+	<div><span class="title">Last Time Played:</span> {{game.lastPlay}}</div>
 	<div ng-show="game.tags">
-		Tags:
+		<span class="title">Tags:</span>
 		<span
 			ng-repeat="tag in game.tags"
 			ng-class="{highlight:tag.key==selectedTag.key}"

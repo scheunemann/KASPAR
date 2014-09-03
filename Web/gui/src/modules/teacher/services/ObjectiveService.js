@@ -7,16 +7,15 @@ define(function(require) {
 		this.getObjectives = function() {
 			return [ {
 				title : 'Turn Taking',
-				key: 'turntaking',
-			},{
+				key : 'turntaking',
+			}, {
 				title : 'Interaction',
-				key: 'interaction',
-			},{
+				key : 'interaction',
+			}, {
 				title : 'Other',
-				key: 'other',
-			},
-			];
-		}
+				key : 'other',
+			}, ];
+		};
 	};
 
 	return ObjectiveService;

@@ -10,8 +10,6 @@ define(function(require) {
 			restrict : 'E',
 			scope : {
 				game : "=",
-				selected: "=?",
-				highlight: "=?",
 				short: "=?",
 			},
 			link : function(scope, element, attrs, controller) {

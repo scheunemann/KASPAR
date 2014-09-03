@@ -1,18 +1,20 @@
 <div class="row">
-	<div class="col-lg-8">{{game.desc_long}}</div>
-	<div class="col-lg-4">
-		<img ng-src="/img/teacher/game/{{game.fullsrc}}" />
-	</div>
+	<tabset>
+		<tab heading="Details"><detail-game game='game'></detail-game></tab>
+		<tab heading="Buttons">TODO: Show grid of usable buttons attached to current game, allows for teacher to activate</tab>
+	</tabset>
 </div>
 <div class="row">
-	<button
-		type="button"
-		ng-click="start()"
-		ng-show="!game.started"
-		class="btn btn-default">Start</button>
-	<button
-		type="button"
-		ng-show="game.started && !game.finished"
-		ng-click="end()"
-		class="btn btn-default">Stop</button>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<button
+			type="button"
+			ng-click="start()"
+			ng-show="showStart"
+			class="btn btn-default btn-green">Start</button>
+		<button
+			type="button"
+			ng-show="!showStart"
+			ng-click="end()"
+			class="btn btn-default btn-red">Finish</button>
+	</div>
 </div>

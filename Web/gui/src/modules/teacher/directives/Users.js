@@ -28,6 +28,10 @@ define(function(require) {
 				$scope.selectUser = function(user) {
 					$scope.user = user;
 				}
+				
+				$scope.addUser = function() {
+					alert('TODO: Add user screen');
+				}
 			}
 		};
 	};
