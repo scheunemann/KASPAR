@@ -24,7 +24,7 @@ define(function(require) {
 
 	var RobotInterface = function($q, $timeout, $rootScope, RobotInterface) {
 		var self = this;
-		var connected = false;
+		var connected = true;
 		var robotId = null;
 		var delayedSave = null;
 		var saving = false;

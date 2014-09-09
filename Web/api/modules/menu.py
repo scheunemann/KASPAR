@@ -20,14 +20,12 @@ __links = [
                  'title':'navbar.action.label',
                  'links': [
                             ('navbar.action.edit', 'action.edit'),
-                            ('navbar.action.test', 'action.test'),
                             ('navbar.action.import', 'action.import'),
                           ]},
                 {
                  'title':'navbar.trigger.label',
                  'links': [
                             ('navbar.trigger.edit', 'trigger.edit'),
-                            ('navbar.trigger.test', 'trigger.test'),
                             ('navbar.trigger.import', 'trigger.import'),
                           ]},
                 {

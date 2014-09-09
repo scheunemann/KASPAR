@@ -2,6 +2,7 @@
 
 define(function(require) {
 	var angular = require('angular');
+	var _ = require('underscore');
 	require('actions/models');
 	require('actions/directives');
 
@@ -19,6 +20,10 @@ define(function(require) {
 					$scope.action = concreteAction;
 				});
 			}
+			
+			if (action && !_.find($scope.actions, action)) {
+				$scope.actions.push(action);
+			}
 		});
 
 		$scope.newAction = function() {
@@ -30,11 +35,10 @@ define(function(require) {
 
 		$scope.deleteAction = function(action) {
 			$scope.actions.splice($scope.actions.indexOf(action), 1);
-			$scope.action = $scope.actions[0];
-		};
-
-		$scope.copyAction = function(action) {
-			alert('TODO');
+			$scope.action = undefined;
+			if(action.$delete != undefined) {
+				action.$delete();
+			}
 		};
 
 		var errorFunc = function(status) {

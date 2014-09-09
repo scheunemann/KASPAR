@@ -147,10 +147,9 @@ define(function(require) {
 			}
 
 			if (robot.id != robotId) {
-				var connected = this.connected;
 				this.setConnected(false);
 				robotId = robot.id;
-				this.setConnected(connected);
+				this.setConnected(true);
 			}
 		};
 

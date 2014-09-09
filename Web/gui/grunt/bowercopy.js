@@ -16,6 +16,9 @@ module.exports = {
 			"angular-ui-router/release/angular-ui-router.js" : "angular-ui-router/release/angular-ui-router.js",
 			"angular-ui-router/release/angular-ui-router.min.js" : "angular-ui-router/release/angular-ui-router.min.js",
 			"angular-ui-slider/src/slider.js" : "angular-ui-slider/src/slider.js",
+			"angular-xeditable/dist/js/xeditable.js" : "angular-xeditable/dist/js/xeditable.js",
+			"angular-xeditable/dist/js/xeditable.min.js" : "angular-xeditable/dist/js/xeditable.min.js",
+			"angular-xeditable/dist/css/xeditable.css" : "angular-xeditable/dist/css/xeditable.css",
 			"bootstrap/dist/css" : "bootstrap/dist/css",
 			"bootstrap/dist/fonts" : "bootstrap/dist/fonts",
 			"jquery/jquery.js" : "jquery/jquery.js",
@@ -35,6 +38,9 @@ module.exports = {
 			"socket.io-client/dist/socket.io.js" : "socket.io-client/dist/socket.io.js",
 			"socket.io-client/dist/socket.io.min.js" : "socket.io-client/dist/socket.io.min.js",
 			"socket.io-client/dist/WebSocketMain.swf" : "socket.io-client/dist/WebSocketMain.swf",
+			"underscore/underscore.js" : "underscore/underscore.js",
+			"underscore/underscore-min.js" : "underscore/underscore-min.js",
+			"underscore/underscore-min.map" : "underscore/underscore-min.map",
 		}
 	},
 }

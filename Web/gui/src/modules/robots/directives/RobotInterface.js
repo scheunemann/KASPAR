@@ -13,19 +13,12 @@ define(function(require) {
 			restrict : 'E',
 			scope : {
 				robot : "=",
-				connected: "=?",
+				connected : "=?",
 				showConnect : "=?"
 			},
 			controller : function($scope) {
 				$scope.language = language.getText();
-				if ($scope.connected === undefined) {
-					$scope.connected = false;
-				}
-				
-				if ($scope.showConnect === undefined) {
-					$scope.showConnect = false;
-				}
-				
+
 				var settings = Setting.query({
 					'key' : 'robot'
 				});
@@ -49,16 +42,28 @@ define(function(require) {
 					robotInterface.setRobot(robot);
 					$scope.connected = robotInterface.getConnected();
 				});
+				
+				$scope.$watch('connected', function(connected) {
+					$scope.setConnected(connected);
+				});
 
 				$scope.setConnected = function(state) {
-					if(state) {
+					if (state) {
 						robotInterface.setConnected(state);
 					} else {
 						robotInterface.setConnected(false);
 					}
-					
+
 					$scope.connected = state;
 				};
+				
+				if ($scope.connected === undefined) {
+					$scope.connected = true;
+				}
+
+				if ($scope.showConnect === undefined) {
+					$scope.showConnect = false;
+				}
 			}
 		};
 	};

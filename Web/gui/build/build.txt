@@ -32,6 +32,7 @@ modules/actions/models/SequenceOrder.js
 modules/actions/models.js
 modules/common/services/HotkeyFormatter.js
 modules/common/services/displayServices.js
+bower_components/angular-xeditable/dist/js/xeditable.min.js
 modules/robots/services/RobotInterfaceIO.js
 modules/robots/services/interfaceServices.js
 modules/common/filters/ExceptFilter.js
@@ -65,12 +66,9 @@ modules/robots/directives/CalibrateRobot.js
 text!robots/directives/viewRobot.tpl.html
 modules/robots/directives/ViewRobot.js
 modules/robots/directives.js
+bower_components/underscore/underscore-min.js
 text!actions/directives/actionEditor.tpl.html
 modules/actions/directives/ActionEditor.js
-text!actions/directives/advancedPoseEditor.tpl.html
-modules/actions/directives/AdvancedPoseEditor.js
-text!actions/directives/basicPoseEditor.tpl.html
-modules/actions/directives/BasicPoseEditor.js
 text!actions/directives/groupEditor.tpl.html
 modules/actions/directives/GroupEditor.js
 text!actions/directives/poseEditor.tpl.html

@@ -13,8 +13,7 @@ models = [
           {'class': Model.Action, 'kwargs': {'include_columns': ['id', 'name', 'type', ]}},
           {'class': Model.SoundAction, },
           {'class': Model.PoseAction, },
-          {'class': Model.ExpressionAction, },
-          {'class': Model.SequenceAction, 'kwargs': {'exclude_columns': ['actions', ]}},
+          {'class': Model.SequenceAction, 'kwargs': {'exclude_columns': []}},
           {'class': Model.GroupAction, },
          ]
 

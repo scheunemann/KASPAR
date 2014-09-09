@@ -181,16 +181,62 @@ body {
 .btn-primary[btn-checkbox].active {
 	background-color: green;
 }
-.input-group-btn > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
-	border-bottom-right-radius: 0;
-	border-top-right-radius: 0;
-}
-.input-group-btn > .btn:last-child:not(:first-child), .input-group-btn > .dropdown-toggle:not(:first-child) {
-	border-bottom-left-radius: 0;
-	border-top-left-radius: 0;
-}
-.input-group-btn:not(:first-child):not(:last-child)>.btn
+.input-group-btn
+>
+.btn
+:first-child
+:not
+ 
+(
+:last-child
+ 
+)
+:not
+ 
+(
+.dropdown-toggle
+	
+)
 {
+border-bottom-right-radius
+:
+ 
+0;
+border-top-right-radius
+:
+ 
+0;
+}
+.input-group-btn
+>
+.btn
+:last-child
+:not
+ 
+(
+:first-child
+ 
+),
+.input-group-btn
+>
+.dropdown-toggle
+:not
+	
+(
+:first-child
+ 
+)
+{
+border-bottom-left-radius
+:
+ 
+0;
+border-top-left-radius
+:
+ 
+0;
+}
+.input-group-btn:not (:first-child ):not (:last-child )>.btn {
 	border-radius: 0;
 }
 .list-group.form-control {
@@ -202,6 +248,9 @@ body {
 }
 .inputLabel {
 	min-width: 10em;
+}
+.inputLabel-sm {
+	min-width: 6em;
 }
 .actionButton {
 	width: 100%;
@@ -244,5 +293,20 @@ body {
 	height: 37px;
 }
 hr {
-	clear: both; !important
+	clear: both;
+	!
+	important
+}
+.editContainer {
+	height: 500px;
+	overflow-y: auto;
+}
+.disabled {
+	color: #777;
+	cursor: not-allowed;
+	background-color: #fff;
+	border-color: #ddd;
+}
+.clickable {
+	cursor: pointer;
 }

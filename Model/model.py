@@ -1,8 +1,73 @@
-from Data.Model import StandardMixin, Base
+import os
+import uuid
+from Data.Model import StandardMixin, Base, User
 from sqlalchemy import Column, String, Integer, ForeignKey, Table, DateTime
 from sqlalchemy.orm import relationship
 
+
 __all__ = ['Setting', 'Interaction', 'Operator']
+
+operatorUsers_table = Table('operatorUsers', Base.metadata,
+    Column('Operator_id', Integer, ForeignKey('Operator.id')),
+    Column('User_id', Integer, ForeignKey('User.id'))
+)
+
+userObjectives_table = Table('userObjectives', Base.metadata,
+    Column('User_id', Integer, ForeignKey('User.id')),
+    Column('Objective_id', Integer, ForeignKey('Objective.id'))
+)
+
+
+class Photo(StandardMixin, Base):
+
+    uuid = Column(String(36))
+
+    @property
+    def data(self):
+        return Photo.readData(self.uuid)
+
+    @data.setter
+    def data(self, value):
+        self.uuid = Photo.saveData(value, self.uuid)
+
+    @property
+    def _fileName(self):
+        self.uuid, path = Photo.__fileName(self.uuid)
+        return path
+
+    @staticmethod
+    def saveData(value, uuid=None):
+        if value:
+            uuid, fileName = Photo.__fileName(uuid)
+            with open(fileName, 'wb') as f:
+                f.write(value)
+        elif uuid != None:
+            os.remove(fileName)
+            uuid = None
+        return uuid
+
+    @staticmethod
+    def readData(uuid=None):
+        if not uuid:
+            return None
+        fileName = Photo.__fileName(uuid)[1]
+        if os.path.isfile(fileName):
+            with open(fileName, 'rb') as f:
+                b = f.read()
+            return b
+        else:
+            return None
+
+    @staticmethod
+    def __fileName(uuid_=None):
+        basePath = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'profilePhotos'))
+        if not os.path.isdir(basePath):
+            os.makedirs(basePath)
+
+        if uuid_ == None:
+            uuid_ = str(uuid.uuid1())
+
+        return (uuid_, os.path.join(basePath, uuid_))
 
 
 class Setting(StandardMixin, Base):
@@ -38,11 +103,6 @@ class Interaction(StandardMixin, Base):
         self.startTime = startTime
         self.endTime = endTime
 
-operatorUsers_table = Table('operatorUsers', Base.metadata,
-    Column('Operator_id', Integer, ForeignKey('Operator.id')),
-    Column('User_id', Integer, ForeignKey('User.id'))
-)
-
 
 class Operator(StandardMixin, Base):
     name = Column(String(50))
@@ -56,3 +116,13 @@ class Operator(StandardMixin, Base):
         self.fullname = fullname
         self.password = password
         self.users = users
+
+
+class Objective(StandardMixin, Base):
+    name = Column(String(50))
+    desc = Column(String(500))
+
+User.objectives = relationship("Objective", secondary=userObjectives_table)
+User.gender = Column(String(1), nullable=True)
+User.photo_id = Column(Integer, ForeignKey('Photo.id'))
+User.photo = relationship("Photo")
