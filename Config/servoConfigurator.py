@@ -107,7 +107,7 @@ def configureServo(servo):
             break
         elif entry != '0':
             try:
-                ids = [int(input), ]
+                ids = [int(entry), ]
                 break
             except ValueError:
                 print "Invalid id..."
@@ -174,7 +174,7 @@ def doConfigure(servoId, servo, servoInt):
     minPos = max(minPos, 0)
     maxPos = int(servoInt._scaleToRealPos(servoInt._maxPos)) + POSITION_PADDING
     maxPos = min(maxPos, 1023)
-    defPos = int(servoInt._scaleToRealPos(servoInt._defaultPos))
+    defPos = int(servoInt._scaleToRealPos(servoInt._defaultPosition))
     defPos = min(maxPos, defPos)
     defPos = max(minPos, defPos)
     setRange(servoId, minPos, maxPos)
@@ -237,13 +237,13 @@ def setRange(sid, minVal, maxVal):
     EEPMAX = 28
     print "Setting range = [%s, %s]" % (minVal, maxVal)
         # reset range first (servos reject min > max or max < min
-    herkulex.writeRegistryEEP(id, EEPMIN, 0x0015, 2)
+    herkulex.writeRegistryEEP(sid, EEPMIN, 0x0015, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMAX, 0x03EA, 2)
+    herkulex.writeRegistryEEP(sid, EEPMAX, 0x03EA, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMIN, minVal, 2)
+    herkulex.writeRegistryEEP(sid, EEPMIN, minVal, 2)
     time.sleep(DELAY)
-    herkulex.writeRegistryEEP(id, EEPMAX, maxVal, 2)
+    herkulex.writeRegistryEEP(sid, EEPMAX, maxVal, 2)
     time.sleep(DELAY)
 
 

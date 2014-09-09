@@ -1,0 +1,6 @@
+Run the following after copying directories to enable auto-start of services
+sudo update-rd.d kasparweb defaults
+
+To enable USB as first audio device, edit /etc/modprobe.d/alda-base.conf
+comment out the following line:
+options snd-usb-audio index=-2

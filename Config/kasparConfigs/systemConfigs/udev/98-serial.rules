@@ -1,0 +1,10 @@
+#minimaestro command port
+#SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="headServos", GROUP="input", MODE="0660"
+
+#minimaestro ttl port
+#SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", ENV{ID_USB_INTERFACE_NUM}=="02", SYMLINK+="bodyServos", GROUP="input", MODE="0660"
+
+#External program handles symlinking, as it needs to ping the servo first
+#SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", GROUP="input", MODE="0660", RUN+="/home/pi/git/KASPAR/Config/portNamer.py"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", GROUP="input", MODE="0660", ENV{ID_USB_INTERFACE_NUM}=="00", RUN+="/home/pi/git/KASPAR/Config/portNamer.py"
+

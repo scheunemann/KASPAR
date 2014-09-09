@@ -13,18 +13,19 @@ webConfig = {
 #         'environment': 'production'
 }
 
-# dbConfig = {
-#          'type': 'Sqlite',
-#          'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
-# }
-
-dbConfig = {
-       'type': 'MySql',
-       'host': 'localhost',
-       'user': 'kaspar',
-       'pass': 'kaspar',
-       'db': 'kaspar',
-}
+if platform.system() == 'Linux':
+    dbConfig = {
+         'type': 'Sqlite',
+         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
+    }
+else:
+    dbConfig = {
+           'type': 'MySql',
+           'host': 'localhost',
+           'user': 'kaspar',
+           'pass': 'kaspar',
+           'db': 'kaspar',
+    }
 
 
 class ConsoleHandler(logging.StreamHandler):

@@ -2,7 +2,7 @@
 <!-- Definition file for KASPAR Holds all information for a single Kaspar 
 	instance, like servo specific information (limits and defaults) and information 
 	that KasparGUI uses to display and format information for this Kaspar type -->
-<ROBOT type="KASPAR" version="3" name="Kaspar Prototype A"
+<ROBOT type="KASPAR" version="3" name="Kaspar Dummy Instance"
 	defaultAction="Neutral">
 	<SERVOCONFIGS>
 		<VIRTUAL>
