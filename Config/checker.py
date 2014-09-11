@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import logging
 logging.basicConfig()
 
@@ -18,3 +20,7 @@ def loop(command, ids, *args):
         if o != None:
             output.append(o)
     return output
+
+if __name__ == "__main__":
+    print loop(bodyServos.getPosition, ids)
+    #print bodyServos.performIDScan()
