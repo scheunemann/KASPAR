@@ -1,13 +1,13 @@
 module.exports = {
 	all : {
 		files : {
-			"dist/app.min.js" : [ "dist/app.js" ]
+			"dist/fullapp.min.js" : [ "dist/fullapp.js" ]
 		},
 		options : {
 			mangle : false,
 			preserveComments : false,
-			sourceMap : "dist/app.min.map",
-			sourceMappingURL : "app.min.map",
+			sourceMap : "dist/fullapp.min.map",
+			sourceMappingURL : "fullapp.min.map",
 			report : "min",
 			beautify : {
 				ascii_only : true

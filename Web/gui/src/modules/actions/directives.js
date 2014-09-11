@@ -3,8 +3,8 @@
 define(function(require) {
 	var angular = require('angular');
 	var angularSlider = require('angularSlider');
-	var displayServices = require('common/services/displayServices');
 	var angularXEditable = require('angularXEditable');
+	var displayServices = require('common/services/displayServices');
 	var interfaceServices = require('robots/services/interfaceServices');
 	var robotDirectives = require('robots/directives');
 	var filters = require('common/filters');

@@ -21,6 +21,7 @@ module.exports = {
 				angularResource : 'empty:',
 				angularRoute : 'empty:',
 				angularUIRouter : 'empty:',
+				angularXEditable : 'empty:',
 				mousetrap : 'empty:',
 				mousetrapPause : 'empty:',
 				socketio: 'empty:',
