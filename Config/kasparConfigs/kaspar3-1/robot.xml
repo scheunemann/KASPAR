@@ -1,0 +1,585 @@
+<?xml version="1.0"?>
+<!-- Definition file for KASPAR Holds all information for a single Kaspar 
+	instance, like servo specific information (limits and defaults) and information 
+	that KasparGUI uses to display and format information for this Kaspar type -->
+<ROBOT type="KASPAR" version="3" name="Kaspar 1"
+	defaultAction="Neutral">
+	<SERVOCONFIGS>
+		<VIRTUAL>
+			<DEFAULT>
+				<POS>0</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
+				<IS_UPDATED>False</IS_UPDATED>
+			</DEFAULT>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>200</MAX>
+				</SPEED>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</VIRTUAL>
+		<!-- Connection Settings -->
+		<HERKULEX>
+			<PORT>/dev/bodyServos</PORT>
+			<SPEED>115200</SPEED>
+			<DEFAULT>
+				<POS>0</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>True</MANUAL_POSITIONING>
+				<IS_UPDATED>True</IS_UPDATED>
+			</DEFAULT>
+			<SCALING>
+				<!-- 360 / 1023 -->
+				<POS>0.352</POS>
+				<POS_OFFSET>512</POS_OFFSET>
+				<SPEED>0.098</SPEED>
+			</SCALING>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>200</MAX>
+				</SPEED>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</HERKULEX>
+
+		<HS82MG>
+			<PORT>/dev/headServos</PORT>
+			<SPEED>115200</SPEED>
+			<DEFAULT>
+				<POS>90</POS>
+				<SPEED>100</SPEED>
+				<MANUAL_POSITIONING>False</MANUAL_POSITIONING>
+				<IS_UPDATED>True</IS_UPDATED>
+			</DEFAULT>
+			<SCALING>
+				<!-- 360 / 2000 -->
+				<POS>0.18</POS>
+				<POS_OFFSET>1500</POS_OFFSET>
+				<SPEED>1</SPEED>
+			</SCALING>
+			<LIMITS>
+				<SPEED>
+					<MIN>1</MIN>
+					<MAX>500</MAX>
+				</SPEED>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+		</HS82MG>
+	</SERVOCONFIGS>
+
+	<SENSORCONFIGS>
+		<ROBOT>
+			<FSR_MiniMaestro>
+				<PORT>/dev/bodySensors</PORT>
+				<SPEED>115200</SPEED>
+				<ONSTATE>&gt;25</ONSTATE>
+			</FSR_MiniMaestro>
+			<HERKULEX_LiFe_BATTERY>
+				<PORT>/dev/bodyServos</PORT>
+				<SPEED>115200</SPEED>
+				<ONSTATE>&gt;25</ONSTATE>
+			</HERKULEX_LiFe_BATTERY>
+		</ROBOT>
+	</SENSORCONFIGS>
+
+	<SERVOLIST>
+		<SERVO type="HERKULEX" id="1">
+			<NAME>TORSO_YAW</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-27</MIN>
+					<MAX>27</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="2">
+			<NAME>HEAD_YAW</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-51</MIN>
+					<MAX>51</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>5</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="3">
+			<NAME>HEAD_PITCH</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-25</MIN>
+					<MAX>24</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>9</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="4">
+			<NAME>HEAD_ROLL</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-30</MIN>
+					<MAX>30</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7.5</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="5">
+			<NAME>MOUTH_OPEN</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-8</MIN>
+					<MAX>26</MAX>
+				</POS>
+			</LIMITS>
+			<DEFAULT>
+				<SPEED>50</SPEED>
+			</DEFAULT>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="6">
+			<NAME>MOUTH_SMILE</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-40</MIN>
+					<MAX>0</MAX>
+				</POS>
+			</LIMITS>
+			<DEFAULT>
+				<SPEED>50</SPEED>
+			</DEFAULT>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="16">
+			<NAME>L_SHOULDER_ROLL_UPPER</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-180</MIN>
+					<MAX>60</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="17">
+			<NAME>L_SHOULDER_PITCH</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-45</MIN>
+					<MAX>110</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="18">
+			<NAME>L_SHOULDER_ROLL_LOWER</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-30</MIN>
+					<MAX>145</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>6</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="19">
+			<NAME>L_ELBOW</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-10</MIN>
+					<MAX>90</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>4</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="20">
+			<NAME>L_WRIST_ROLL</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-90</MIN>
+					<MAX>45</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="32">
+			<NAME>R_SHOULDER_ROLL_UPPER</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-60</MIN>
+					<MAX>180</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="33">
+			<NAME>R_SHOULDER_PITCH</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-110</MIN>
+					<MAX>45</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>7</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="34">
+			<NAME>R_SHOULDER_ROLL_LOWER</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-145</MIN>
+					<MAX>30</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>6</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="35">
+			<NAME>R_ELBOW</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-90</MIN>
+					<MAX>10</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>4</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HERKULEX" id="36">
+			<NAME>R_WRIST_ROLL</NAME>
+			<CENTER>512</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-45</MIN>
+					<MAX>90</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<STRENGTH>3</STRENGTH>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="HS82MG" id="8">
+			<NAME>EYE_R_LID</NAME>
+			<CENTER>1500</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>90</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="6">
+			<NAME>EYE_R_YAW</NAME>
+			<CENTER>1350</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="7">
+			<NAME>EYEBALL_R_PITCH</NAME>
+			<CENTER>1550</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="9">
+			<NAME>EYE_L_YAW</NAME>
+			<CENTER>1450</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="11">
+			<NAME>EYE_L_LID</NAME>
+			<CENTER>1375</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-90</MIN>
+					<MAX>0</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="HS82MG" id="10">
+			<NAME>EYEBALL_L_PITCH</NAME>
+			<CENTER>1425</CENTER>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYES_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<MASTER>EYE_R_PITCH</MASTER>
+				<SLAVE>EYE_L_PITCH</SLAVE>
+				<RATIO>-1</RATIO>
+				<ABSOLUTE>True</ABSOLUTE>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYES_YAW</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<MASTER>EYE_R_YAW</MASTER>
+				<SLAVE>EYE_L_YAW</SLAVE>
+				<RATIO>1</RATIO>
+				<ABSOLUTE>True</ABSOLUTE>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYE_R_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<MASTER>EYEBALL_R_PITCH</MASTER>
+				<SLAVE>EYE_R_LID</SLAVE>
+				<ABSOLUTE>False</ABSOLUTE>
+				<RATIO>-1</RATIO>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYE_L_PITCH</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>-36</MIN>
+					<MAX>36</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<MASTER>EYEBALL_L_PITCH</MASTER>
+				<SLAVE>EYE_L_LID</SLAVE>
+				<ABSOLUTE>False</ABSOLUTE>
+				<RATIO>-1</RATIO>
+			</EXTRADATA>
+		</SERVO>
+		<SERVO type="VIRTUAL">
+			<NAME>EYELIDS</NAME>
+			<LIMITS>
+				<POS>
+					<MIN>0</MIN>
+					<MAX>60</MAX>
+				</POS>
+			</LIMITS>
+			<EXTRADATA>
+				<MASTER>EYE_R_LID</MASTER>
+				<SLAVE>EYE_L_LID</SLAVE>
+				<ABSOLUTE>True</ABSOLUTE>
+				<RATIO>-1</RATIO>
+			</EXTRADATA>
+		</SERVO>
+	</SERVOLIST>
+
+	<SERVOGROUPS>
+		<SERVOGROUP>
+			<NAME>Head</NAME>
+			<MEMBER>HEAD_YAW</MEMBER>
+			<MEMBER>HEAD_PITCH</MEMBER>
+			<MEMBER>HEAD_ROLL</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Face</NAME>
+			<MEMBER>EYES_YAW</MEMBER>
+			<MEMBER>EYES_PITCH</MEMBER>
+			<MEMBER>EYELIDS</MEMBER>
+			<MEMBER>MOUTH_OPEN</MEMBER>
+			<MEMBER>MOUTH_SMILE</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Left Arm</NAME>
+			<MEMBER>L_SHOULDER_ROLL_UPPER</MEMBER>
+			<MEMBER>L_SHOULDER_PITCH</MEMBER>
+			<MEMBER>L_SHOULDER_ROLL_LOWER</MEMBER>
+			<MEMBER>L_ELBOW</MEMBER>
+			<MEMBER>L_WRIST_ROLL</MEMBER>
+		</SERVOGROUP>
+
+		<SERVOGROUP>
+			<NAME>Right Arm</NAME>
+			<MEMBER>R_SHOULDER_ROLL_UPPER</MEMBER>
+			<MEMBER>R_SHOULDER_PITCH</MEMBER>
+			<MEMBER>R_SHOULDER_ROLL_LOWER</MEMBER>
+			<MEMBER>R_ELBOW</MEMBER>
+			<MEMBER>R_WRIST_ROLL</MEMBER>
+		</SERVOGROUP>
+	</SERVOGROUPS>
+
+	<SENSORLIST>
+		<ROBOT>
+			<SENSOR type="HERKULEX_LiFe_BATTERY" datatype="continuous" id="1">
+				<NAME>BATTERY</NAME>
+				<LIMITS>
+					<MAX>100</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="0">
+				<NAME>FSR_ARM_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="1">
+				<NAME>FSR_HAND_R_BACK</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="2">
+				<NAME>FSR_HAND_R_FRONT</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="3">
+				<NAME>FSR_ARM_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="4">
+				<NAME>FSR_HAND_L_BACK</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="5">
+				<NAME>FSR_HAND_L_FRONT</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="6">
+				<NAME>FSR_CHEST</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="8">
+				<NAME>FSR_LEG_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="10">
+				<NAME>FSR_FOOT_L</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="9">
+				<NAME>FSR_LEG_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+			<SENSOR type="FSR_MiniMaestro" datatype="continuous" id="11">
+				<NAME>FSR_FOOT_R</NAME>
+				<LIMITS>
+					<MAX>256</MAX>
+					<MIN>0</MIN>
+					<PRECISION>0</PRECISION>
+				</LIMITS>
+			</SENSOR>
+		</ROBOT>
+	</SENSORLIST>
+</ROBOT>
