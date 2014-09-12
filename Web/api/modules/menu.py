@@ -20,6 +20,7 @@ __links = [
                  'title':'navbar.action.label',
                  'links': [
                             ('navbar.action.edit', 'action.edit'),
+                            ('navbar.action.test', 'action.test'),
                             ('navbar.action.import', 'action.import'),
                           ]},
                 {

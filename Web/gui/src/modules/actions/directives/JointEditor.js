@@ -5,7 +5,7 @@ define(function(require) {
 	require('robots/services/interfaceServices');
 	var template = require('text!./jointEditor.tpl.html');
 
-	var JointEditor = function(robotInterface, JointPosition, ServoModel, language) {
+	var JointEditor = function(robotInterface, JointPosition, ServoModel, language, $timeout) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -60,7 +60,7 @@ define(function(require) {
 				$scope.$watch('servo', checkPositions);
 				$scope.$watch('jointPosition', checkPositions);
 
-				$scope.$watch('servo.jointName', function(jointName) {
+				$scope.$watch('jointPosition.jointName', function(jointName) {
 					$scope.servoInt = robotInterface.getServo(jointName);
 				});
 
@@ -92,22 +92,36 @@ define(function(require) {
 					if (!$scope.jointPosition.id) {
 						$scope.jointPosition.isNew = true;
 					}
-					if ($scope.jointPosition && $scope.servoInt && (force || $scope.advanced)) {
-						$scope.servoInt.speed = $scope.jointPosition.speed;
-						$scope.servoInt.position = $scope.jointPosition.position;
-						$scope.servoInt.poseable = $scope.poseable;
+					if (!$scope.servoInt) {
+						console.log("No interface for " + $scope.jointPosition);
+					}
+					if (force || $scope.advanced) {
+						$scope.writeJoint($scope.jointPosition, $scope.servoInt);
+					}
+
+				};
+
+				$scope.writeJoint = function(jointPosition, servoInt) {
+					if (jointPosition && servoInt) {
+						$timeout(function() {
+							//console.log('updating servo position from joint. ' + jointPosition.jointName + ':' + jointPosition.position);
+							servoInt.position = jointPosition.position;
+							servoInt.speed = jointPosition.speed;
+							servoInt.poseable = $scope.poseable;
+						});
 					}
 				};
 
 				$scope.$watch('servoInt.actual.position', function(value) {
 					if (!$scope.advanced && $scope.jointPosition) {
+						console.log('updating joint position from servo' + $scope.servo.jointName);
 						$scope.jointPosition.position = value;
 					}
 				});
 
 				$scope.$watch('jointPosition', writeToServo);
-				$scope.$watch('jointPosition.position', function() {
-					writeToServo(true);
+				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
+					$scope.writeJoint($scope.jointPosition, $scope.servoInt);
 				});
 
 				$scope.$watch('poseable', function(poseable) {
@@ -120,5 +134,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'robotInterface', 'JointPosition', 'ServoModel', 'language', JointEditor ];
+	return [ 'robotInterface', 'JointPosition', 'ServoModel', 'language', '$timeout', JointEditor ];
 });

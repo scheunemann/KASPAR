@@ -22,6 +22,7 @@ def _flushData():
 def _loadConfigs(configDir):
     print "Loading configs..."
     (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+    robot = robots[0].name
     print "Saving data"
 
     session = StorageFactory.getNewSession()
@@ -31,6 +32,7 @@ def _loadConfigs(configDir):
     session.commit()
     session.close()
     print "Done."
+    return robot
 
 
 def _setRobot(robotName):
@@ -82,28 +84,23 @@ def _loadTestData():
 
 
 if __name__ == "__main__":
+    flush = False
+    fill = False
     if len(sys.argv) < 2:
         print "Subdir not specified"
 #         exit()
         subDir = 'kaspar-1c'
-        flush = False
-        fill = False
     else:
         subDir = sys.argv[1]
 
         if len(sys.argv) > 2:
             if sys.argv[2].lower() == 'flush':
                 flush = True
-                fill = False
             elif sys.argv[2].lower() == 'test':
                 flush = True
                 fill = True
             elif sys.argv[2].lower() == 'data':
-                flush = False
                 fill = True
-        else:
-            flush = False
-            fill = False
 
     baseDir = os.path.dirname(os.path.realpath(__file__))
     configDir = os.path.join(baseDir, 'Config/kasparConfigs/' + subDir)
@@ -114,7 +111,7 @@ if __name__ == "__main__":
     else:
         if flush:
             _flushData()
-        _loadConfigs(configDir)
+        robot = _loadConfigs(configDir)
         if fill:
             _loadTestData()
-        _setRobot(subDir)
+        _setRobot(robot)

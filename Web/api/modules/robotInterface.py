@@ -1,13 +1,13 @@
-import time
-from threading import RLock
-import datetime
-from flask import request
-from flask.json import dumps
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room
-from Web.api.database import db_session
-import Model
-from Robot.ServoInterface import ServoInterface
-from Processor.SensorInterface import SensorInterface
+import time 
+from threading import RLock 
+import datetime 
+from flask import request 
+from flask.json import dumps 
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room 
+from Web.api.database import db_session 
+import Model 
+from Robot.ServoInterface import ServoInterface 
+from Processor.SensorInterface import SensorInterface 
 from threading import Thread
 
 socketio = SocketIO()
@@ -52,27 +52,34 @@ def receiveMessage(data):
         robot = _getRobot(robotId)
         for servoData in data.get('servos', []):
             servoId = servoData.get('id', None)
-            if servoId == None and servoData.get('jointName', None):
-                matches = [k for k, v in robot['servos'].iteritems() if v['jointName'] == servoData['jointName']]
-                if not matches:
-                    # TODO: Error handling
-                    log.warning('No servoId received in packet')
-                    continue
-                else:
-                    servoId = matches[0]
+            #if servoId == None and servoData.get('jointName', None):
+            #    matches = [k for k, v in robot['servos'].iteritems() if v['jointName'] == servoData['jointName']]
+            #    if not matches:
+            #        # TODO: Error handling
+            #        log.warning('No servoId received in packet')
+            #        continue
+            #    else:
+            #        servoId = matches[0]
 
-            servo = robot['servos'].get(servoId, None)
+            #servo = robot['servos'].get(servoId, None)
+            servos = filter(lambda s: s['jointName'] == servoData.get('jointName'), robot['servos'].values())
+            if servos:
+                servo = servos[0]
+            else:
+                servo = None
             if servo == None:
                 log.warning('Wrong servoId %s for robot %s' % (servoId, robotId))
                 # TODO: Error handling
                 continue
             else:
                 try:
-                    log.debug(servoData)
                     interface = servo['interface']
+                    log.debug(interface)
                     position = servoData.get('position', None)
                     poseable = servoData.get('poseable', None)
                     if position != None:
+	                log.debug("Setting position using : %s" % (servoData, ))
+                        #log.debug(interface)
                         interface.setPosition(float(position), servoData.get('speed', 100))
                     if poseable != None:
                         interface.setPositioning(poseable)
@@ -120,7 +127,7 @@ def _loop_internal(log):
                     _updateStatus(robot, log)
                     msg = _getRobotPacket(robotId, robot, lastMsg)
                     if msg['sensors'] or msg['servos']:
-                        log.debug('Sending robot state to %s listeners' % numListeners)
+                        log.log(1, 'Sending robot state to %s listeners' % numListeners)
                         sendMessage(robotId, msg)
         except Exception as e:
             log.warning('Error occurred!', exc_info=True)

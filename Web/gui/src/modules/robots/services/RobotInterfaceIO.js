@@ -21,6 +21,7 @@ define(function(require) {
 			},
 			poseable : null,
 			position : null,
+			speed : null,
 			jointName : null,
 		};
 	};
@@ -73,15 +74,18 @@ define(function(require) {
 			for ( var servoName in newValue) {
 				var servo = newValue[servoName];
 				if (oldValue === undefined || oldValue[servoName] === undefined || servo.position != oldValue[servoName].position || servo.poseable != oldValue[servoName].poseable) {
+					//console.log(servo);
 					servos.push({
 						id : servo.id,
 						position : servo.position,
 						poseable : servo.poseable,
+						speed: servo.speed,
 						jointName : servoName,
 					});
 				}
 			}
 
+                        //console.log(servos);
 			if (servos.length > 0) {
 				// Prevents flooding the server (which ends up queueing the requests)
 				save({
@@ -93,8 +97,11 @@ define(function(require) {
 		
 		var save = function(data) {
 			if(saving) {
+                                //console.log("Queueing action for later: " + data);
 				delayedSave = data;
 			} else {
+                                //console.log("Sending data: ");
+                                console.log(data);
 				saving = true;
 				emit('setData', data, function() {
 					saving = false;
@@ -109,7 +116,7 @@ define(function(require) {
 
 		on('getData', function(dataPackage) {
 			if (!connected) { return; }
-			console.log(dataPackage);
+			//console.log(dataPackage);
 
 			for (var servoIndex = 0; servoIndex < dataPackage.servos.length; servoIndex++) {
 				var servo = dataPackage.servos[servoIndex];
