@@ -65,11 +65,13 @@ define(function(require) {
 				});
 
 				$scope.removeJoint = function() {
-					if ($scope.jointPosition.id) {
-						$scope.jointPosition.isDeleted = true;
-					} else {
+					if($scope.jointPosition.isNew) {
 						delete $scope.jointPosition.isNew;
 					}
+					if ($scope.jointPosition.id) {
+						$scope.jointPosition.isDeleted = true;
+					}
+					$scope.jointForm.$setPristine();
 				};
 
 				$scope.$watch('servo.model_id', function(modelId) {
@@ -89,6 +91,9 @@ define(function(require) {
 				};
 
 				var writeToServo = function(force) {
+					if($scope.jointPosition.isDeleted) {
+						delete $scope.jointPosition.isDeleted;
+					}
 					if (!$scope.jointPosition.id) {
 						$scope.jointPosition.isNew = true;
 					}
@@ -111,14 +116,19 @@ define(function(require) {
 					}
 				};
 
-				$scope.$watch('servoInt.$actual.position', function(value) {
+				$scope.$watch('servoInt.$actual.position', function(newValue, oldValue) {
 					if (!$scope.advanced && $scope.jointPosition) {
 						console.log('updating joint position from servo' + $scope.servo.jointName);
-						$scope.jointPosition.position = value;
+						$scope.jointPosition.position = newValue;
 					}
 				});
 
-				$scope.$watch('jointPosition', writeToServo);
+				$scope.$watch('jointPosition', function(newValue, oldValue) {
+					if(newValue.id) {
+						writeToServo();
+					}
+				});
+				
 				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
 					$scope.writeJoint($scope.jointPosition, $scope.servoInt);
 				});

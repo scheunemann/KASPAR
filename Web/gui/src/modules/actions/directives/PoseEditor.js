@@ -116,7 +116,9 @@ define(function(require) {
 						return p.isDeleted || p.id === undefined && !p.isNew;
 					});
 
-					var isNew = _.filter($scope.pose.jointPositions, function(p) {
+					var allJoints =_.flatten(_.map($scope.groups, function(g) { return g.rows;}), true);
+					var unAttached = _.difference(allJoints, $scope.pose.jointPositions);
+					var isNew = _.filter(unAttached, function(p) {
 						return p.isNew;
 					});
 					
@@ -124,6 +126,8 @@ define(function(require) {
 					_.each(isNew, function(jp) {
 						delete jp.isNew;
 					});
+					
+					$scope.pose.jointPositions.splice.apply($scope.pose.jointPositions, [$scope.pose.jointPositions.length, 0].concat(isNew));
 
 					$scope.pose.jointPositions = _.difference($scope.pose.jointPositions, toRemove);
 					$scope.pose.$save();
