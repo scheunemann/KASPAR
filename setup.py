@@ -19,10 +19,10 @@ setup(name='kaspar_gui',
       license='MIT',
       packages=['kasparGUI'],
       install_requires=[
-          'dateutil',
+          'python-dateutil',
           'gevent',
           'flask',
-          'werkzeug'
+          'werkzeug',
           'flask-restless',
           'flask-sqlalchemy',
           'flask-socketio',
