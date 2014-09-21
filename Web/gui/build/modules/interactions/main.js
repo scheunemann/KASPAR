@@ -1,2 +1,0 @@
-define(["require","angular","./controllers","./directives","./models"],function(require){{var angular=require("angular"),controllers=require("./controllers"),directives=require("./directives"),models=require("./models"),moduleName="kasparGUI.interactions",dependancies=[controllers,directives,models];angular.module(moduleName,dependancies)}return moduleName});
-//# sourceMappingURL=main.js.map

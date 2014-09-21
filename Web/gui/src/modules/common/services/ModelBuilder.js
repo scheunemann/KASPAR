@@ -72,7 +72,7 @@ define(function(require) {
 				params = angular.extend(defaultParams, params);
 				var resource = $resource(url, params, methods);
 
-				resource.prototype.getProperty = function(propName) {
+				resource.prototype.$getProperty = function(propName) {
 					var key = '$__' + propName;
 					if(this[key] === undefined) {
 						var subUrl = root.basePath + model + '/' + this.id + '/' + propName;

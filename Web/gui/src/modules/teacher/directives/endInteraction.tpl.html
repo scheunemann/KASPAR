@@ -9,7 +9,7 @@
 			<div
 				ng-repeat="game in interaction.games"
 				class="col-lg-3">
-				<container-game game='game'></container-game>
+				<container-game game="game.$getProperty('game')"></container-game>
 			</div>
 		</div>
 	</div>
@@ -43,10 +43,10 @@
 		class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
 		<img
 			ng-src="/img/teacher/rating/{{image}}"
-			ng-class="{selected:interaction.score.child.engagement==$index+1}"
+			ng-class="{selected:interaction.childEngagement==$index+1}"
 			class="clickable rating {{colors[$index]}}_rating"
 			alt="{{$index}}"
-			ng-click="interaction.score.child.engagement = $index+1" />
+			ng-click="interaction.childEngagement = $index+1" />
 	</div>
 	<div class="col-lg-1">
 		<button
@@ -64,10 +64,10 @@
 		class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
 		<img
 			ng-src="/img/teacher/rating/{{image}}"
-			ng-class="{selected:interaction.score.child.experience==$index+1}"
+			ng-class="{selected:interaction.childExperience==$index+1}"
 			class="clickable rating {{colors[$index]}}_rating"
 			alt="{{$index}}"
-			ng-click="interaction.score.child.experience = $index+1" />
+			ng-click="interaction.childExperience = $index+1" />
 	</div>
 	<div class="col-lg-1">
 		<button
@@ -85,10 +85,10 @@
 		class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
 		<img
 			ng-src="/img/teacher/rating/{{image}}"
-			ng-class="{selected:interaction.score.parent.experience==$index+1}"
+			ng-class="{selected:interaction.parentExperience==$index+1}"
 			class="clickable rating {{colors[$index]}}_rating"
 			alt="{{$index}}"
-			ng-click="interaction.score.parent.experience = $index+1" />
+			ng-click="interaction.parentExperience = $index+1" />
 	</div>
 	<div class="col-lg-1">
 		<button

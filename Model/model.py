@@ -1,8 +1,9 @@
 import os
 import uuid
 from Data.Model import StandardMixin, Base, User
-from sqlalchemy import Column, String, Integer, ForeignKey, Table, DateTime
+from sqlalchemy import Column, String, Integer, ForeignKey, Table, DateTime, Date
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.expression import func
 
 
 __all__ = ['Setting', 'Interaction', 'Operator']
@@ -12,8 +13,23 @@ operatorUsers_table = Table('operatorUsers', Base.metadata,
     Column('User_id', Integer, ForeignKey('User.id'))
 )
 
+operatorGames_table = Table('operatorGames', Base.metadata,
+    Column('Operator_id', Integer, ForeignKey('Operator.id')),
+    Column('Game_id', Integer, ForeignKey('Game.id'))
+)
+
 userObjectives_table = Table('userObjectives', Base.metadata,
     Column('User_id', Integer, ForeignKey('User.id')),
+    Column('Objective_id', Integer, ForeignKey('Objective.id'))
+)
+
+gameTriggers_table = Table('gameTriggers', Base.metadata,
+    Column('Game_id', Integer, ForeignKey('Game.id')),
+    Column('Trigger_id', Integer, ForeignKey('Trigger.id'))
+)
+
+gameObjectives_table = Table('gameObjectives', Base.metadata,
+    Column('Game_id', Integer, ForeignKey('Game.id')),
     Column('Objective_id', Integer, ForeignKey('Objective.id'))
 )
 
@@ -85,14 +101,25 @@ class Interaction(StandardMixin, Base):
 
     user_id = Column(Integer, ForeignKey('User.id'))
     user = relationship("User")
+
     robot_id = Column(Integer, ForeignKey('Robot.id'))
     robot = relationship("Robot")
+
     operator_id = Column(Integer, ForeignKey('Operator.id'))
     operator = relationship("Operator")
+
     startTime = Column(DateTime, nullable=False)
     endTime = Column(DateTime)
 
-    def __init__(self, user=None, user_id=None, robot_id=None, robot=None, operator_id=None, operator=None, startTime=None, endTime=None, **kwargs):
+    games = relationship("InteractionGame", back_populates="interaction")
+
+    childEngagement = Column(Integer)
+    childExperience = Column(Integer)
+    parentExperience = Column(Integer)
+
+    notes = relationship("Note", back_populates="interaction")
+
+    def __init__(self, user=None, user_id=None, robot_id=None, robot=None, operator_id=None, operator=None, startTime=None, endTime=None, games=[], childEngagement=None, childExperience=None, parentExperience=None, notes=[], **kwargs):
         super(Interaction, self).__init__(**kwargs)
         self.user_id = user_id
         self.user = user
@@ -102,13 +129,57 @@ class Interaction(StandardMixin, Base):
         self.operator = operator
         self.startTime = startTime
         self.endTime = endTime
+        self.games = games
+        self.childEngagement = childEngagement
+        self.childExperience = childExperience
+        self.parentExperience = parentExperience
+        self.notes = notes
+
+
+class InteractionGame(StandardMixin, Base):
+
+    interaction_id = Column(Integer, ForeignKey("Interaction.id"))
+    interaction = relationship("Interaction", back_populates="games")
+
+    game_id = Column(Integer, ForeignKey("Game.id"))
+    game = relationship("Game")
+
+    startTime = Column(DateTime, nullable=False)
+    endTime = Column(DateTime)
+
+    def __init__(self, game=None, startTime=None, endTime=None, interaction=None, **kwargs):
+        super(InteractionGame, self).__init__(**kwargs)
+        self.game = game
+        self.startTime = startTime
+        self.endTime = endTime
+        self.interaction = interaction
+
+
+class Note(StandardMixin, Base):
+
+    interaction = relationship("Interaction", back_populates="notes")
+    interaction_id = Column(Integer, ForeignKey("Interaction.id"))
+
+    title = Column(String(50))
+    text = Column(String(5000))
+
+    created = Column(DateTime, nullable=False, default=func.now())
+    modified = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
+
+    def __init__(self, title=None, text=None, interaction=None, **kwargs):
+        super(Note, self).__init__(**kwargs)
+        self.title = title
+        self.text = text
+        self.interaction = interaction
 
 
 class Operator(StandardMixin, Base):
+
     name = Column(String(50))
     fullname = Column(String(50))
     password = Column(String(500))
     users = relationship("User", secondary=operatorUsers_table)
+    favoriteGames = relationship("Game", secondary=operatorGames_table)
 
     def __init__(self, name=None, fullname=None, password=None, users=[], **kwargs):
         super(Operator, self).__init__(**kwargs)
@@ -118,11 +189,38 @@ class Operator(StandardMixin, Base):
         self.users = users
 
 
+class Game(StandardMixin, Base):
+
+    name = Column(String(50))
+    desc = Column(String(5000))
+    author = relationship("Operator")
+    author_id = Column(Integer, ForeignKey('Operator.id'))
+    photo = relationship("Photo")
+    photo_id = Column(Integer, ForeignKey('Photo.id'))
+    objectives = relationship("Objectives", secondary=gameObjectives_table)
+    triggers = relationship("Trigger", secondary=gameTriggers_table)
+
+    def __init__(self, name=None, desc=None, photo=None, triggers=[], **kwargs):
+        super(Game, self).__init__(**kwargs)
+        self.name = name
+        self.desc = desc
+        self.photo = photo
+        self.triggers = triggers
+
+
 class Objective(StandardMixin, Base):
+
     name = Column(String(50))
     desc = Column(String(500))
 
+    def __init__(self, name=None, desc=None, **kwargs):
+        super(Objective, self).__init__(**kwargs)
+        self.name = name
+        self.desc = desc
+
+
 User.objectives = relationship("Objective", secondary=userObjectives_table)
 User.gender = Column(String(1), nullable=True)
+User.birthday = Column(Date, nullable=True)
 User.photo_id = Column(Integer, ForeignKey('Photo.id'))
 User.photo = relationship("Photo")

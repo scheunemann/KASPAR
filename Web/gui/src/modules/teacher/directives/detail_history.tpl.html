@@ -5,15 +5,15 @@
 		<div class="col-lg-3">
 			<div>
 				<span class="title">Date:</span>
-				{{interaction.date}}
+				{{interaction.startTime | date:'fullDate'}}
 			</div>
 			<div>
 				<span class="title">Time:</span>
-				{{interaction.time}}
+				{{interaction.startTime | date:'mediumTime'}}
 			</div>
 			<div>
 				<span class="title">PlayTime:</span>
-				{{interaction.totalTime}}
+				{{Math.floor((interaction.endTime - interaction.startTime) / (60000 / 60)}}h, {{Math.round((interaction.endTime - interaction.startTime) / (60000 % 60)}}m
 			</div>
 		</div>
 	</div>
@@ -23,6 +23,7 @@
 	<div class="row">
 		<container-game
 			ng-repeat="game in interaction.games"
+			user='interaction.user'
 			game='game'></container-game>
 	</div>
 	<div class="row">
@@ -40,9 +41,9 @@
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<div class="center">
 				<img
-					class="rating {{colors[interaction.score.child.engagement-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.score.child.engagement-1]}}"
-					alt="{{interaction.score.child.engagement}}" />
+					class="rating {{colors[interaction.childEngagement-1]}}"
+					ng-src="/img/teacher/rating/{{images[interaction.childEngagement-1]}}"
+					alt="{{interaction.childEngagement}}" />
 			</div>
 			<div class="center">
 				<span class="title">Child Engagement</span>
@@ -51,9 +52,9 @@
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<div class="center">
 				<img
-					class="rating {{colors[interaction.score.child.experience-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.score.child.experience-1]}}"
-					alt="{{interaction.score.child.experience}}" />
+					class="rating {{colors[interaction.childExperience-1]}}"
+					ng-src="/img/teacher/rating/{{images[interaction.childExperience-1]}}"
+					alt="{{interaction.childExperience}}" />
 			</div>
 			<div class="center">
 				<span class="title">Child Experience</span>
@@ -62,9 +63,9 @@
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<div class="center">
 				<img
-					class="rating {{colors[interaction.score.parent.experience-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.score.parent.experience-1]}}"
-					alt="{{interaction.score.parent.experience}}" />
+					class="rating {{colors[interaction.parentExperience-1]}}"
+					ng-src="/img/teacher/rating/{{images[interaction.parentExperience-1]}}"
+					alt="{{interaction.parentExperience}}" />
 			</div>
 			<div class="center">
 				<span class="title">Parent Experience</span>
@@ -73,9 +74,9 @@
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<div class="center">
 				<img
-					class="rating {{colors[interaction.score.total-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.score.total-1]}}"
-					alt="{{interaction.score.total}}" />
+					class="rating {{colors[Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)]}}"
+					ng-src="/img/teacher/rating/{{images[Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)]}}"
+					alt="{{Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)}}" />
 			</div>
 			<div class="center">
 				<span class="title">Average Score</span>
@@ -90,7 +91,6 @@
 		</div>
 		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 			<container-note
-				note="newNote"
 				class="clickable"
 				ng-click="addNote()"></container-note>
 		</div>

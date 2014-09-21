@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./interactionGame.tpl.html');
 
-	var InteractionGame = function() {
+	var InteractionGame = function(interactionService, InteractionGame) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -15,35 +15,22 @@ define(function(require) {
 			link : function(scope, element, attrs, controller) {
 			},
 			controller : function($scope) {
-				$scope.showStart = true;
-				var startTime = null;
-				
 				$scope.start = function() {
-					$scope.game.started = true;
-					$scope.game.finished = false;
-					startTime = Date.now();
-					$scope.showStart = false;
+					var activeGame = interactionService.getCurrentGame();
+					if (activeGame) {
+						alert("Please finish Play Scenario " + activeGame.name + " first.");
+						return;
+					}
+					
+					interactionService.startNewGame(game);					
 				};
 
 				$scope.end = function() {
-					$scope.game.finished = true;
-					$scope.showStart = true;
-					
-					var playTime = Date.now() - startTime;
-					startTime = null;
-					var min = Math.round(playTime / 60000, 0);
-					var sec = Math.round(playTime % 60000 / 1000, 0);
-					
-					$scope.interaction.games.push({
-						name : $scope.game.name,
-						thumbsrc : $scope.game.thumbsrc,
-						fullsrc : $scope.game.fullsrc,
-						totTime: min + "m" + sec + "s" 
-					});
+					interactionService.endGame(game);
 				};
 			}
 		};
 	};
 
-	return InteractionGame;
+	return [ 'interactionService', 'InteractionGame', InteractionGame ];
 });

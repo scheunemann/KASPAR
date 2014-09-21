@@ -24,15 +24,7 @@ define(function(require) {
 				}
 				
 				$scope.userFilter = function(element) {
-					if ($scope.selectedUser) {
-						if (element && element.user) {
-							return element.user.name == $scope.selectedUser.name;
-						} else {
-							return false;
-						}
-					} else {
-						return true;
-					}
+					return $scope.selectedUser === element && element.user && element.user.name == $scope.selectedUser.name;
 				}
 			}
 		};

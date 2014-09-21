@@ -74,7 +74,7 @@ define(function(require) {
 					jointPositions = jointPositions || [];
 					var groups = [];
 					if (robot) {
-						robot.getProperty('servoGroups').$promise.then(function(servoGroups) {
+						robot.$getProperty('servoGroups').$promise.then(function(servoGroups) {
 							var groups = _.map(servoGroups, function(sg) {
 								return processGroup(sg, jointPositions);
 							});

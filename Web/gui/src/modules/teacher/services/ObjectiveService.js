@@ -3,20 +3,11 @@
 define(function(require) {
 	var angular = require('angular');
 
-	var ObjectiveService = function() {
+	var ObjectiveService = function(Objective) {
 		this.getObjectives = function() {
-			return [ {
-				title : 'Turn Taking',
-				key : 'turntaking',
-			}, {
-				title : 'Interaction',
-				key : 'interaction',
-			}, {
-				title : 'Other',
-				key : 'other',
-			}, ];
+			return Objective.query();
 		};
 	};
 
-	return ObjectiveService;
+	return ['Objective', ObjectiveService];
 });

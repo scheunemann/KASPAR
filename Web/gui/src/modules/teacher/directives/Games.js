@@ -33,17 +33,8 @@ define(function(require) {
 					}
 				};
 
-				$scope.shouldHighlight = function(game, tag, objective) {
-					if ((tag || objective) && game != $scope.selectedGame) {
-						var hasTag = tag === undefined || tag === null;
-						if (game.tags && tag) {
-							for (var i = 0; i < game.tags.length; i++) {
-								if (game.tags[i].key == tag.key) {
-									hasTag = true;
-								}
-							}
-						}
-
+				$scope.shouldHighlight = function(game, objective) {
+					if (objective && game != $scope.selectedGame) {
 						var hasObj = objective === undefined || objective === null;
 						if (game.objectives && objective) {
 							for (var i = 0; i < game.objectives.length; i++) {
@@ -53,7 +44,7 @@ define(function(require) {
 							}
 						}
 
-						return hasTag & hasObj;
+						return hasObj;
 					} else {
 						return false;
 					}
