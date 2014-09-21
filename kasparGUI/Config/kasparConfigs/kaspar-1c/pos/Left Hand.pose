@@ -1,0 +1,18 @@
+Left Hand
+16
+HEAD_VERT,549,70,false
+ARM_L_3,683,80,false
+ARM_L_2,879,80,false
+ARM_R_4,644,140,false
+ARM_L_4,119,140,false
+ARM_R_3,386,80,false
+MOUTH_OPEN,304,70,false
+ARM_R_2,0,80,false
+EYES_LR,480,70,false
+ARM_L_1,507,80,false
+ARM_R_1,527,80,false
+EYES_UD,549,70,false
+MOUTH_SMILE,210,70,false
+HEAD_TLT,608,70,false
+EYELIDS,637,70,false
+HEAD_ROT,750,70,false

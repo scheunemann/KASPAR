@@ -1,0 +1,13 @@
+2p2
+10
+gameStart,gameStart.pose,200
+MouthClose,MouthClose.pose,200
+MouthOpen,MouthOpen.pose,4000
+Right Hand,Right Hand.pose,300
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,1500
+Left Hand,Left Hand.pose,300
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,1500
+gameStart,gameStart.pose,0
+k.g22.wav

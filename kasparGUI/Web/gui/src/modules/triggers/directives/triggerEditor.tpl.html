@@ -1,0 +1,18 @@
+<buttontrigger-editor
+	ng-if="trigger.type=='ButtonTrigger'"
+	trigger="trigger"
+	actions="actions"></buttontrigger-editor>
+<compoundtrigger-editor
+	ng-if="trigger.type=='CompoundTrigger'"
+	trigger="trigger"
+	triggers="triggers"
+	actions="actions"></compoundtrigger-editor>
+<sensortrigger-editor
+	ng-if="trigger.type=='SensorTrigger'"
+	trigger="trigger"
+	actions="actions"></sensortrigger-editor>
+<timetrigger-editor
+	ng-if="trigger.type=='TimeTrigger'"
+	trigger="trigger"
+	triggers="triggers"
+	actions="actions"></timetrigger-editor>

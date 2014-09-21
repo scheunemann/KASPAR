@@ -1,0 +1,106 @@
+<form
+	name="compountTriggerForm"
+	model="compound">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">{{language['trigger.compound.name']}}</span>
+				<input
+					type="text"
+					class="form-control"
+					placeholder="Compound Trigger Name"
+					saveable
+					required
+					name="name"
+					ng-model="compound.name">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon inputLabel">{{language['trigger.compound.action']}}</span>
+				<select
+					class="selectpicker form-control"
+					ng-model="compound.action_id"
+					saveable
+					name="actionId"
+					ng-options="action.id as action.name group by action.type for action in actions | orderBy:'name'">
+					<option value="">{{language['trigger.compound.action.select.prompt']}}</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="input-group">
+				<div class="input-group-addon inputLabel">{{language['trigger.compound.require.label']}}</div>
+				<span class="input-group-btn">
+					<button
+						type="button"
+						class="btn btn-primary"
+						ng-model="compound.requireAll"
+						saveable
+						required
+						name="requireAll"
+						btn-radio="true">{{language['trigger.compound.require.all']}}</button>
+					<button
+						type="button"
+						class="btn btn-primary"
+						saveable
+						required
+						name="requireAny"
+						ng-model="compound.requireAll"
+						btn-radio="false">{{language['trigger.compound.require.any']}}</button>
+				</span>
+				<div class="input-group-addon">&nbsp;{{language['trigger.compound.require.trigger']}}</div>
+				<div class="input-group-addon spring"></div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{language['trigger.compound.triggers.list.label']}}</div>
+				<div class="input-group fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toAdd"
+						ng-options="trigger.name for trigger in triggers | except:compound | except:compound.triggers | orderBy:'name'">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2">
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toAdd || toAdd.length == 0"
+					type="button"
+					ng-click="addTriggers(toAdd);toAdd=[]">{{language['trigger.compound.triggers.add']}}
+					&rarr;</button>
+			</div>
+			<div class="row">
+				<button
+					class="btn btn-default col-lg-12"
+					ng-disabled="!toRemove || toRemove.length == 0"
+					type="button"
+					ng-click="removeTriggers(toRemove);toRemove=[]">&larr;
+					{{language['trigger.compound.triggers.remove']}}</button>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{language['trigger.compound.triggers.title']}}</div>
+				<div class="input-group fill">
+					<select
+						class="selectpicker fill form-control"
+						multiple
+						ng-multiple="true"
+						ng-model="toRemove"
+						ng-options="trigger.name for trigger in compound.triggers | orderBy:'name'">
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

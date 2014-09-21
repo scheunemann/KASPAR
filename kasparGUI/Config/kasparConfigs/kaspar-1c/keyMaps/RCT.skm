@@ -1,0 +1,33 @@
+Happy,7
+tickle,O,P
+relax,0
+Drum Ready,-
+cheecks,E,D
+Lhand,G,H
+Rarm,C
+LarmFRWD,5
+belly, I,J
+head_left
+RarnFRWD,4
+LarmUP,2
+Larm,F
+Hide,8
+Wave,=
+Positive,+
+Rhand,A
+Res
+Default-pose
+hurts,ENTeR
+Sad,9
+nod
+WellDone
+goodbye,BackSPAce
+TurnL,3
+Blink,.
+Secret
+TurnR,6
+RarmUP,1
+ChargeWellDone,(
+head_right
+Right Drum,/
+Left Drum,*

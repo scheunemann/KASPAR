@@ -1,0 +1,47 @@
+s5_touch_tummy
+44
+Drum Ready,Drum Ready.pose,0
+Eye Open,Eye Open.pose,3000
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,4200
+MouthClose,MouthClose.pose,300
+MouthOpen,MouthOpen.pose,300
+Drum Ready,Drum Ready.pose,0
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,300
+noddown,noddown.pose,300
+nodup,nodup.pose,300
+tummy,tummy.pose,2000
+Drum Ready,Drum Ready.pose,0
+Eye Open,Eye Open.pose,300
+Eye Open,Eye Open.pose,300
+MouthClose,MouthClose.pose,300
+MouthOpen,MouthOpen.pose,200
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,300
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,300
+tummy,tummy.pose,2000
+Drum Ready,Drum Ready.pose,0
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,300
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,300
+Drum Ready,Drum Ready.pose,300
+noddown,noddown.pose,300
+nodup,nodup.pose,1000
+MouthClose,MouthClose.pose,300
+MouthOpen,MouthOpen.pose,1000
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,100
+MouthClose,MouthClose.pose,300
+MouthOpen,MouthOpen.pose,300
+tummy,tummy.pose,2000
+Drum Ready,Drum Ready.pose,0
+clapOpen,clapOpen.pose,300
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,300
+Eye Shut,Eye Shut.pose,300
+Eye Open,Eye Open.pose,300
+clapOpen,clapOpen.pose,0
+S5_tummy.wav

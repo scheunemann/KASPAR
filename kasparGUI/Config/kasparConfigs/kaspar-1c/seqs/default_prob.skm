@@ -1,0 +1,23 @@
+default
+flap,
+head_left,right_arm
+Left Drum,*
+hurts,+
+tickle,)
+LarmUP,.
+cheecks,cheeks
+Right Drum,/
+Drum Ready,-
+Blink,2
+Hide,1
+RarmUP,0
+Wave,7
+Sad,6
+head_right,left_arm
+Res,5
+goodbye,4
+nod,leftfoot
+tickR,rightfoot
+L_arm_up,lefthand_top
+Secret,9
+Happy,8

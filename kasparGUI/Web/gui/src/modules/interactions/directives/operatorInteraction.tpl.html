@@ -1,0 +1,33 @@
+<div>
+	<strong>TODO</strong>
+	<ul>
+		<li><strong>Feedback on keypress</strong></li>
+		<li><strong>Log window with ???</strong></li>
+		<li><strong>Images from webcam(s)?</strong></li>
+	</ul>
+	<accordion close-others="true"> <accordion-group
+		is-open="isopen"> <accordion-heading>{{language['interaction.operator.view.buttons.label']}}<i
+		class="pull-right glyphicon"
+		ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+	</accordion-heading>
+	<div class="btn-group">
+		<button
+			type="button"
+			class="btn btn-primary check"
+			ng-model="keyBind"
+			ng-click="setBinding(keyBind)"
+			btn-checkbox>{{language['interaction.operator.view.activateBindings']}}</button>
+		<button
+			type="button"
+			class="btn btn-primary check"
+			ng-model="showHotKeys"
+			btn-checkbox>{{language['interaction.operator.view.showHotkeys']}}</button>
+	</div>
+	<hr />
+	<action-buttons
+		interaction="interaction"
+		buttons="buttons"
+		show-hot-keys="showHotKeys"
+		user="user"
+		key-bind="keyBind" /></accordion-group> </accordion>
+</div>

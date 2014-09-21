@@ -1,0 +1,11 @@
+game over
+8
+relax,relax.pose,1000
+Eye Open,Eye Open.pose,300
+Eye Shut,Eye Shut.pose,300
+MouthClose,MouthClose.pose,300
+Eye Open,Eye Open.pose,300
+MouthOpen,MouthOpen.pose,200
+Eye Shut,Eye Shut.pose,200
+Eye Open,Eye Open.pose,0
+k.game over _did well.wav
