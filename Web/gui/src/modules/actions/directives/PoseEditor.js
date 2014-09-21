@@ -121,6 +121,8 @@ define(function(require) {
 					var isNew = _.filter(unAttached, function(p) {
 						return p.isNew;
 					});
+
+					console.log(allJoints);
 					
 					// Remove any unexpected properties so flask-restless doesn't throw a fit
 					_.each(isNew, function(jp) {
@@ -130,10 +132,27 @@ define(function(require) {
 					$scope.pose.jointPositions.splice.apply($scope.pose.jointPositions, [$scope.pose.jointPositions.length, 0].concat(isNew));
 
 					$scope.pose.jointPositions = _.difference($scope.pose.jointPositions, toRemove);
-					$scope.pose.$save();
+
+					_.each($scope.pose.jointPositions, function(jp) {
+						delete jp.$concreteResolved;
+					});
+
+					var cr = $scope.pose.$concreteResolved;
+					var r = $scope.pose.$resolved;
+					var p = $scope.pose.$promise;
+					delete $scope.pose.$concreteResolved;
+					delete $scope.pose.$resolved;
+					delete $scope.pose.$promise;
+
+                                        console.log($scope.pose);
+					$scope.pose.$save(function() {
+						$scope.pose.$concreteResolved = cr;
+						$scope.pose.$resolved = r;
+						$scope.pose.$promise = $p;
+					});
 				};
 
-				$scope.saveAs = function() {
+				$scope.saveAs = function(newname) {
 					var positions = _.map($scope.pose.jointPositions, function(jp) {
 						return new JointPosition({
 							'position' : jp.position,
@@ -142,9 +161,14 @@ define(function(require) {
 						});
 					});
 
+					var name = $scope.pose.name + ' - Copy';
+					if(newname) {
+						name = newname;
+					}
+
 					var newPose = new Action({
 						'type' : 'PoseAction',
-						'name' : $scope.pose.name + ' - Copy',
+						'name' : name,
 						'speedModifier' : $scope.pose.speedModifier,
 						'jointPositions' : positions
 					});

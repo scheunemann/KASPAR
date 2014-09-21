@@ -96,6 +96,8 @@ define(function(require) {
 					}
 					if (!$scope.jointPosition.id) {
 						$scope.jointPosition.isNew = true;
+						console.log("New Servo!")
+						console.log($scope.jointPosition);
 					}
 					if (!$scope.servoInt) {
 						console.log("No interface for " + $scope.jointPosition);
@@ -130,7 +132,7 @@ define(function(require) {
 				});
 				
 				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
-					$scope.writeJoint($scope.jointPosition, $scope.servoInt);
+					writeToServo(true);
 				});
 
 				$scope.$watch('poseable', function(poseable) {
