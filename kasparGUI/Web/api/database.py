@@ -1,6 +1,6 @@
 from sqlalchemy.orm import scoped_session
-from Data.storage import StorageFactory
-from Config.config import dbConfig
+from robotActionController.Data.storage import StorageFactory
+from kasparGUI.Config.config import dbConfig
 StorageFactory.config['engine'].update(dbConfig)
 StorageFactory.config['debug'] = False
 

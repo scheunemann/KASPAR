@@ -1,6 +1,7 @@
 require.config({
 	baseUrl : "/",
 	paths : {
+		underscore : 'bower_components/underscore/underscore-min',
 		angular : 'bower_components/angular/angular',
 		jquery : 'bower_components/jquery/jquery.min',
 		angularBoostrap : 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
@@ -11,6 +12,9 @@ require.config({
 		categories : 'categories',
 	},
 	shim : {
+		'underscore' : {
+			exports : '_'
+		},
 		'angular' : {
 			exports : 'angular',
 			deps : [ 'jquery', ]

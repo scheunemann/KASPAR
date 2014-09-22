@@ -3,14 +3,16 @@ import sys
 import os
 import time
 
+
 def getConnection(port='/dev/headServos'):
-    sys.path.append('/home/pi/git/robotActionController')        
-    from Robot.ServoInterface.minimaestro import minimaestro
+    sys.path.append('/home/pi/git/robotActionController')
+    from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
     try:
         return minimaestro(port, 115200)
     except Exception as e:
         print 'Err: %s' % e
     return None
+
 
 def doScan(conn, ids):
     sIds = sorted(ids)

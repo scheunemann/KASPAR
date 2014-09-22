@@ -12,11 +12,11 @@ import time
 baseDir = os.path.dirname(os.path.realpath(__file__))
 configDir = os.path.join(baseDir, './kasparConfigs')
 print "Loading robot configs from %s" % configDir
-from Robot import importer
+from robotActionController.Robot import importer
 (robots, _, _) = importer.loadAllDirectories(configDir, loadActions=False, loadTriggers=False)
 
-from Robot.ServoInterface.servoInterface import ServoInterface
-from Robot.ServoInterface.herkulex import HerkuleX
+from robotActionController.Robot.ServoInterface.servoInterface import ServoInterface
+from robotActionController.Robot.ServoInterface.herkulex import HerkuleX
 if isWin:
     herkulex = HerkuleX('COM25', 115200)
 else:

@@ -6,8 +6,10 @@ _curDir = os.path.dirname(os.path.realpath(__file__))
 
 if os.path.exists(os.path.join(_curDir, 'build')):
     _subDir = 'build'
+    debug = False
 else:
     _subDir = 'src'
+    debug = True
 
 _dir = os.path.join(_curDir, _subDir)
 isFile = re.compile('(.*/)?.+\.[^/]+')
@@ -24,6 +26,9 @@ def default(page):
     """https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-configure-your-server-to-work-with-html5mode"""
     if not isFile.match(page):
         page = 'index.html'
+
+    if debug and page.startswith("bower_components"):
+        page = '../' + page
 
     path = os.path.join(_dir, page)
 #     if path.endswith('.tpl.htm') or path.endswith('.tpl.html'):

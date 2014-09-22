@@ -37,12 +37,25 @@ import user
 models.extend(user.models)
 blueprints.extend(user.blueprints)
 
+import game
+models.extend(game.models)
+blueprints.extend(game.blueprints)
+
+import objective
+models.extend(objective.models)
+blueprints.extend(objective.blueprints)
+
+import tag
+models.extend(tag.models)
+blueprints.extend(tag.blueprints)
+
 
 def init_app(app):
     # Settings for eclipse ide debugger
     import platform
     if platform.system() == 'Windows':
         from gevent import monkey
+
         def noop(*args, **kwargs):
             return
         monkey.patch_time = noop

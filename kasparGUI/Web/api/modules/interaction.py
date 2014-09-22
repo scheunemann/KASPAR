@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
-from Web.api.database import db_session
-from Web.api.interactionManager import InteractionManager
-import Model
+from kasparGUI.Web.api.database import db_session
+from kasparGUI.Web.api.interactionManager import InteractionManager
+import kasparGUI.Model as Model
 
 __interactionLog = Blueprint('interaction.log', __name__)
 blueprints = [

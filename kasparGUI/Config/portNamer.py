@@ -22,10 +22,11 @@ TTLFLAG = 0B10
 CMDFLAG = 0B00
 
 CONFIG = {
-          HEADFLAG | CMDFLAG : 'headServos',
-          TRSOFLAG | TTLFLAG : 'bodyServos',
-          TRSOFLAG | CMDFLAG : 'bodySensors',
+          HEADFLAG | CMDFLAG: 'headServos',
+          TRSOFLAG | TTLFLAG: 'bodyServos',
+          TRSOFLAG | CMDFLAG: 'bodySensors',
 }
+
 
 def getPort():
     val = os.environ.get(DIFFVAR, None)
@@ -39,8 +40,8 @@ def getPort():
 
 
 def getLocation(port):
-    sys.path.append('/home/pi/git/robotActionController')        
-    from Robot.ServoInterface.minimaestro import minimaestro
+    sys.path.append('/home/pi/git/robotActionController')
+    from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
     try:
         m = minimaestro(port, 115200)
         pos = m.getPosition(DIFFSVO)
@@ -51,6 +52,7 @@ def getLocation(port):
     except Exception as e:
         print 'Err: %s' % e
     return None
+
 
 def addLink(sysPath, symPath):
     fullPath = '/dev/%s' % symPath
@@ -66,21 +68,22 @@ def addLink(sysPath, symPath):
     except Exception as e:
         syslog.syslog(syslog.LOG_ERR, '%s => %s Could not be Created. Reason= %s' % (sysPath, fullPath, e))
 
+
 def handlePath(sysPath, symPath):
     if os.environ.get('ACTION', 'add') == 'add':
         addLink(sysPath, symPath)
     else:
         pass
-        #try:
+        # try:
         #    os.unlink('/dev/%s' % symPath)
         #    log.write('%s => %s Removed\n' % (portName, symPath))
-        #except Exception as e:
+        # except Exception as e:
         #    log.write('%s => %s Could not be Removed. Reason= %s\n' % (portName, symPath, e))
 
 
 if __name__ == '__main__':
     if os.environ.get('ACTION', None) == 'remove':
-        #find a way to determine the symlink and remove the dead one
+        # find a way to determine the symlink and remove the dead one
         syslog.syslog('MiniMaestro removed!!')
         exit()
     if len(sys.argv) > 1:
@@ -88,8 +91,8 @@ if __name__ == '__main__':
     else:
         portName = os.environ.get('DEVNAME', None)
     syslog.syslog('Started: %s' % portName)
-    #log.write('EnvVars: \n')
-    #log.writelines(['    %s: %s\n' % (k, v) for (k, v) in os.environ.iteritems()])
+    # log.write('EnvVars: \n')
+    # log.writelines(['    %s: %s\n' % (k, v) for (k, v) in os.environ.iteritems()])
     if portName:
         port = getPort()
         if port == TTLFLAG:

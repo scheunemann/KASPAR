@@ -2,13 +2,14 @@
 
 define(function(require) {
 	var angular = require('angular');
-	var models = require('./../models');
-	var interactionModels = require('interaction/models');
-	var userModels = require('user/models');
+	var models = require('teacher/models');
+	var interactionModels = require('interactions/models');
+	var userModels = require('users/models');
 	var GameService = require('./GameService'); 
 	var InteractionService = require('./InteractionService'); 
 	var ObjectiveService = require('./ObjectiveService'); 
 	var TagService = require('./TagService'); 
+	var NoteService = require('./NoteService');
 	var UserService = require('./UserService'); 
 
 	var moduleName = 'kasparGUI.teacher.dataProvider';
@@ -23,6 +24,7 @@ define(function(require) {
 		.service('interactionService', InteractionService)
 		.service('objectiveService', ObjectiveService)
 		.service('tagService', TagService)
+		.service('noteService', NoteService)
 		.service('userService', UserService);
 
 	return moduleName;

@@ -1,5 +1,4 @@
 require.config({
-	baseUrl : "/",
 	paths : {
 		underscore : 'bower_components/underscore/underscore-min',
 		angular : 'bower_components/angular/angular.min',

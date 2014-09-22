@@ -1,4 +1,38 @@
 from setuptools import setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
+from subprocess import call
+import platform
+
+if platform.system() == 'Linux':
+    dataFiles = [('/etc/init.d', ['systemConfigs/etc/init.d/kasparweb', ]),
+                  ('/etc/rsyslog.d', ['systemConfigs/etc/rsyslog.d/kaspar_log.conf', ]),
+                  ('/udev/rules.d', ['systemConfigs/udev/rules.d/98-keyPad.rules', 'systemConfigs/udev/rules.d/98-serial.rules', 'systemConfigs/udev/rules.d/99-input.rules'])]
+else:
+    dataFiles = []
+
+
+def serviceUpdater(command_subclass):
+    orig_run = command_subclass.run
+
+    def modified_run(self):
+        orig_run(self)
+        if platform.system() == 'Linux':
+            call(['update-rd.d', 'kasparweb', 'defaults'])
+
+    command_subclass.run = modified_run
+    return command_subclass
+
+
+@serviceUpdater
+class CustomDevelopCommand(develop):
+    pass
+
+
+@serviceUpdater
+class CustomInstallCommand(install):
+    pass
+
 
 def readme():
     with open('README.md') as f:
@@ -30,8 +64,6 @@ setup(name='kaspar_gui',
           'robotActionController'
       ],
       dependancy_links=['git+ssh://git@github.com/uh-nmb/robotActionController'],
-      data_files=[('/etc/init.d', ['systemConfigs/etc/init.d/kasparweb', ]),
-                  ('/etc/rsyslog.d', ['systemConfigs/etc/rsyslog.d/kaspar_log.conf', ]),
-                  ('/udev/rules.d', ['systemConfigs/udev/rules.d/98-keyPad.rules', 'systemConfigs/udev/rules.d/98-serial.rules', 'systemConfigs/udev/rules.d/99-input.rules'])],
+      data_files=dataFiles,
       include_package_data=True,
       zip_safe=False)

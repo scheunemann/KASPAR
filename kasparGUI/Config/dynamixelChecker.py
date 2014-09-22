@@ -5,8 +5,8 @@ import time
 
 
 def getConnection(port='/dev/bodyServos'):
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
-    from Robot.ServoInterface.dynamixel import ServoController
+    #     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
+    from robotActionController.Robot.ServoInterface.dynamixel import ServoController
     try:
         return ServoController(port, 57600)
     except Exception as e:

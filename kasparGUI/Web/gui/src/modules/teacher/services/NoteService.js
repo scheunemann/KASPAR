@@ -6,11 +6,15 @@ define(function(require) {
 
 	var NoteService = function(Note, $modal) {
 		this.addNote = function(title, notes) {
-			var note = _.findWhere(notes, {title: title});
+			var note = _.findWhere(notes, {
+				title : title
+			});
 			if (!note) {
-				note = new Note({title: title});
+				note = new Note({
+					title : title
+				});
 			}
-			
+
 			var modalInstance = $modal.open({
 				template : template,
 				controller : function($scope, $modalInstance, note) {
@@ -36,7 +40,7 @@ define(function(require) {
 			});
 
 			modalInstance.result.then(function(note) {
-				if(notes.indexOf(note) < 0)
+				if (notes.indexOf(note) <= 0) {
 					notes.push(note);
 				}
 			}, function(reason) {
@@ -45,5 +49,5 @@ define(function(require) {
 		};
 	};
 
-	return ['Note', '$modal', NoteService];
+	return [ 'Note', '$modal', NoteService ];
 });

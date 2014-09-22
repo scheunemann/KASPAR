@@ -1,12 +1,12 @@
 import os
 import uuid
-from Data.Model import StandardMixin, Base, User
+from robotActionController.Data.Model import StandardMixin, Base, User
 from sqlalchemy import Column, String, Integer, ForeignKey, Table, DateTime, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import func
 
 
-__all__ = ['Setting', 'Interaction', 'Operator']
+__all__ = ['Game', 'Interaction', 'InteractionGame', 'Note', 'Objective', 'Operator', 'Photo', 'Setting', 'Tag']
 
 operatorUsers_table = Table('operatorUsers', Base.metadata,
     Column('Operator_id', Integer, ForeignKey('Operator.id')),
@@ -31,6 +31,11 @@ gameTriggers_table = Table('gameTriggers', Base.metadata,
 gameObjectives_table = Table('gameObjectives', Base.metadata,
     Column('Game_id', Integer, ForeignKey('Game.id')),
     Column('Objective_id', Integer, ForeignKey('Objective.id'))
+)
+
+gameTags_table = Table('gameTags', Base.metadata,
+    Column('Game_id', Integer, ForeignKey('Game.id')),
+    Column('Tag_id', Integer, ForeignKey('Tag.id'))
 )
 
 
@@ -197,7 +202,8 @@ class Game(StandardMixin, Base):
     author_id = Column(Integer, ForeignKey('Operator.id'))
     photo = relationship("Photo")
     photo_id = Column(Integer, ForeignKey('Photo.id'))
-    objectives = relationship("Objectives", secondary=gameObjectives_table)
+    objectives = relationship("Objective", secondary=gameObjectives_table)
+    tags = relationship("Tag", secondary=gameTags_table)
     triggers = relationship("Trigger", secondary=gameTriggers_table)
 
     def __init__(self, name=None, desc=None, photo=None, triggers=[], **kwargs):
@@ -209,6 +215,17 @@ class Game(StandardMixin, Base):
 
 
 class Objective(StandardMixin, Base):
+
+    name = Column(String(50))
+    desc = Column(String(500))
+
+    def __init__(self, name=None, desc=None, **kwargs):
+        super(Objective, self).__init__(**kwargs)
+        self.name = name
+        self.desc = desc
+
+
+class Tag(StandardMixin, Base):
 
     name = Column(String(50))
     desc = Column(String(500))

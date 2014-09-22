@@ -6,8 +6,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 
 from Config.config import dbConfig
 from Model import Base, User, Operator, Interaction, Setting
-from Data.storage import StorageFactory
-from Robot import importer
+from robotActionController.Data.storage import StorageFactory
+from robotActionController.Robot import importer
+import legacyImporter
+from xml.etree import ElementTree as et
 StorageFactory.config['engine'].update(dbConfig)
 
 
@@ -21,7 +23,15 @@ def _flushData():
 
 def _loadConfigs(configDir):
     print "Loading configs..."
-    (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+    robotConfig = os.path.join(configDir, 'robot.xml')
+    if not os.path.isfile(robotConfig):
+        return None
+    configType = et.parse(robotConfig).getroot().tag
+    if configType == 'KASPAR':
+        (robots, actions, triggers) = legacyImporter.loadDirectory({}, {}, [], configDir)
+    else:
+        (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+
     robot = robots[0].name
     print "Saving data"
 

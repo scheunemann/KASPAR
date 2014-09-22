@@ -3,23 +3,33 @@ import platform
 import sys
 import os
 
-webConfig = {
-        'server.socket_host': '0.0.0.0',
-        'server.socket_port': 80,
-        'server.thread_pool': 10,
-        'server.thread_pool_max': -1,
-        'JSON_AS_ASCII': False,
-        'DEBUG': True,
-        'loglevel': logging.WARNING,
-#         'environment': 'production'
-}
 
 if platform.system() == 'Linux':
+    webConfig = {
+            'server.socket_host': '0.0.0.0',
+            'server.socket_port': 80,
+            'server.thread_pool': 10,
+            'server.thread_pool_max': -1,
+            'JSON_AS_ASCII': False,
+            'DEBUG': True,
+            'loglevel': logging.WARNING,
+    #         'environment': 'production'
+    }
     dbConfig = {
          'type': 'Sqlite',
          'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
     }
 else:
+    webConfig = {
+            'server.socket_host': '0.0.0.0',
+            'server.socket_port': 1065,
+            'server.thread_pool': 10,
+            'server.thread_pool_max': -1,
+            'JSON_AS_ASCII': False,
+            'DEBUG': True,
+            'loglevel': logging.WARNING,
+    #         'environment': 'production'
+    }
     dbConfig = {
            'type': 'MySql',
            'host': 'localhost',

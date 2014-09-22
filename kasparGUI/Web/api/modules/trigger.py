@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, redirect
-from Robot.legacy import TriggerImporter
-import Model
+from kasparGUI.legacyImporter import TriggerImporter
+import kasparGUI.Model as Model
+from kasparGUI.Web.api.database import db_session
 
 models = [
           {'class': Model.Trigger, 'kwargs': {'include_columns': ['id', 'name', 'type']}},

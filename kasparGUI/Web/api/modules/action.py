@@ -1,10 +1,10 @@
 import datetime
 from flask import Blueprint, jsonify, abort, request, redirect
-from Robot.legacy import ActionImporter
-from ActionRunner import ActionRunner
-from Robot import Robot
-from Web.api.database import db_session
-import Model
+from kasparGUI.legacyImporter import ActionImporter
+from robotActionController.ActionRunner import ActionRunner
+from robotActionController.Robot import Robot
+from kasparGUI.Web.api.database import db_session
+import kasparGUI.Model as Model
 
 
 models = [

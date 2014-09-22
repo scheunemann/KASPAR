@@ -4,7 +4,7 @@ define(function(require) {
 	var angular = require('angular');
 	var template = require('text!./objectives.tpl.html');
 
-	var Objectives = function(objectiveService, tagService, gameService) {
+	var Objectives = function(objectiveService, gameService) {
 		return {
 			template : template,
 			restrict : 'E',
@@ -15,7 +15,6 @@ define(function(require) {
 			},
 			controller : function($scope) {
 				$scope.objectives = objectiveService.getObjectives();
-				$scope.tags = tagService.getTags();
 				$scope.items = [];
 				$scope.items.push.apply($scope.items, gameService.getGames());
 
@@ -82,5 +81,5 @@ define(function(require) {
 		};
 	};
 
-	return [ 'objectiveService', 'tagService', 'gameService', Objectives ];
+	return [ 'objectiveService', 'gameService', Objectives ];
 });

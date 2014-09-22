@@ -1,4 +1,4 @@
-from Data.Model import StandardMixin, Base
+from robotActionController.Data.Model import StandardMixin, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Table, func
 from sqlalchemy.orm import relationship
 

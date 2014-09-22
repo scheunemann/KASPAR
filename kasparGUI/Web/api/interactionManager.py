@@ -1,8 +1,8 @@
-import Model
-from Data.storage import StorageFactory
-from Processor import TriggerProcessor
-from ActionRunner import ActionRunner
-from Robot import Robot
+import kasparGUI.Model as Model
+from robotActionController.Data.storage import StorageFactory
+from robotActionController.Processor import TriggerProcessor
+from robotActionController.ActionRunner import ActionRunner
+from robotActionController.Robot import Robot
 from threading import RLock
 import datetime
 

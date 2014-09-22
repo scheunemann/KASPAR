@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import os
+# import os
 import sys
 import logging
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 
-from Config.config import webConfig, configureLogging
+from kasparGUI.Config.config import webConfig, configureLogging
 from werkzeug.wsgi import DispatcherMiddleware
 # from werkzeug.serving import run_simple
 # We use websockets inside the robotinterface, this doesn't work with the werkzeug server
@@ -13,7 +13,6 @@ from werkzeug.serving import run_with_reloader
 from socketio.server import SocketIOServer
 siteRoot = None
 server = None
-import sys
 
 
 def configureSite():
@@ -38,8 +37,8 @@ def configureSite():
     if platform.system() == 'Windows' and len(sys.argv) > 1 and sys.argv[1].lower() == 'debug':
         # Disable connection for debugging without a robot
         logging.getLogger(__name__).warning('Site running in DEBUG mode, no commands will be sent to the robot')
-        from Robot.ServoInterface import ServoInterface
-        from Processor.SensorInterface import SensorInterface
+        from robotActionController.Robot.ServoInterface import ServoInterface
+        from robotActionController.Processor.SensorInterface import SensorInterface
         ServoInterface.disconnected = True
         SensorInterface.disconnected = True
 

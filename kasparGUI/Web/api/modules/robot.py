@@ -3,10 +3,10 @@ import time
 import logging
 from flask import Blueprint, jsonify, abort, request
 from utils import DateUtil
-from Robot.ServoInterface import ServoInterface
-from Processor.SensorInterface import SensorInterface
-from Web.api.database import db_session
-import Model
+from robotActionController.Robot.ServoInterface import ServoInterface
+from robotActionController.Processor.SensorInterface import SensorInterface
+from kasparGUI.Web.api.database import db_session
+import kasparGUI.Model as Model
 
 models = [
           {

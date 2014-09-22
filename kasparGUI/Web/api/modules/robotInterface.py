@@ -1,13 +1,13 @@
-import time 
-from threading import RLock 
-import datetime 
-from flask import request 
-from flask.json import dumps 
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room 
-from Web.api.database import db_session 
-import Model 
-from Robot.ServoInterface import ServoInterface 
-from Processor.SensorInterface import SensorInterface 
+import time
+from threading import RLock
+import datetime
+from flask import request
+from flask.json import dumps
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room
+from kasparGUI.Web.api.database import db_session
+import kasparGUI.Model as Model
+from robotActionController.Robot.ServoInterface import ServoInterface
+from robotActionController.Processor.SensorInterface import SensorInterface
 from threading import Thread
 
 socketio = SocketIO()
@@ -24,9 +24,10 @@ import logging
 log = logging.getLogger(__name__)
 loop = None
 
+
 def init_app(app):
     socketio.init_app(app)
-    #app.before_first_request_funcs.append(_start_loop)
+    # app.before_first_request_funcs.append(_start_loop)
     if loop == None:
         _start_loop()
 
@@ -52,7 +53,7 @@ def receiveMessage(data):
         robot = _getRobot(robotId)
         for servoData in data.get('servos', []):
             servoId = servoData.get('id', None)
-            #if servoId == None and servoData.get('jointName', None):
+            # if servoId == None and servoData.get('jointName', None):
             #    matches = [k for k, v in robot['servos'].iteritems() if v['jointName'] == servoData['jointName']]
             #    if not matches:
             #        # TODO: Error handling
@@ -61,7 +62,7 @@ def receiveMessage(data):
             #    else:
             #        servoId = matches[0]
 
-            #servo = robot['servos'].get(servoId, None)
+            # servo = robot['servos'].get(servoId, None)
             servos = filter(lambda s: s['jointName'] == servoData.get('jointName'), robot['servos'].values())
             if servos:
                 servo = servos[0]
@@ -74,7 +75,7 @@ def receiveMessage(data):
             else:
                 try:
                     interface = servo['interface']
-                    log.debug("Setting position using : %s" % (servoData, ))
+                    log.debug("Setting position using : %s" % (servoData,))
                     position = servoData.get('position', None)
                     poseable = servoData.get('poseable', None)
                     if position != None and interface.lastPosition != float(position):
@@ -108,7 +109,7 @@ def configure(data):
 def _start_loop():
     log = logging.getLogger(__name__)
     log.debug("Spawning robot state polling loop")
-    loop = Thread(target=_loop_internal, args=(log, ))
+    loop = Thread(target=_loop_internal, args=(log,))
     loop.daemon = True
     loop.start()
 

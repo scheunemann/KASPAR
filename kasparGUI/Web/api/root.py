@@ -3,7 +3,7 @@ from flask.ext.restless.views import get_relations
 from flask import Flask
 from modules import blueprints, models, init_app as moduleInit
 from database import db_session
-from Model import Base
+from kasparGUI.Model import Base
 
 root = Flask(__name__, static_folder=None)
 manager = APIManager()

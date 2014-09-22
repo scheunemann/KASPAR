@@ -40,5 +40,5 @@ define(function(require) {
 		};
 	};
 
-	return ['interactionService', 'noteSercice', '$modal', 'Note', EndInteraction];
+	return ['interactionService', 'noteService', '$modal', 'Note', EndInteraction];
 });
