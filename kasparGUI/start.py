@@ -1,9 +1,6 @@
 #!/usr/bin/env python
-# import os
 import sys
 import logging
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 
 from kasparGUI.Config.config import webConfig, configureLogging
 from werkzeug.wsgi import DispatcherMiddleware
@@ -17,12 +14,12 @@ server = None
 
 def configureSite():
     # Configure logging
-    configureLogging(webConfig.get('logleve', logging.DEBUG))
+    configureLogging(webConfig.get('loglevel', logging.DEBUG))
 
-    from gui.root import _subDir as guiDir, root as guiRoot
+    from Web.gui.root import _subDir as guiDir, root as guiRoot
     logging.getLogger(__name__).info('Gui using source from %s directory' % guiDir)
 
-    from api.root import root as apiRoot
+    from Web.api.root import root as apiRoot
     global siteRoot
     siteRoot = DispatcherMiddleware(guiRoot, {'/api': apiRoot})
 

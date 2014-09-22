@@ -37,6 +37,10 @@ else:
            'pass': 'kaspar',
            'db': 'kaspar',
     }
+    dbConfig = {
+         'type': 'Sqlite',
+         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
+    }
 
 
 class ConsoleHandler(logging.StreamHandler):
@@ -81,5 +85,4 @@ def configureLogging(level=logging.NOTSET):
         except:
             pass
     root_logger.info('Logging Configured')
-
 

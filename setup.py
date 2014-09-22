@@ -4,13 +4,26 @@ from setuptools.command.install import install
 from subprocess import call
 import platform
 
+
+install_requires=[
+    'python-dateutil',
+    'gevent',
+    'flask',
+    'werkzeug',
+    'flask-restless',
+    'flask-sqlalchemy',
+    'flask-socketio',
+    'sqlalchemy',
+    'robotActionController'
+],
+
 if platform.system() == 'Linux':
     dataFiles = [('/etc/init.d', ['systemConfigs/etc/init.d/kasparweb', ]),
                   ('/etc/rsyslog.d', ['systemConfigs/etc/rsyslog.d/kaspar_log.conf', ]),
                   ('/udev/rules.d', ['systemConfigs/udev/rules.d/98-keyPad.rules', 'systemConfigs/udev/rules.d/98-serial.rules', 'systemConfigs/udev/rules.d/99-input.rules'])]
 else:
+    install_requires = install_requires + ('MySQL-python')
     dataFiles = []
-
 
 def serviceUpdater(command_subclass):
     orig_run = command_subclass.run
@@ -52,17 +65,7 @@ setup(name='kaspar_gui',
       author_email='n.burke@natbur.com',
       license='MIT',
       packages=['kasparGUI'],
-      install_requires=[
-          'python-dateutil',
-          'gevent',
-          'flask',
-          'werkzeug',
-          'flask-restless',
-          'flask-sqlalchemy',
-          'flask-socketio',
-          'sqlalchemy',
-          'robotActionController'
-      ],
+      install_requires=install_requires,
       dependancy_links=['git+ssh://git@github.com/uh-nmb/robotActionController'],
       data_files=dataFiles,
       include_package_data=True,
