@@ -1,94 +1,120 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
-	var _ = require('underscore');
+        var angular = require('angular');
+        var _ = require('underscore');
 
-	var InteractionService = function($q, Interaction, InteractionGame) {
-		this.getInteractions = function() {
-			return Interaction.query();
-		}
+        var InteractionService = function($q, Interaction, InteractionGame) {
+            this.getInteractions = function() {
+                return Interaction.query();
+            }
 
-		var getInteractionGameObjectives = function(game) {
-			var gamePromise = $q.defer();
-			game.$getProperty('game').$promise.then(function(game) {
-				gamePromise.resolve(game.objectives);
-			});
+            var getInteractionGameObjectives = function(game) {
+                if(!game) {
+                    return null;
+                }
 
-			return gamePromise.promise;
-		};
+                var gamePromise = $q.defer();
+                game.$getProperty('game').$promise.then(function(game) {
+                        gamePromise.resolve(game.objectives);
+                    });
 
-		this.getObjectives = function(interaction) {
-			var promises = [];
-			if (interaction && interaction.games) {
-				for (var i = 0; i < interaction.games.length; i++) {
-					var interactionGame = interaction.games[i];
-					promises.push(getInteractionGameObjecives(interactionGame));
-				}
-			}
+                return gamePromise.promise;
+            };
 
-			var deferred = $q.all(promises);
-			deferred.then(function(objectives) {
-				return _.uniq(objectives, false, _.iteratee('name'));
-			});
+            this.getObjectives = function(interaction) {
+                if (!interaction || !interaction.games) {
+                    return null;
+                }
 
-			return deferred;
-		};
+                var promises = [];
+                for (var i = 0; i < interaction.games.length; i++) {
+                    var interactionGame = interaction.games[i];
+                    promises.push(getInteractionGameObjecives(interactionGame));
+                }
 
-		var activeGame = null;
-		var activeInteraction = null;
-		var activeInteractionGame = null;
-		this.getCurrentGame = function() {
-			return activeGame;
-		};
+                var deferred = $q.all(promises);
+                deferred.then(function(objectives) {
+                        //deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
+                    });
 
-		this.startNewGame = function(game) {
-			var newGame = new InteractionGame({
-				game_id : $scope.game.id,
-				interaction_id : $scope.interaction.id,
-				startTime : Date.now(),
-			});
+                return deferred;
+            };
 
-			activeGame.$save(function() {
-				activeInteraction.games.push(activeGame);
-				activeGame = newGame;
-			});
-		};
+            var activeGame = null;
+            var activeInteraction = null;
+            var activeInteractionGame = null;
+            this.getCurrentGame = function() {
+                return activeGame;
+            };
 
-		this.endGame = function(game) {
-			activeInteractionGame.endTime = Date.now();
-			activeInteractionGame.$save(function() {
-				activeGame = null;
-			});
-		}
+            this.startNewGame = function(game) {
+                if(!game){
+                    console.log("NULL Value received for game");
+                    return;
+                }
 
-		this.startNewInteraction = function(operator, user) {
-			this.endInteraction();
+                var newGame = new InteractionGame({
+                        game_id: $scope.game.id,
+                        interaction_id: $scope.interaction.id,
+                        startTime: Date.now(),
+                    });
 
-			var newInteraction = new Interaction({
-				user_id : user.id,
-				operator_id : operator.id,
-				startTime : Date.now(),
-			});
+                activeGame.$save(function() {
+                        activeInteraction.games.push(activeGame);
+                        activeGame = newGame;
+                    });
+            };
 
-			newInteraction.$save();
-			activeInteraction = newInteraction;
-			return newInteraction;
-		}
+            this.endGame = function(game) {
+                if(!game){
+                    console.log("NULL Value received for game");
+                    return;
+                }
 
-		this.endInteraction = function(interaction) {
-			if (interaction !== activeInteraction) {
-				console.log("WARNING: Attempted to end wrong interaction!");
-			}
+                activeInteractionGame.endTime = Date.now();
+                activeInteractionGame.$save(function() {
+                        activeGame = null;
+                    });
+            }
 
-			if (interaction && !interaction.endTime) {
-				interaction.endTime = Date.now();
-				interaction.$save();
-			}
+            this.startNewInteraction = function(operator, user) {
+                if(!operator || !user){
+                    console.log("NULL Value received for operator or user");
+                    return;
+                }
 
-			activeInteraction = null;
-		}
-	};
+                this.endInteraction();
 
-	return [ '$q', 'Interaction', 'InteractionGame', InteractionService ];
-});
+                var newInteraction = new Interaction({
+                        user_id: user.id,
+                        operator_id: operator.id,
+                        startTime: Date.now(),
+                    });
+
+                newInteraction.$save();
+                activeInteraction = newInteraction;
+                return newInteraction;
+            }
+
+            this.endInteraction = function(interaction) {
+                if (!interaction) {
+                    console.log("WARNING: Null interaction received");
+                    return;
+                }
+
+                if (interaction !== activeInteraction) {
+                    console.log("WARNING: Attempted to end wrong interaction!");
+                }
+
+                if (interaction && !interaction.endTime) {
+                    interaction.endTime = Date.now();
+                    interaction.$save();
+                }
+
+                activeInteraction = null;
+            }
+        };
+
+        return ['$q', 'Interaction', 'InteractionGame', InteractionService];
+    });

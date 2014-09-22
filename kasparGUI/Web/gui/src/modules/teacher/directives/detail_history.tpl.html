@@ -13,7 +13,7 @@
 			</div>
 			<div>
 				<span class="title">PlayTime:</span>
-				{{Math.floor((interaction.endTime - interaction.startTime) / (60000 / 60))}}h, {{Math.round((interaction.endTime - interaction.startTime) / (60000 % 60))}}m
+				{{getPlayTime(interaction.startTime, interaction.endTime)}}
 			</div>
 		</div>
 	</div>
@@ -74,9 +74,9 @@
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<div class="center">
 				<img
-					class="rating {{colors[Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)]}}"
-					ng-src="/img/teacher/rating/{{images[Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)]}}"
-					alt="{{Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2)}}" />
+					class="rating {{colors[getAverageScore(interaction)]}}"
+					ng-src="/img/teacher/rating/{{images[getAverageScore(interaction)]}}"
+					alt="{{getAverageScore(interaction)}}" />
 			</div>
 			<div class="center">
 				<span class="title">Average Score</span>

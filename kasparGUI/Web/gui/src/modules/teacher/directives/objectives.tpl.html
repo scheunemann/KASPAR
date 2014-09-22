@@ -6,15 +6,17 @@
 			</div>
 		</div>
 		<div class="row">
-			<div
-				class="col-lg-2 col-md-3 col-sm-3 col-xs-6"
-				ng-repeat="objective in objectives">
-				<container-objective
-					ng-click="toggleObjective(objective)"
-					class="clickable"
-					ng-class="{highlight:objective.key==selectedObjective.key}"
-					objective='objective'></container-objective>
-			</div>
+            <div
+                class="col-lg-2 col-md-3 col-sm-3 col-xs-6"
+                ng-repeat="objective in objectives"
+                ng-if="objectives">
+                <container-objective
+                    ng-click="toggleObjective(objective)"
+                    class="clickable"
+                    ng-class="{highlight:objective.key==selectedObjective.key}"
+                    objective='objective'></container-objective>
+                <span ng-if="!objectives"></span>
+            </div>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -30,6 +32,7 @@
 					class="clickable"
 					ng-class="{highlight:tag.key==selectedTag.key}"
 					tag='tag'></container-tag>
+					<span ng-if="!tags">None</span>
 			</div>
 		</div>
 		<div class="row">

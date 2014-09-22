@@ -81,9 +81,12 @@ require.config({
 	}, {
 		name : 'robots',
 		location : 'modules/robots',
-	}, {
-		name : 'triggers',
-		location : 'modules/triggers',
+    }, {
+        name : 'triggers',
+        location : 'modules/triggers',
+    }, {
+        name : 'games',
+        location : 'modules/games',
 	}, {
 		name : 'users',
 		location : 'modules/users'

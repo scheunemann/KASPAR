@@ -27,7 +27,8 @@ def _loadConfigs(configDir):
     if configType == 'KASPAR':
         (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, {}, [], [], configDir)
     else:
-        (robots, actions, triggers, games) = importer.loadDirectory({}, {}, [], configDir)
+        (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+        games = []
 
     robot = robots[0].name
     print "Saving data"
