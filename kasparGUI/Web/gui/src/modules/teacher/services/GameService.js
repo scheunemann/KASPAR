@@ -19,12 +19,12 @@ define(function(require) {
                     promises.push(game.$getProperty('objectives').$promise);
                 }
 
-                var deferred = $q.all(promises);
-                deferred.then(function(objectives) {
-                        deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
+                var deferred = $q.defer();
+                $q.all(promises).then(function(objectives) {
+                        //deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
                     });
 
-                return deferred;
+                return deferred.promise;
             };
         };
 

@@ -33,12 +33,12 @@ define(function(require) {
                     promises.push(getInteractionGameObjecives(interactionGame));
                 }
 
-                var deferred = $q.all(promises);
-                deferred.then(function(objectives) {
+                var deferred = $q.defer();
+                $q.all(promises).then(function(objectives) {
                         //deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
                     });
 
-                return deferred;
+                return deferred.promise;
             };
 
             var activeGame = null;

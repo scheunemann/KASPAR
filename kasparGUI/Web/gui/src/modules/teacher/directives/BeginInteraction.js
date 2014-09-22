@@ -30,11 +30,11 @@ define(function(require) {
 				};
 
 				$scope.start = function() {
-					var newInteraction = interactionService.startNewInteraction(teacher, user);
+					var newInteraction = interactionService.startNewInteraction($scope.teacher, $scope.user);
 					if (newInteraction) {
 						$scope.interaction = newInteraction;
 					}
-					
+
 					if ($scope.onFinished) {
 						$scope.onFinished();
 					}
