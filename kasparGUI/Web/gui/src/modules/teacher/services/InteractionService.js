@@ -10,7 +10,7 @@ define(function(require) {
             }
 
             var getInteractionGameObjectives = function(game) {
-                if(!game) {
+                if (!game) {
                     return null;
                 }
 
@@ -22,9 +22,19 @@ define(function(require) {
                 return gamePromise.promise;
             };
 
+
+            //cache objectives to prevent infdig errors
+            var lastGames = [];
+            var lastObjectives = [];
+
             this.getObjectives = function(interaction) {
                 if (!interaction || !interaction.games) {
                     return null;
+                }
+
+                if (_.difference(lastGames, interaction.games).length == 0 && _.difference(interaction.games, lastGames).length == 0) {
+                    // games haven't changed, return same array as previous
+                    return lastObjectives;
                 }
 
                 var promises = [];
@@ -38,6 +48,8 @@ define(function(require) {
                         //deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
                     });
 
+                lastObjectives = deferred.promise;
+                lastGames = interaction.games
                 return deferred.promise;
             };
 
@@ -49,7 +61,7 @@ define(function(require) {
             };
 
             this.startNewGame = function(game) {
-                if(!game){
+                if (!game) {
                     console.log("NULL Value received for game");
                     return;
                 }
@@ -67,7 +79,7 @@ define(function(require) {
             };
 
             this.endGame = function(game) {
-                if(!game){
+                if (!game) {
                     console.log("NULL Value received for game");
                     return;
                 }
@@ -79,7 +91,7 @@ define(function(require) {
             }
 
             this.startNewInteraction = function(operator, user) {
-                if(!operator || !user){
+                if (!operator || !user) {
                     console.log("NULL Value received for operator or user");
                     return;
                 }
