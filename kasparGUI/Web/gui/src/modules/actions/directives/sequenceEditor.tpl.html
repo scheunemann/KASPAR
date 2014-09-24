@@ -7,6 +7,16 @@
 		required
 		name="name"
 		ng-model="sequence.name">
+        <span class="input-group-btn">
+            <button
+                class="btn btn-default"
+                type="button"
+                ng-click="save()">Save</button>
+            <button
+                class="btn btn-default"
+                type="button"
+                ng-click="saveAs()">Save As</button>
+        </span>
 </div>
 <div class="row">
 	<div class="col-lg-5">
@@ -103,17 +113,5 @@
 		<small>{{language['action.sequence.help.short']}}</small>
 	</div>
 	<div class="col-sm-4">
-		<div class="input-group">
-			<span class="input-group-btn">
-				<button
-					class="btn btn-default"
-					type="button"
-					ng-click="save()">Save</button>
-				<button
-					class="btn btn-default"
-					type="button"
-					ng-click="saveAs()">Save As</button>
-			</span>
-		</div>
 	</div>
 </div>
