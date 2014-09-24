@@ -5,8 +5,8 @@ define(function(require) {
 	require('robots/models');
 
 	var RobotController = function($scope, Robot, language) {
-//		$scope.language = language.getText();
-//		$scope.robots = Robot.query();
+		$scope.language = language.getText();
+		$scope.robots = Robot.query();
 //
 //		$scope.connected = false;
 //
