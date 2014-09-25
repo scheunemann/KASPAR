@@ -6,5 +6,5 @@
 
 #External program handles symlinking, as it needs to ping the servo first
 #SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", GROUP="input", MODE="0660", RUN+="/home/pi/git/KASPAR/Config/portNamer.py"
-SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", GROUP="input", MODE="0660", ENV{ID_USB_INTERFACE_NUM}=="00", RUN+="/home/pi/git/KASPAR/Config/portNamer.py"
+SUBSYSTEMS=="usb", ENV{ID_VENDOR_ID}=="1ffb", ENV{ID_MODEL_ID}=="008b", GROUP="input", MODE="0660", ENV{ID_USB_INTERFACE_NUM}=="00", RUN+="/home/pi/git/KASPAR/kasparGUI/Config/portNamer.py"
 
