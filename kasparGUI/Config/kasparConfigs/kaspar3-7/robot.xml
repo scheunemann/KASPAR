@@ -92,8 +92,8 @@
             <NAME>TORSO_YAW</NAME>
             <DISPLAY>
                 <NAME>Body Turn</NAME>
-                <MIN>Left</MIN>
-                <MAX>Right</MAX>
+                <MIN>Right</MIN>
+                <MAX>Left</MAX>
             </DISPLAY>
             <CENTER>512</CENTER>
             <LIMITS>
@@ -111,8 +111,8 @@
             <CENTER>512</CENTER>
             <DISPLAY>
                 <NAME>Head Turn</NAME>
-                <MIN>Left</MIN>
-                <MAX>Right</MAX>
+                <MIN>Right</MIN>
+                <MAX>Left</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -164,14 +164,14 @@
             <NAME>MOUTH_OPEN</NAME>
             <DISPLAY>
                 <NAME>Mouth Open</NAME>
-                <MIN>Close</MIN>
-                <MAX>Open</MAX>
+                <MIN>Open</MIN>
+                <MAX>Close</MAX>
             </DISPLAY>
             <CENTER>512</CENTER>
             <LIMITS>
                 <POS>
                     <MIN>-8</MIN>
-                    <MAX>26</MAX>
+                    <MAX>35</MAX>
                 </POS>
             </LIMITS>
             <DEFAULT>
@@ -225,8 +225,8 @@
             <CENTER>512</CENTER>
             <DISPLAY>
                 <NAME>Arm Open</NAME>
-                <MIN>Open</MIN>
-                <MAX>Close</MAX>
+                <MIN>Close</MIN>
+                <MAX>Open</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -279,8 +279,8 @@
             <CENTER>512</CENTER>
             <DISPLAY>
                 <NAME>Wrist Roll</NAME>
-                <MIN>Out</MIN>
-                <MAX>In</MAX>
+                <MIN>Down</MIN>
+                <MAX>Up</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -315,8 +315,8 @@
             <CENTER>512</CENTER>
             <DISPLAY>
                 <NAME>Arm Open</NAME>
-                <MIN>Close</MIN>
-                <MAX>Open</MAX>
+                <MIN>Open</MIN>
+                <MAX>Close</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -369,8 +369,8 @@
             <CENTER>512</CENTER>
             <DISPLAY>
                 <NAME>Wrist Roll</NAME>
-                <MIN>In</MIN>
-                <MAX>Out</MAX>
+                <MIN>Up</MIN>
+                <MAX>Down</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -445,9 +445,9 @@
         <SERVO type="VIRTUAL">
             <NAME>EYES_PITCH</NAME>
             <DISPLAY>
-                <NAME>Eyes Up</NAME>
-                <MIN>Down</MIN>
-                <MAX>Up</MAX>
+                <NAME>Eyes UD</NAME>
+                <MIN>Up</MIN>
+                <MAX>Down</MAX>
             </DISPLAY>
             <LIMITS>
                 <POS>
@@ -465,7 +465,7 @@
         <SERVO type="VIRTUAL">
             <NAME>EYES_YAW</NAME>
             <DISPLAY>
-                <NAME>Eyes Left</NAME>
+                <NAME>Eyes LR</NAME>
                 <MIN>Left</MIN>
                 <MAX>Right</MAX>
             </DISPLAY>
