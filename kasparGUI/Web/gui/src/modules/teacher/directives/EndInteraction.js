@@ -23,7 +23,7 @@ define(function(require) {
 				}
 
 				$scope.finish = function() {
-					if ($scope.interaction.score.child.experience && $scope.interaction.score.child.engagement && $scope.interaction.score.parent.experience) {
+					if ($scope.interaction.childExperience && $scope.interaction.childEngagement && $scope.interaction.parentExperience) {
 						interactionService.endInteraction($scope.interaction);
 						if ($scope.onFinished) {
 							$scope.onFinished();

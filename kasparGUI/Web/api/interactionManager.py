@@ -12,9 +12,13 @@ class InteractionManager(object):
         self._interactionId = interactionId
         ds = StorageFactory.getNewSession()
         interaction = ds.query(Model.Interaction).get(interactionId)
-        robot = Robot.getRunnableRobot(interaction.robot)
-        triggers = self._getTriggers(ds, robot, interaction.user)
-        self._triggerProcessor = TriggerProcessor(triggers, robot, datetime.timedelta(seconds=0.01))
+        if interaction.robot:
+            robot = Robot.getRunnableRobot(interaction.robot)
+        else:
+            robot = ds.query(Model.Robot).join(Model.Setting, Model.Robot.name==Model.Setting.value).filter(Model.Setting.key=='robot').first()
+            interaction.robot = robot
+            ds.commit()
+        self._triggerProcessor = TriggerProcessor([], robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
         self._actionRunner = ActionRunner(robot)
         self._handles = {}
@@ -25,6 +29,9 @@ class InteractionManager(object):
 
     def stop(self):
         self._triggerProcessor.stop()
+
+    def setTriggers(self, triggers):
+        self._triggerProcessor.setTriggers(triggers)
 
     @property
     def activeActions(self):

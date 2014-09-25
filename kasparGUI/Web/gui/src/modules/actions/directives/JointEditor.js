@@ -96,13 +96,13 @@ define(function(require) {
 					}
 					if (!$scope.jointPosition.id) {
 						$scope.jointPosition.isNew = true;
-						console.log("New Servo!")
-						console.log($scope.jointPosition);
+						//console.log("New Servo!")
+						//console.log($scope.jointPosition);
 					}
 					if (!$scope.servoInt) {
 						console.log("No interface for " + $scope.jointPosition);
 					}
-					if (force || $scope.advanced) {
+					if ($scope.advanced && (!$scope.jointPosition.isNew || $scope.formCtrl.$dirty)) {
 						$scope.writeJoint($scope.jointPosition, $scope.servoInt);
 					}
 				};
@@ -120,21 +120,17 @@ define(function(require) {
 
 				$scope.$watch('servoInt.$actual.position', function(newValue, oldValue) {
 					if (!$scope.advanced && $scope.jointPosition) {
-						console.log('updating joint position from servo' + $scope.servo.jointName + ' to ' + newValue);
+						//console.log('updating joint position from servo' + $scope.servo.jointName + ' to ' + newValue);
 						$scope.jointPosition.position = newValue;
 					}
 				});
 
 				$scope.$watch('jointPosition', function(newValue, oldValue) {
-					if(newValue.id) {
-						writeToServo();
-					}
+					writeToServo();
 				});
 
 				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
-					if($scope.advanced) {
-					   writeToServo(true);
-					}
+ 				    writeToServo();
 				});
 
 				$scope.$watch('poseable', function(poseable) {
