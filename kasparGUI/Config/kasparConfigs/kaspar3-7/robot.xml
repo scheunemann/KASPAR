@@ -230,7 +230,7 @@
             </DISPLAY>
             <LIMITS>
                 <POS>
-                    <MIN>-110</MIN>
+                    <MIN>-135</MIN>
                     <MAX>45</MAX>
                 </POS>
             </LIMITS>
@@ -321,7 +321,7 @@
             <LIMITS>
                 <POS>
                     <MIN>-45</MIN>
-                    <MAX>110</MAX>
+                    <MAX>135</MAX>
                 </POS>
             </LIMITS>
             <EXTRADATA>
