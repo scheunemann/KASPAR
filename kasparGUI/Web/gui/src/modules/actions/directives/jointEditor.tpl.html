@@ -46,7 +46,7 @@
 						ng-model="poseable"
 						btn-checkbox>{{language['action.pose.joint.poseable']}}</button>
 				</span>
-				<span class="input-group-addon">{{(poseable ? servoInt.actual.position : jointPosition.position)}}&deg;</span>
+				<span class="input-group-addon">{{(poseable ? servoInt.$actual.position : jointPosition.position)}}&deg;</span>
 			</div>
 			<div class="input-group noselect">
 				<span class="input-group-addon inputLabel-sm">{{language['action.pose.joint.speed']}}</span>
