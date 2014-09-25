@@ -130,9 +130,11 @@ define(function(require) {
 						writeToServo();
 					}
 				});
-				
+
 				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
-					writeToServo(true);
+					if($scope.advanced) {
+					   writeToServo(true);
+					}
 				});
 
 				$scope.$watch('poseable', function(poseable) {
