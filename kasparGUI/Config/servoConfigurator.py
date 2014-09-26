@@ -22,7 +22,7 @@ if isWin:
 else:
     herkulex = HerkuleX('/dev/bodyServos', 115200)
 
-VOLTAGE_INPUT = 12
+VOLTAGE_INPUT = 8
 VOLTAGE_VARIANCE = 2
 POSITION_VARIANCE = 10
 POSITION_PADDING = 20
