@@ -170,7 +170,7 @@
             <CENTER>512</CENTER>
             <LIMITS>
                 <POS>
-                    <MIN>-8</MIN>
+                    <MIN>-14</MIN>
                     <MAX>35</MAX>
                 </POS>
             </LIMITS>
@@ -191,8 +191,8 @@
             </DISPLAY>
             <LIMITS>
                 <POS>
-                    <MIN>-60</MIN>
-                    <MAX>0</MAX>
+                    <MIN>-35</MIN>
+                    <MAX>13</MAX>
                 </POS>
             </LIMITS>
             <DEFAULT>
@@ -404,7 +404,7 @@
         </SERVO>
         <SERVO id="7" type="HS82MG">
             <NAME>EYEBALL_R_PITCH</NAME>
-            <CENTER>1560</CENTER>
+            <CENTER>1520</CENTER>
             <LIMITS>
                 <POS>
                     <MIN>-36</MIN>
@@ -414,7 +414,7 @@
         </SERVO>
         <SERVO id="9" type="HS82MG">
             <NAME>EYE_L_YAW</NAME>
-            <CENTER>1420</CENTER>
+            <CENTER>1490</CENTER>
             <LIMITS>
                 <POS>
                     <MIN>-36</MIN>
