@@ -567,14 +567,6 @@
     </SERVOGROUPS>
     <SENSORLIST>
         <ROBOT>
-            <SENSOR datatype="continuous" id="1" type="HERKULEX_LiFe_BATTERY">
-                <NAME>BATTERY</NAME>
-                <LIMITS>
-                    <MAX>100</MAX>
-                    <MIN>0</MIN>
-                    <PRECISION>0</PRECISION>
-                </LIMITS>
-            </SENSOR>
             <SENSOR datatype="continuous" id="0" type="FSR_MiniMaestro">
                 <NAME>FSR_ARM_R</NAME>
                 <LIMITS>
