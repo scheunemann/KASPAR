@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
@@ -22,14 +21,23 @@ if isWin:
 else:
     herkulex = HerkuleX('/dev/bodyServos', 115200)
 
-VOLTAGE_INPUT = 8
+MAX_VOLTAGE = 8
+VOLTAGE_INPUT = 7.4
 VOLTAGE_VARIANCE = 2
 POSITION_VARIANCE = 10
 POSITION_PADDING = 20
 
 DEAD_ZONE = 1
-SATURATOR_OFFSET = 48
-SATURATOR_SLOPE = 256
+#SATURATOR_OFFSET = 48
+#SATURATOR_SLOPE = 512
+
+MIN_STRENGTH = 1
+MAX_STRENGTH = 10
+MIN_OFFSET = 0x01  # 0x00 = disabled
+MAX_OFFSET = 0x5F  # 0xFE = hardware max
+MIN_SLOPE = 0x4FF  # 0x00 = disabled
+MAX_SLOPE = 0xFFF  # 0x7FFF = hardware max
+
 
 DELAY = 0.125
 
@@ -169,7 +177,7 @@ def reconfigure(servos):
 def doConfigure(servoId, servo, servoInt):
     herkulex.clearError(servoId)
     time.sleep(DELAY)
-    setMaxVoltage(servoId, 14)
+    setMaxVoltage(servoId, MAX_VOLTAGE)
     minPos = int(servoInt._scaleToRealPos(servoInt._minPos)) - POSITION_PADDING
     minPos = max(minPos, 0)
     maxPos = int(servoInt._scaleToRealPos(servoInt._maxPos)) + POSITION_PADDING
@@ -186,16 +194,16 @@ def doConfigure(servoId, servo, servoInt):
 
 
 def setCompliance(sid, servo):
-    MIN_STRENGTH = 1
-    MAX_STRENGTH = 10
-    MIN_OFFSET = 0x01  # 0x00 = disabled
-    MAX_OFFSET = 0x5F  # 0xFE = hardware max
-    MIN_SLOPE = 0x4FF  # 0x00 = disabled
-    MAX_SLOPE = 0x7FF  # 0x7FFF = hardware max
-    strength = float(servo.extraData.get('STRENGTH', 10)) / 10
-    offset = int(MAX_OFFSET * strength)
-    slope = int(((MAX_SLOPE - MIN_SLOPE) * strength) + MIN_SLOPE)
-    print "Setting virtual spring to strength %s%%" % (strength * 100)
+    strength = float(servo.extraData.get('STRENGTH', MAX_STRENGTH)) / MAX_STRENGTH
+    offset = 0x00
+    if strength == 0:
+        offset = 0x00
+        slope = 0x00
+        print "Disabling virtual spring"
+    else:
+        #offset = int(MAX_OFFSET * strength)
+        slope = int(((MAX_SLOPE - MIN_SLOPE) * strength) + MIN_SLOPE)
+        print "Setting virtual spring to strength %s%%" % (strength * 100)
     herkulex.writeRegistryEEP(sid, 0x10, DEAD_ZONE, 1)
     herkulex.writeRegistryEEP(sid, 0x11, offset, 1)
     herkulex.writeRegistryEEP(sid, 0x12, slope, 2)

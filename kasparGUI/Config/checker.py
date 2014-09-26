@@ -41,7 +41,7 @@ def checkTemps(maxTemp=80, outfile=None):
            temps = loop(bodyServos.getTemperature, ids)
            idTemps = zip(ids, temps)
            if overheated:
-               cooled = len(filter(lambda x: x[1] < baseTemp, idTemps))
+               cooled = filter(lambda x: x[1] < baseTemp, idTemps)
                overheat = []
            else:
                cooled = []
@@ -78,4 +78,4 @@ def checkTemps(maxTemp=80, outfile=None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == 'temp':
-        checkTemps(outfile='temperatureCurve.csv')
+        checkTemps(maxTemp=88, outfile='temperatureCurve.csv')

@@ -103,7 +103,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>7</STRENGTH>
+                <STRENGTH>4.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="2" type="HERKULEX">
@@ -178,7 +178,7 @@
                 <SPEED>50</SPEED>
             </DEFAULT>
             <EXTRADATA>
-                <STRENGTH>9</STRENGTH>
+                <STRENGTH>0</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="6" type="HERKULEX">
@@ -199,7 +199,7 @@
                 <SPEED>50</SPEED>
             </DEFAULT>
             <EXTRADATA>
-                <STRENGTH>3</STRENGTH>
+                <STRENGTH>0</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="16" type="HERKULEX">
@@ -217,7 +217,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>7</STRENGTH>
+                <STRENGTH>3.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="17" type="HERKULEX">
@@ -234,8 +234,8 @@
                     <MAX>45</MAX>
                 </POS>
             </LIMITS>
-            <EXTRADATA>
-                <STRENGTH>7</STRENGTH>
+           <EXTRADATA>
+                <STRENGTH>6</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="18" type="HERKULEX">
@@ -253,7 +253,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>6</STRENGTH>
+                <STRENGTH>3.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="19" type="HERKULEX">
@@ -271,7 +271,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>4</STRENGTH>
+                <STRENGTH>2</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="20" type="HERKULEX">
@@ -289,7 +289,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>3</STRENGTH>
+                <STRENGTH>1.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="32" type="HERKULEX">
@@ -307,7 +307,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>7</STRENGTH>
+                <STRENGTH>3.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="33" type="HERKULEX">
@@ -325,7 +325,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>7</STRENGTH>
+                <STRENGTH>6</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="34" type="HERKULEX">
@@ -343,7 +343,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>6</STRENGTH>
+                <STRENGTH>3.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="35" type="HERKULEX">
@@ -361,7 +361,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>4</STRENGTH>
+                <STRENGTH>2</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="36" type="HERKULEX">
@@ -379,7 +379,7 @@
                 </POS>
             </LIMITS>
             <EXTRADATA>
-                <STRENGTH>3</STRENGTH>
+                <STRENGTH>1.5</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="8" type="HS82MG">
