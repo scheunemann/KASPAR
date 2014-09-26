@@ -1,20 +1,10 @@
 <div class="modal-header">Note Editor</div>
-<div class="modal-body"></div>
-<input
-	type="text"
-	placeholder="Title"
-	ng-model="note.title"
-	ng-disabled="!editableTitle" />
-<input
-	type="text"
-	multiple="multiple"
-	ng-model="note.text" />
+<div class="modal-body">
+    <input type="text" placeholder="Title" ng-model="note.title" ng-disabled="!editableTitle">
+    <hr/>
+    <textarea class="noteInput" ng-model="note.text"></textarea>
+</div>
 <div class="modal-footer">
-	<button
-		class="btn btn-primary"
-		ng-click="ok()"
-		ng-disabled="!title">OK</button>
-	<button
-		class="btn btn-warning"
-		ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="!note.title">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

@@ -73,13 +73,13 @@
         ng-show="group.rows.length > 0">
         <accordion-heading>
             {{group.name}}
-            <button
-                ng-hide="advanced"
-                type="button"
-                class="btn btn-primary btn-panel check pull-right"
-                ng-model="group.poseable"
-                btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
         </accordion-heading>
+        <button
+            ng-hide="advanced"
+            type="button"
+            class="btn btn-primary btn-default check pull-right"
+            ng-model="group.poseable"
+            btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
         <div
             class="col-lg-4 col-md-6 col-sm-12 col-xs-12 jointEditor"
             ng-repeat="jointPosition in group.rows | orderBy:'jointName'">

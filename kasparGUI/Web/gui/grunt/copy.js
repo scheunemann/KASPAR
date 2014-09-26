@@ -1,10 +1,11 @@
 module.exports = {
-	src : {
-		files : [ {
-			expand : true,
-			cwd: 'src/',
-			src : '**',
-			dest : 'build/',
-		} ],
-	},
-}
+    src: {
+        files: [{
+                expand: true,
+                cwd: 'src/',
+                src: '**',
+                dest: 'build/',
+            }
+        ],
+    },
+};

@@ -1,98 +1,102 @@
 
 <div class="container_history">
-	<div class="row">
-		<container-user user="interaction.user"></container-user>
-		<div class="col-lg-3">
-			<div>
-				<span class="title">Date:</span>
-				{{interaction.startTime | date:'fullDate'}}
-			</div>
-			<div>
-				<span class="title">Time:</span>
-				{{interaction.startTime | date:'mediumTime'}}
-			</div>
-			<div>
-				<span class="title">PlayTime:</span>
-				{{getPlayTime(interaction.startTime, interaction.endTime)}}
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<span class="title">Games Played</span>
-	</div>
-	<div class="row">
-		<container-game
-			ng-repeat="game in interaction.games"
-			user='interaction.user'
-			game='game'></container-game>
-	</div>
-	<div class="row">
-		<span class="title">Objectives Covered:</span>
-	</div>
-	<div class="row">
-		<container-objective
-			ng-repeat="objective in getObjectives()"
-			objective='objective'></container-objective>
-	</div>
-	<div class="row">
-		<span class="title">Selected Rating</span>
-	</div>
-	<div class="row">
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<div class="center">
-				<img
-					class="rating {{colors[interaction.childEngagement-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.childEngagement-1]}}"
-					alt="{{interaction.childEngagement}}" />
-			</div>
-			<div class="center">
-				<span class="title">Child Engagement</span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<div class="center">
-				<img
-					class="rating {{colors[interaction.childExperience-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.childExperience-1]}}"
-					alt="{{interaction.childExperience}}" />
-			</div>
-			<div class="center">
-				<span class="title">Child Experience</span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<div class="center">
-				<img
-					class="rating {{colors[interaction.parentExperience-1]}}"
-					ng-src="/img/teacher/rating/{{images[interaction.parentExperience-1]}}"
-					alt="{{interaction.parentExperience}}" />
-			</div>
-			<div class="center">
-				<span class="title">Parent Experience</span>
-			</div>
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<div class="center">
-				<img
-					class="rating {{colors[getAverageScore(interaction)]}}"
-					ng-src="/img/teacher/rating/{{images[getAverageScore(interaction)]}}"
-					alt="{{getAverageScore(interaction)}}" />
-			</div>
-			<div class="center">
-				<span class="title">Average Score</span>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div
-			ng-repeat="note in interaction.notes"
-			class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-			<container-note note='note'></container-note>
-		</div>
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-			<container-note
-				class="clickable"
-				ng-click="addNote()"></container-note>
-		</div>
-	</div>
+    <div class="row">
+        <container-user user="interaction.user"></container-user>
+        <div class="col-lg-3">
+            <div>
+                <span class="title">Date:</span>
+                {{interaction.startTime | date:'fullDate'}}
+            </div>
+            <div>
+                <span class="title">Time:</span>
+                {{interaction.startTime | date:'mediumTime'}}
+            </div>
+            <div>
+                <span class="title">PlayTime:</span>
+                {{getPlayTime(interaction.startTime, interaction.endTime)}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <span class="title">Games Played</span>
+    </div>
+    <div class="row">
+        <container-game
+            ng-repeat="game in interaction.games"
+            user='interaction.user'
+            game='getGame(game)'></container-game>
+    </div>
+    <div class="row" ng-show="getObjectives(interaction).length">
+        <span class="title">Objectives Covered:</span>
+    </div>
+    <div class="row">
+        <container-objective
+            ng-repeat="objective in getObjectives(interaction)"
+            objective='objective'></container-objective>
+    </div>
+    <div class="row">
+        <span class="title">Selected Rating</span>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+            <div class="center">
+                <img
+                    class="rating {{colors[interaction.childEngagement-1]}}"
+                    ng-src="/img/teacher/rating/{{images[interaction.childEngagement-1]}}"
+                    alt="{{interaction.childEngagement}}" />
+            </div>
+            <div class="center">
+                <span class="title">Child Engagement</span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+            <div class="center">
+                <img
+                    class="rating {{colors[interaction.childExperience-1]}}"
+                    ng-src="/img/teacher/rating/{{images[interaction.childExperience-1]}}"
+                    alt="{{interaction.childExperience}}" />
+            </div>
+            <div class="center">
+                <span class="title">Child Experience</span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+            <div class="center">
+                <img
+                    class="rating {{colors[interaction.parentExperience-1]}}"
+                    ng-src="/img/teacher/rating/{{images[interaction.parentExperience-1]}}"
+                    alt="{{interaction.parentExperience}}" />
+            </div>
+            <div class="center">
+                <span class="title">Parent Experience</span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+            <div class="center">
+                <img
+                    class="rating {{colors[getAverageScore(interaction.childExperience, interaction.childEngagement)]}}"
+                    ng-src="/img/teacher/rating/{{images[getAverageScore(interaction.childExperience, interaction.childEngagement)]}}"
+                    alt="{{getAverageScore(interaction.childExperience, interaction.childEngagement)}}" />
+            </div>
+            <div class="center">
+                <span class="title">Average Score</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="interaction.notes">
+        <span class="title">Notes</span>
+    </div>
+    <div class="row">
+        <div
+            ng-repeat="note in interaction.notes"
+            class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <container-note note='note'></container-note>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <button
+                type="button"
+                class="btn btn-default"
+                ng-click="addNote()">Add Entry</button>
+        </div>
+    </div>
 </div>

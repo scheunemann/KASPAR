@@ -4,7 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var template = require('text!./detail_history.tpl.html');
 
-        var Detail_History = function(interactionService) {
+        var Detail_History = function(interactionService, noteService, gameService) {
             return {
                 template: template,
                 restrict: 'E',
@@ -17,21 +17,53 @@ define(function(require) {
                     $scope.colors = ['bad', 'moderate_bad', 'neutral', 'moderate_good', 'good'];
 
                     $scope.addNote = function() {
-                        noteService.addNote('', $scope.interaction.notes);
-                    }
+                        noteService.addNote('', true, $scope.interaction.notes);
+                    };
 
-                    $scope.getObjectives = function() {
-                        return interactionService.getObjectives($scope.interaction);
+                    $scope.getObjectives = function(interaction) {
+                        return interactionService.getObjectives(interaction);
+                    };
+
+                    $scope.getAverageScore = function() {
+                        if (arguments.length) {
+                            var total = 0;
+                            for(var i = 0; i < arguments.length; i++) {
+                                total += arguments[i];
+                            }
+                            return Math.round((total / arguments.length) - 1);
+                        } else {
+                            return null;
+                        }
+                    };
+
+                    $scope.getGame = function(game) {
+                        if (game) {
+                            return gameService.getGame(game.game_id);
+                        }
                     }
 
                     $scope.getPlayTime = function(startTime, endTime) {
-                        var hours = Math.floor((endTime - startTime) / (60000 / 60));
-                        var minutes = Math.round((endTime - startTime) / (60000 % 60));
-                        return hours + 'h' + minutes + 'm';
-                    }
+                        if (startTime && endTime) {
+                            var ts = new Date(endTime) - new Date(startTime);
+                            var hours = Math.floor(ts / (1000 * 60 * 60));
+                            var rest = ts % (1000 * 60 * 60);
+                            var minutes = Math.floor(rest / (1000 * 60));
+                            rest = rest % (1000 * 60);
+                            var seconds = Math.round(rest / 1000);
+                            if (hours) {
+                                return hours + 'h' + minutes + 'm' + seconds + 's';
+                            } else if (minutes) {
+                                return minutes + 'm' + seconds + 's';
+                            } else {
+                                return seconds + 's';
+                            }
+                        } else {
+                            return 'Err';
+                        }
+                    };
                 }
             };
         };
 
-        return ['interactionService', Detail_History];
+        return ['interactionService', 'noteService', 'gameService', Detail_History];
     });

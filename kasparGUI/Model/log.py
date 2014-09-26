@@ -45,6 +45,7 @@ class InteractionLog(Log):
     id = Column(Integer, ForeignKey('%s.id' % 'Log'), primary_key=True)
     interaction_id = Column(Integer, ForeignKey('Interaction.id'))
     interaction = relationship("Interaction")
+    source = Column(String(50))
 
     __mapper_args__ = {
             'polymorphic_identity': 'interaction',

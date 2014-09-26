@@ -32,9 +32,6 @@ __links = [
                 {
                  'title':'navbar.interaction.label',
                  'links': [
-                            ('navbar.interaction.view', 'interaction.view'),
-                            ('navbar.interaction.begin', 'interaction.begin'),
-                            ('navbar.interaction.manage', 'interaction.manage'),
                           ]},
             ]
 
