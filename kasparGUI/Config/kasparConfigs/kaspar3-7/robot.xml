@@ -178,7 +178,7 @@
                 <SPEED>50</SPEED>
             </DEFAULT>
             <EXTRADATA>
-                <STRENGTH>3</STRENGTH>
+                <STRENGTH>9</STRENGTH>
             </EXTRADATA>
         </SERVO>
         <SERVO id="6" type="HERKULEX">
@@ -434,7 +434,7 @@
         </SERVO>
         <SERVO id="10" type="HS82MG">
             <NAME>EYEBALL_L_PITCH</NAME>
-            <CENTER>1370</CENTER>
+            <CENTER>1470</CENTER>
             <LIMITS>
                 <POS>
                     <MIN>-36</MIN>
