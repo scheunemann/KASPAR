@@ -14,8 +14,8 @@
 </div>
 <div class="row">
 	<div class="col-lg-7 col-md-6 col-sm-4 col-lg-12">
-		<span class="title"> {{teacher.name}}'s Favourite Play Senarios:</span>
-		<div class="row">
+		<span class="title" ng-if="teacher.favourites"> {{teacher.name}}'s Favourite Play Senarios:</span>
+		<div class="row" ng-if="teacher.favourites">
 			<container-game
 				ng-repeat="game in games | filter:teacherGames"
 				ng-click="selectGame(game)"

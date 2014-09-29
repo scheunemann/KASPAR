@@ -1,10 +1,22 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')))
 from xml.etree import ElementTree as et
 
-from robotActionController.Data.Model import Robot, RobotModel, Servo, ServoGroup, ServoModel, \
-    ServoConfig, PoseAction, JointPosition, SensorTrigger, SequenceOrder, ButtonTrigger, ButtonHotkey, SequenceAction, SoundAction
+from kasparGUI.Model import Robot, \
+                            RobotModel, \
+                            Servo, \
+                            ServoGroup, \
+                            ServoModel, \
+                            ServoConfig, \
+                            PoseAction, \
+                            JointPosition, \
+                            GroupAction, \
+                            SequenceOrder, \
+                            ButtonTrigger, \
+                            ButtonHotkey, \
+                            SequenceAction, \
+                            SoundAction, \
+                            Game
 
 
 def _realToScalePos(value, offset, scaleValue):
@@ -107,7 +119,7 @@ class KasparImporter(object):
                     'HEAD_TLT': {'offset': 720, 'modifier': 1},
                     'HEAD_VERT': {'offset': 430, 'modifier': 1},
                     'EYES_LR': {'offset': 350, 'modifier': 1},
-                    'EYES_UD': {'offset': 210, 'modifier': -1},
+                    'EYES_UD': {'offset': 210, 'modifier':-1},
                     'EYELIDS': {'offset': 800, 'modifier': 1},
                     'MOUTH_OPEN': {'offset': 520, 'modifier': 1},
                     'MOUTH_SMILE': {'offset': 520, 'modifier': 1},
@@ -343,7 +355,7 @@ class ActionImporter(object):
                     continue
                 else:
                     action = possibleActions[0]
-            elif len(line) == 1 and soundDir != None:
+            elif i != len(lines) - 1 and len(line) == 1 and soundDir != None:
                 postDelay = 0
                 soundFile = line[0]
                 fullPath = os.path.join(soundDir, soundFile)
@@ -354,8 +366,30 @@ class ActionImporter(object):
                 action = SoundAction(name=os.path.splitext(soundFile)[0])
                 with open(fullPath, 'rb') as f:
                     action.data = f.read()
+            elif i != len(lines) - 1:
+                print >> sys.stderr, "Unknown line: %s" % line
+            else:
+                continue
 
             sequence.actions.append(SequenceOrder(action, forcedLength=postDelay))
+
+        if lines[-1].endswith('.wav'):
+            line = lines[-1].split(',')
+            soundFile = line[0]
+            fullPath = os.path.join(soundDir, soundFile)
+            if not os.path.isdir(soundDir) or not os.path.isfile(fullPath):
+                print >> sys.stderr, "Could not locate sound file %s, skipping adding to sequence" % soundFile
+            else:
+                sound = SoundAction(name=os.path.splitext(soundFile)[0])
+                with open(fullPath, 'rb') as f:
+                    sound.data = f.read()
+
+                group = GroupAction(name=name)
+                group.actions.append(sequence)
+                group.actions.append(sound)
+                sequence.name = sequence.name + '-sequence'
+                sequence = group
+
         return sequence
 
     def getPose(self, legacyData, legacyRobot=None):
@@ -455,7 +489,7 @@ class TriggerImporter(object):
         return triggers.values()
 
 
-def loadDirectory(actions, triggers, robots, subDir, loadActions=True, loadTriggers=True, loadRobots=True):
+def loadDirectory(actions, triggers, games, robots, subDir, loadActions=True, loadTriggers=True, loadRobots=True):
 
     if loadRobots or loadActions:
         k = KasparImporter(subDir)
@@ -497,13 +531,19 @@ def loadDirectory(actions, triggers, robots, subDir, loadActions=True, loadTrigg
             for fileName in filter(lambda f: f.endswith(".skm"), files):
                 f = open(fileName)
                 lines = f.readlines()
-                for trigger in t.getTriggers(lines, actions.values(), triggers.keys()):
-                    if trigger.name in triggers:
-                        print "Trigger named %s already imported, skipping" % trigger.name
-                    else:
-                        triggers[trigger.name] = trigger
+                game = Game()
+                _, name = os.path.split(fileName)
+                game.name = name[:-4]
+                game.triggers = t.getTriggers(lines, actions.values())
+                game.author_id = 1
+                games.append(game)
+#                 for trigger in t.getTriggers(lines, actions.values(), triggers.keys()):
+#                     if trigger.name in triggers:
+#                         print "Trigger named %s already imported, skipping" % trigger.name
+#                     else:
+#                         triggers[trigger.name] = trigger
 
-    return (robots, actions.values(), triggers.values())
+    return (robots, actions.values(), triggers.values(), games)
 
 
 def loadAllConfigs(rootDir, loadActions=True, loadTriggers=True, loadRobots=True):
@@ -511,9 +551,10 @@ def loadAllConfigs(rootDir, loadActions=True, loadTriggers=True, loadRobots=True
 
     loadedActions = {}
     loadedTriggers = {}
+    loadedGames = []
     loadedRobots = []
 
     for subDir in dirs:
-        loadDirectory(loadedActions, loadedTriggers, loadedRobots, subDir, loadActions, loadTriggers)
+        loadDirectory(loadedActions, loadedTriggers, loadedGames, loadedRobots, subDir, loadActions, loadTriggers)
 
-    return (loadedRobots, loadedActions.values(), loadedTriggers.values())
+    return (loadedRobots, loadedActions.values(), loadedTriggers.values(), loadedGames)

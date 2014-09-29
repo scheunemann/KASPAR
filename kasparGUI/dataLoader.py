@@ -1,11 +1,8 @@
 import os
-import datetime
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../robotActionController')))
-
 from Config.config import dbConfig
-from Model import Base, User, Operator, Interaction, Setting
+from kasparGUI.Model import Base, User, Operator, Setting
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Robot import importer
 import legacyImporter
@@ -28,9 +25,10 @@ def _loadConfigs(configDir):
         return None
     configType = et.parse(robotConfig).getroot().tag
     if configType == 'KASPAR':
-        (robots, actions, triggers) = legacyImporter.loadDirectory({}, {}, [], configDir)
+        (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, {}, [], [], configDir)
     else:
         (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+        games = []
 
     robot = robots[0].name
     print "Saving data"
@@ -39,6 +37,7 @@ def _loadConfigs(configDir):
     session.add_all(robots)
     session.add_all(actions)
     session.add_all(triggers)
+    session.add_all(games)
     session.commit()
     session.close()
     print "Done."
@@ -54,43 +53,53 @@ def _setRobot(robotName):
     session.close()
 
 
+def _loadBaseData():
+    session = StorageFactory.getNewSession()
+
+    operators = [
+                    Operator('UH', 'University of Hertfordshire'),
+                 ]
+
+    session.add_all(operators)
+
+    session.commit()
+    session.close()
+
+
 def _loadTestData():
     session = StorageFactory.getNewSession()
 
     operators = [
                     Operator('Operator1', 'Test Operator 1'),
                     Operator('Operator2', 'Test Operator 2'),
+                    Operator('Operator3', 'Test Operator 3'),
+                    Operator('Operator4', 'Test Operator 4'),
                  ]
 
     users = [
-             User('User1', 'Test User 1'),
-             User('User2', 'Test User 2'),
-             User('User3', 'Test User 3'),
-             User('User4', 'Test User 4'),
-             User('User5', 'Test User 5'),
-             User('User6', 'Test User 6'),
-             User('User7', 'Test User 7'),
-             User('User8', 'Test User 8'),
-             User('User9', 'Test User 9'),
-             User('User0', 'Test User 10'),
-             User('User11', 'Test User 11'),
-             User('User12', 'Test User 12'),
-             User('User13', 'Test User 13'),
-             User('User14', 'Test User 14'),
+             User('User1', 'User 1'),
+             User('User2', 'User 2'),
+             User('User3', 'User 3'),
+             User('User4', 'User 4'),
+             User('User5', 'User 5'),
+             User('User6', 'User 6'),
+             User('User7', 'User 7'),
+             User('User8', 'User 8'),
+             User('User9', 'User 9'),
+             User('User0', 'User 10'),
+             User('User11', 'User 11'),
+             User('User12', 'User 12'),
+             User('User13', 'User 13'),
+             User('User14', 'User 14'),
              ]
 
     operators[0].users.extend(users[1:3])
     session.add_all(operators)
     session.add_all(users)
 
-    interaction = Interaction()
-    interaction.startTime = datetime.datetime.utcnow()
-    interaction.endTime = datetime.datetime.utcnow()
-    interaction.operator = operators[0]
-    interaction.user = users[3]
-    session.add(interaction)
     session.commit()
     session.close()
+
 
 
 if __name__ == "__main__":
@@ -100,6 +109,7 @@ if __name__ == "__main__":
         print "Subdir not specified"
 #         exit()
         subDir = 'kaspar-1c'
+        flush = True
     else:
         subDir = sys.argv[1]
 
@@ -119,8 +129,11 @@ if __name__ == "__main__":
         print "Specified subdir does not exist: %s" % subDir
         exit()
     else:
+        print "Flushing: %s, TestData: %s" % (flush, fill)
+
         if flush:
             _flushData()
+            _loadBaseData()
         robot = _loadConfigs(configDir)
         if fill:
             _loadTestData()

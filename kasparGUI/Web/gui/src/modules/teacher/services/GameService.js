@@ -1,30 +1,44 @@
 'use strict';
 
 define(function(require) {
-	var angular = require('angular');
+        var angular = require('angular');
+        var _ = require('underscore');
 
-	var GameService = function($q, Game) {
-		this.getGames = function() {
-			return Game.query();
-		}
+        var GameService = function($q, Game) {
+            this.getGames = function() {
+                return Game.query();
+            }
 
-		this.getObjectives = function(games) {
-			var promises = [];
-			if (games) {
-				for (var i = 0; i < games.length; i++) {
-					var game = games[i];
-					promises.push(game.$getProperty('objectives').$promise);
-				}
-			}
+            //cache objectives to prevent infdig errors
+            var lastObjectives = [];
+            var lastGames = [];
 
-			var deferred = $q.all(promises);
-			deferred.then(function(objectives) {
-				return _.uniq(objectives, false, _.iteratee('name'));
-			});
+            this.getObjectives = function(games) {
+                if(!games) {
+                    return null;
+                }
 
-			return deferred;
-		};
-	};
+                if(_.difference(lastGames, games).length == 0 && _.difference(games, lastGames).length == 0) {
+                    // games haven't changed, return same array as previous
+                    return lastObjectives;
+                }
 
-	return [ '$q', 'Game', GameService ];
-});
+                var promises = [];
+                for (var i = 0; i < games.length; i++) {
+                    var game = games[i];
+                    promises.push(game.$getProperty('objectives').$promise);
+                }
+
+                var deferred = $q.defer();
+                $q.all(promises).then(function(objectives) {
+                        deferred.resolve(_.uniq(objectives, false, _.iteratee('name')));
+                    });
+
+                lastObjectives = deferred.promise;
+                lastGames = games;
+                return deferred.promise;
+            };
+        };
+
+        return ['$q', 'Game', GameService];
+    });

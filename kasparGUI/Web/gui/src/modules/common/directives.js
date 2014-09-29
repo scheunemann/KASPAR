@@ -12,6 +12,7 @@ define(function(require) {
 	var FileModel = require('./directives/FileModel');
 	var Saveable = require('./directives/Saveable');
 	var Slider = require('./directives/Slider');
+	var Dropdown = require('./directives/Dropdown');
 
 	var moduleName = 'kasparGUI.common.directives';
 	var dependancies = [
@@ -19,7 +20,7 @@ define(function(require) {
 						languageServices,
 						filters,
 						];
-	
+
 	var module = angular.module(moduleName, dependancies)
 		.directive('keybinding', KeyBinding)
 		.directive('model', Model)
@@ -27,7 +28,8 @@ define(function(require) {
 		.directive('navbar', Navbar)
 		.directive('notEmpty', NotEmpty)
 		.directive('fileModel', FileModel)
-		.directive('saveable', Saveable);
+		.directive('saveable', Saveable)
+		.directive('dropdown', Dropdown);
 
 	return moduleName;
-});		
+});

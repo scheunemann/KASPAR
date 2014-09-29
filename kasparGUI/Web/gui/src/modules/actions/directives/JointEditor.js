@@ -120,7 +120,7 @@ define(function(require) {
 
 				$scope.$watch('servoInt.$actual.position', function(newValue, oldValue) {
 					if (!$scope.advanced && $scope.jointPosition) {
-						console.log('updating joint position from servo' + $scope.servo.jointName);
+						console.log('updating joint position from servo' + $scope.servo.jointName + ' to ' + newValue);
 						$scope.jointPosition.position = newValue;
 					}
 				});
@@ -130,16 +130,18 @@ define(function(require) {
 						writeToServo();
 					}
 				});
-				
+
 				$scope.$watch('jointPosition.position', function(newValue, oldValue) {
-					writeToServo(true);
+					if($scope.advanced) {
+					   writeToServo(true);
+					}
 				});
 
 				$scope.$watch('poseable', function(poseable) {
 					if ($scope.servoInt) {
-						if(poseable) {
-							$scope.servoInt.position = $scope.servoInt.$actual.position;
-						}
+						//if(poseable) {
+						//	$scope.servoInt.position = $scope.servoInt.$actual.position;
+						//}
 
 						$scope.servoInt.poseable = poseable;
 					}

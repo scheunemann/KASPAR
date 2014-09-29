@@ -12,6 +12,16 @@
 				required
 				saveable
 				ng-model="sound.name">
+            <span class="input-group-btn">
+                <button
+                    class="btn btn-default"
+                    type="button"
+                    ng-click="save()">Save</button>
+                <button
+                    class="btn btn-default"
+                    type="button"
+                    ng-click="saveAs()">Save As</button>
+            </span>
 		</div>
 		<div
 			class="input-group"

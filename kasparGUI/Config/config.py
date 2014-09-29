@@ -12,7 +12,7 @@ if platform.system() == 'Linux':
             'server.thread_pool_max': -1,
             'JSON_AS_ASCII': False,
             'DEBUG': True,
-            'loglevel': logging.WARNING,
+            'loglevel': logging.DEBUG,
     #         'environment': 'production'
     }
     dbConfig = {
@@ -36,6 +36,10 @@ else:
            'user': 'kaspar',
            'pass': 'kaspar',
            'db': 'kaspar',
+    }
+    dbConfig = {
+         'type': 'Sqlite',
+         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
     }
 
 
@@ -62,12 +66,14 @@ def configureLogging(level=logging.NOTSET):
         # No stream handler found, add one
         streamHandler = logging.StreamHandler()
         streamHandler.setLevel(level)
-        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        #formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        formatter = logging.Formatter("%(levelname)s: %(name)s.%(funcName)s: %(message)s")
         streamHandler.setFormatter(formatter)
         root_logger.addHandler(streamHandler)
     if platform.system() == 'Linux':
         from logging.handlers import SysLogHandler as LogHandler
         kwargs = {'facility': LogHandler.LOG_LOCAL6, 'address': '/dev/log'}
+        #kwargs = {'facility': 'kasparweb', 'address': '/dev/log'}
     elif platform.system() == 'Windows':
         from logging.handlers import NTEventLogHandler as LogHandler
         kwargs = {'appname': 'KasparGUI'}
@@ -75,11 +81,10 @@ def configureLogging(level=logging.NOTSET):
         try:
             logHandler = LogHandler(**kwargs)
             logHandler.setLevel(level)
-            formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+            formatter = logging.Formatter("%(levelname)s: %(name)s.%(funcName)s: %(message)s")
             logHandler.setFormatter(formatter)
             root_logger.addHandler(logHandler)
         except:
             pass
     root_logger.info('Logging Configured')
-
 

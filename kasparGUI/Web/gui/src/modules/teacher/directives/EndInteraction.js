@@ -27,14 +27,18 @@ define(function(require) {
 						interactionService.endInteraction($scope.interaction);
 						if ($scope.onFinished) {
 							$scope.onFinished();
-						}							
+						}
 					} else {
 						alert('Please report your experience by clicking on the images');
 					}
 				};
-				
+
 				$scope.addNote = function(title) {
 					noteService.addNote(title, $scope.interaction.notes);
+				}
+
+				$scope.getAverageScore = function(interaction) {
+				    return Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2);
 				}
 			}
 		};

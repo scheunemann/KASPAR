@@ -82,7 +82,7 @@ define(function(require) {
 							var other = _.difference(jointPositions, _.flatten(_.map(groups, function(g) { return g.rows;}), true));
 							if (other) {
 								groups.push({
-									'name' : 'No Group',
+									'name' : 'Other',
 									'rows' : other,
 									'poseable' : false,
 								});
@@ -123,12 +123,12 @@ define(function(require) {
 					});
 
 					console.log(allJoints);
-					
+
 					// Remove any unexpected properties so flask-restless doesn't throw a fit
 					_.each(isNew, function(jp) {
 						delete jp.isNew;
 					});
-					
+
 					$scope.pose.jointPositions.splice.apply($scope.pose.jointPositions, [$scope.pose.jointPositions.length, 0].concat(isNew));
 
 					$scope.pose.jointPositions = _.difference($scope.pose.jointPositions, toRemove);

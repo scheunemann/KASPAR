@@ -2,12 +2,17 @@
 	ng-cloak
 	id="actionsList">
 	<div class="input-group">
-		<span class="input-group-addon inputLabel">{{language['action.label']}}</span>
+	   <span class="input-group-btn">
+	    <dropdown
+	        menu-type="select"
+	        prompt="{{language['action.label']}}"
+            dd-model="type"
+            dd-options="types"></dropdown></span>
 		<select
 			class="selectpicker form-control"
 			ng-model="action"
 			ng-disabled="actions.length == 0"
-			ng-options="action.name group by action.type for action in actions | orderBy:'name'">
+			ng-options="action.name group by action.type for action in actions | orderBy:'name' | filter:typeFilter:strict">
 			<option value="">{{language['action.select.prompt']}}</option>
 		</select>
 		<span class="input-group-btn">
@@ -24,7 +29,7 @@
 	</div>
 	<hr />
 	<div ng-if="action">
-		<div class="input-group">
+		<div class="input-group" ng-show="!action.id">
 			<span class="input-group-addon inputLabel">{{language['action.type.label']}}</span>
 			<select
 				ng-disabled="action.id"

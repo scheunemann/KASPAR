@@ -24,10 +24,10 @@ __links = [
                             ('navbar.action.import', 'action.import'),
                           ]},
                 {
-                 'title':'navbar.trigger.label',
+                 'title':'navbar.game.label',
                  'links': [
-                            ('navbar.trigger.edit', 'trigger.edit'),
-                            ('navbar.trigger.import', 'trigger.import'),
+                            ('navbar.game.edit', 'game.edit'),
+                            ('navbar.game.import', 'game.import'),
                           ]},
                 {
                  'title':'navbar.interaction.label',
