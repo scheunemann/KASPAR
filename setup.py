@@ -63,7 +63,7 @@ setup(name='kaspar_gui',
           'sqlalchemy',
           'robotActionController'
       ],
-      dependancy_links=['git+ssh://git@github.com/uh-nmb/robotActionController'],
+      dependency_links=['git+ssh://git@github.com/uh-nmb/robotActionController'],
       data_files=dataFiles,
       include_package_data=True,
       zip_safe=False)
