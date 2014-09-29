@@ -149,7 +149,7 @@ class InteractionGame(StandardMixin, Base):
     game_id = Column(Integer, ForeignKey("Game.id"))
     game = relationship("Game")
 
-    startTime = Column(DateTime, nullable=False)
+    startTime = Column(DateTime)
     endTime = Column(DateTime)
 
     def __init__(self, game=None, startTime=None, endTime=None, interaction=None, **kwargs):

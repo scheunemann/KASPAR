@@ -25,7 +25,6 @@ define(function(require) {
 					if (interactionService.getCurrentGame()) {
 						alert('Please finish current game first!');
 					} else {
-						interactionService.finishInteraction();
 						if ($scope.onFinished) {
 							$scope.onFinished();
 						}

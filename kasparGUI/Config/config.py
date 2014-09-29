@@ -75,7 +75,8 @@ def configureLogging(level=logging.NOTSET):
         kwargs = {'facility': LogHandler.LOG_LOCAL6, 'address': '/dev/log'}
         #kwargs = {'facility': 'kasparweb', 'address': '/dev/log'}
     elif platform.system() == 'Windows':
-        from logging.handlers import NTEventLogHandler as LogHandler
+        #from logging.handlers import NTEventLogHandler as LogHandler
+        from logging import StreamHandler as LogHandler
         kwargs = {'appname': 'KasparGUI'}
     if not [h for h in root_logger.handlers if isinstance(h, LogHandler)]:
         try:

@@ -4,7 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var _ = require('underscore');
 
-        var InteractionService = function($q, Interaction, InteractionGame) {
+        var InteractionService = function($q, Interaction, InteractionGame, Game) {
             this.getInteractions = function() {
                 return Interaction.query();
             }
@@ -15,9 +15,15 @@ define(function(require) {
                 }
 
                 var gamePromise = $q.defer();
-                game.$getProperty('game').$promise.then(function(game) {
+                if (game.id) {
+                    game.$getProperty('game').$promise.then(function(game) {
+                            gamePromise.resolve(game.objectives);
+                        });
+                } else {
+                    Game.get({id: game.game_id}, function(game) {
                         gamePromise.resolve(game.objectives);
                     });
+                }
 
                 return gamePromise.promise;
             };
@@ -40,7 +46,7 @@ define(function(require) {
                 var promises = [];
                 for (var i = 0; i < interaction.games.length; i++) {
                     var interactionGame = interaction.games[i];
-                    promises.push(getInteractionGameObjecives(interactionGame));
+                    promises.push(getInteractionGameObjectives(interactionGame));
                 }
 
                 var deferred = $q.defer();
@@ -55,7 +61,6 @@ define(function(require) {
 
             var activeGame = null;
             var activeInteraction = null;
-            var activeInteractionGame = null;
             this.getCurrentGame = function() {
                 return activeGame;
             };
@@ -67,27 +72,31 @@ define(function(require) {
                 }
 
                 var newGame = new InteractionGame({
-                        game_id: $scope.game.id,
-                        interaction_id: $scope.interaction.id,
-                        startTime: Date.now(),
+                        game_id: game.id,
+                        interaction_id: activeInteraction.id,
+                        startTime: new Date(),
                     });
 
-                activeGame.$save(function() {
-                        activeInteraction.games.push(activeGame);
-                        activeGame = newGame;
-                    });
+                activeInteraction.games.push(newGame);
+                activeGame = newGame;
+                activeGame.$save();
             };
 
             this.endGame = function(game) {
-                if (!game) {
-                    console.log("NULL Value received for game");
+                if (!activeGame) {
                     return;
                 }
+                
+                if (activeGame.game_id !== game.id) {
+                    console.log("WARNING: Attempted to end wrong game!");
+                }
 
-                activeInteractionGame.endTime = Date.now();
-                activeInteractionGame.$save(function() {
-                        activeGame = null;
-                    });
+                if (!activeGame.endTime) {
+                    activeGame.endTime = new Date();
+                    activeGame.$save();
+                }
+
+                activeGame = null;
             }
 
             this.startNewInteraction = function(operator, user) {
@@ -96,12 +105,15 @@ define(function(require) {
                     return;
                 }
 
-                this.endInteraction();
+                if (activeInteraction) {
+                    this.endInteraction(activeInteraction);
+                }
 
                 var newInteraction = new Interaction({
                         user_id: user.id,
                         operator_id: operator.id,
-                        startTime: Date.now(),
+                        startTime: new Date(),
+                        games: [],
                     });
 
                 newInteraction.$save();
@@ -119,8 +131,8 @@ define(function(require) {
                     console.log("WARNING: Attempted to end wrong interaction!");
                 }
 
-                if (interaction && !interaction.endTime) {
-                    interaction.endTime = Date.now();
+                if (!interaction.endTime) {
+                    interaction.endTime = new Date();
                     interaction.$save();
                 }
 
@@ -128,5 +140,5 @@ define(function(require) {
             }
         };
 
-        return ['$q', 'Interaction', 'InteractionGame', InteractionService];
+        return ['$q', 'Interaction', 'InteractionGame', 'Game', InteractionService];
     });

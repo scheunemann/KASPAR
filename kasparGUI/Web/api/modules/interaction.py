@@ -22,11 +22,26 @@ def __processInteraction(result=None, interactionId=None):
             __interactionManagers[intId] = InteractionManager(intId)
             __interactionManagers[intId].start()
 
+def __processInteractionGame(result=None, gameId=None):
+    gameId = result['id'] if result else gameId
+    intId = result['interaction_id']
+    if intId and gameId:
+        if result and result['endTime']:
+            if intId in __interactionManagers:
+                __interactionManagers[intId].setTriggers([])
+        else:
+            __interactionManagers[intId].setTriggers(db_session.query(Model.Game).get(result['game_id']).triggers)
+            __interactionManagers[intId].setTriggers([])
+
 
 models = [
           {
             'class': Model.Interaction,
             'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteraction, ], 'PUT_SINGLE': [__processInteraction, ]}}
+          },
+          {
+            'class': Model.InteractionGame,
+            'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteractionGame, ], 'PUT_SINGLE': [__processInteractionGame, ]}}
           },
          ]
 

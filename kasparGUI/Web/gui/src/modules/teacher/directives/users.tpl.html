@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<container-user
-			ng-repeat="user in users"
+			ng-repeat="user in users | orderBy:'name'"
 			user='user'
 			class="clickable"
 			ng-click="selectUser(user)"></container-user>
