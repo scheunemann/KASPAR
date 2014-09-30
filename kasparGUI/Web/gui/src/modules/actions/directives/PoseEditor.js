@@ -78,8 +78,29 @@ define(function(require) {
 							var groups = _.map(servoGroups, function(sg) {
 								return processGroup(sg, jointPositions);
 							});
-
-							var other = _.difference(jointPositions, _.flatten(_.map(groups, function(g) { return g.rows;}), true));
+							
+							var other = [];
+							var grouped = _.flatten(_.map(groups, function(g) { return g.rows;}), true);
+							for (var i = 0; i < robot.servos.length; i++) {
+							    var found = false;
+                                for (var j = 0; j < grouped.length; j++) {
+                                    if(robot.servos[i].jointName === grouped[j].jointName) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if(!found) {
+                                    var servo = robot.servos[i];
+                                    other.push(new JointPosition({
+                                        'position' : servo.defaultPosition,
+                                        'speed' : servo.defaultSpeed,
+                                        'jointName' : servo.jointName,
+                                        'pose_id' : $scope.pose.id
+                                    }));
+                                }
+							}
+							
+							//var other = _.difference(jointPositions, _.flatten(_.map(groups, function(g) { return g.rows;}), true));
 							if (other) {
 								groups.push({
 									'name' : 'Other',
