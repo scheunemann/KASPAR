@@ -8,7 +8,7 @@ require.config({
             angularXEditable: 'bower_components/angular-xeditable/dist/js/xeditable.min',
             angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
             angularResource: 'bower_components/angular-resource/angular-resource.min',
-            angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router.min',
+            angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router',
             mousetrap: 'bower_components/mousetrap/mousetrap.min',
             mousetrapPause: 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
             text: 'bower_components/requirejs-text/text',

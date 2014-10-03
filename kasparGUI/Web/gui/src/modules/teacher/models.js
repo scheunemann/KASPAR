@@ -18,6 +18,8 @@ define(function(require) {
             .factory('Game', Game)
             .factory('Tag', Tag)
             .factory('Objective', Objective)
+            .factory('Interaction', Interaction)
+            .factory('InteractionLog', InteractionLog)
             .factory('InteractionGame', InteractionGame);
 
         return moduleName;

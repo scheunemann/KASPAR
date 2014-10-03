@@ -110,6 +110,7 @@ if __name__ == "__main__":
 #         exit()
         subDir = 'kaspar-1c'
         flush = True
+        fill = True
     else:
         subDir = sys.argv[1]
 

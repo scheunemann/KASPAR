@@ -6,12 +6,12 @@ define(function(require) {
         require('actions/models');
         var template = require('text!./actionButtons.tpl.html');
 
-        var ActionButtons = function($q, hotkeyFormatter, language) {
+        var ActionButtons = function(language) {
             return {
                 template: template,
                 restrict: 'E',
                 scope: {
-                    buttons: "=",
+                    triggers: "=",
                     interaction: "=",
                     showHotKeys: "=",
                     keyBind: "=",
@@ -23,5 +23,5 @@ define(function(require) {
             };
         };
 
-        return ['$q', 'hotkeyFormatter', 'language', ActionButtons];
+        return ['language', ActionButtons];
     });

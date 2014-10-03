@@ -5,13 +5,25 @@ define(function(require) {
         var _ = require('underscore');
 
         var GameService = function($q, Game) {
+            var games = Game.query();
+
             this.getGames = function() {
-                return Game.query();
+                return games;
             };
 
             //cache objectives to prevent infdig errors
             var lastObjectives = [];
             var lastGames = [];
+
+            this.getGame = function(gameId) {
+                var game = _.find(games, function(game) {return game.id == gameId;});
+                if (!game) {
+                    game = Game.get({id: gameId});
+                    games.push(game);
+                }
+
+                return game;
+            };
 
             this.getObjectives = function(games) {
                 if (!games) {

@@ -5,11 +5,13 @@ from robotActionController.ActionRunner import ActionRunner
 from robotActionController.Robot import Robot
 from threading import RLock
 import datetime
+import logging
 
 
 class InteractionManager(object):
     def __init__(self, interactionId):
         self._interactionId = interactionId
+        self._logger = logging.getLogger(self.__class__.__name__)
         ds = StorageFactory.getNewSession()
         interaction = ds.query(Model.Interaction).get(interactionId)
         if interaction.robot:
@@ -31,6 +33,7 @@ class InteractionManager(object):
         self._triggerProcessor.stop()
 
     def setTriggers(self, triggers):
+        self._logger.debug("Settings triggers to: %s", triggers)
         self._triggerProcessor.setTriggers(triggers)
 
     @property
@@ -52,6 +55,7 @@ class InteractionManager(object):
         log.data = ''
         for timestamp, msg in handle.output:
             log.data += '%s: %s\n' % (timestamp.isoformat(), msg)
+            self._logger.debug(log.data)
         ds.add(log)
         if iLog:
             iLog.logs.append(log)
@@ -64,11 +68,13 @@ class InteractionManager(object):
         return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, source, triggerActivatedArg):
-        self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, triggerActivatedArg.action)
+        source = 'USER' if triggerActivatedArg.triggerType == 'ButtonTrigger' else 'AUTOMATIC'
+        self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, source, triggerActivatedArg.action)
 
-    def doTrigger(self, triggerId, value, action=None):
+    def doTrigger(self, triggerId, value, source, action=None):
         ds = StorageFactory.getNewSession()
         log = Model.InteractionLog()
+        log.source = source
         log.interaction_id = self._interactionId
         log.trigger_id = triggerId
         log.trigger_value = value

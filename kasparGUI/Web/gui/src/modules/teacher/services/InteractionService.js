@@ -2,12 +2,15 @@
 
 define(function(require) {
         var angular = require('angular');
+        require('teacher/models');
         var _ = require('underscore');
 
-        var InteractionService = function($q, Interaction, InteractionGame, Game) {
+        var InteractionService = function($q, $log, Interaction, InteractionGame, Game) {
+            var interactions = Interaction.query();
+
             this.getInteractions = function() {
-                return Interaction.query();
-            }
+                return interactions;
+            };
 
             var getInteractionGameObjectives = function(game) {
                 if (!game) {
@@ -15,7 +18,7 @@ define(function(require) {
                 }
 
                 var gamePromise = $q.defer();
-                if (game.id) {
+                if (game.id && game.$getProperty) {
                     game.$getProperty('game').$promise.then(function(game) {
                             gamePromise.resolve(game.objectives);
                         });
@@ -40,7 +43,7 @@ define(function(require) {
                     return null;
                 }
 
-                if (_.difference(lastGames, interaction.games).length == 0 && _.difference(interaction.games, lastGames).length == 0) {
+                if (_.difference(lastGames, interaction.games).length === 0 && _.difference(interaction.games, lastGames).length === 0) {
                     // games haven't changed, return same array as previous
                     return lastObjectives;
                 }
@@ -57,7 +60,7 @@ define(function(require) {
                     });
 
                 lastObjectives = deferred.promise;
-                lastGames = interaction.games
+                lastGames = interaction.games;
                 return deferred.promise;
             };
 
@@ -67,9 +70,13 @@ define(function(require) {
                 return activeGame;
             };
 
+            this.getCurrentInteraction = function() {
+                return activeInteraction;
+            };
+
             this.startNewGame = function(game) {
                 if (!game) {
-                    console.log("NULL Value received for game");
+                    $log.info("NULL Value received for game");
                     return;
                 }
 
@@ -90,7 +97,7 @@ define(function(require) {
                 }
 
                 if (activeGame.game_id !== game.id) {
-                    console.log("WARNING: Attempted to end wrong game!");
+                    $log.warn("WARNING: Attempted to end wrong game!");
                 }
 
                 if (!activeGame.endTime) {
@@ -99,11 +106,11 @@ define(function(require) {
                 }
 
                 activeGame = null;
-            }
+            };
 
             this.startNewInteraction = function(operator, user) {
                 if (!operator || !user) {
-                    console.log("NULL Value received for operator or user");
+                    $log.info("NULL Value received for operator or user");
                     return;
                 }
 
@@ -120,17 +127,18 @@ define(function(require) {
 
                 newInteraction.$save();
                 activeInteraction = newInteraction;
+                interactions.push(newInteraction);
                 return newInteraction;
-            }
+            };
 
             this.endInteraction = function(interaction) {
                 if (!interaction) {
-                    console.log("WARNING: Null interaction received");
+                    $log.warn("WARNING: Null interaction received");
                     return;
                 }
 
                 if (interaction !== activeInteraction) {
-                    console.log("WARNING: Attempted to end wrong interaction!");
+                    $log.warn("WARNING: Attempted to end wrong interaction!");
                 }
 
                 if (!interaction.endTime) {
@@ -139,8 +147,8 @@ define(function(require) {
                 }
 
                 activeInteraction = null;
-            }
+            };
         };
 
-        return ['$q', 'Interaction', 'InteractionGame', 'Game', InteractionService];
+        return ['$q', '$log', 'Interaction', 'InteractionGame', 'Game', InteractionService];
     });

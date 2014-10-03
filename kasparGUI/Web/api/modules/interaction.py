@@ -30,8 +30,9 @@ def __processInteractionGame(result=None, gameId=None):
             if intId in __interactionManagers:
                 __interactionManagers[intId].setTriggers([])
         else:
-            __interactionManagers[intId].setTriggers(db_session.query(Model.Game).get(result['game_id']).triggers)
-            __interactionManagers[intId].setTriggers([])
+            if intId in __interactionManagers:
+                __interactionManagers[intId].setTriggers(db_session.query(Model.Game).get(result['game_id']).triggers)
+                __interactionManagers[intId].setTriggers([])
 
 
 models = [
@@ -70,10 +71,10 @@ def __interactionLogGet(interactionId, logId=None, timestamp=None):
 
 @__interactionLog.route('/Interaction/<int:interactionId>/Log', methods=['POST'])
 def __interactionLogPost(interactionId):
-    if 'button_id' in request.json:
+    if 'trigger_id' in request.json:
         triggerId = request.json['button_id']
     else:
-        raise abort(400, "Invalid JSON, missing 'button_id'")
+        raise abort(400, "Invalid JSON, missing 'trigger_id'")
 
     if interactionId not in __interactionManagers:
         interaction = db_session.query(Model.Interaction).get(interactionId)
@@ -86,11 +87,11 @@ def __interactionLogPost(interactionId):
     if not exists:
         raise abort(404, "Invalid trigger id: %s" % triggerId)
 
-    log = __interactionManagers[interactionId].doTrigger(triggerId, True)
+    log = __interactionManagers[interactionId].doTrigger(triggerId, True, request.json.get('source', 'OPERATOR'))
 
     ret = {
            'id': log.id,
-           'button_id': log.trigger_id,
+           'trigger_id': log.trigger_id,
            'interaction_id': log.interaction_id,
            'timestamp': log.timestamp,
            'active': True

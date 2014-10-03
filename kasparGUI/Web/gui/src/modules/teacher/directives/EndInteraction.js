@@ -2,9 +2,10 @@
 
 define(function(require) {
         var angular = require('angular');
+        require('teacher/services/dataProvider');
         var template = require('text!./endInteraction.tpl.html');
 
-        var EndInteraction = function(interactionService, noteService, $modal, Note) {
+        var EndInteraction = function(interactionService, noteService, gameService, $modal, Note) {
             return {
                 template: template,
                 restrict: 'E',
@@ -32,16 +33,18 @@ define(function(require) {
                         }
                     };
 
-                    $scope.addNote = function(title) {
-                        noteService.addNote(title, $scope.interaction.notes);
+                    $scope.getGame = function(game) {
+                        if (game) {
+                            return gameService.getGame(game.game_id);
+                        }
                     };
 
-                    $scope.getAverageScore = function(interaction) {
-                        return Math.round((interaction.childEngagement + interaction.childExperience - 2) / 2);
+                    $scope.addNote = function(title) {
+                        noteService.addNote(title, !title, $scope.interaction.notes);
                     };
                 }
             };
         };
 
-        return ['interactionService', 'noteService', '$modal', 'Note', EndInteraction];
+        return ['interactionService', 'noteService', 'gameService', '$modal', 'Note', EndInteraction];
     });

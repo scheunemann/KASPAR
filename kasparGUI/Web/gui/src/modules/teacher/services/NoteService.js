@@ -6,7 +6,7 @@ define(function(require) {
         var _ = require('underscore');
 
         var NoteService = function(Note, $modal, $log) {
-            this.addNote = function(title, notes) {
+            this.addNote = function(title, editableTitle, notes) {
                 var note = _.findWhere(notes, {
                         title: title
                     });
@@ -18,9 +18,10 @@ define(function(require) {
 
                 var modalInstance = $modal.open({
                         template: template,
-                        controller: function($scope, $modalInstance, note) {
+                        controller: function($scope, $modalInstance, note, editableTitle) {
 
                             $scope.note = note;
+                            $scope.editableTitle = editableTitle;
 
                             $scope.ok = function() {
                                 $modalInstance.close($scope.note);
@@ -32,10 +33,10 @@ define(function(require) {
                         },
                         resolve: {
                             note: function() {
-                                return $scope.selectedNote;
+                                return note;
                             },
                             editableTitle: function() {
-                                return !title;
+                                return editableTitle;
                             }
                         }
                     });

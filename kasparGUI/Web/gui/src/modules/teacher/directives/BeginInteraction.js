@@ -2,6 +2,7 @@
 
 define(function(require) {
         var angular = require('angular');
+        require('teacher/services/dataProvider');
         var template = require('text!./beginInteraction.tpl.html');
 
         var BeginInteraction = function(gameService, interactionService) {
