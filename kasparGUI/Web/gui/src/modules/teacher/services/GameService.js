@@ -7,18 +7,18 @@ define(function(require) {
         var GameService = function($q, Game) {
             this.getGames = function() {
                 return Game.query();
-            }
+            };
 
             //cache objectives to prevent infdig errors
             var lastObjectives = [];
             var lastGames = [];
 
             this.getObjectives = function(games) {
-                if(!games) {
+                if (!games) {
                     return null;
                 }
 
-                if(_.difference(lastGames, games).length == 0 && _.difference(games, lastGames).length == 0) {
+                if (_.difference(lastGames, games).length === 0 && _.difference(games, lastGames).length === 0) {
                     // games haven't changed, return same array as previous
                     return lastObjectives;
                 }

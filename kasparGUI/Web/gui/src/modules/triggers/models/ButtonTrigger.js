@@ -1,11 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var ButtonTrigger = function($rootScope, modelBuilder) {
-		var resource = modelBuilder.getModel('ButtonTrigger');
+        var ButtonTrigger = function($rootScope, modelBuilder) {
+            var resource = modelBuilder.getModel('ButtonTrigger');
 
-		return resource;
-	};
+            return resource;
+        };
 
-	return [ '$rootScope', 'modelBuilder', ButtonTrigger ];
-});
+        return ['$rootScope', 'modelBuilder', ButtonTrigger];
+    });

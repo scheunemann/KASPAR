@@ -2,6 +2,7 @@
 
 define(function(require) {
         var angular = require('angular');
+        var $ = require('jquery');
 
         var Dropdown = function($compile) {
             return {

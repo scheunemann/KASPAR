@@ -20,9 +20,11 @@ define(function(require) {
                             gamePromise.resolve(game.objectives);
                         });
                 } else {
-                    Game.get({id: game.game_id}, function(game) {
-                        gamePromise.resolve(game.objectives);
-                    });
+                    Game.get({
+                            id: game.game_id
+                        }, function(game) {
+                            gamePromise.resolve(game.objectives);
+                        });
                 }
 
                 return gamePromise.promise;
@@ -86,7 +88,7 @@ define(function(require) {
                 if (!activeGame) {
                     return;
                 }
-                
+
                 if (activeGame.game_id !== game.id) {
                     console.log("WARNING: Attempted to end wrong game!");
                 }

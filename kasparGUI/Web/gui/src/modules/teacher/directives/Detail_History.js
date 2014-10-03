@@ -4,7 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var template = require('text!./detail_history.tpl.html');
 
-        var Detail_History = function(interactionService) {
+        var Detail_History = function(interactionService, noteService) {
             return {
                 template: template,
                 restrict: 'E',
@@ -18,20 +18,20 @@ define(function(require) {
 
                     $scope.addNote = function() {
                         noteService.addNote('', $scope.interaction.notes);
-                    }
+                    };
 
                     $scope.getObjectives = function() {
                         return interactionService.getObjectives($scope.interaction);
-                    }
+                    };
 
                     $scope.getPlayTime = function(startTime, endTime) {
                         var hours = Math.floor((endTime - startTime) / (60000 / 60));
                         var minutes = Math.round((endTime - startTime) / (60000 % 60));
                         return hours + 'h' + minutes + 'm';
-                    }
+                    };
                 }
             };
         };
 
-        return ['interactionService', Detail_History];
+        return ['interactionService', 'noteService', Detail_History];
     });

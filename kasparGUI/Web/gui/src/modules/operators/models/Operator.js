@@ -1,11 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var Operator = function(modelBuilder) {
-		var _service = modelBuilder.getModel('Operator');
-		
-		return _service;
-	};
+        var Operator = function(modelBuilder) {
+            var _service = modelBuilder.getModel('Operator');
 
-	return [ 'modelBuilder', Operator ];
-});
+            return _service;
+        };
+
+        return ['modelBuilder', Operator];
+    });

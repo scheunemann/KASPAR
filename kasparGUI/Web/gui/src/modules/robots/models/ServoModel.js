@@ -1,11 +1,11 @@
 'use strict';
 
 define(function(require) {
-	var ServoModel = function(modelBuilder) {
-		var _service = modelBuilder.getModel('ServoModel');
-		
-		return _service;
-	};
+        var ServoModel = function(modelBuilder) {
+            var _service = modelBuilder.getModel('ServoModel');
 
-	return [ 'modelBuilder', ServoModel ];
-});
+            return _service;
+        };
+
+        return ['modelBuilder', ServoModel];
+    });
