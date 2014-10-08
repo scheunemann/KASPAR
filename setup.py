@@ -18,7 +18,7 @@ def serviceUpdater(command_subclass):
     def modified_run(self):
         orig_run(self)
         if platform.system() == 'Linux':
-            call(['update-rd.d', 'kasparweb', 'defaults'])
+            call('systemConfigs/configure.sh')
 
     command_subclass.run = modified_run
     return command_subclass

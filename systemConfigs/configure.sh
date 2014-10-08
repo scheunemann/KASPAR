@@ -16,6 +16,10 @@ echo "Configuring WebUI Service"
 update-rc.d kasparweb enable
 
 echo ""
+echo "Installing bluetooth software"
+apt-get install bluetooth bluez-utils -yq
+
+echo ""
 echo "Installing i2c software"
 apt-get install python-smbus -yq
 apt-get install i2c-tools -yq
