@@ -12,7 +12,7 @@ if platform.system() == 'Linux':
             'server.thread_pool_max': -1,
             'JSON_AS_ASCII': False,
             'DEBUG': True,
-            'loglevel': logging.DEBUG,
+            'loglevel': logging.ERROR,
     #         'environment': 'production'
     }
     dbConfig = {

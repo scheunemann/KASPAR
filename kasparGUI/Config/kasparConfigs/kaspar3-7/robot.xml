@@ -167,11 +167,11 @@
                 <MIN>Open</MIN>
                 <MAX>Close</MAX>
             </DISPLAY>
-            <CENTER>512</CENTER>
+            <CENTER>620</CENTER>
             <LIMITS>
                 <POS>
-                    <MIN>-14</MIN>
-                    <MAX>35</MAX>
+                    <MIN>-11</MIN>
+                    <MAX>11</MAX>
                 </POS>
             </LIMITS>
             <DEFAULT>
