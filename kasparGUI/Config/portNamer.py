@@ -5,6 +5,7 @@ import syslog
 syslog.openlog(facility=syslog.LOG_LOCAL7)
 
 import os
+from collections import Sequence
 
 
 DIFFSVO = 17
@@ -22,8 +23,9 @@ CMDVAL = 0B00
 TTLFLAG = 0B10
 CMDFLAG = 0B00
 
+#TODO: Probably should move this to a file...
 CONFIG = {
-          HEADFLAG | CMDFLAG: 'headServos',
+          HEADFLAG | CMDFLAG: ['headServos', 'headSensors'],
           TRSOFLAG | TTLFLAG: 'bodyServos',
           TRSOFLAG | CMDFLAG: 'bodySensors',
 }
@@ -41,7 +43,6 @@ def getPort():
 
 
 def getLocation(port):
-    sys.path.append('/home/pi/git/robotActionController')
     from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
     try:
         m = minimaestro(port, 115200)
@@ -56,6 +57,11 @@ def getLocation(port):
 
 
 def addLink(sysPath, symPath):
+    if isinstance(symPath, list):
+        print symPath
+        map(lambda x: addLink(sysPath, x), symPath)
+        return
+
     fullPath = '/dev/%s' % symPath
     if os.path.islink(fullPath):
         try:

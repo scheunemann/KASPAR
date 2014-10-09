@@ -29,6 +29,20 @@ define(function(require) {
 					$scope.poseable = value;
 				});
 
+				$scope.$watch('jointForm.$dirty', function(value) {
+					if ($scope.jointPosition) {
+						$scope.jointPosition.$dirty = value;
+					}
+				});
+
+				$scope.$watch('jointPosition.$dirty', function(value) {
+					if (value) {
+						$scope.jointForm.$setDirty();
+					} else {
+						$scope.jointForm.$setPristine();
+					}
+				});
+
 				var checkPositions = function() {
 					if ($scope.jointPosition) {
 						if ($scope.jointPosition.position === undefined || $scope.jointPosition.position === null) {
@@ -94,7 +108,7 @@ define(function(require) {
 					if($scope.jointPosition.isDeleted) {
 						delete $scope.jointPosition.isDeleted;
 					}
-					if (!$scope.jointPosition.id) {
+					if (!$scope.jointPosition.id && $scope.jointForm.$dirty) {
 						$scope.jointPosition.isNew = true;
 						//console.log("New Servo!")
 						//console.log($scope.jointPosition);

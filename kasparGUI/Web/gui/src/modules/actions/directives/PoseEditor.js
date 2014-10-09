@@ -30,8 +30,12 @@ define(function(require) {
 					$scope.advanced = !($scope.connected || false);
 				}
 
-				$scope.$watch('pose.jointPositions', function(jointPositions) {
-					$scope.getGroups(jointPositions, $scope.robot);
+				$scope.$watch('pose.jointPositions', function(newJoints, oldJoints) {
+					var oldIds = _.pluck(oldJoints, 'id');
+					var newIds = _.pluck(newJoints, 'id');
+					if (!_.isEqual(oldIds, newIds)) {
+						$scope.getGroups(newJoints, $scope.robot);
+					}
 				});
 
 				$scope.$watch('robot.servos', function(servos) {
@@ -79,28 +83,19 @@ define(function(require) {
 								return processGroup(sg, jointPositions);
 							});
 							
-							var other = [];
 							var grouped = _.flatten(_.map(groups, function(g) { return g.rows;}), true);
-							for (var i = 0; i < robot.servos.length; i++) {
-							    var found = false;
-                                for (var j = 0; j < grouped.length; j++) {
-                                    if(robot.servos[i].jointName === grouped[j].jointName) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if(!found) {
-                                    var servo = robot.servos[i];
-                                    other.push(new JointPosition({
-                                        'position' : servo.defaultPosition,
-                                        'speed' : servo.defaultSpeed,
-                                        'jointName' : servo.jointName,
-                                        'pose_id' : $scope.pose.id
-                                    }));
-                                }
-							}
-							
-							//var other = _.difference(jointPositions, _.flatten(_.map(groups, function(g) { return g.rows;}), true));
+							var ungrouped = _.difference(jointPositions, grouped);
+							var unassigned = _.difference(_.pluck(robot.servos, 'jointName'),_.pluck(jointPositions, 'jointName'));
+							var servos = _.filter(robot.servos, function(s) { return unassigned.indexOf(s.jointName) >= 0;});
+							var newJoints = _.map(servos, function(s) { 
+									return new JointPosition({
+										'position' : s.defaultPosition,
+										'speed' : s.defaultSpeed,
+										'jointName' : s.jointName,
+										'pose_id' : $scope.pose.id
+									});
+								});
+							var other = newJoints.concat(ungrouped);
 							if (other) {
 								groups.push({
 									'name' : 'Other',
@@ -109,6 +104,12 @@ define(function(require) {
 								});
 							}
 
+							_.each(groups, function(g) {
+									var oldGroup = _.first(_.filter($scope.groups, function(og) { return og.name == g.name; }));
+									if (oldGroup) {
+										g.open = oldGroup.open;
+									}
+								});
 							$scope.groups = groups;
 						});
 					} else {
@@ -143,8 +144,6 @@ define(function(require) {
 						return p.isNew;
 					});
 
-					console.log(allJoints);
-
 					// Remove any unexpected properties so flask-restless doesn't throw a fit
 					_.each(isNew, function(jp) {
 						delete jp.isNew;
@@ -156,6 +155,7 @@ define(function(require) {
 
 					_.each($scope.pose.jointPositions, function(jp) {
 						delete jp.$concreteResolved;
+						delete jp.$dirty;
 					});
 
 					var cr = $scope.pose.$concreteResolved;
@@ -165,7 +165,6 @@ define(function(require) {
 					delete $scope.pose.$resolved;
 					delete $scope.pose.$promise;
 
-                                        console.log($scope.pose);
 					$scope.pose.$save(function() {
 						$scope.pose.$concreteResolved = cr;
 						$scope.pose.$resolved = r;

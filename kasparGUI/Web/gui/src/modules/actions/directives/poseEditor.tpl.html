@@ -70,9 +70,12 @@
 <accordion close-others="false">
     <accordion-group
         ng-repeat="group in groups | orderBy:'name'"
-        ng-show="group.rows.length > 0">
+        ng-show="group.rows.length > 0"
+        is-open="group.open">
         <accordion-heading>
-            {{group.name}}
+            {{group.name}}<i
+        class="pull-right glyphicon"
+        ng-class="{'glyphicon-chevron-down': group.open, 'glyphicon-chevron-right': !group.open}"></i>
         </accordion-heading>
         <button
             ng-hide="advanced"

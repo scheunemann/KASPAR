@@ -80,6 +80,11 @@
                 <SPEED>115200</SPEED>
                 <ONSTATE>&gt;25</ONSTATE>
             </FSR_MiniMaestro>
+            <FSR_MiniMaestro2>
+                <PORT>/dev/headSensors</PORT>
+                <SPEED>115200</SPEED>
+                <ONSTATE>&gt;25</ONSTATE>
+            </FSR_MiniMaestro2>
             <HERKULEX_LiFe_BATTERY>
                 <PORT>/dev/bodyServos</PORT>
                 <SPEED>115200</SPEED>
@@ -647,8 +652,32 @@
                     <PRECISION>0</PRECISION>
                 </LIMITS>
             </SENSOR>
-            <SENSOR datatype="continuous" id="11" type="FSR_MiniMaestro">
-                <NAME>FSR_FOOT_R</NAME>
+            <SENSOR datatype="continuous" id="0" type="FSR_MiniMaestro2">
+                <NAME>FSR_HEAD_NOSE</NAME>
+                <LIMITS>
+                    <MAX>256</MAX>
+                    <MIN>0</MIN>
+                    <PRECISION>0</PRECISION>
+                </LIMITS>
+            </SENSOR>
+            <SENSOR datatype="continuous" id="1" type="FSR_MiniMaestro2">
+                <NAME>FSR_HEAD_RIGHT</NAME>
+                <LIMITS>
+                    <MAX>256</MAX>
+                    <MIN>0</MIN>
+                    <PRECISION>0</PRECISION>
+                </LIMITS>
+            </SENSOR>
+            <SENSOR datatype="continuous" id="2" type="FSR_MiniMaestro2">
+                <NAME>FSR_HEAD_LEFT</NAME>
+                <LIMITS>
+                    <MAX>256</MAX>
+                    <MIN>0</MIN>
+                    <PRECISION>0</PRECISION>
+                </LIMITS>
+            </SENSOR>
+            <SENSOR datatype="continuous" id="3" type="FSR_MiniMaestro2">
+                <NAME>FSR_HEAD_TOP</NAME>
                 <LIMITS>
                     <MAX>256</MAX>
                     <MIN>0</MIN>
