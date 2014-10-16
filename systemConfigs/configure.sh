@@ -25,6 +25,10 @@ apt-get install python-smbus -yq
 apt-get install i2c-tools -yq
 
 echo ""
+echo "Installing audio bindings"
+apt-get install portaudio19-dev -yq
+
+echo ""
 echo "Don't forget to run confgureRTC after rebooting"
 read -p "Press [Enter] to reboot NOW, or CTRL+C to exit"
 

@@ -1,29 +1,33 @@
 <div>
-	<div class="input-group col-lg-12">
-		<span class="input-group-addon inputLabel">{{language['action.label']}}</span>
-		<select
-			class="selectpicker form-control"
-			ng-model="action"
-			ng-options="action.name group by action.type for action in actions | orderBy:'name'"
-			ng-disabled="actions.length == 0">
-			<option value="">{{language['action.select.prompt']}}</option>
-		</select>
-		<span class="input-group-btn">
-			<button
-				class="btn btn-default"
-				type="button"
-				ng-if="!actionTest.active"
-				ng-disabled="!action"
-				ng-click="startAction(action)">{{language['action.test']}}</button>
-			<button
-				class="btn btn-default"
-				type="button"
-				ng-if="actionTest.active"
-				ng-disabled="!action"
-				ng-click="stopAction(action)">{{language['action.stop']}}</button>
-		</span>
-	</div>
-	<div class="col-lg-6"></div>
+        <div class="input-group col-xs-12">
+           <span class="input-group-btn">
+            <dropdown
+                menu-type="select"
+                prompt="{{language['action.label']}}"
+            dd-model="type"
+            dd-options="types"></dropdown></span>
+                <select
+                        class="selectpicker form-control"
+                        ng-model="action"
+                        ng-disabled="actions.length == 0"
+                        ng-options="action.name group by action.type for action in actions | orderBy:'name' | filter:typeFilter:strict">
+                        <option value="">{{language['action.select.prompt']}}</option>
+                </select>
+                <span class="input-group-btn">
+                        <button
+                                class="btn btn-default"
+                                type="button"
+                                ng-if="!actionTest.active"
+                                ng-disabled="!action"
+                                ng-click="startAction(action)">{{language['action.test']}}</button>
+                        <button
+                                class="btn btn-default"
+                                type="button"
+                                ng-if="actionTest.active"
+                                ng-disabled="!action"
+                                ng-click="stopAction(action)">{{language['action.stop']}}</button>
+                </span>
+        </div>
 </div>
 <hr />
 <div
