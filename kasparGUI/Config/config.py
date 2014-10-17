@@ -12,7 +12,7 @@ if platform.system() == 'Linux':
             'server.thread_pool_max': -1,
             'JSON_AS_ASCII': False,
             'DEBUG': True,
-            'loglevel': logging.ERROR,
+            'loglevel': logging.WARNING,
     #         'environment': 'production'
     }
     dbConfig = {
@@ -66,8 +66,8 @@ def configureLogging(level=logging.NOTSET):
         # No stream handler found, add one
         streamHandler = logging.StreamHandler()
         streamHandler.setLevel(level)
-        #formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
-        formatter = logging.Formatter("%(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        formatter = logging.Formatter("%(asctime)s %(levelname)s: %(name)s.%(funcName)s: %(message)s")
+        #formatter = logging.Formatter("%(levelname)s: %(name)s.%(funcName)s: %(message)s")
         streamHandler.setFormatter(formatter)
         root_logger.addHandler(streamHandler)
     if platform.system() == 'Linux':
