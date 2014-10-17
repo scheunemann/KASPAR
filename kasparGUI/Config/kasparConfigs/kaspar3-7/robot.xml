@@ -175,7 +175,7 @@
             <CENTER>620</CENTER>
             <LIMITS>
                 <POS>
-                    <MIN>-11</MIN>
+                    <MIN>-2</MIN>
                     <MAX>11</MAX>
                 </POS>
             </LIMITS>
@@ -196,8 +196,8 @@
             </DISPLAY>
             <LIMITS>
                 <POS>
-                    <MIN>-35</MIN>
-                    <MAX>13</MAX>
+                    <MIN>-30</MIN>
+                    <MAX>5</MAX>
                 </POS>
             </LIMITS>
             <DEFAULT>
