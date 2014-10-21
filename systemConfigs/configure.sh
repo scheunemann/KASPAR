@@ -161,7 +161,7 @@ function loadDatabase {
     printHeader "Loading Data for $1"
     configDir=`echo $1 | awk '{print tolower($0)}'`
     dbFile="../kasparGUI/kaspar.db"
-    dbCommand=". ../kasparGUI/Config/dataLoader.py $configDir flush"
+    dbCommand="python ../kasparGUI/Config/dataLoader.py $configDir flush"
     if [ -f $dbFile ]; then
         echo "Skipping installing database, already configured"
         echo "Run '$dbCommand' to rebuild"
