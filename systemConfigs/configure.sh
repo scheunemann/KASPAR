@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function usage() {
-    echo "Usage: $0 kasparNumber"
-    exit 1
+    echo "Kaspar Configuration Tool"
+    echo "Usage:  sudo $0 [kasparNumber]"
 }
 
 function checkRoot() {
     if [ "$(whoami)" != "root" ]; then
-        echo "Script requires sudo access.  Rerun `sudo ./configure.sh`"
+        echo "Script requires sudo access.  Rerun as `sudo ./configure.sh`"
         exit 1
     fi
     return 0
@@ -170,6 +170,11 @@ function loadDatabase() {
         $dbCommand
     fi
 }
+
+if [ $# -gt 0 ] && [ $1 = '--help' ]; then
+    usage
+    exit 1
+fi
 
 checkRoot
 number=`checkInput $1`
