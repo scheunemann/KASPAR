@@ -184,8 +184,8 @@ printHeader "Configuring $name" 1
 setName $name
 configureWifi $name
 configureWeb
-#configureBluetooth
-#configureRTC
-#configureAudio
-#loadDatabase $name
+configureBluetooth
+configureRTC
+configureAudio
+loadDatabase $name
 #reboot
