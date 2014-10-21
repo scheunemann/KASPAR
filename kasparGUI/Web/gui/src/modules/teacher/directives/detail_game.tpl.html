@@ -1,10 +1,10 @@
 <div class="detail_game">
-    <div>
+    <div class="pull-right">
         <img ng-src="img/teacher/game/{{game.photo_id || 'ability'}}.png" />
     </div>
-    <div class="title">{{game.name}}</div>
-    <div>{{game.desc_long}}</div>
-    <div ng-show="game.objectives && game.objective.length">
+    <div class="title">Name: {{game.name}}</div>
+    <div ng-if="game.desc_long">Desc: {{game.desc_long}}</div>
+    <div ng-if="game.objective.length">
         <span class="title">Objectives:</span>
         <span
             ng-repeat="objective in game.objectives"

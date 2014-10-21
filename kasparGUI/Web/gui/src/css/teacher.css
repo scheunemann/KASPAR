@@ -28,78 +28,86 @@ body {
     background-image: url('/img/teacher/banner_large.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 400px;
-    height: 600px;
+    background-size: 300px;
+    height: 450px;
 }
 
 /*end of design elements */
 .nav-tabs>li>a {
-    border-radius: 4px 4px 0 0;
+    border-radius: 2px 2px 0 0;
     font-variant: small-caps;
     font-weight: bold;
-    padding: 3px 7px;
-    font-size: 1.75em;
+    padding: 2px 4px;
+    font-size: 1.0em;
+    background-color: #edf;
 }
 
 @media ( min-width : 768px) {
     .nav-tabs>li>a {
-        border-radius: 5px 5px 0 0;
-        padding: 8px 12px;
-        font-size: 2.5em;
+        border-radius: 3px 3px 0 0;
+        padding: 4px 6px;
+        font-size: 1.0em;
     }
 }
 
 @media ( min-width : 992px) {
     .nav-tabs>li>a {
-        border-radius: 7px 7px 0 0;
-        padding: 15px 20px;
-        font-size: 3em;
+        border-radius: 4px 4px 0 0;
+        padding: 6px 8px;
+        font-size: 1.5em;
     }
 }
 
 @media ( min-width : 1200px) {
     .nav-tabs>li>a {
-        border-radius: 8px 8px 0 0;
-        padding: 20px 25px;
-        font-size: 4em;
-    }
-}
-
-
-.tab-pane .nav-tabs>li>a {
-    border-radius: 4px 4px 0 0;
-    padding: 2px 4px;
-    font-size: 1.25em;
-}
-
-@media ( min-width : 768px) {
-    .tab-pane .nav-tabs>li>a {
         border-radius: 5px 5px 0 0;
-        padding: 4px 8px;
+        padding: 10px 14px;
         font-size: 2.0em;
     }
 }
 
+.tab-content {
+    border: 1px solid #ddd;
+    border-top-color: transparent;
+    border-radius: 0 0 3px 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tab-pane .nav-tabs>li>a {
+    border-radius: 3px 3px 0 0;
+    padding: 2px 4px;
+    font-size: 1.0em;
+}
+
+@media ( min-width : 768px) {
+    .tab-pane .nav-tabs>li>a {
+        border-radius: 4px 4px 0 0;
+        padding: 3px 6px;
+        font-size: 1.5em;
+    }
+}
+
 @media ( min-width : 992px) {
     .tab-pane .nav-tabs>li>a {
-        border-radius: 7px 7px 0 0;
-        padding: 10px 15px;
-        font-size: 2.5em;
+        border-radius: 5px 5px 0 0;
+        padding: 7px 12px;
+        font-size: 1.75em;
     }
 }
 
 @media ( min-width : 1200px) {
     .tab-pane .nav-tabs>li>a {
-        border-radius: 8px 8px 0 0;
-        padding: 15px 20px;
-        font-size: 2.3em;
+        border-radius: 6px 6px 0 0;
+        padding: 10px 15px;
+        font-size: 1.7em;
     }
 }
 
 .nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus
     {
     color: #85CFC5;
-    background-color: #fff;
+    background-color: #ffb;
 }
 
 .nav>li>a:hover,.nav>li>a:focus,.clickable:hover {
@@ -130,24 +138,33 @@ a {
     border-style: solid;
     border-width: 3px;
     border-radius: 10px;
-    padding: 5px;
+    padding: 3px;
     background-color: inherit;
 }
 
 .container_user,.container_scenario,.container_game {
-    border-color: #000;
+    border-color: #ddd;
     border-style: solid;
-    border-width: 3px;
-    border-radius: 10px;
-    margin-left: 15px;
-    margin-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    border-width: 2px;
+    border-radius: 7px;
+    margin-left: 11px;
+    margin-right: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
     float: left;
     position: relative;
-    padding: 5px;
+    padding: 3px;
     background-color: inherit;
-    width: 175px;
+    width: 131px;
+}
+
+.container_user * img,.container_scenario * img,.container_game * img {
+    width: 100px;
+    height: 100px;
+}
+
+.playCounter {
+    float:right;
 }
 
 .highlight {
@@ -189,24 +206,26 @@ body {
 }
 
 header {
-    height: 65px;
-    margin-bottom: 5px;
+    height: 48px;
+    margin-bottom: 4px;
 }
 
 header .strapline {
     background-image: none;
+    background-size: contain;
 }
 
 header .logo {
     background-image: url('/img/teacher/banner_small.png');
     background-position: center left;
     background-repeat: no-repeat;
-    height: 55px;
+    background-size: contain;
+    height: 41px;
     width: 140px;
 }
 
 footer {
-    height: 52px;
+    height: 39px;
     margin-top: 3px;
 }
 
@@ -215,10 +234,10 @@ footer {
         height: 100%;
     }
     body {
-        padding-top: 65px;
+        padding-top: 41px;
         padding-left: 10px;
         padding-right: 10px;
-        padding-bottom: 55px;
+        padding-bottom: 39px;
         height: 100%;
     }
     footer {
@@ -234,7 +253,7 @@ footer {
         background-image: url('/img/teacher/strapline.png');
         background-position: center right;
         background-repeat: no-repeat;
-        height: 55px;
+        height: 41px;
         width: 505px;
     }
 }

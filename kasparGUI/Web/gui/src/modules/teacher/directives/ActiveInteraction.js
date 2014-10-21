@@ -2,6 +2,7 @@
 
 define(function(require) {
         var angular = require('angular');
+        var _ = require('underscore');
         require('teacher/services/dataProvider');
         var template = require('text!./activeInteraction.tpl.html');
 
@@ -19,6 +20,14 @@ define(function(require) {
                 controller: function($scope) {
                     $scope.changeGame = function(game) {
                         $scope.selectedGame = game;
+                    };
+
+                    $scope.getPlays = function(game, interactionGames) {
+                        if(game && interactionGames) {
+                            return _.filter(interactionGames, function(ig) {return ig.game_id == game.id}).length;
+                        } else {
+                            return 0;
+                        }
                     };
 
                     $scope.endInteraction = function() {

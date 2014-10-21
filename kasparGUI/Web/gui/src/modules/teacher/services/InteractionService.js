@@ -74,6 +74,22 @@ define(function(require) {
                 return activeInteraction;
             };
 
+            this.getPlayCount = function(game) {
+                if (!game) {
+                    $log.info("NULL Value received for game");
+                    return;
+                }
+
+                if (!activeInteraction) {
+                    $log.info("No active interaction");
+                    return;
+                }
+
+                return _.filter(activeInteraction.games, 
+                                function(intGame) {return intGame.game_id == game.id;}
+                               ).length;
+            }
+
             this.startNewGame = function(game) {
                 if (!game) {
                     $log.info("NULL Value received for game");

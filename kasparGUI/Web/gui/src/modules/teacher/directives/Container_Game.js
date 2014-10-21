@@ -12,9 +12,12 @@ define(function(require) {
                     game: "=",
                     userFilter: "=?",
                     short: "=?",
+                    playCounter: "=?",
                 },
                 link: function(scope, element, attrs, controller) {},
-                controller: function($scope) {}
+                controller: function($scope) {
+                    console.log("PlayCounter: " + $scope.playCounter);
+                }
             };
         };
 
