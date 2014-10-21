@@ -1,11 +1,11 @@
 #!/bin/bash
 
-function usage() {
+function usage {
     echo "Kaspar Configuration Tool"
     echo "Usage:  sudo $0 [kasparNumber]"
 }
 
-function checkRoot() {
+function checkRoot {
     if [ "$(whoami)" != "root" ]; then
         echo "Script requires sudo access.  Rerun as `sudo ./configure.sh`"
         exit 1
@@ -13,7 +13,7 @@ function checkRoot() {
     return 0
 }
 
-function checkInput() {
+function checkInput {
     local __number=$1
     re='^[0-9]+$'
     while ! [[ $__number =~ $re ]]; do
@@ -23,7 +23,7 @@ function checkInput() {
     return 0
 }
 
-function printHeader() {
+function printHeader {
     msg=$1
     if [ -z "$2" ]; then
         large=0
@@ -50,7 +50,7 @@ function printHeader() {
     return 0
 }
 
-function setName() {
+function setName {
     printHeader "Setting Hostname"
     echo "Hostname set to: $1"
     hostname $1
@@ -62,7 +62,7 @@ function setName() {
     return 0
 }
 
-function configureWifi() {
+function configureWifi {
     printHeader "Configuring WiFi"
     __ssid=`echo $1 | awk '{print tolower($0)}'`
     echo "Access Point HOST SSID: $__ssid"
@@ -72,7 +72,7 @@ function configureWifi() {
     return 0
 }
 
-function activateService() {
+function activateService {
     printf "Set $1 autostart..."
     cmd="update-rc.d $1 enable"
     error=$(($cmd > /dev/null) 2>&1)
@@ -86,25 +86,25 @@ function activateService() {
     fi
 }
 
-function updateWifiSSID() {
+function updateWifiSSID {
     sed -i "s/ssid=.*/ssid=$1/g" /etc/hostapd/hostapd.conf
     return 0
 }
 
-function configureWeb() {
+function configureWeb {
     printHeader "Configuring WebServices"
     activateService "kasparweb"
     return 0
 }
 
-function configureBluetooth() {
+function configureBluetooth {
     printHeader "Configuring Bluetooth"
     echo "Installing bluetooth software..."
     apt-get install bluetooth bluez-utils -yqq
     return 0
 }
 
-function configureRTC() {
+function configureRTC {
     printHeader "Configuring Real-Time Clock"
     echo "Installing i2c software..."
     apt-get install python-smbus -yqq
@@ -143,21 +143,21 @@ function configureRTC() {
     return 0
 }
 
-function configureAudio() {
+function configureAudio {
     printHeader "Configuring audio subsystem"
     echo "Installing audio bindings..."
     apt-get install portaudio19-dev -yqq
     return 0
 }
 
-function reboot() {
+function reboot {
     printHeader "Press [Enter] to reboot NOW, or CTRL+C to exit"
     read -p
     reboot
     return 0
 }
 
-function loadDatabase() {
+function loadDatabase {
     printHeader "Loading Data for $1"
     configDir=`echo $1 | awk '{print tolower($0)}'`
     dbFile="../kasparGUI/kaspar.db"
