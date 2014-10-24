@@ -29,7 +29,7 @@ define(function(require) {
                     };
 
                     $scope.addUser = function() {
-                        alert('TODO: Add user screen');
+                        userService.addUser(null, $scope.users);
                     };
                 }
             };

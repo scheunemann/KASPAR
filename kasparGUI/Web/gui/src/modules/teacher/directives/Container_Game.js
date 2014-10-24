@@ -16,7 +16,6 @@ define(function(require) {
                 },
                 link: function(scope, element, attrs, controller) {},
                 controller: function($scope) {
-                    console.log("PlayCounter: " + $scope.playCounter);
                 }
             };
         };

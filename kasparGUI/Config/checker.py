@@ -9,6 +9,7 @@ import maestroChecker as m
 bodyServos = hc.getConnection('/dev/bodyServos')
 headServos = m.getConnection('/dev/headServos')
 bodySensors = m.getConnection('/dev/bodySensors')
+headSensors = m.getConnection('/dev/headSensors')
 
 ids = [1, 2, 3, 4, 5, 6, 16, 17, 18, 19, 20, 32, 33, 34, 35, 36]
 
