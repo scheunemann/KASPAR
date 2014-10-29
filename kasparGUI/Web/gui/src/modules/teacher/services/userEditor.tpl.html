@@ -1,0 +1,10 @@
+<div class="modal-header">User Editor</div>
+<div class="modal-body">
+    <input type="text" placeholder="Name" ng-model="user.name" ng-disabled="!editableTitle">
+    <hr/>
+    <textarea class="noteInput" ng-model="note.text"></textarea>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="!note.title">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
