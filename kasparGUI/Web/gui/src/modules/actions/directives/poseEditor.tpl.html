@@ -1,17 +1,17 @@
 <div class="row">
-	<form
-		name="poseForm"
-		model="pose">
-		<div class="col-lg-12">
-			<div class="input-group">
-				<span class="input-group-addon inputLabel">{{language['action.pose.name']}}</span>
-				<input
-					type="text"
-					class="form-control"
-					placeholder="Pose Name"
-					required
-					name="name"
-					ng-model="pose.name">
+    <form
+        name="poseForm"
+        model="pose">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <span class="input-group-addon inputLabel">{{language['action.pose.name']}}</span>
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Pose Name"
+                    required
+                    name="name"
+                    ng-model="pose.name">
                 <span class="input-group-btn">
                     <button
                         class="btn btn-default"
@@ -22,28 +22,28 @@
                         type="button"
                         ng-click="saveAs()">Save As</button>
                 </span>
-			</div>
-			<div class="input-group" ng-show="false">
-				<span class="input-group-addon inputLabel">
-					<span class="hidden-xs">{{language['action.pose.speedModifier']}}</span>
-					<span class="visible-xs">{{language['action.pose.speedModifier.short']}}</span>
-				</span>
-				<div
-					guislider
-					name="speedModifier"
-					floor="1"
-					ceiling="300"
-					ng-model="pose.speedModifier"></div>
-				<span class="input-group-addon">{{pose.speedModifier}}%</span>
-			</div>
-		</div>
-	</form>
+            </div>
+            <div class="input-group" ng-show="false">
+                <span class="input-group-addon inputLabel">
+                    <span class="hidden-xs">{{language['action.pose.speedModifier']}}</span>
+                    <span class="visible-xs">{{language['action.pose.speedModifier.short']}}</span>
+                </span>
+                <div
+                    guislider
+                    name="speedModifier"
+                    floor="1"
+                    ceiling="300"
+                    ng-model="pose.speedModifier"></div>
+                <span class="input-group-addon">{{pose.speedModifier}}%</span>
+            </div>
+        </div>
+    </form>
 </div>
 <robot-interface
-	robot="robot"
-	connected="connected"
-	ng-hide="connected"
-	show-connect="true"></robot-interface>
+    robot="robot"
+    connected="connected"
+    ng-hide="connected"
+    show-connect="true"></robot-interface>
 <div class="row">
     <div class="col-sm-8">&nbsp;</div>
     <div class="col-sm-4">
@@ -51,21 +51,21 @@
     </div>
 </div>
 <div
-	class="input-group"
-	ng-show="connected">
-	<div class="input-group-addon">{{language['action.pose.type.prompt']}}</div>
-	<div class="btn-group">
-		<button
-			type="button"
-			class="btn btn-primary check"
-			ng-model="advanced"
-			btn-radio="false">{{language['action.pose.basic.label']}}</button>
-		<button
-			type="button"
-			class="btn btn-primary check"
-			ng-model="advanced"
-			btn-radio="true">{{language['action.pose.advanced.label']}}</button>
-	</div>
+    class="input-group"
+    ng-show="connected">
+    <div class="input-group-addon">{{language['action.pose.type.prompt']}}</div>
+    <div class="btn-group">
+        <button
+            type="button"
+            class="btn btn-primary check"
+            ng-model="advanced"
+            btn-radio="false">{{language['action.pose.basic.label']}}</button>
+        <button
+            type="button"
+            class="btn btn-primary check"
+            ng-model="advanced"
+            btn-radio="true">{{language['action.pose.advanced.label']}}</button>
+    </div>
 </div>
 <accordion close-others="false">
     <accordion-group
@@ -77,12 +77,14 @@
         class="pull-right glyphicon"
         ng-class="{'glyphicon-chevron-down': group.open, 'glyphicon-chevron-right': !group.open}"></i>
         </accordion-heading>
-        <button
-            ng-hide="advanced"
-            type="button"
-            class="btn btn-primary btn-default check pull-right"
-            ng-model="group.poseable"
-            btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
+        <div class="col-xs-12">
+            <button
+                ng-hide="advanced"
+                type="button"
+                class="btn btn-primary btn-default check pull-right"
+                ng-model="group.poseable"
+                btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
+        </div>
         <div
             class="col-lg-4 col-md-6 col-sm-12 col-xs-12 jointEditor"
             ng-repeat="jointPosition in group.rows | orderBy:'jointName'">
