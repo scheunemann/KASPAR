@@ -74,14 +74,41 @@ function configureWifi {
 
 function activateService {
     printf "Set $1 autostart..."
-    cmd="update-rc.d $1 enable"
-    error=$(($cmd > /dev/null) 2>&1)
+    error=`runCommand "update-rc.d $1 enable"`
     if [ ${#error} -eq 0 ]; then
         printf "done\n"
+    else
+        printf "ERROR: $error\n"
+    fi
+
+    #TODO: service command always returns 0, so success is unknown
+    if (( $(ps -ef | grep -v grep | grep $1 | wc -l) > 0 )); then
+        printf "Restarting service $1..."
+        error=`runCommand "service $1 restart"`
+        if [ ${#error} -eq 0 ]; then
+            printf "done\n"
+        else
+            printf "ERROR: $error\n"
+        fi
+    else
+        printf "Starting service $1..."
+        error=`runCommand "service $1 start"`
+        if [ ${#error} -eq 0 ]; then
+            printf "done\n"
+        else
+            printf "ERROR: $error\n"
+        fi
+    fi
+
+    return 0
+}
+
+function runCommand {
+    __error=$(($1 > /dev/null) 2>&1)
+    if [ ${#__error} -eq 0 ]; then
         return 0
     else
-        printf "ERROR!\n"
-        printf "   $error\n"
+        echo $__error
         return 1
     fi
 }
@@ -99,16 +126,28 @@ function configureWeb {
 
 function configureBluetooth {
     printHeader "Configuring Bluetooth"
-    echo "Installing bluetooth software..."
-    apt-get install bluetooth bluez-utils -yqq
-    return 0
+    printf "Installing bluetooth software..."
+    error=`runCommand apt-get install bluetooth bluez-utils -yqq`
+    if [ ${#error} -eq 0 ]; then
+        printf "done\n"
+        return 0
+    else
+        printf "ERROR: $error\n"
+        return 1
+    fi
 }
 
 function configureRTC {
     printHeader "Configuring Real-Time Clock"
-    echo "Installing i2c software..."
-    apt-get install python-smbus -yqq
-    apt-get install i2c-tools -yqq
+    printf "Installing i2c software..."
+    error0=`apt-get install python-smbus -yqq`
+    error1=`apt-get install i2c-tools -yqq`
+    if [ ${#error0} -eq 0 ] && [ ${#error1} -eq 0 ]; then
+        printf "done\n"
+    else
+        printf "ERROR: $error0 $error1\n"
+        return 1
+    fi
 
     echo "Loading RTC module"
     modprobe rtc-ds1307
@@ -145,9 +184,15 @@ function configureRTC {
 
 function configureAudio {
     printHeader "Configuring audio subsystem"
-    echo "Installing audio bindings..."
-    apt-get install portaudio19-dev -yqq
-    return 0
+    printf "Installing audio bindings..."
+    error=`apt-get install portaudio19-dev -yqq`
+    if [ ${#error} -eq 0 ]; then
+        printf "done\n"
+        return 0
+    else
+        printf "ERROR: $error\n"
+        return 1
+    fi
 }
 
 function reboot {
