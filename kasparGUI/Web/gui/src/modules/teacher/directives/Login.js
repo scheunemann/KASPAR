@@ -4,7 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var template = require('text!./login.tpl.html');
 
-        var Login = function() {
+        var Login = function(loginService) {
             return {
                 template: template,
                 restrict: 'E',
@@ -16,14 +16,11 @@ define(function(require) {
                     $scope.username = 'Teacher';
 
                     $scope.login = function() {
-                        $scope.teacher = {
-                            username: $scope.username,
-                            name: $scope.username,
-                        };
+                        loginService.login($scope.username, $scope.password);
                     };
                 }
             };
         };
 
-        return Login;
+        return ['loginService', Login];
     });

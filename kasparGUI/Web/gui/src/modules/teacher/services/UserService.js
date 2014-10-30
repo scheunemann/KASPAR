@@ -6,8 +6,53 @@ define(function(require) {
         var _ = require('underscore');
 
         var UserService = function(User, $modal, $log) {
+            var users = null;
             this.getUsers = function() {
-                return User.query();
+                if (!users) {
+                    users = User.query();
+                }
+
+                return users;
+            };
+
+            this.getUser = function(user_id) {
+                return _.find(users, function(user) {
+                        return user.id == user_id;
+                    });
+            };
+
+            this.editUser = function(user) {
+                var modalInstance = $modal.open({
+                        template: template,
+                        controller: function($scope, $modalInstance, user) {
+
+                            $scope.user = user;
+                            $scope.dateOpen = true;
+
+                            $scope.ok = function() {
+                                $scope.user.$save();
+                                $modalInstance.close($scope.user);
+                            };
+
+                            $scope.cancel = function() {
+                                $modalInstance.dismiss('cancel');
+                            };
+
+                            $scope.openDatePicker = function($event) {
+                                $event.preventDefault();
+                                $event.stopPropagation();
+
+                                $scope.dateOpen = true;
+                            };
+                        },
+                        resolve: {
+                            user: function() {
+                                return user;
+                            },
+                        }
+                    });
+
+                return modalInstance.result;
             };
 
             this.addUser = function(name, users) {
@@ -20,33 +65,10 @@ define(function(require) {
                         });
                 }
 
-                var modalInstance = $modal.open({
-                        template: template,
-                        controller: function($scope, $modalInstance, user) {
-
-                            $scope.user = user;
-
-                            $scope.ok = function() {
-                                $modalInstance.close($scope.note);
-                            };
-
-                            $scope.cancel = function() {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        },
-                        resolve: {
-                            user: function() {
-                                return user;
-                            },
-                        }
-                    });
-
-                modalInstance.result.then(function(user) {
-                        if (userss.indexOf(user) <= 0) {
+                this.editUser(user).then(function(user) {
+                        if (users.indexOf(user) <= 0) {
                             users.push(user);
                         }
-                    }, function(reason) {
-                        $log.info('Modal dismissed at: ' + new Date());
                     });
             };
         };

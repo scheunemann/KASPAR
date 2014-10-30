@@ -11,11 +11,11 @@ define(function(require) {
                 restrict: 'E',
                 scope: {
                     teacher: '=',
-                    user: '=',
+                    users: '=',
                     games: '=',
                     interaction: '=',
-                    onFinished: '=?',
-                    onCanceled: '=?',
+                    onFinished: '&?',
+                    onCanceled: '&?',
                 },
                 link: function(scope, element, attrs, controller) {},
                 controller: function($scope) {
@@ -29,16 +29,18 @@ define(function(require) {
                         }
                     };
 
-                    $scope.start = function() {
-                        var newInteraction = interactionService.startNewInteraction($scope.teacher, $scope.user);
-                        if (newInteraction) {
-                            $scope.interaction = newInteraction;
+                    $scope.next = function() {
+                        if (!$scope.interaction) {
+                            var newInteraction = interactionService.startNewInteraction($scope.teacher, $scope.users);
+                            if (newInteraction) {
+                                $scope.interaction = newInteraction;
+                            }
                         }
 
                         if ($scope.onFinished) {
                             $scope.onFinished();
                         }
-                    }
+                    };
                 }
             };
         };

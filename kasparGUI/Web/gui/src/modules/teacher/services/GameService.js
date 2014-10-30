@@ -16,9 +16,13 @@ define(function(require) {
             var lastGames = [];
 
             this.getGame = function(gameId) {
-                var game = _.find(games, function(game) {return game.id == gameId;});
+                var game = _.find(games, function(game) {
+                        return game.id == gameId;
+                    });
                 if (!game) {
-                    game = Game.get({id: gameId});
+                    game = Game.get({
+                            id: gameId
+                        });
                     games.push(game);
                 }
 
@@ -49,6 +53,26 @@ define(function(require) {
                 lastObjectives = deferred.promise;
                 lastGames = games;
                 return deferred.promise;
+            };
+
+            this.getPlayTime = function(startTime, endTime) {
+                if (startTime && endTime) {
+                    var ts = new Date(endTime) - new Date(startTime);
+                    var hours = Math.floor(ts / (1000 * 60 * 60));
+                    var rest = ts % (1000 * 60 * 60);
+                    var minutes = Math.floor(rest / (1000 * 60));
+                    rest = rest % (1000 * 60);
+                    var seconds = Math.round(rest / 1000);
+                    if (hours) {
+                        return hours + 'h' + minutes + 'm' + seconds + 's';
+                    } else if (minutes) {
+                        return minutes + 'm' + seconds + 's';
+                    } else {
+                        return seconds + 's';
+                    }
+                } else {
+                    return 'Err';
+                }
             };
         };
 

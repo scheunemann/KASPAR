@@ -1,108 +1,75 @@
-<!doctype html>
-<html
-	lang="en"
-	ng-cloak
-	class="maxHeight">
-<head>
-<base href="/">
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta
-	name="mobile-web-app-capable"
-	content="yes">
-<link
-	rel="shortcut icon"
-	sizes="196x196"
-	href="img/largeIcon.png">
-<link
-	rel="shortcut icon"
-	sizes="128x128"
-	href="img/smallIcon.png">
-<link
-	rel="stylesheet"
-	href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
-<link
-	rel="stylesheet"
-	href="bower_components/bootstrap/dist/css/bootstrap.css" />
-<link
-	rel="stylesheet"
-	href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
-<link
-	rel="stylesheet"
-	href="bower_components/angular-xeditable/dist/css/xeditable.css">
-<link
-	rel="stylesheet"
-	href="css/slider.css" />
-<link
-	rel="stylesheet"
-	href="css/app.css" />
-<meta charset="utf-8">
-<title>KASPAR GUI</title>
-<script type="text/javascript">
-	//Chrome passes the error object (5th param) which we must use since it now truncates the Msg (1st param).
-	window.onerror = function(errorMsg, url, lineNumber, columnNumber, errorObject) {
-		var errMsg;
-		//check the errorObject as IE and FF don't pass it through (yet)
-		if (errorObject && errorObject !== undefined) {
-			errMsg = errorObject.message;
-		} else {
-			errMsg = errorMsg;
-		}
+<!DOCTYPE html>
+<html lang="en" ng-cloak="" class="maxHeight">
+    <head>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="shortcut icon" sizes="196x196" href="img/largeIcon.png">
+        <link rel="shortcut icon" sizes="128x128" href="img/smallIcon.png">
+        <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
+        <link rel="stylesheet" href="css/slider.css">
+        <link rel="stylesheet" href="css/app.css">
+        <meta charset="utf-8">
+        <title>KASPAR GUI</title>
+        <script type="text/javascript">
+            //Chrome passes the error object (5th param) which we must use since it now truncates the Msg (1st param).
+            window.onerror = function(errorMsg, url, lineNumber, columnNumber, errorObject) {
+                var errMsg;
+                //check the errorObject as IE and FF don't pass it through (yet)
+                if (errorObject && errorObject !== undefined) {
+                    errMsg = errorObject.message;
+                } else {
+                    errMsg = errorMsg;
+                }
 
-		if (errMsg.length > 216) {
-			console.log('Error: ' + errMsg);
-		}
-	}
-</script>
-<script
-	data-main="main.js"
-	src="bower_components/requirejs/require.js"></script>
-</head>
-<body class="maxHeight">
-	<header
-		class="text-center header visible-xs"
-		ng-controller="commonController">
-		<h4>KASPAR Web Interface</h4>
-		<h6>Version {{version}}</h6>
-	</header>
-	<header
-		ui-sref="default"
-		class="navbar-fixed-top text-center header hidden-xs"
-		ng-controller="commonController">
-		<h1>KASPAR Web Interface</h1>
-		<h6>Version {{version}}</h6>
-	</header>
-	<div class="container maxHeight">
-		<div class="row maxHeight">
-			<navbar></navbar>
-			<div
-				class="col-sm-9 col-md-10 col-lg-10 maxHeight mainContent"
-				id="main">
-				<div class="well scrollable maxHeight">
-					<ui-view />
-				</div>
-			</div>
-		</div>
-	</div>
-	<footer class="text-center visible-xs">
-		<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
-				and Technology Research Institute</a> <br />University of Hertfordshire
-			Hatfield, Hertfordshire, AL10 9AB, UK
-		</small>
-	</footer>
-	<footer class="navbar-fixed-bottom text-center hidden-print hidden-xs">
-		<div class="row">
-			<div class="col-lg-11">
-				<small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
-						and Technology Research Institute</a> <br />University of
-					Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK
-				</small>
-			</div>
-			<div class="pull-right col-lg-1">
-				<!--battery-level class="fill"></battery-level--!>
-			</div>
-		</div>
-	</footer>
-</body>
+                if (errMsg.length > 216) {
+                    console.log('Error: ' + errMsg);
+                }
+            }
+        </script>
+        <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
+    </head>
+    <body class="maxHeight">
+        <header class="text-center header visible-xs" ng-controller="commonController">
+            <h4>KASPAR Web Interface</h4>
+            <h6>Version {{version}}</h6>
+        </header>
+        <header ui-sref="default" class="navbar-fixed-top text-center header hidden-xs" ng-controller="commonController">
+            <h1>KASPAR Web Interface</h1>
+            <h6>Version {{version}}</h6>
+        </header>
+        <div class="container maxHeight">
+            <div class="row maxHeight">
+                <navbar></navbar>
+                <div class="col-sm-9 col-md-10 col-lg-10 maxHeight mainContent" id="main">
+                    <div class="well scrollable maxHeight">
+                        <ui-view>
+                        </ui-view>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center visible-xs">
+            <small>©<a href="http://www.herts.ac.uk/research/stri">Science
+            and Technology Research Institute</a> <br>University of Hertfordshire
+            Hatfield, Hertfordshire, AL10 9AB, UK
+            </small>
+        </footer>
+        <footer class="navbar-fixed-bottom text-center hidden-print hidden-xs">
+            <div class="row">
+                <div class="col-lg-11">
+                    <small>©<a href="http://www.herts.ac.uk/research/stri">Science
+                    and Technology Research Institute</a> <br>University of
+                    Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK
+                    </small>
+                </div>
+                <div class="pull-right col-lg-1">
+                    <!--battery-level class="fill"></battery-level-->
+                </div>
+            </div>
+        </footer>
+    </body>
 </html>

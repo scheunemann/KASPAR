@@ -5,7 +5,7 @@ define(function(require) {
         require('teacher/models');
         var _ = require('underscore');
 
-        var InteractionService = function($q, $log, Interaction, InteractionGame, Game) {
+        var InteractionService = function($q, $log, Interaction, InteractionUser, InteractionGame, Game) {
             var interactions = Interaction.query();
 
             this.getInteractions = function() {
@@ -85,14 +85,19 @@ define(function(require) {
                     return;
                 }
 
-                return _.filter(activeInteraction.games, 
-                                function(intGame) {return intGame.game_id == game.id;}
-                               ).length;
-            }
+                return _.filter(activeInteraction.games, function(intGame) {
+                        return intGame.game_id == game.id;
+                    }).length;
+            };
 
             this.startNewGame = function(game) {
                 if (!game) {
                     $log.info("NULL Value received for game");
+                    return;
+                }
+
+                if (!activeInteraction) {
+                    $log.warn("WARNING: Attempted to start game without an active interaction!");
                     return;
                 }
 
@@ -124,8 +129,8 @@ define(function(require) {
                 activeGame = null;
             };
 
-            this.startNewInteraction = function(operator, user) {
-                if (!operator || !user) {
+            this.startNewInteraction = function(operator, users) {
+                if (!operator || !users || users.length === 0) {
                     $log.info("NULL Value received for operator or user");
                     return;
                 }
@@ -134,8 +139,14 @@ define(function(require) {
                     this.endInteraction(activeInteraction);
                 }
 
+                var interactionUsers = _.map(users, function(user) {
+                        return new InteractionUser({
+                                user_id: user.id
+                            });
+                    });
+
                 var newInteraction = new Interaction({
-                        user_id: user.id,
+                        users: interactionUsers,
                         operator_id: operator.id,
                         startTime: new Date(),
                         games: [],
@@ -166,5 +177,5 @@ define(function(require) {
             };
         };
 
-        return ['$q', '$log', 'Interaction', 'InteractionGame', 'Game', InteractionService];
+        return ['$q', '$log', 'Interaction', 'InteractionUser', 'InteractionGame', 'Game', InteractionService];
     });

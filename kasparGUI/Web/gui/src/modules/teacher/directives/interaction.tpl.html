@@ -1,30 +1,35 @@
-<user
-	ng-show="state=='selectUser'"
-	teacher="teacher"
-	user="user"></user>
+<select-users
+    ng-show="state=='selectUsers'"
+    teacher="teacher"
+    selected-users="users"
+    multiple="true"
+    on-finished="setState('selectGames')"></select-users>
 <select-games
-	ng-show="state=='selectGames'"
-	teacher="teacher"
-	user="user"
-	selected-games="selectedGames"
-	on-canceled="setSelectUser"
-	on-finished="setConfirmGames"></select-games>
+    ng-show="state=='selectGames'"
+    teacher="teacher"
+    users="users"
+    selected-games="selectedGames"
+    multiple="false"
+    on-canceled="setState('selectUsers')"
+    on-finished="setState('beginInteraction')"></select-games>
 <begin-interaction
-	ng-show="state=='beginInteraction'"
-	teacher="teacher"
-	user="user"
-	games="selectedGames"
-	interaction="interaction"
-	on-canceled="setSelectGames"
-	on-finished="setStartInteraction"></begin-interaction>
+    ng-show="state=='beginInteraction'"
+    teacher="teacher"
+    users="users"
+    games="selectedGames"
+    interaction="interaction"
+    on-canceled="setState('selectGames')"
+    on-finished="setState('activeInteraction')"></begin-interaction>
 <active-interaction
-	ng-show="state=='activeInteraction'"
-	user="user"
-	interaction="interaction"
-	games="selectedGames"
-	on-finished="setReviewInteraction"></active-interaction>
+    ng-show="state=='activeInteraction'"
+    users="users"
+    interaction="interaction"
+    games="selectedGames"
+    first-game="selectedGames[0]"
+    on-finished="setState('endInteraction')"></active-interaction>
 <end-interaction
-	ng-show="state=='endInteraction'"
-	user="user"
-	interaction="interaction"
-	on-finished="reset"></end-interaction>
+    ng-show="state=='endInteraction'"
+    users="users"
+    interaction="interaction"
+    on-finished="reset()"></end-interaction>
+{{state}}

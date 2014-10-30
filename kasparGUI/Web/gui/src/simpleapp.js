@@ -24,6 +24,9 @@ define(function(require) {
             $stateProvider.state('default', {
                     url: '/teacher.html',
                     template: defaultTemplate,
+                    controller: ['$scope', 'loginService', function($scope, loginService) {
+                        $scope.loginService = loginService;
+                    }],
                 });
         };
 

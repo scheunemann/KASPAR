@@ -12,25 +12,51 @@ define(function(require) {
                 restrict: 'E',
                 scope: {
                     interaction: '=',
-                    user: '=',
+                    users: '=',
                     games: '=',
-                    onFinished: '=?',
+                    firstGame: '=',
+                    onFinished: '&?',
+                    onCanceled: '&?',
                 },
                 link: function(scope, element, attrs, controller) {},
                 controller: function($scope) {
+                    $scope.$watch('firstGame', function(game) {
+                            $scope.selectedGame = game;
+                        });
+
                     $scope.changeGame = function(game) {
+                        if (angular.isArray(game)) {
+                            game = game[0];
+                        }
+                        if (game) {
+                            if ($scope.games.indexOf(game) < 0) {
+                                $scope.games.push(game);
+                            }
+                        }
+
                         $scope.selectedGame = game;
                     };
 
                     $scope.getPlays = function(game, interactionGames) {
-                        if(game && interactionGames) {
-                            return _.filter(interactionGames, function(ig) {return ig.game_id == game.id}).length;
+                        if (game && interactionGames) {
+                            return _.filter(interactionGames, function(ig) {
+                                    return ig.game_id == game.id;
+                                }).length;
                         } else {
                             return 0;
                         }
                     };
 
-                    $scope.endInteraction = function() {
+                    $scope.resumeLast = function() {
+                        $scope.selectedGame = $scope.lastGame;
+                    };
+
+                    $scope.selectNextGame = function() {
+                        $scope.lastGame = $scope.selectedGame;
+                        $scope.selectedGame = null;
+                    };
+
+                    $scope.next = function() {
                         if (interactionService.getCurrentGame()) {
                             alert('Please finish current game first!');
                         } else {

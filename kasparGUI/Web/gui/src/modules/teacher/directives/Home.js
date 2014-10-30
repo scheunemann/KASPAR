@@ -4,7 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var template = require('text!./home.tpl.html');
 
-        var Home = function(gameService) {
+        var Home = function(gameService, loginService) {
             return {
                 template: template,
                 restrict: 'E',
@@ -17,12 +17,11 @@ define(function(require) {
                     $scope.selectedGames = gameService.getGames();
 
                     $scope.signOut = function() {
-                        $scope.teacher = undefined;
-                        $scope.user = undefined;
+                        loginService.logout();
                     };
                 }
             };
         };
 
-        return ['gameService', Home];
+        return ['gameService', 'loginService', Home];
     });

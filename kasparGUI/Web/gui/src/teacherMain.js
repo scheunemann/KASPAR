@@ -4,7 +4,7 @@ require.config({
             underscore: 'bower_components/underscore/underscore-min',
             angular: 'bower_components/angular/angular',
             jquery: 'bower_components/jquery/jquery.min',
-            angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
+            angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls',
             angularResource: 'bower_components/angular-resource/angular-resource.min',
             angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router.min',
             text: 'bower_components/requirejs-text/text',
