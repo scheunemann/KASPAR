@@ -36,7 +36,7 @@ MAX_STRENGTH = 10
 MIN_OFFSET = 0x01  # 0x00 = disabled
 MAX_OFFSET = 0x5F  # 0xFE = hardware max
 MIN_SLOPE = 0x4FF  # 0x00 = disabled
-MAX_SLOPE = 0xFFF  # 0x7FFF = hardware max
+MAX_SLOPE = 0x1FFF  # 0x7FFF = hardware max
 
 
 DELAY = 0.125
@@ -197,7 +197,7 @@ def setCompliance(sid, servo):
     strength = float(servo.extraData.get('STRENGTH', MAX_STRENGTH)) / MAX_STRENGTH
     offset = 0x00
     if strength == 0:
-        offset = 0x00
+        #offset = 0x00
         slope = 0x00
         print "Disabling virtual spring"
     else:

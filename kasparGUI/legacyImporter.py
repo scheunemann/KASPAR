@@ -425,7 +425,7 @@ class ActionImporter(object):
                     position = _realToScalePos(positionReal, offset, servo.model.positionScale)
                     position = position * servo.positionModifier
                     if position < servo.minPosition or position > servo.maxPosition:
-                        print >> sys.stderr, "Converted position (%s) for pose %s is out of range [%s:%s]" % (position, name, minPos, maxPos)
+                        print >> sys.stderr, "Converted position (%s) for pose %s is out of range [%s:%s]" % (position, name, servo.minPosition, servo.maxPosition)
                     if servo.model.speedScale != None:
                         speed = _realToScaleSpeed(speed, servo.model.speedScale)
                     else:

@@ -2,7 +2,7 @@ import os
 import sys
 
 from Config.config import dbConfig
-from kasparGUI.Model import Base, User, Operator, Setting
+from kasparGUI.Model import Base, User, Operator, Setting, Action
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Robot import importer
 import legacyImporter
@@ -18,16 +18,34 @@ def _flushData():
     StorageFactory.getDefaultDataStore().engine.echo = False
 
 
-def _loadConfigs(configDir):
-    print "Loading configs..."
-    robotConfig = os.path.join(configDir, 'robot.xml')
+def _getConfigRoot(configFile):
+    root = et.parse(configFile).getroot()
+    parent = root.attrib.get('parent', None)
+    if parent:
+        print "Parent detected...merging"
+        parentFile = os.path.join(configDir, parent)
+        if os.path.isfile(parentFile):
+            from xmlCombiner import XMLCombiner
+            parentRoot = et.parse(parentFile).getroot()
+            root = XMLCombiner([parentRoot, root]).combine()
+    root.attrib.pop('parent')
+    return root
+
+
+def _loadConfigs(configDir, configFile='robot.xml'):
+    print "Loading configs... for %s in directory %s" % (configFile, configDir)
+    robotConfig = os.path.join(configDir, configFile)
     if not os.path.isfile(robotConfig):
         return None
-    configType = et.parse(robotConfig).getroot().tag
+    root = _getConfigRoot(robotConfig)
+    configType = root.tag
+    session = StorageFactory.getNewSession()
+    actions = {action.name: action for action in session.query(Action).all()}
+
     if configType == 'KASPAR':
-        (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, {}, [], [], configDir)
+        (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, actions, [], [], configDir)
     else:
-        (robots, actions, triggers) = importer.loadDirectory({}, {}, [], configDir)
+        (robots, actions, triggers) = importer.loadDirectory({}, actions, [], configDir, root)
         games = []
 
     robot = robots[0].name
@@ -105,6 +123,7 @@ def _loadTestData():
 if __name__ == "__main__":
     flush = False
     fill = False
+    configFile = 'robot.xml'
     if len(sys.argv) < 2:
         print "Subdir not specified"
 #         exit()
@@ -114,13 +133,19 @@ if __name__ == "__main__":
     else:
         subDir = sys.argv[1]
 
+        index = 2
         if len(sys.argv) > 2:
-            if sys.argv[2].lower() == 'flush':
+            if ".xml" in sys.argv[2]:
+                configFile = sys.argv[2]
+                index += 1
+
+        if len(sys.argv) > index:
+            if sys.argv[index].lower() == 'flush':
                 flush = True
-            elif sys.argv[2].lower() == 'test':
+            elif sys.argv[index].lower() == 'test':
                 flush = True
                 fill = True
-            elif sys.argv[2].lower() == 'data':
+            elif sys.argv[index].lower() == 'data':
                 fill = True
 
     baseDir = os.path.dirname(os.path.realpath(__file__))
@@ -135,7 +160,7 @@ if __name__ == "__main__":
         if flush:
             _flushData()
             _loadBaseData()
-        robot = _loadConfigs(configDir)
+        robot = _loadConfigs(configDir, configFile)
         if fill:
             _loadTestData()
         _setRobot(robot)

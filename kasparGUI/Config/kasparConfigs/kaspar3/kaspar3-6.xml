@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROBOT name="Kaspar 4" parent="robot.xml">
+    <SERVOLIST>
+        <SERVO id="8" type="HS82MG">
+            <NAME>EYE_R_LID</NAME>
+            <CENTER>1400</CENTER>
+        </SERVO>
+        <SERVO id="6" type="HS82MG">
+            <NAME>EYE_R_YAW</NAME>
+            <CENTER>1470</CENTER>
+        </SERVO>
+        <SERVO id="7" type="HS82MG">
+            <NAME>EYEBALL_R_PITCH</NAME>
+            <CENTER>1550</CENTER>
+        </SERVO>
+        <SERVO id="9" type="HS82MG">
+            <NAME>EYE_L_YAW</NAME>
+            <CENTER>1490</CENTER>
+        </SERVO>
+        <SERVO id="11" type="HS82MG">
+            <NAME>EYE_L_LID</NAME>
+            <CENTER>1640</CENTER>
+        </SERVO>
+        <SERVO id="10" type="HS82MG">
+            <NAME>EYEBALL_L_PITCH</NAME>
+            <CENTER>1400</CENTER>
+        </SERVO>
+    </SERVOLIST>
+</ROBOT>

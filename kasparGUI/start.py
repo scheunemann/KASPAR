@@ -40,21 +40,37 @@ def configureSite():
         SensorInterface.disconnected = True
 
 
+def wakeUp():
+    from robotActionController.ActionRunner import ActionRunner
+    from robotActionController.Data.storage import StorageFactory
+    from kasparGUI import Model
+    ds = StorageFactory.getNewSession()
+    robot = ds.query(Model.Robot).join(Model.Setting, Model.Robot.name==Model.Setting.value).filter(Model.Setting.key=='robot').first()
+    if robot.defaultAction:
+        from robotActionController.Robot import Robot
+        logging.getLogger(__name__).info("Starting %s's default Action (%s)" % (robot.name, robot.defaultAction))
+        action = ActionRunner.getRunable(robot.defaultAction)
+        robot = Robot.getRunnableRobot(robot)
+        ActionRunner(robot).executeAsync(action)
+
+
 def runSite():
     global server
     if server == None:
         raise Exception("Site not configured, run configureSite() first")
 
-    logging.getLogger(__name__).info('Spawning web server, ready for connections')
+    logging.getLogger(__name__).error('Spawning web server, ready for connections')
 
     # start the server, use_reloader=False allows debugging in the IDE
     if webConfig.get('server.use_reloader', False):
         def run_server():
             global server
+            wakeUp()
             server.serve_forever()
         run_with_reloader(run_server)
     else:
         try:
+            wakeUp()
             server.serve_forever()
         except KeyboardInterrupt:
             return
