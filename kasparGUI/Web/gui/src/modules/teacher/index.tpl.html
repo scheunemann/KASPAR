@@ -1,6 +1,5 @@
 <login
-	ng-hide="teacher"
-	teacher="teacher"></login>
+    ng-if="!loginService.loggedIn"></login>
 <home
-	ng-show="teacher"
-	teacher="teacher"></home>
+    ng-if="loginService.loggedIn"
+    teacher="loginService.operator"></home>

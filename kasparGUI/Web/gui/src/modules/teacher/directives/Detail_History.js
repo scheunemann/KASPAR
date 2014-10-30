@@ -2,9 +2,10 @@
 
 define(function(require) {
         var angular = require('angular');
+        var _ = require('underscore');
         var template = require('text!./detail_history.tpl.html');
 
-        var Detail_History = function(interactionService, noteService, gameService) {
+        var Detail_History = function(interactionService, noteService, gameService, userService) {
             return {
                 template: template,
                 restrict: 'E',
@@ -15,6 +16,7 @@ define(function(require) {
                 controller: function($scope) {
                     $scope.images = ['bad.png', 'moderate_bad.png', 'neutral.png', 'moderate_good.png', 'good.png'];
                     $scope.colors = ['bad', 'moderate_bad', 'neutral', 'moderate_good', 'good'];
+                    $scope.userService = userService;
 
                     $scope.addNote = function() {
                         noteService.addNote('', true, $scope.interaction.notes);
@@ -24,13 +26,13 @@ define(function(require) {
                         return interactionService.getObjectives(interaction);
                     };
 
-                    $scope.getAverageScore = function() {
-                        if (arguments.length) {
+                    $scope.getAverageScore = function(users) {
+                        if (users) {
                             var total = 0;
-                            for(var i = 0; i < arguments.length; i++) {
-                                total += arguments[i];
-                            }
-                            return Math.round((total / arguments.length) - 1);
+                            _.each(users, function(user) {
+                                    total += user.engagement + user.experience;
+                                });
+                            return Math.round((total / users.length / 2) - 1);
                         } else {
                             return null;
                         }
@@ -40,30 +42,18 @@ define(function(require) {
                         if (game) {
                             return gameService.getGame(game.game_id);
                         }
-                    }
+                    };
 
                     $scope.getPlayTime = function(startTime, endTime) {
-                        if (startTime && endTime) {
-                            var ts = new Date(endTime) - new Date(startTime);
-                            var hours = Math.floor(ts / (1000 * 60 * 60));
-                            var rest = ts % (1000 * 60 * 60);
-                            var minutes = Math.floor(rest / (1000 * 60));
-                            rest = rest % (1000 * 60);
-                            var seconds = Math.round(rest / 1000);
-                            if (hours) {
-                                return hours + 'h' + minutes + 'm' + seconds + 's';
-                            } else if (minutes) {
-                                return minutes + 'm' + seconds + 's';
-                            } else {
-                                return seconds + 's';
-                            }
-                        } else {
-                            return 'Err';
-                        }
+                        return gameService.getPlayTime(startTime, endTime);
                     };
+
+                    $scope.$watch('interaction.games', function(interactionGames) {
+                            $scope.groupedGames = _.groupBy(interactionGames, 'game_id');
+                        });
                 }
             };
         };
 
-        return ['interactionService', 'noteService', 'gameService', Detail_History];
+        return ['interactionService', 'noteService', 'gameService', 'userService', Detail_History];
     });

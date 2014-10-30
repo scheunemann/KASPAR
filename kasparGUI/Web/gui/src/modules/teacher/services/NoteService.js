@@ -6,16 +6,7 @@ define(function(require) {
         var _ = require('underscore');
 
         var NoteService = function(Note, $modal, $log) {
-            this.addNote = function(title, editableTitle, notes) {
-                var note = _.findWhere(notes, {
-                        title: title
-                    });
-                if (!note) {
-                    note = new Note({
-                            title: title
-                        });
-                }
-
+            this.editNote = function(note, editableTitle) {
                 var modalInstance = $modal.open({
                         template: template,
                         controller: function($scope, $modalInstance, note, editableTitle) {
@@ -40,13 +31,23 @@ define(function(require) {
                             }
                         }
                     });
+                return modalInstance.result;
+            };
 
-                modalInstance.result.then(function(note) {
+            this.addNote = function(title, editableTitle, notes) {
+                var note = _.findWhere(notes, {
+                        title: title
+                    });
+                if (!note) {
+                    note = new Note({
+                            title: title
+                        });
+                }
+
+                this.editNote(note).then(function(note) {
                         if (notes.indexOf(note) <= 0) {
                             notes.push(note);
                         }
-                    }, function(reason) {
-                        $log.info('Modal dismissed at: ' + new Date());
                     });
             };
         };

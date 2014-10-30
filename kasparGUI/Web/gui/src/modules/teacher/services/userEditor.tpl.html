@@ -1,10 +1,45 @@
 <div class="modal-header">User Editor</div>
 <div class="modal-body">
-    <input type="text" placeholder="Name" ng-model="user.name" ng-disabled="!editableTitle">
-    <hr/>
-    <textarea class="noteInput" ng-model="note.text"></textarea>
+    <form name="userForm">
+        <div class="row">
+            <div class="col-xs-12">
+                <input class="form-control" type="text" placeholder="Name" ng-model="user.name" ng-required="true">
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="input-group">
+                    <div class="input-group-addon">Birthday</div>
+                    <input
+                        type="text"
+                        class="form-control"
+                        is-open="dateOpen"
+                        datepicker-popup="dd-MMMM-yyyy"
+                        ng-model="user.birthday"
+                        show-button-bar="false"
+                        show-weeks="false"
+                        close-text="Close">
+                    <!-- <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="input-group">
+                    <div class="input-group-addon inputLabel">Gender</div>
+                    <div class="input-group-btn">
+                        <label class="btn btn-primary" ng-model="user.gender" btn-radio="'F'">Girl</label>
+                        <label class="btn btn-primary" ng-model="user.gender" btn-radio="'M'">Boy</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()" ng-disabled="!note.title">OK</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="!userForm.$valid">OK</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

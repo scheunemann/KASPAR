@@ -9,6 +9,7 @@ define(function(require) {
         var Interaction = require('./models/Interaction');
         var InteractionLog = require('./models/InteractionLog');
         var InteractionGame = require('./models/InteractionGame');
+        var InteractionUser = require('./models/InteractionUser');
 
         var moduleName = 'kasparGUI.teacher.models';
         var dependancies = [];
@@ -20,7 +21,8 @@ define(function(require) {
             .factory('Objective', Objective)
             .factory('Interaction', Interaction)
             .factory('InteractionLog', InteractionLog)
-            .factory('InteractionGame', InteractionGame);
+            .factory('InteractionGame', InteractionGame)
+            .factory('InteractionUser', InteractionUser);
 
         return moduleName;
     });

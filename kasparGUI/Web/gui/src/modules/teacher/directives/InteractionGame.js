@@ -12,6 +12,8 @@ define(function(require) {
                 scope: {
                     game: '=',
                     interaction: '=',
+                    onFinished: '&?',
+                    onCanceled: '&?',
                 },
                 link: function(scope, element, attrs, controller) {},
                 controller: function($scope) {
@@ -30,6 +32,9 @@ define(function(require) {
                     $scope.end = function() {
                         interactionService.endGame($scope.game);
                         $scope.showStart = true;
+                        if ($scope.onFinished) {
+                            $scope.onFinished();
+                        }
                     };
                 }
             };

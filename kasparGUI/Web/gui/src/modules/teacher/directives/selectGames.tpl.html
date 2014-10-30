@@ -1,82 +1,69 @@
 <div class="row">
-	<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="row">
-			<div class="col-xs-12">
-				<container-user user="user"></container-user>
-			</div>
-		</div>
-		<div
-			class="row"
-			ng-show="selected.length">
-			<div class="col-xs-12">
-				<span class="title">Selected Play Scenarios</span>
-			</div>
-		</div>
-		<div
-			class="row"
-			ng-show="selected.length">
-			<div class="col-xs-12">
-				<container-game
-					ng-repeat="game in selected | orderBy:'name'"
-					game="game"
-					short="true"></container-game>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
-		<div
-			class="row"
-			ng-show="user.objectives && user.objectives.length">
-			<div class="col-xs-12">
-				<span class="title">Chosen objectives for {{user.name}} to
-					cover:</span>
-				<container-objective
-					ng-repeat="objective in user.objectives"
-					objective='objective'></container-objective>
-			</div>
-		</div>
-		<div
-			class="row"
-			ng-show="user.objectives && user.objectives.length">
-			<div class="col-lg-12">
-				<span class="title">Targeted Play Scenarios</span>
-			</div>
-		</div>
-		<div
-			class="row"
-			ng-show="user.objectives && user.objectives.length">
-			<container-game
-				ng-repeat="game in games | filter:itemFilter"
-				class="clickable"
-				ng-click="selectGame(game)"
-				ng-class="{selected:isSelected(game)}"
-				game='game'></container-game>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<span class="title">All Play Scenarios</span>
-			</div>
-		</div>
-		<div class="row">
-			<container-game
-				ng-repeat="game in games"
-				class="clickable"
-				ng-click="selectGame(game)"
-				ng-class="{selected:isSelected(game)}"
-				game='game'></container-game>
-		</div>
-	</div>
+    <div class="col-lg-12 center">Please select the first Play Scenario you wish to use</div>
+</div><div class="row">
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+        <div class="row">
+            <div class="col-xs-12" ng-repeat="user in users">
+                <container-user user="user"></container-user>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
+        <div
+            class="row"
+            ng-repeat-start="user in users"
+            ng-show="user.objectives && user.objectives.length">
+            <div class="col-xs-12">
+                <span class="title">Chosen objectives for {{user.name}} to
+                    cover:</span>
+                <container-objective
+                    ng-repeat="objective in user.objectives"
+                    objective='objective'></container-objective>
+            </div>
+        </div>
+        <div
+            class="row"
+            ng-show="user.objectives && user.objectives.length">
+            <div class="col-lg-12">
+                <span class="title">Targeted Play Scenarios</span>
+            </div>
+        </div>
+        <div
+            class="row"
+            ng-repeat-end
+            ng-show="user.objectives && user.objectives.length">
+            <container-game
+                ng-repeat="game in games | filter:itemFilter"
+                class="clickable"
+                ng-click="selectGame(game)"
+                ng-class="{selected:isSelected(game)}"
+                game='game'></container-game>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="title">All Play Scenarios</span>
+            </div>
+        </div>
+        <div class="row">
+            <container-game
+                ng-repeat="game in games"
+                class="clickable"
+                ng-click="selectGame(game)"
+                ng-class="{selected:isSelected(game)}"
+                game='game'></container-game>
+        </div>
+    </div>
 </div>
 <div class="row">
-	<div class="col-lg-12">
-		<button
-			type="button"
-			ng-click="back()"
-			class="btn btn-default btn-lg">Back</button>
-		<button
-			type="button"
-			ng-disabled="!selected.length"
-			ng-click="confirmGames()"
-			class="btn btn-default btn-lg">Next</button>
-	</div>
+    <div class="col-lg-12">
+        <button
+            type="button"
+            ng-click="back()"
+            class="btn btn-default btn-lg">Back</button>
+        <button
+            type="button"
+            ng-disabled="!selected.length"
+            ng-click="next()"
+            class="btn btn-default btn-lg">Next</button>
+    </div>
 </div>

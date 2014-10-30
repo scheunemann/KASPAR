@@ -44,6 +44,9 @@ models = [
             'class': Model.InteractionGame,
             'kwargs': {'methods':['GET', 'POST', 'PUT'], 'postprocessors': {'POST': [__processInteractionGame, ], 'PUT_SINGLE': [__processInteractionGame, ]}}
           },
+          {
+           'class': Model.InteractionUser,
+           }
          ]
 
 

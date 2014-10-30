@@ -2,6 +2,7 @@
 
 define(function(require) {
         var angular = require('angular');
+        var _ = require('underscore');
         require('teacher/services/dataProvider');
         var template = require('text!./history.tpl.html');
 
@@ -31,13 +32,13 @@ define(function(require) {
                         }
                     };
 
-                    $scope.getAverageScore = function() {
-                        if (arguments.length) {
+                    $scope.getAverageScore = function(users) {
+                        if (users) {
                             var total = 0;
-                            for (var i = 0; i < arguments.length; i++) {
-                                total += arguments[i];
-                            }
-                            return Math.round((total / arguments.length) - 1);
+                            _.each(users, function(user) {
+                                    total += user.engagement + user.experience;
+                                });
+                            return Math.round((total / users.length / 2) - 1);
                         } else {
                             return null;
                         }
