@@ -28,7 +28,7 @@ def _getConfigRoot(configFile):
             from xmlCombiner import XMLCombiner
             parentRoot = et.parse(parentFile).getroot()
             root = XMLCombiner([parentRoot, root]).combine()
-    root.attrib.pop('parent')
+        root.attrib.pop('parent')
     return root
 
 
@@ -51,7 +51,6 @@ def _loadConfigs(configDir, configFile='robot.xml'):
     robot = robots[0].name
     print "Saving data"
 
-    session = StorageFactory.getNewSession()
     session.add_all(robots)
     session.add_all(actions)
     session.add_all(triggers)
