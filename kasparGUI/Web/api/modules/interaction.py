@@ -32,7 +32,6 @@ def __processInteractionGame(result=None, gameId=None):
         else:
             if intId in __interactionManagers:
                 __interactionManagers[intId].setTriggers(db_session.query(Model.Game).get(result['game_id']).triggers)
-                __interactionManagers[intId].setTriggers([])
 
 
 models = [
