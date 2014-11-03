@@ -26,7 +26,7 @@ define(function(require) {
                             }
                         });
 
-                    $scope.callButton = function(triggerId) {
+                    $scope.callTrigger = function(triggerId) {
                         if ($scope.interaction && $scope.interaction.id) {
                             InteractionLog.save({
                                     interactionId: $scope.interaction.id
@@ -35,7 +35,9 @@ define(function(require) {
                                     'interaction_id': $scope.interaction.id,
                                     'source': 'OPERATOR',
                                 });
-                        }
+                        } else {
+                            console.log("Missing interaction id");
+                        }	
                     };
                 }
             };
