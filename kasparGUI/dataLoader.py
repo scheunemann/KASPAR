@@ -18,26 +18,12 @@ def _flushData():
     StorageFactory.getDefaultDataStore().engine.echo = False
 
 
-def _getConfigRoot(configFile):
-    root = et.parse(configFile).getroot()
-    parent = root.attrib.get('parent', None)
-    if parent:
-        print "Parent detected...merging"
-        parentFile = os.path.join(configDir, parent)
-        if os.path.isfile(parentFile):
-            from xmlCombiner import XMLCombiner
-            parentRoot = et.parse(parentFile).getroot()
-            root = XMLCombiner([parentRoot, root]).combine()
-        root.attrib.pop('parent')
-    return root
-
-
 def _loadConfigs(configDir, configFile='robot.xml'):
     print "Loading configs... for %s in directory %s" % (configFile, configDir)
     robotConfig = os.path.join(configDir, configFile)
     if not os.path.isfile(robotConfig):
         return None
-    root = _getConfigRoot(robotConfig)
+    root = importer.getConfigRoot(robotConfig)
     configType = root.tag
     session = StorageFactory.getNewSession()
     actions = {action.name: action for action in session.query(Action).all()}

@@ -12,7 +12,13 @@ baseDir = os.path.dirname(os.path.realpath(__file__))
 configDir = os.path.join(baseDir, './kasparConfigs')
 print "Loading robot configs from %s" % configDir
 from robotActionController.Robot import importer
-(robots, _, _) = importer.loadAllDirectories(configDir, loadActions=False, loadTriggers=False)
+
+if len(sys.argv) > 1 and len(sys.argv[1]) == 1:
+    configFile = "kaspar3-%s.xml" % (sys.argv[1])
+    configDir = os.path.join(configDir, 'kaspar3')
+    (robots, _, _) = importer.loadDirectory({}, {}, [], configDir, robotConfig=configFile, loadActions=False, loadTriggers=False)
+else:
+    (robots, _, _) = importer.loadAllDirectories(configDir, loadActions=False, loadTriggers=False)
 
 from robotActionController.Robot.ServoInterface.servoInterface import ServoInterface
 from robotActionController.Robot.ServoInterface.herkulex import HerkuleX
@@ -47,6 +53,7 @@ def chooseRobot(robots):
         robots = sorted(robots, key=lambda r: r.name)
         selection = None
         while selection == None:
+            clearScreen()
             print "Available Robots:"
             for i in range(0, len(robots)):
                 print "%s - %s" % (str(i + 1).rjust(4), robots[i].name)
@@ -60,7 +67,9 @@ def chooseRobot(robots):
                 break
         robot = robots[selection - 1]
     else:
+        print robots
         robot = robots[0]
+        print robot
     return robot
 
 
@@ -75,7 +84,7 @@ def selectJoint(robot):
     servos = sorted(robot.servos, key=lambda s: s.jointName)
     selection = None
     while selection == None:
-        print "Joints:"
+        print "%s Joints:" % robot.name
         for i in range(0, len(servos)):
             sid = servos[i].extraData.get('externalId', None)
             if sid != None:
@@ -282,8 +291,10 @@ def success(sid):
     time.sleep(0.1)
 
 if __name__ == '__main__':
-    clearScreen()
     robot = chooseRobot(robots)
+    if not robot:
+        print "No Robot found"
+        exit(1)
     while True:
         try:
             clearScreen()
