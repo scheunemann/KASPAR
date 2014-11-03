@@ -26,19 +26,22 @@ def _loadConfigs(configDir, configFile='robot.xml'):
     root = importer.getConfigRoot(robotConfig)
     configType = root.tag
     session = StorageFactory.getNewSession()
-    actions = {action.name: action for action in session.query(Action).all()}
+    existingActions = session.query(Action).all()
+    actions = {action.name: action for action in existingActions}
+    triggers = []
 
     if configType == 'KASPAR':
-        (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, actions, [], [], configDir)
+        (robots, actions, _, games) = legacyImporter.loadDirectory(actions, {}, [], [], configDir, loadTriggers=False)
     else:
-        (robots, actions, triggers) = importer.loadDirectory({}, actions, [], configDir, root)
+        (robots, actions, _) = importer.loadDirectory(actions, {}, [], configDir, root, loadTriggers=False)
         games = []
 
+    newActions = [a for a in actions.values() if not a.id]
     robot = robots[0].name
     print "Saving data"
 
     session.add_all(robots)
-    session.add_all(actions)
+    session.add_all(newActions)
     session.add_all(triggers)
     session.add_all(games)
     session.commit()
