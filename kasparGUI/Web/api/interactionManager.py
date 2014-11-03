@@ -14,12 +14,12 @@ class InteractionManager(object):
         self._logger = logging.getLogger(self.__class__.__name__)
         ds = StorageFactory.getNewSession()
         interaction = ds.query(Model.Interaction).get(interactionId)
-        if interaction.robot:
-            robot = Robot.getRunnableRobot(interaction.robot)
-        else:
+        if not interaction.robot:
             robot = ds.query(Model.Robot).join(Model.Setting, Model.Robot.name==Model.Setting.value).filter(Model.Setting.key=='robot').first()
             interaction.robot = robot
             ds.commit()
+
+        robot = Robot.getRunnableRobot(interaction.robot)
         self._triggerProcessor = TriggerProcessor([], robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
         self._actionRunner = ActionRunner(robot)

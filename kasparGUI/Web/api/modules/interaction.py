@@ -32,7 +32,15 @@ def __processInteractionGame(result=None, gameId=None):
         else:
             if intId in __interactionManagers:
                 __interactionManagers[intId].setTriggers(db_session.query(Model.Game).get(result['game_id']).triggers)
-                __interactionManagers[intId].setTriggers([])
+
+
+def __processInteractionTrigger(result=None, triggerId=None):
+    triggerId = result['id'] if result else triggerId
+    intId = result['interaction_id'] if result else None
+    if intId and triggerId:
+        if result:
+            if intId in __interactionManagers:
+                __interactionManagers[interactionId].doTrigger(triggerId, True, result.get('source', 'OPERATOR'))
 
 
 models = [
@@ -63,7 +71,7 @@ def __interactionLogGet(interactionId, logId=None, timestamp=None):
     for log in logs:
         ret.append({
                        'id': log.id,
-                       'button_id': log.trigger_id,
+                       'trigger_id': log.trigger_id,
                        'interaction_id': log.interaction_id,
                        'timestamp': log.timestamp,
                        'active': log.finished == None,
@@ -75,7 +83,7 @@ def __interactionLogGet(interactionId, logId=None, timestamp=None):
 @__interactionLog.route('/Interaction/<int:interactionId>/Log', methods=['POST'])
 def __interactionLogPost(interactionId):
     if 'trigger_id' in request.json:
-        triggerId = request.json['button_id']
+        triggerId = request.json['trigger_id']
     else:
         raise abort(400, "Invalid JSON, missing 'trigger_id'")
 
