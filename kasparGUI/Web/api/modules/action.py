@@ -1,9 +1,9 @@
-import datetime
-from flask import Blueprint, jsonify, abort, request, redirect
-from kasparGUI.legacyImporter import ActionImporter
-from robotActionController.ActionRunner import ActionManager
-from robotActionController.Robot import Robot
-from kasparGUI.Web.api.database import db_session
+import datetime 
+from flask import Blueprint, jsonify, abort, request, redirect 
+from kasparGUI.legacyImporter import ActionImporter 
+from robotActionController.ActionRunner import ActionManager, ActionRunner
+from robotActionController.Robot import Robot 
+from kasparGUI.Web.api.database import db_session 
 import kasparGUI.Model as Model
 
 
@@ -82,7 +82,7 @@ __testRunners = {}
 @__test.route('/Action/<int:aid>/Test', methods=['GET'])
 def testGet(aid=None, timestamp=None):
     if aid in __testRunners:
-        active = __testRunners[aid].isAlive()
+        active = bool(__testRunners[aid])
         output = __testRunners[aid].output
     else:
         active = False
@@ -107,20 +107,23 @@ def testGet(aid=None, timestamp=None):
 
 @__test.route('/Action/<int:aid>/Test', methods=['POST'])
 def testPost(aid):
-    if aid in __testRunners and __testRunners[aid].isAlive():
+    if aid in __testRunners and bool(__testRunners[aid]):
         handle = __testRunners[aid]
-        handle.stop()
+        handle.kill()
         handle.join(1)
     action = db_session.query(Model.Action).get(aid)
+    if not action:
+        abort(400, msg='Action not found')
+        
     robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
     robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
     r = Robot.getRunnableRobot(robot)
     m = ActionManager.getManager(r)
-    a = m.getRunable(action)
+    a = ActionRunner.getRunable(action) #We don't want these cached
     handle = m.executeActionAsync(a)
     __testRunners[aid] = handle
 
-    active = handle.isAlive()
+    active = bool(handle)
     output = handle.output
 
     ret = {
