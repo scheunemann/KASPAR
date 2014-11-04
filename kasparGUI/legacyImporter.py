@@ -119,7 +119,7 @@ class KasparImporter(object):
                     'HEAD_TLT': {'offset': 720, 'modifier': 1},
                     'HEAD_VERT': {'offset': 430, 'modifier': 1},
                     'EYES_LR': {'offset': 350, 'modifier': 1},
-                    'EYES_UD': {'offset': 210, 'modifier':-1},
+                    'EYES_UD': {'offset': 210, 'modifier':1},
                     'EYELIDS': {'offset': 800, 'modifier': 1},
                     'MOUTH_OPEN': {'offset': 520, 'modifier': 1},
                     'MOUTH_SMILE': {'offset': 520, 'modifier': 1},
@@ -425,7 +425,7 @@ class ActionImporter(object):
                     position = _realToScalePos(positionReal, offset, servo.model.positionScale)
                     position = position * servo.positionModifier
                     if position < servo.minPosition or position > servo.maxPosition:
-                        print >> sys.stderr, "Converted position (%s) for pose %s is out of range [%s:%s]" % (position, name, servo.minPosition, servo.maxPosition)
+                        print >> sys.stderr, "Converted position (%s) for pose %s is out of range [%s:%s] for joint %s" % (position, name, servo.minPosition, servo.maxPosition, jointName)
                     if servo.model.speedScale != None:
                         speed = _realToScaleSpeed(speed, servo.model.speedScale)
                     else:
