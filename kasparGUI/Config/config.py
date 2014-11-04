@@ -22,12 +22,13 @@ if platform.system() == 'Linux':
 else:
     webConfig = {
             'server.socket_host': '0.0.0.0',
-            'server.socket_port': 80,
+            'server.socket_port': 1065,
             'server.thread_pool': 10,
             'server.thread_pool_max': -1,
             'JSON_AS_ASCII': False,
             'DEBUG': True,
-            'loglevel': logging.WARNING,
+            #'loglevel': logging.DEBUG,
+            'loglevel': 1,
     #         'environment': 'production'
     }
     dbConfig = {

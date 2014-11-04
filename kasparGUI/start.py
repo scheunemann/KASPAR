@@ -41,7 +41,7 @@ def configureSite():
 
 
 def wakeUp():
-    from robotActionController.ActionRunner import ActionRunner
+    from robotActionController.ActionRunner import ActionManager
     from robotActionController.Data.storage import StorageFactory
     from kasparGUI import Model
     ds = StorageFactory.getNewSession()
@@ -49,9 +49,10 @@ def wakeUp():
     if robot.defaultAction:
         from robotActionController.Robot import Robot
         logging.getLogger(__name__).info("Starting %s's default Action (%s)" % (robot.name, robot.defaultAction))
-        action = ActionRunner.getRunable(robot.defaultAction)
-        robot = Robot.getRunnableRobot(robot)
-        ActionRunner(robot).executeAsync(action)
+        robotInt = Robot.getRunnableRobot(robot)
+        manager = ActionManager.getManager(robotInt)
+        action = manager.getRunable(robot.defaultAction)
+        manager.executeActionAsync(action)
 
 
 def runSite():

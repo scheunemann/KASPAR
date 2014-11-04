@@ -1,7 +1,7 @@
 import datetime
 from flask import Blueprint, jsonify, abort, request, redirect
 from kasparGUI.legacyImporter import ActionImporter
-from robotActionController.ActionRunner import ActionRunner
+from robotActionController.ActionRunner import ActionManager
 from robotActionController.Robot import Robot
 from kasparGUI.Web.api.database import db_session
 import kasparGUI.Model as Model
@@ -115,8 +115,9 @@ def testPost(aid):
     robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
     robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
     r = Robot.getRunnableRobot(robot)
-    a = ActionRunner.getRunable(action)
-    handle = ActionRunner(r).executeAsync(a)
+    m = ActionManager.getManager(r)
+    a = m.getRunable(action)
+    handle = m.executeActionAsync(a)
     __testRunners[aid] = handle
 
     active = handle.isAlive()

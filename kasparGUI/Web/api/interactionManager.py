@@ -1,9 +1,9 @@
 import kasparGUI.Model as Model
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Processor import TriggerProcessor
-from robotActionController.ActionRunner import ActionRunner
+from robotActionController.ActionRunner import ActionManager
 from robotActionController.Robot import Robot
-from threading import RLock
+from gevent.lock import RLock
 import datetime
 import logging
 
@@ -22,7 +22,7 @@ class InteractionManager(object):
         robot = Robot.getRunnableRobot(interaction.robot)
         self._triggerProcessor = TriggerProcessor([], robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
-        self._actionRunner = ActionRunner(robot)
+        self._actionManager = ActionManager.getManager(robot)
         self._handles = {}
         self._handleLock = RLock()
 
@@ -84,9 +84,9 @@ class InteractionManager(object):
             action = ds.query(Model.Action).join(Model.Trigger).filter(Model.Trigger.id == triggerId).first()
 
         if action:
-            action = ActionRunner.getRunable(action)
+            action = self._actionManager.getRunable(action)
             with self._handleLock:
                 if action.id in self._handles:
                     self._handles[action.id].stop()
-                self._handles[action.id] = self._actionRunner.executeAsync(action, self._handleComplete, (log.id,))
+                self._handles[action.id] = self._actionManager.executeActionAsync(action, self._handleComplete, (log.id,))
         return log

@@ -6,7 +6,6 @@ from kasparGUI.Model import Base, User, Operator, Setting, Action
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Robot import importer
 import legacyImporter
-from xml.etree import ElementTree as et
 StorageFactory.config['engine'].update(dbConfig)
 
 
@@ -104,7 +103,6 @@ def _loadTestData():
     session.close()
 
 
-
 if __name__ == "__main__":
     flush = False
     fill = False
@@ -112,7 +110,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Subdir not specified"
 #         exit()
-        subDir = 'kaspar-1c'
+        subDir = 'kaspar3'
+        configFile = 'kaspar3-1.xml'
         flush = True
         fill = True
     else:
