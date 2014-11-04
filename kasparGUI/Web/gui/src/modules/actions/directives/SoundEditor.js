@@ -15,6 +15,10 @@ define(function(require) {
 			controller : function($scope, $http) {
 				$scope.language = language.getText();
 
+                                $scope.save = function() {
+                                    $scope.sound.$save();
+                                };
+
 				$scope.uploadSound = function(file) {
 					var fd = new FormData();
 					fd.append('sound', file);

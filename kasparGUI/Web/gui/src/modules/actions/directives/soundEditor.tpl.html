@@ -20,6 +20,7 @@
                 <button
                     class="btn btn-default"
                     type="button"
+                    ng-disabled="true"
                     ng-click="saveAs()">Save As</button>
             </span>
 		</div>
@@ -52,6 +53,18 @@
 				class="form-control"
 				ng-model="sound.uuid" />
 		</div>
+		<div class="input-group noselect">
+                        <span class="input-group-addon inputLabel">{{language['action.sound.volume'] || 'Volume'}}</span>
+                        <div
+                                        guislider
+                                        name="volume"
+                                        saveable
+                                        ng-model="sound.volume"
+                                        floor="1"
+                                        ceiling="200"></div>
+                        <span class="input-group-addon">{{sound.volume || 100}}%</span>
+                </div>
+
 	</form>
 	<div>
 		<strong>TODO:</strong>
