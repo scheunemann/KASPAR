@@ -503,25 +503,34 @@ def loadDirectory(actions, triggers, games, robots, subDir, loadActions=True, lo
         if os.path.exists(searchDir):
             files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
             for fileName in filter(lambda f: f.endswith(".pose"), files):
+                fName = os.path.basename(fileName)
                 f = open(fileName)
                 lines = f.readlines()
                 pose = a.getPose(lines, r)
-                if pose != None and pose.name not in actions:
-                    actions[pose.name] = pose
+                if pose != None:
+                    if pose.name not in actions:
+                        actions[pose.name] = pose
+                    else:
+                        print "Skipping pose %s (%s), another by the same name already exists" % (pose.name, fName)
                 else:
-                    print "Skipping pose %s, another by the same name already exists" % pose.name
+                    print "Unable to load pose (%s)" % (fName)
 
         searchDir = os.path.join(subDir, 'seqs')
         if os.path.exists(searchDir):
             files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
             for fileName in filter(lambda f: f.endswith(".seq"), files):
+                fName = os.path.basename(fileName)
                 f = open(fileName)
                 lines = f.readlines()
                 sequence = a.getSequence(lines, actions.values(), os.path.join(subDir, 'sounds'))
-                if sequence != None and sequence.name not in actions:
-                    actions[sequence.name] = sequence
+                if sequence != None:
+                    if sequence.name not in actions:
+                        actions[sequence.name] = sequence
+                    else:
+                        print "Skipping sequence %s (%s), another by the same name already exists" % (sequence.name, fName)
                 else:
-                    print "Skipping sequence %s, another by the same name already exists" % pose.name
+                    print "Unable to load sequence (%s)" % (fName)
+ 
 
     if loadTriggers:
         t = TriggerImporter()
