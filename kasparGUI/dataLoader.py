@@ -39,11 +39,13 @@ def _loadConfigs(configDir, configFile='robot.xml'):
         (robots, actions, triggers) = importer.loadDirectory(actions, {}, [], configDir, root)
         games = []
 
+    newActions = [v for v in actions.itervalues() if not v.id]
+
     robot = robots[0].name
     print "Saving data"
 
     session.add_all(robots)
-    session.add_all(actions)
+    session.add_all(newActions)
     session.add_all(triggers)
     session.add_all(games)
     session.commit()
