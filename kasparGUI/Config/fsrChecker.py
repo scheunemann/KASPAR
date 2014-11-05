@@ -2,7 +2,7 @@
 import time
 
 ids = {
-       '/dev/bodyServos': [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+       '/dev/bodySensors': [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
        '/dev/headServos': [0, 1, 2, 3]
       }
 
