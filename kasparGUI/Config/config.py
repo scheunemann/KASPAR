@@ -27,8 +27,7 @@ else:
             'server.thread_pool_max': -1,
             'JSON_AS_ASCII': False,
             'DEBUG': True,
-            #'loglevel': logging.DEBUG,
-            'loglevel': 1,
+            'loglevel': logging.DEBUG,
     #         'environment': 'production'
     }
     dbConfig = {

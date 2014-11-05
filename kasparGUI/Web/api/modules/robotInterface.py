@@ -22,6 +22,7 @@ __CLIENTMSG = 'setData'
 import logging
 log = logging.getLogger(__name__)
 loop = None
+loopRate = 10 #Hz
 
 
 def init_app(app):
@@ -115,6 +116,7 @@ def _loop_internal(log):
     lastMsgs = {}
     while True:
         try:
+            start = datetime.datetime.utcnow()
             with __robotLock:
                 robots = __robots.iteritems()
             for robotId, robot in robots:
@@ -130,7 +132,10 @@ def _loop_internal(log):
         except Exception:
             log.warning('Error occurred!', exc_info=True)
 
-        sleep(0.01)
+        end = datetime.datetime.utcnow()
+        loopTime = 1.0 / loopRate
+        sleepTime = max(loopTime - (end - start).total_seconds(), 0)
+        sleep(sleepTime)
 
 
 def _getRobotPacket(robotId, robot, timefilter=None):
@@ -213,7 +218,7 @@ def _updateStatus(robot, log):
         try:
             newVal = servo['interface'].getPosition()
             newPos = servo['interface'].getPositioning()
-        except Exception as e:
+        except Exception:
             log.error('Unable to get servo position', exc_info=True)
             continue
 

@@ -1,13 +1,13 @@
 require.config({
         paths: {
             underscore: 'bower_components/underscore/underscore-min',
-            angular: 'bower_components/angular/angular.min',
+            angular: 'bower_components/angular/angular',
             jquery: 'bower_components/jquery/jquery.min',
             jqueryUI: 'bower_components/jquery-ui/ui/minified/jquery-ui.min',
             angularSlider: 'bower_components/angular-ui-slider/src/slider',
             angularXEditable: 'bower_components/angular-xeditable/dist/js/xeditable.min',
             angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
-            angularResource: 'bower_components/angular-resource/angular-resource.min',
+            angularResource: 'bower_components/angular-resource/angular-resource',
             angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router',
             mousetrap: 'bower_components/mousetrap/mousetrap.min',
             mousetrapPause: 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',

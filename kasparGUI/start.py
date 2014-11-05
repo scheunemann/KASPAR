@@ -8,6 +8,7 @@ from werkzeug.wsgi import DispatcherMiddleware
 # We use websockets inside the robotinterface, this doesn't work with the werkzeug server
 from werkzeug.serving import run_with_reloader
 from socketio.server import SocketIOServer
+from robotActionController.ActionRunner.base import ActionRunner
 siteRoot = None
 server = None
 
@@ -49,9 +50,9 @@ def wakeUp():
     if robot.defaultAction:
         from robotActionController.Robot import Robot
         logging.getLogger(__name__).info("Starting %s's default Action (%s)" % (robot.name, robot.defaultAction))
-        robotInt = Robot.getRunnableRobot(robot)
+        robotInt = Robot.getRunableRobot(robot)
         manager = ActionManager.getManager(robotInt)
-        action = manager.getRunable(robot.defaultAction)
+        action = ActionRunner.getRunable(robot.defaultAction)
         manager.executeActionAsync(action)
 
 
@@ -60,7 +61,7 @@ def runSite():
     if server == None:
         raise Exception("Site not configured, run configureSite() first")
 
-    logging.getLogger(__name__).error('Spawning web server, ready for connections')
+    logging.getLogger(__name__).error('Spawning web server, ready for connections on port %s' % server.server_port)
 
     # start the server, use_reloader=False allows debugging in the IDE
     if webConfig.get('server.use_reloader', False):

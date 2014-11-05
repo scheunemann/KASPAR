@@ -1,64 +1,64 @@
 <div class="row">
-	<div class="col-lg-12">
-		<ng-form
-			name="jointForm"
-			ng-class="{'has-info': (!jointPosition.id && jointForm.$pristine) || (jointPosition.isDeleted), 'has-warning': jointForm.$dirty}"
-			model="jointPosition">
-		<div class="input-group">
-			<span class="input-group-addon inputLabel-sm">
-				<span>{{language['action.pose.joint.name']}}</span>
-			</span>
-			<select
-				name="jointname"
-				class="selectpicker form-control"
-				ng-options="name for name in ((jointNames || []).length ? jointNames : [jointPosition.jointName]) | orderBy:'toString()'"
-				ng-model="jointPosition.jointName"
-				ng-disabled="jointForm.jointname.$pristine && jointForm.jointname.$valid"
-				required
-				notEmpty>
-				<option value="">{{language['action.pose.joint.select.prompt']}}</option>
-			</select>
-			<span
-				class="input-group-btn"
-				ng-if="jointPosition.id || !jointForm.$pristine">
-				<button
-					class="btn btn-default"
-					type="button"
-					ng-click="removeJoint()">{{language['action.pose.joint.delete']}}</button>
-			</span>
-		</div>
-		<div>
-			<div class="input-group">
-				<span class="input-group-addon inputLabel-sm">{{language['action.pose.joint.position']}}</span>
-				<div
-					ng-show="advanced"
-					guislider
-					name="jointposition"
-					floor="coalesce(servo.minPosition, servoModel.minPosition, -180)"
-					ceiling="coalesce(servo.maxPosition, servoModel.maxPosition, 180)"
-					ng-model="jointPosition.position"></div>
-				<span
-					class="input-group-btn form-control nopadding"
-					ng-hide="advanced">
-					<button
-						type="button"
-						class="btn btn-primary check fill"
-						ng-model="poseable"
-						btn-checkbox>{{language['action.pose.joint.poseable']}}</button>
-				</span>
-				<span class="input-group-addon">{{(poseable ? servoInt.$actual.position : jointPosition.position)}}&deg;</span>
-			</div>
-			<div class="input-group noselect">
-				<span class="input-group-addon inputLabel-sm">{{language['action.pose.joint.speed']}}</span>
-				<div
-					guislider
-					name="jointspeed"
-					ng-model="jointPosition.speed"
-					floor="coalesce(servo.minSpeed, servoModel.minSpeed, 1)"
-					ceiling="coalesce(servo.maxSpeed, servoModel.maxSpeed, 300)"></div>
-				<span class="input-group-addon">{{jointPosition.speed}}%</span>
-			</div>
-		</div>
-		</ng-form>
-	</div>
+    <div class="col-lg-12">
+        <ng-form
+            name="jointForm"
+            ng-class="{'has-info': (!jointPosition.id && jointForm.$pristine) || (jointPosition.isDeleted), 'has-warning': jointForm.$dirty}"
+            model="jointPosition">
+        <div class="input-group">
+            <span class="input-group-addon inputLabel-sm">
+                <span>{{language['action.pose.joint.name']}}</span>
+            </span>
+            <select
+                name="jointname"
+                class="selectpicker form-control"
+                ng-options="name for name in ((jointNames || []).length ? jointNames : [jointPosition.jointName]) | orderBy:'toString()'"
+                ng-model="jointPosition.jointName"
+                ng-disabled="jointForm.jointname.$pristine && jointForm.jointname.$valid"
+                required
+                notEmpty>
+                <option value="">{{language['action.pose.joint.select.prompt']}}</option>
+            </select>
+            <span
+                class="input-group-btn"
+                ng-if="jointPosition.id || !jointForm.$pristine">
+                <button
+                    class="btn btn-default"
+                    type="button"
+                    ng-click="removeJoint()">{{language['action.pose.joint.delete']}}</button>
+            </span>
+        </div>
+        <div>
+            <div class="input-group">
+                <span class="input-group-addon inputLabel-sm">{{language['action.pose.joint.position']}}</span>
+                <div
+                    ng-show="advanced"
+                    guislider
+                    name="jointposition"
+                    floor="coalesce(servo.minPosition, servoModel.minPosition, -180)"
+                    ceiling="coalesce(servo.maxPosition, servoModel.maxPosition, 180)"
+                    ng-model="jointPosition.position"></div>
+                <span
+                    class="input-group-btn form-control nopadding"
+                    ng-hide="advanced">
+                    <button
+                        type="button"
+                        class="btn btn-primary check fill"
+                        ng-model="poseable"
+                        btn-checkbox>{{language['action.pose.joint.' + (poseable ? 'poseable' : 'locked')]}}</button>
+                </span>
+                <span class="input-group-addon">{{(poseable ? servoInt.$actual.position : jointPosition.position)}}&deg;</span>
+            </div>
+            <div class="input-group noselect">
+                <span class="input-group-addon inputLabel-sm">{{language['action.pose.joint.speed']}}</span>
+                <div
+                    guislider
+                    name="jointspeed"
+                    ng-model="jointPosition.speed"
+                    floor="coalesce(servo.minSpeed, servoModel.minSpeed, 1)"
+                    ceiling="coalesce(servo.maxSpeed, servoModel.maxSpeed, 300)"></div>
+                <span class="input-group-addon">{{jointPosition.speed}}%</span>
+            </div>
+        </div>
+        </ng-form>
+    </div>
 </div>

@@ -19,7 +19,7 @@ class InteractionManager(object):
             interaction.robot = robot
             ds.commit()
 
-        robot = Robot.getRunnableRobot(interaction.robot)
+        robot = Robot.getRunableRobot(interaction.robot)
         self._triggerProcessor = TriggerProcessor([], robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
         self._actionManager = ActionManager.getManager(robot)

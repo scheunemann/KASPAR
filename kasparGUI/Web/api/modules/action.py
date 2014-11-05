@@ -1,9 +1,9 @@
-import datetime 
-from flask import Blueprint, jsonify, abort, request, redirect 
-from kasparGUI.legacyImporter import ActionImporter 
+import datetime
+from flask import Blueprint, jsonify, abort, request, redirect
+from kasparGUI.legacyImporter import ActionImporter
 from robotActionController.ActionRunner import ActionManager, ActionRunner
-from robotActionController.Robot import Robot 
-from kasparGUI.Web.api.database import db_session 
+from robotActionController.Robot import Robot
+from kasparGUI.Web.api.database import db_session
 import kasparGUI.Model as Model
 
 
@@ -111,26 +111,30 @@ def testPost(aid):
         handle = __testRunners[aid]
         handle.kill()
         handle.join(1)
-    action = db_session.query(Model.Action).get(aid)
+
+    if not request.data and aid:
+        action = db_session.query(Model.Action).get(aid)
+    else:
+        action = ActionRunner.getRunable(request.json)
+
     if not action:
         abort(400, msg='Action not found')
-        
+
     robotName = db_session.query(Model.Setting).filter(Model.Setting.key == 'robot').first()
     robot = db_session.query(Model.Robot).filter(Model.Robot.name == robotName.value).first()
-    r = Robot.getRunnableRobot(robot)
+    r = Robot.getRunableRobot(robot)
     m = ActionManager.getManager(r)
     a = ActionRunner.getRunable(action) #We don't want these cached
     handle = m.executeActionAsync(a)
     __testRunners[aid] = handle
 
-    active = bool(handle)
-    output = handle.output
+#     active = bool(handle)
+#     output = handle.output
 
-    ret = {
-           'id': aid,
-           'output': [(o[0].isoformat(), o[1]) for o in output],
-           'active': active,
-           'timestamp': datetime.datetime.utcnow().isoformat(),
-    }
+#     request.json['$_results'] = {
+#            'output': [(o[0].isoformat(), o[1]) for o in output],
+#            'active': active,
+#            'timestamp': datetime.datetime.utcnow().isoformat(),
+#     }
 
-    return jsonify(ret)
+    return jsonify(request.json)
