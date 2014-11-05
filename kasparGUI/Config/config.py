@@ -3,6 +3,9 @@ import platform
 import sys
 import os
 
+globalConfig = {
+    'dataFolder': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../Data')),
+}
 
 if platform.system() == 'Linux':
     webConfig = {
@@ -17,7 +20,7 @@ if platform.system() == 'Linux':
     }
     dbConfig = {
          'type': 'Sqlite',
-         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
+         'file': os.path.join(globalConfig['dataFolder'], 'kaspar.db')
     }
 else:
     webConfig = {
@@ -30,16 +33,16 @@ else:
             'loglevel': logging.DEBUG,
     #         'environment': 'production'
     }
-    dbConfig = {
-           'type': 'MySql',
-           'host': 'localhost',
-           'user': 'kaspar',
-           'pass': 'kaspar',
-           'db': 'kaspar',
-    }
+    #dbConfig = {
+    #       'type': 'MySql',
+    #       'host': 'localhost',
+    #       'user': 'kaspar',
+    #       'pass': 'kaspar',
+    #       'db': 'kaspar',
+    #}
     dbConfig = {
          'type': 'Sqlite',
-         'file': os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../kaspar.db'))
+         'file': os.path.join(globalConfig['dataFolder'], 'kaspar.db')
     }
 
 

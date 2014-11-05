@@ -1,18 +1,24 @@
 import os
 import sys
 
-from Config.config import dbConfig
+from Config.config import dbConfig, globalConfig
 from kasparGUI.Model import Base, User, Operator, Setting, Action
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Robot import importer
 import legacyImporter
 StorageFactory.config['engine'].update(dbConfig)
+StorageFactory.config['dataFolder'] = globalConfig['dataFolder']
 
 
 def _flushData():
+    if not os.path.isdir(StorageFactory.config['dataFolder']):
+        os.makedirs(StorageFactory.config['dataFolder'])
     StorageFactory.getDefaultDataStore().engine.echo = True
     StorageFactory.drop_keys(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
+    from shutil import rmtree
+    for dir in [d for (d, _, _) in os.walk('/home/pi/git/KASPAR/kasparGUI/Data')][1:]:
+        rmtree(dir, True)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
     StorageFactory.getDefaultDataStore().engine.echo = False
 
