@@ -68,7 +68,7 @@ class InteractionManager(object):
         return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, source, triggerActivatedArg):
-        source = 'USER' if triggerActivatedArg.triggerType == 'ButtonTrigger' else 'AUTOMATIC'
+        source = 'USER' if triggerActivatedArg.type == 'ButtonTrigger' else 'AUTOMATIC'
         self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, source, triggerActivatedArg.action)
 
     def doTrigger(self, triggerId, value, source, action=None):
