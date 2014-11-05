@@ -17,7 +17,7 @@ def _flushData():
     StorageFactory.drop_keys(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
     from shutil import rmtree
-    for dir in [d for (d, _, _) in os.walk('/home/pi/git/KASPAR/kasparGUI/Data')][1:]:
+    for dir in [d for (d, _, _) in os.walk(StorageFactory.config['dataFolder'])][1:]:
         rmtree(dir, True)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
     StorageFactory.getDefaultDataStore().engine.echo = False
