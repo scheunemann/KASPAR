@@ -34,9 +34,9 @@ def _loadConfigs(configDir, configFile='robot.xml'):
     actions = {action.name: action for action in session.query(Action).all()}
 
     if configType == 'KASPAR':
-        (robots, actions, triggers, games) = legacyImporter.loadDirectory({}, actions, [], [], configDir)
+        (robots, actions, triggers, games) = legacyImporter.loadDirectory(actions, {}, [], [], configDir)
     else:
-        (robots, actions, triggers) = importer.loadDirectory({}, actions, [], configDir, root)
+        (robots, actions, triggers) = importer.loadDirectory(actions, {}, [], configDir, root)
         games = []
 
     robot = robots[0].name
