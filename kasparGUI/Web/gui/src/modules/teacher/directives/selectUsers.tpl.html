@@ -21,11 +21,12 @@
         <button
             type="button"
             ng-click="back()"
-            ng-if="onCanceled"
+            ng-if="showBack"
             class="btn btn-default btn-lg">Back</button>
         <button
             type="button"
             ng-disabled="!selected.length"
+            ng-if="showNext"
             ng-click="next()"
             class="btn btn-default btn-lg">Next</button>
     </div>

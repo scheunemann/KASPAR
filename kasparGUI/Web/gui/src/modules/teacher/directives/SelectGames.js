@@ -18,7 +18,10 @@ define(function(require) {
                     onCanceled: '&?',
                     multiple: '=?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                     $scope.selected = [];
                     $scope.games = gameService.getGames();
@@ -82,16 +85,12 @@ define(function(require) {
                     };
 
                     $scope.back = function() {
-                        if ($scope.onCanceled) {
-                            $scope.onCanceled();
-                        }
+                        $scope.onCanceled();
                     };
 
                     $scope.next = function() {
                         $scope.selectedGames = $scope.selected;
-                        if ($scope.onFinished) {
-                            $scope.onFinished({selectedGames: $scope.selectedGames});
-                        }
+                        $scope.onFinished({selectedGames: $scope.selectedGames});
                     };
 
                     $scope.isSelected = function(game) {

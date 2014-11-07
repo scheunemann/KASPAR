@@ -18,7 +18,10 @@ define(function(require) {
                     onFinished: '&?',
                     onCanceled: '&?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                     $scope.$watch('firstGame', function(game) {
                             $scope.selectedGame = game;
@@ -60,9 +63,7 @@ define(function(require) {
                         if (interactionService.getCurrentGame()) {
                             alert('Please finish current game first!');
                         } else {
-                            if ($scope.onFinished) {
-                                $scope.onFinished();
-                            }
+                            $scope.onFinished();
                         }
                     };
                 }
