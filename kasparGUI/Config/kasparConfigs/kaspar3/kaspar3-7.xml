@@ -11,19 +11,19 @@
         </SERVO>
         <SERVO id="7" type="HS82MG">
             <NAME>EYEBALL_R_PITCH</NAME>
-            <CENTER>1560</CENTER>
+            <CENTER>1510</CENTER>
         </SERVO>
         <SERVO id="9" type="HS82MG">
             <NAME>EYE_L_YAW</NAME>
-            <CENTER>1420</CENTER>
+            <CENTER>1480</CENTER>
         </SERVO>
         <SERVO id="11" type="HS82MG">
             <NAME>EYE_L_LID</NAME>
-            <CENTER>1680</CENTER>
+            <CENTER>1610</CENTER>
         </SERVO>
         <SERVO id="10" type="HS82MG">
             <NAME>EYEBALL_L_PITCH</NAME>
-            <CENTER>1370</CENTER>
+            <CENTER>1420</CENTER>
         </SERVO>
     </SERVOLIST>
 </ROBOT>
