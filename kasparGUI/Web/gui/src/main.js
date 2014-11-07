@@ -9,6 +9,7 @@ require.config({
             angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
             angularResource: 'bower_components/angular-resource/angular-resource',
             angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router',
+            angularLoadingBar: 'bower_components/angular-loading-bar/build/loading-bar.min',
             mousetrap: 'bower_components/mousetrap/mousetrap.min',
             mousetrapPause: 'bower_components/mousetrap/plugins/pause/mousetrap-pause.min',
             text: 'bower_components/requirejs-text/text',
@@ -57,6 +58,13 @@ require.config({
                     return 'ui.slider';
                 },
                 deps: ['angular', 'jquery', 'jqueryUI']
+            },
+            'angularLoadingBar': {
+                init: function() {
+                    'use strict';
+                    return 'angular-loading-bar';
+                },
+                deps: ['angular']
             },
             'jqueryUI': {
                 deps: ['jquery', ]

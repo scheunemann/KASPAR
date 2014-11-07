@@ -4,6 +4,7 @@ define(function(require) {
         var angular = require('angular');
         var angularRouter = require('angularUIRouter');
         var angularBootstrap = require('angularBoostrap');
+        var angularLoadingBar = require('angularLoadingBar');
         var modelServices = require('common/services/modelServices');
 
         var defaultTemplate = require('text!teacher/index.tpl.html');
@@ -14,6 +15,7 @@ define(function(require) {
         var dependancies = [
             angularRouter,
             angularBootstrap,
+            angularLoadingBar,
             commonControllers,
             teacher,
         ];
@@ -24,9 +26,11 @@ define(function(require) {
             $stateProvider.state('default', {
                     url: '/teacher.html',
                     template: defaultTemplate,
-                    controller: ['$scope', 'loginService', function($scope, loginService) {
-                        $scope.loginService = loginService;
-                    }],
+                    controller: ['$scope', 'loginService',
+                        function($scope, loginService) {
+                            $scope.loginService = loginService;
+                        }
+                    ],
                 });
         };
 
@@ -34,8 +38,13 @@ define(function(require) {
             modelBuilderProvider.setBasePath('/api');
         };
 
+        var LoadingBarConfig = function(cfpLoadingBarProvider) {
+            cfpLoadingBarProvider.includeSpinner = false;
+        };
+
         var module = angular.module(moduleName, dependancies);
         module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', Routes]);
         module.config(['modelBuilderProvider', ApiConfig]);
+        module.config(['cfpLoadingBarProvider', LoadingBarConfig]);
         return moduleName;
     });

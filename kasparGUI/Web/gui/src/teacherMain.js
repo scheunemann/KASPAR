@@ -7,6 +7,7 @@ require.config({
             angularBoostrap: 'bower_components/angular-bootstrap/ui-bootstrap-tpls',
             angularResource: 'bower_components/angular-resource/angular-resource.min',
             angularUIRouter: 'bower_components/angular-ui-router/release/angular-ui-router.min',
+            angularLoadingBar: 'bower_components/angular-loading-bar/build/loading-bar.min',
             text: 'bower_components/requirejs-text/text',
             socketio: 'bower_components/socket.io-client/dist/socket.io.min',
             categories: 'categories',
@@ -37,6 +38,13 @@ require.config({
                 init: function() {
                     'use strict';
                     return 'ui.router';
+                },
+                deps: ['angular']
+            },
+            'angularLoadingBar': {
+                init: function() {
+                    'use strict';
+                    return 'angular-loading-bar';
                 },
                 deps: ['angular']
             },
