@@ -47,7 +47,10 @@ def wakeUp():
     from kasparGUI import Model
     ds = StorageFactory.getNewSession()
     robot = ds.query(Model.Robot).join(Model.Setting, Model.Robot.name==Model.Setting.value).filter(Model.Setting.key=='robot').first()
-    if robot.defaultAction:
+    if not robot:
+        setting = ds.query(Model.Setting).filter(Model.Setting.key=='robot').first()
+        logging.getLogger(__name__).error("Unable to locate robot with name %s" % (setting, ))
+    elif robot.defaultAction:
         from robotActionController.Robot import Robot
         logging.getLogger(__name__).info("Starting %s's default Action (%s)" % (robot.name, robot.defaultAction))
         robotInt = Robot.getRunableRobot(robot)
