@@ -1,5 +1,6 @@
 import os
 import sys
+from itertools import groupby
 
 from Config.config import dbConfig, globalConfig
 from kasparGUI.Model import Base, User, Operator, Setting, Action
@@ -42,8 +43,22 @@ def _loadConfigs(configDir, configFile='robot.xml'):
     newActions = [v for v in actions.itervalues() if not v.id]
 
     robot = robots[0].name
-    print "Saving data"
+    
+    actionText = triggerText = gameText = robotText = ""
+    key = lambda x: x.type
+    if newActions:        
+        counts = ["%s: %s" % (key, len(list(group))) for key, group in groupby(sorted(newActions, key=key), key=key)]
+        actionText = "Actions: %s (%s)" % (len(newActions), counts)
+    if triggers:
+        counts = ["%s: %s" % (key, len(list(group))) for key, group in groupby(sorted(triggers, key=key), key=key)]
+        triggerText = "Triggers: %s (%s)" % (len(triggers), counts)
+    if games:
+        gameText = "Play Scenarios: %s" % (len(games), )
+    if robots:
+        robotText = "Robots: %s" % (len(robots), )
 
+    dataText = [robotText, actionText, triggerText, gameText]
+    print "Saving data - %s" % (', '.join([t for t in dataText if t]))
     session.add_all(robots)
     session.add_all(newActions)
     session.add_all(triggers)
