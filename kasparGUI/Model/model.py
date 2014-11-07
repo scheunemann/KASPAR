@@ -112,6 +112,9 @@ class Setting(StandardMixin, Base):
         self.key = key
         self.value = value
 
+    def __str__(self):
+        return "Setting(key=%s, value=%s)" % (self.key, self.value)
+
 
 class Interaction(StandardMixin, Base):
 
