@@ -205,7 +205,7 @@ function reboot {
 function loadDatabase {
     printHeader "Loading Data for $1"
     configDir=`echo $1 | awk '{print tolower($0)}'`
-    dbFile="../kasparGUI/kaspar.db"
+    dbFile="../kasparGUI/Data/kaspar.db"
     dbCommand="python ../kasparGUI/dataLoader.py kaspar3 $configDir.xml flush"
     if [ -f $dbFile ]; then
         echo "Skipping installing database, already configured"
