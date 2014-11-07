@@ -1,5 +1,5 @@
-import time
-from threading import RLock
+from gevent.lock import RLock
+from gevent import spawn, sleep
 import datetime
 from flask import request
 from flask.json import dumps
@@ -8,7 +8,6 @@ from kasparGUI.Web.api.database import db_session
 import kasparGUI.Model as Model
 from robotActionController.Robot.ServoInterface import ServoInterface
 from robotActionController.Processor.SensorInterface import SensorInterface
-from threading import Thread
 
 socketio = SocketIO()
 
@@ -23,6 +22,7 @@ __CLIENTMSG = 'setData'
 import logging
 log = logging.getLogger(__name__)
 loop = None
+loopRate = 10 #Hz
 
 
 def init_app(app):
@@ -109,15 +109,14 @@ def configure(data):
 def _start_loop():
     log = logging.getLogger(__name__)
     log.debug("Spawning robot state polling loop")
-    loop = Thread(target=_loop_internal, args=(log,))
-    loop.daemon = True
-    loop.start()
+    loop = spawn(_loop_internal, log)
 
 
 def _loop_internal(log):
     lastMsgs = {}
     while True:
         try:
+            start = datetime.datetime.utcnow()
             with __robotLock:
                 robots = __robots.iteritems()
             for robotId, robot in robots:
@@ -130,10 +129,13 @@ def _loop_internal(log):
                     if msg['sensors'] or msg['servos']:
                         log.log(1, 'Sending robot state to %s listeners' % numListeners)
                         sendMessage(robotId, msg)
-        except Exception as e:
+        except Exception:
             log.warning('Error occurred!', exc_info=True)
 
-        time.sleep(0.01)
+        end = datetime.datetime.utcnow()
+        loopTime = 1.0 / loopRate
+        sleepTime = max(loopTime - (end - start).total_seconds(), 0)
+        sleep(sleepTime)
 
 
 def _getRobotPacket(robotId, robot, timefilter=None):
@@ -203,7 +205,7 @@ def _updateStatus(robot, log):
     for sensor in robot['sensors'].itervalues():
         try:
             newVal = sensor['interface'].getCurrentValue()
-        except Exception as e:
+        except Exception:
             log.error('Unable to get sensor value', exc_info=True)
             continue
 
@@ -216,7 +218,7 @@ def _updateStatus(robot, log):
         try:
             newVal = servo['interface'].getPosition()
             newPos = servo['interface'].getPositioning()
-        except Exception as e:
+        except Exception:
             log.error('Unable to get servo position', exc_info=True)
             continue
 

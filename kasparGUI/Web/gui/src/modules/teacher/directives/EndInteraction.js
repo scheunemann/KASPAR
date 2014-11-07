@@ -16,7 +16,10 @@ define(function(require) {
                     onFinished: '&?',
                     onCanceled: '&?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                     $scope.images = ['bad.png', 'moderate_bad.png', 'neutral.png', 'moderate_good.png', 'good.png'];
                     $scope.colors = ['bad', 'moderate_bad', 'neutral', 'moderate_good', 'good'];
@@ -30,9 +33,7 @@ define(function(require) {
                         var eng = _.pluck($scope.interaction.users, 'engagement');
                         if (_.every(exp) && _.every(eng) && $scope.interaction.operatorExperience) {
                             interactionService.endInteraction($scope.interaction);
-                            if ($scope.onFinished) {
-                                $scope.onFinished();
-                            }
+                            $scope.onFinished();
                         } else {
                             alert('Please report your experience by clicking on the images');
                         }

@@ -15,7 +15,10 @@ define(function(require) {
                     onFinished: '&?',
                     onCanceled: '&?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                      $scope.newUser = {
                          name: 'New User'
@@ -33,16 +36,12 @@ define(function(require) {
                      });
 
                      $scope.back = function() {
-                         if ($scope.onCanceled) {
-                             $scope.onCanceled();
-                         }
+                         $scope.onCanceled();
                      };
 
                      $scope.next = function() {
                          $scope.selectedUsers = $scope.selected;
-                         if ($scope.onFinished) {
-                             $scope.onFinished();
-                         }
+                         $scope.onFinished();
                      };
 
                      $scope.selectUser = function(user) {

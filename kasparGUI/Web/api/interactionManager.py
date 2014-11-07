@@ -1,11 +1,13 @@
 import kasparGUI.Model as Model
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Processor import TriggerProcessor
-from robotActionController.ActionRunner import ActionRunner
+from robotActionController.ActionRunner import ActionManager
 from robotActionController.Robot import Robot
-from threading import RLock
 import datetime
 import logging
+from gevent import spawn
+from gevent.pool import Group
+from gevent.lock import RLock
 
 
 class InteractionManager(object):
@@ -19,10 +21,10 @@ class InteractionManager(object):
             interaction.robot = robot
             ds.commit()
 
-        robot = Robot.getRunnableRobot(interaction.robot)
+        robot = Robot.getRunableRobot(interaction.robot)
         self._triggerProcessor = TriggerProcessor([], robot, datetime.timedelta(seconds=0.01))
         self._triggerProcessor.triggerActivated += self._triggerActivated
-        self._actionRunner = ActionRunner(robot)
+        self._actionManager = ActionManager.getManager(robot)
         self._handles = {}
         self._handleLock = RLock()
 
@@ -34,6 +36,8 @@ class InteractionManager(object):
 
     def setTriggers(self, triggers):
         self._logger.debug("Settings triggers to: %s", triggers)
+        self._actionManager.clearCache()
+        self._actionManager.cacheActions([t.action for t in triggers])
         self._triggerProcessor.setTriggers(triggers)
 
     @property
@@ -55,7 +59,7 @@ class InteractionManager(object):
         log.data = ''
         for timestamp, msg in handle.output:
             log.data += '%s: %s\n' % (timestamp.isoformat(), msg)
-            self._logger.debug(log.data)
+            self._logger.debug(log.data.strip())
         ds.add(log)
         if iLog:
             iLog.logs.append(log)
@@ -68,7 +72,7 @@ class InteractionManager(object):
         return ds.query(Model.Trigger).all()
 
     def _triggerActivated(self, source, triggerActivatedArg):
-        source = 'USER' if triggerActivatedArg.triggerType == 'ButtonTrigger' else 'AUTOMATIC'
+        source = 'USER' if triggerActivatedArg.type == 'ButtonTrigger' else 'AUTOMATIC'
         self.doTrigger(triggerActivatedArg.trigger_id, triggerActivatedArg.value, source, triggerActivatedArg.action)
 
     def doTrigger(self, triggerId, value, source, action=None):
@@ -84,9 +88,16 @@ class InteractionManager(object):
             action = ds.query(Model.Action).join(Model.Trigger).filter(Model.Trigger.id == triggerId).first()
 
         if action:
-            action = ActionRunner.getRunable(action)
+            action = self._actionManager.getRunable(action)
+            if self._handles:
+                with self._handleLock:
+                    handles = Group()
+                    for handle in self._handles.values():
+                        handles.add(spawn(handle.stop))
+                handles.join()
+
+            handler = self._actionManager.executeActionAsync(action, self._handleComplete, (log.id,))
+
             with self._handleLock:
-                if action.id in self._handles:
-                    self._handles[action.id].stop()
-                self._handles[action.id] = self._actionRunner.executeAsync(action, self._handleComplete, (log.id,))
+                self._handles[action.id] = handler
         return log

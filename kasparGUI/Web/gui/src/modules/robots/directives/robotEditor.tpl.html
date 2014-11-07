@@ -1,48 +1,49 @@
 <div>
-	<form
-		novalidate
-		name="robotForm"
-		model="robot">
-		<div class="input-group">
-			<span class="input-group-addon inputLabel">{{language['robot.name']}}</span>
-			<input
-				type="text"
-				name="name"
-				class="form-control"
-				placeholder="Name"
-				saveable
-				ng-model="robot.name"
-				required>
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon inputLabel">{{language['robot.model']}}</span>
-			<select
-				ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
-				name="model"
-				class="selectpicker form-control"
-				ng-model="robot.model_id"
-				ng-options="model.id as model.name for model in models | orderBy:'model.name'"
-				saveable
-				required>
-				<option value="">{{language['robot.model.select.prompt']}}</option>
-			</select>
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon inputLabel">{{language['robot.version']}}</span>
-			<input
-				type="text"
-				name="version"
-				class="form-control"
-				placeholder="Version"
-				ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
-				saveable
-				ng-model="robot.version"
-				required>
-		</div>
-	</form>
-	<hr />
-	<tabset ng-show="robot != null"> <tab heading="Servo Details">
-	<view-robot robot="robot"></view-robot> </tab> <tab
-		heading="Servo Calibration"> <calibrate-robot robot="robot"></calibrate-robot>
-	</tab></tabset>
+    <form
+        novalidate
+        name="robotForm"
+        model="robot">
+        <div class="input-group">
+            <span class="input-group-addon inputLabel">{{language['robot.name']}}</span>
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                placeholder="Name"
+                saveable
+                ng-model="robot.name"
+                required>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon inputLabel">{{language['robot.model']}}</span>
+            <select
+                ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
+                name="model"
+                class="selectpicker form-control"
+                ng-model="robot.model_id"
+                ng-disabled="models.length == 0"
+                ng-options="model.id as model.name for model in models | orderBy:'model.name'"
+                saveable
+                required>
+                <option value="">{{language['robot.model.select.prompt']}}</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon inputLabel">{{language['robot.version']}}</span>
+            <input
+                type="text"
+                name="version"
+                class="form-control"
+                placeholder="Version"
+                ng-disabled="robotForm.model.$pristine && robotForm.model.$valid"
+                saveable
+                ng-model="robot.version"
+                required>
+        </div>
+    </form>
+    <hr />
+    <tabset ng-show="robot != null"> <tab heading="Servo Details">
+    <view-robot robot="robot"></view-robot> </tab> <tab
+        heading="Servo Calibration"> <calibrate-robot robot="robot"></calibrate-robot>
+    </tab></tabset>
 </div>

@@ -1,19 +1,25 @@
 import os
 import sys
+from itertools import groupby
 
-from Config.config import dbConfig
+from Config.config import dbConfig, globalConfig
 from kasparGUI.Model import Base, User, Operator, Setting, Action
 from robotActionController.Data.storage import StorageFactory
 from robotActionController.Robot import importer
 import legacyImporter
-from xml.etree import ElementTree as et
 StorageFactory.config['engine'].update(dbConfig)
+StorageFactory.config['dataFolder'] = globalConfig['dataFolder']
 
 
 def _flushData():
+    if not os.path.isdir(StorageFactory.config['dataFolder']):
+        os.makedirs(StorageFactory.config['dataFolder'])
     StorageFactory.getDefaultDataStore().engine.echo = True
     StorageFactory.drop_keys(StorageFactory.getDefaultDataStore().engine)
     Base.metadata.drop_all(StorageFactory.getDefaultDataStore().engine)
+    from shutil import rmtree
+    for dir in [d for (d, _, _) in os.walk(StorageFactory.config['dataFolder'])][1:]:
+        rmtree(dir, True)
     Base.metadata.create_all(StorageFactory.getDefaultDataStore().engine)
     StorageFactory.getDefaultDataStore().engine.echo = False
 
@@ -40,6 +46,23 @@ def _loadConfigs(configDir, configFile='robot.xml'):
     robot = robots[0].name
     print "Saving data"
 
+    robot = robots[0].name
+    
+    actionText = triggerText = gameText = robotText = ""
+    key = lambda x: x.type
+    if newActions:        
+        counts = ["%s: %s" % (key, len(list(group))) for key, group in groupby(sorted(newActions, key=key), key=key)]
+        actionText = "Actions: %s (%s)" % (len(newActions), counts)
+    if triggers:
+        counts = ["%s: %s" % (key, len(list(group))) for key, group in groupby(sorted(triggers, key=key), key=key)]
+        triggerText = "Triggers: %s (%s)" % (len(triggers), counts)
+    if games:
+        gameText = "Play Scenarios: %s" % (len(games), )
+    if robots:
+        robotText = "Robots: %s" % (len(robots), )
+
+    dataText = [robotText, actionText, triggerText, gameText]
+    print "Saving data - %s" % (', '.join([t for t in dataText if t]))
     session.add_all(robots)
     session.add_all(newActions)
     session.add_all(triggers)
@@ -107,7 +130,6 @@ def _loadTestData():
     session.close()
 
 
-
 if __name__ == "__main__":
     flush = False
     fill = False
@@ -115,7 +137,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Subdir not specified"
 #         exit()
-        subDir = 'kaspar-1c'
+        subDir = 'kaspar3'
+        configFile = 'kaspar3-1.xml'
         flush = True
         fill = True
     else:

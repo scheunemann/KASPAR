@@ -503,25 +503,38 @@ def loadDirectory(actions, triggers, games, robots, subDir, loadActions=True, lo
         if os.path.exists(searchDir):
             files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
             for fileName in filter(lambda f: f.endswith(".pose"), files):
+                fName = os.path.basename(fileName)
                 f = open(fileName)
                 lines = f.readlines()
-                pose = a.getPose(lines, r)
-                if pose != None and pose.name not in actions:
-                    actions[pose.name] = pose
+                name = lines[0].strip()
+                if name not in actions:
+                    pose = a.getPose(lines, r)
+                    if pose:
+                        #print "Adding new pose %s" % pose.name
+                        actions[pose.name] = pose
+                    else:
+                        print "Unable to load pose (%s)" % (fName)
                 else:
-                    print "Skipping pose %s, another by the same name already exists" % pose.name
+                    print "Skipping pose %s (%s), another by the same name already exists" % (name, fName)
 
         searchDir = os.path.join(subDir, 'seqs')
         if os.path.exists(searchDir):
             files = [os.path.join(searchDir, o) for o in os.listdir(searchDir) if os.path.isfile(os.path.join(searchDir, o))]
             for fileName in filter(lambda f: f.endswith(".seq"), files):
+                fName = os.path.basename(fileName)
                 f = open(fileName)
                 lines = f.readlines()
-                sequence = a.getSequence(lines, actions.values(), os.path.join(subDir, 'sounds'))
-                if sequence != None and sequence.name not in actions:
-                    actions[sequence.name] = sequence
+                name = lines[0].strip()
+                if name not in actions:
+                    sequence = a.getSequence(lines, actions.values(), os.path.join(subDir, 'sounds'))
+                    if sequence:
+                        print "Adding new sequence %s" % sequence.name
+                        actions[sequence.name] = sequence
+                    else:
+                        print "Unable to load sequence (%s)" % (fName)
                 else:
-                    print "Skipping sequence %s, another by the same name already exists" % pose.name
+                    print "Skipping sequence %s (%s), another by the same name already exists" % (name, fName)
+ 
 
     if loadTriggers:
         t = TriggerImporter()
@@ -557,4 +570,4 @@ def loadAllConfigs(rootDir, loadActions=True, loadTriggers=True, loadRobots=True
     for subDir in dirs:
         loadDirectory(loadedActions, loadedTriggers, loadedGames, loadedRobots, subDir, loadActions, loadTriggers)
 
-    return (loadedRobots, loadedActions.values(), loadedTriggers.values(), loadedGames)
+    return (loadedRobots, loadedActions, loadedTriggers, loadedGames)

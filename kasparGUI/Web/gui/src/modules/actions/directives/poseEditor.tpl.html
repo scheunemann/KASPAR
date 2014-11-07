@@ -21,6 +21,10 @@
                         class="btn btn-default"
                         type="button"
                         ng-click="saveAs()">Save As</button>
+                    <button
+                        class="btn btn-default"
+                        type="button"
+                        ng-click="run()">Run</button>
                 </span>
             </div>
             <div class="input-group" ng-show="false">
@@ -42,7 +46,7 @@
 <robot-interface
     robot="robot"
     connected="connected"
-    ng-hide="connected"
+    ng-show="false"
     show-connect="true"></robot-interface>
 <div class="row">
     <div class="col-sm-8">&nbsp;</div>
@@ -83,7 +87,7 @@
                 type="button"
                 class="btn btn-primary btn-default check pull-right"
                 ng-model="group.poseable"
-                btn-checkbox>{{language['action.pose.basic.poseable']}}</button>
+                btn-checkbox>{{language['action.pose.basic.' + (group.poseable ? 'poseable' : 'locked')]}}</button>
         </div>
         <div
             class="col-lg-4 col-md-6 col-sm-12 col-xs-12 jointEditor"

@@ -15,7 +15,10 @@ define(function(require) {
                     onFinished: '&?',
                     onCanceled: '&?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                     $scope.showStart = true;
                     $scope.start = function() {
@@ -32,9 +35,7 @@ define(function(require) {
                     $scope.end = function() {
                         interactionService.endGame($scope.game);
                         $scope.showStart = true;
-                        if ($scope.onFinished) {
-                            $scope.onFinished();
-                        }
+                        $scope.onFinished();
                     };
                 }
             };

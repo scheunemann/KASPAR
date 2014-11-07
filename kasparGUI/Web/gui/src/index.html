@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
         <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
+        <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
         <link rel="stylesheet" href="css/slider.css">
         <link rel="stylesheet" href="css/app.css">
         <meta charset="utf-8">
@@ -37,7 +38,7 @@
             <h4>KASPAR Web Interface</h4>
             <h6>Version {{version}}</h6>
         </header>
-        <header ui-sref="default" class="navbar-fixed-top text-center header hidden-xs" ng-controller="commonController">
+        <header ui-sref="default" class="navbar-fixed-top text-center clickable header hidden-xs" ng-controller="commonController">
             <h1>KASPAR Web Interface</h1>
             <h6>Version {{version}}</h6>
         </header>
@@ -53,7 +54,7 @@
             </div>
         </div>
         <footer class="text-center visible-xs">
-            <small>©<a href="http://www.herts.ac.uk/research/stri">Science
+            <small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
             and Technology Research Institute</a> <br>University of Hertfordshire
             Hatfield, Hertfordshire, AL10 9AB, UK
             </small>
@@ -61,7 +62,7 @@
         <footer class="navbar-fixed-bottom text-center hidden-print hidden-xs">
             <div class="row">
                 <div class="col-lg-11">
-                    <small>©<a href="http://www.herts.ac.uk/research/stri">Science
+                    <small>&copy;<a href="http://www.herts.ac.uk/research/stri">Science
                     and Technology Research Institute</a> <br>University of
                     Hertfordshire Hatfield, Hertfordshire, AL10 9AB, UK
                     </small>

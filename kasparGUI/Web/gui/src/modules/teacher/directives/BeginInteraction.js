@@ -17,16 +17,17 @@ define(function(require) {
                     onFinished: '&?',
                     onCanceled: '&?',
                 },
-                link: function(scope, element, attrs, controller) {},
+                link: function(scope, element, attrs, controller) {
+                    scope.showBack = attrs.onCanceled !== undefined;
+                    scope.showNext = attrs.onFinished !== undefined;
+                },
                 controller: function($scope) {
                     $scope.getObjectives = function() {
                         return gameService.getObjectives($scope.games);
                     };
 
                     $scope.back = function() {
-                        if ($scope.onCanceled) {
-                            $scope.onCanceled();
-                        }
+                        $scope.onCanceled();
                     };
 
                     $scope.next = function() {
@@ -37,9 +38,7 @@ define(function(require) {
                             }
                         }
 
-                        if ($scope.onFinished) {
-                            $scope.onFinished();
-                        }
+                        $scope.onFinished();
                     };
                 }
             };

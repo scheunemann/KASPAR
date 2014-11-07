@@ -1,5 +1,6 @@
 import os
 import uuid
+from kasparGUI.Config.config import globalConfig
 from robotActionController.Data.Model import StandardMixin, Base, User
 from sqlalchemy import Column, String, Integer, ForeignKey, Table, DateTime, Date
 from sqlalchemy.orm import relationship
@@ -91,7 +92,7 @@ class Photo(StandardMixin, Base):
 
     @staticmethod
     def __fileName(uuid_=None):
-        basePath = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'profilePhotos'))
+        basePath = os.path.join(globalConfig['dataFolder'], 'profilePhotos')
         if not os.path.isdir(basePath):
             os.makedirs(basePath)
 
@@ -110,6 +111,9 @@ class Setting(StandardMixin, Base):
         super(Setting, self).__init__(**kwargs)
         self.key = key
         self.value = value
+
+    def __str__(self):
+        return "Setting(key=%s, value=%s)" % (self.key, self.value)
 
 
 class Interaction(StandardMixin, Base):

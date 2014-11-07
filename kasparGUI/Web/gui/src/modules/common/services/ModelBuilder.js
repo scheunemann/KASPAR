@@ -2,6 +2,7 @@
 
 define(function(require) {
         var angular = require('angular');
+        var _ = require('underscore');
         require('angularResource');
 
         var ModelBuilder = function() {
@@ -86,15 +87,16 @@ define(function(require) {
                             id: '@id',
                         };
 
-                        methods = angular.extend(defaultMethods, methods);
-                        for (var name in methods) {
-                            if (methods[name].hasOwnProperty('url')) {
-                                methods[name].url = root.basePath + methods[name].url;
+                        var resolvedMethods = angular.extend({}, defaultMethods, angular.copy(methods));
+                        for (var name in resolvedMethods) {
+                            if (resolvedMethods[name].hasOwnProperty('url') &&
+                                resolvedMethods[name].url.indexOf(root.basePath) !== 0) {
+                                resolvedMethods[name].url = root.basePath + resolvedMethods[name].url;
                             }
                         }
 
-                        params = angular.extend(defaultParams, params);
-                        var resource = $resource(url, params, methods);
+                        var resolvedParams = angular.extend({}, defaultParams, angular.copy(params));
+                        var resource = $resource(url, resolvedParams, resolvedMethods);
 
                         resource.prototype.$getProperty = function(propName) {
                             var key = '$__' + propName;
@@ -125,7 +127,7 @@ define(function(require) {
                                 }
                             }
 
-                            var concreteModel = getModel(this.type);
+                            var concreteModel = getModel(this.type, params, methods);
                             var concreteInstance = concreteModel.get({
                                     id: this.id
                                 });
@@ -138,23 +140,41 @@ define(function(require) {
                         };
 
                         resource.prototype.$save = function() {
-                            if (!this.id) {
-                                return this.$create();
-                            } else {
-                                return this.$update();
+                            var toDelete = _.filter(Object.getOwnPropertyNames(this), function(name) {
+                                    return name.indexOf('$') === 0;
+                                });
+
+                            var props = {};
+                            for (var propIndex in toDelete) {
+                                props[toDelete[propIndex]] = this[toDelete[propIndex]];
+                                delete this[toDelete[propIndex]];
                             }
+
+                            var promise;
+                            if (!this.id) {
+                                promise = this.$create();
+                            } else {
+                                promise = this.$update();
+                            }
+
+                            var model = this;
+                            promise.then(function() {
+                                    for (var propIndex in props) {
+                                        model[propIndex] = props[propIndex];
+                                    }
+                                });
                         };
 
                         resource.queryBase = resource.query;
-                        resource.query = function(params) {
-                            if (params !== undefined) {
+                        resource.query = function(queryparams) {
+                            if (queryparams !== undefined) {
                                 var q = {};
                                 q.filters = [];
-                                for (var key in params) {
+                                for (var key in queryparams) {
                                     q.filters.push({
                                             name: key,
-                                            op: params[key] === null ? 'is_null' : '==',
-                                            val: params[key],
+                                            op: queryparams[key] === null ? 'is_null' : '==',
+                                            val: queryparams[key],
                                         });
                                 }
                                 return this.queryBase({
