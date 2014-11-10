@@ -4,10 +4,10 @@ import itertools
 
 ids = {
        '/dev/bodySensors': [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
-       '/dev/headServos': [0, 1, 2, 3]
+       '/dev/headSensors': [0, 1, 2, 3]
       }
 
-def getConnection(port='/dev/headServos'):
+def getConnection(port='/dev/headSensors'):
     from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
     try:
         return minimaestro(port, 115200)
@@ -25,7 +25,7 @@ def doScan(ids):
             for (port, conn) in conns.iteritems():
                 if port not in ids:
                     continue
-                #prefix = port.replace('/dev/', '')[0]
+
                 for k in ids[port]:
                     vals["%s/%02d" % (port, k)] = conn.getPosition(k)
             
