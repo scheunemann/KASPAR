@@ -25,9 +25,9 @@ def doScan(ids):
                     continue
                 prefix = port.replace('/dev/', '')[0]
                 for k in ids[port]:
-                    vals[prefix + str(k)] = conn.getPosition(k)
+                    vals["%s%02d" % (prefix, k)] = conn.getPosition(k)
                 
-            print ["%s: %s" % (k, vals[k]) for k in sorted(vals.keys())]
+            print ["%s: %03d" % (k, vals[k]) for k in sorted(vals.keys())]
             time.sleep(0.25)
         except KeyboardInterrupt:
             break
