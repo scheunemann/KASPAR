@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../robotActionController')))
 
 import platform
 isWin = platform.system() == 'Windows'
@@ -9,7 +8,7 @@ isWin = platform.system() == 'Windows'
 import time
 
 baseDir = os.path.dirname(os.path.realpath(__file__))
-configDir = os.path.join(baseDir, './kasparConfigs')
+configDir = os.path.join(baseDir, '../kasparGUI/Config/kasparConfigs')
 print "Loading robot configs from %s" % configDir
 from robotActionController.Robot import importer
 
