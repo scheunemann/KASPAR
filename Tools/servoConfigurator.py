@@ -22,7 +22,34 @@ else:
 from robotActionController.Robot.ServoInterface.servoInterface import ServoInterface
 from robotActionController.Robot.ServoInterface.herkulex import HerkuleX
 if isWin:
-    herkulex = HerkuleX('COM25', 115200)
+	import _winreg as winreg
+	import itertools
+	from kasparGUI.Config import portNamer
+	
+	def enumerate_serial_ports():
+		path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
+		try:
+			key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
+		except WindowsError:
+			raise IterationError
+
+		for i in itertools.count():
+			try:
+				val = winreg.EnumValue(key, i)
+				yield (str(val[1]), str(val[0]))
+			except EnvironmentError:
+				break
+
+	herkulex = None
+	for port, deviceId in enumerate_serial_ports():
+		if portNamer.getLocation(port) == portNamer.TRSOFLAG and portNamer.getType(port) == portNamer.TTLFLAG:
+			print "Using port %s for HerkuleX servos" % port
+			herkulex = HerkuleX(port, 115200)
+			break
+	
+	if not herkulex:
+		print >> sys.stderr, "Unable to locate HerkuleX port, cannot continue"
+		exit(1)
 else:
     herkulex = HerkuleX('/dev/bodyServos', 115200)
 
@@ -74,7 +101,7 @@ def chooseRobot(robots):
 
 def clearScreen():
     if isWin:
-        os.system('cls')
+		os.system('cls')
     else:
         print chr(27) + "[2J"
 

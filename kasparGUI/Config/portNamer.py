@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 
 import sys
-import syslog
-syslog.openlog(facility=syslog.LOG_LOCAL7)
 
+import platform
+if platform.system() == 'Linux':
+	import syslog
+	syslog.openlog(facility=syslog.LOG_LOCAL7)
+else:
+	class Log(object):
+		def syslog(*args):
+			if len(args) > 1 and args[0] == syslog.LOG_ERR:
+				print >> sys.stderr, msg
+			else:
+				print msg
+
+	syslog = Log()
 import os
 from collections import Sequence
 
@@ -23,7 +34,7 @@ CMDVAL = 0B00
 TTLFLAG = 0B10
 CMDFLAG = 0B00
 
-#TODO: Probably should move this to a file...
+#TODO: Probably should move this to a config file...
 CONFIG = {
           HEADFLAG | CMDFLAG: ['headServos', 'headSensors'],
           TRSOFLAG | TTLFLAG: 'bodyServos',
@@ -41,6 +52,19 @@ def getPort():
             return CMDFLAG
     return None
 
+def getType(port):
+    from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
+    try:
+        #Fragile, assume if it doesn't respond to getId, then it's the TTL port
+        m = minimaestro(port, 115200)
+        dId = m.getDeviceId()
+        if dId >= 0:
+            return CMDFLAG
+        else:
+            return TTLFLAG
+    except Exception as e:
+        print 'Err: %s' % e
+    return None
 
 def getLocation(port):
     from robotActionController.Robot.ServoInterface.minimaestro import minimaestro
@@ -105,8 +129,8 @@ if __name__ == '__main__':
         if port == TTLFLAG:
             cmdPort = '%s%s' % (portName[:-1], int(portName[-1]) - 1)
             ttlPort = portName
-            # since we're pinging the cmd port here, we have a race condition with the actual cmd port
-            # handle TTL anc CMD creation only on the CMD port now...
+            # since we're pinging the CMD port here, we have a race condition with the actual CMD port
+            # handle TTL and CMD creation only on the CMD port now...
             exit()
         else:
             ttlPort = '%s%s' % (portName[:-1], int(portName[-1]) + 1)
