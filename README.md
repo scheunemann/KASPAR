@@ -22,6 +22,9 @@ git KASPAR
 
 To pair with a specific keypad, start pairing mode of the keypad (button on the back of the keypad) and run a helper script with `sudo ./home/pi/git/KASPAR/Tools/bluetooth.py` and follow the instructions.
 
+#### Trouble Shooting
+Check `less /proc/bus/input/devices` whether a dongle called "Bluetooth Keypad" is connected and whether `udevadm info --attribute-walk --name /dev/input/eventX` information matches the udev rule in `/etc/udev/rules.d/98-....`
+
 Additional information for trouble shooting:
 - http://elinux.org/RPi_Bluetooth_keyboard_setup
 - https://wiki.debian.org/BluetoothUser
