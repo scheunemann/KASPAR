@@ -5,11 +5,11 @@ from subprocess import call
 import platform
 
 if platform.system() == 'Linux':
-    dataFiles = [('/etc/init.d', ['systemConfigs/etc/init.d/kasparweb', ]),
-                  ('/etc/rsyslog.d', ['systemConfigs/etc/rsyslog.d/kaspar_log.conf', ]),
-                  ('/udev/rules.d', ['systemConfigs/udev/rules.d/98-keyPad.rules', 
-                                     'systemConfigs/udev/rules.d/98-serial.rules', 
-                                     'systemConfigs/udev/rules.d/99-input.rules'])]
+    dataFiles = [('/etc/init.d', ['systemConfigs/systemRoot/etc/init.d/kasparweb', ]),
+                  ('/etc/rsyslog.d', ['systemConfigs/systemRoot/etc/rsyslog.d/kaspar_log.conf', ]),
+                  ('/etc/udev/rules.d', ['systemConfigs/systemRoot/etc/udev/rules.d/98-keyPad.rules', 
+                                     'systemConfigs/systemRoot/etc/udev/rules.d/98-serial.rules', 
+                                     'systemConfigs/systemRoot/etc/udev/rules.d/99-input.rules'])]
 else:
     dataFiles = []
 
