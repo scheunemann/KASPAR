@@ -66,7 +66,7 @@ def authorize(device):
         mainloop.run()
         btDev = getDevice(adapter, bus, device)
         if btDev:
-            print "Success"
+            print "Success! Kaspar is now connected to '" + device.name + "'." #print success in case `sudo hcitool con` successfull?
             btDev.SetProperty("Trusted", dbus.Boolean(1))
         else:
             print "Error"
@@ -113,5 +113,9 @@ class Agent(dbus.service.Object):
 
 if __name__ == '__main__':
     devices = scan()
-    authorize(devices[0])
+    for i in range(len(devices)):
+	if devices[i].name == 'Bluetooth Keypad':
+            keypadDevice = devices[i]
+    deauthorize(keypadDevice) #prevent error messega when already paired
+    authorize(keypadDevice)
 
